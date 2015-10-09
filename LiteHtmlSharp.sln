@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiteHtmlSharp", "LiteHtmlSharp\LiteHtmlSharp.csproj", "{8F545099-3C13-4E6F-9D6B-FDCE6C4FA4A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CppSharpGen", "CppSharpGen\CppSharpGen.csproj", "{51CE2AC2-8E44-4A76-AEF8-9B32B57B3C2C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{51CE2AC2-8E44-4A76-AEF8-9B32B57B3C2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51CE2AC2-8E44-4A76-AEF8-9B32B57B3C2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51CE2AC2-8E44-4A76-AEF8-9B32B57B3C2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51CE2AC2-8E44-4A76-AEF8-9B32B57B3C2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F545099-3C13-4E6F-9D6B-FDCE6C4FA4A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F545099-3C13-4E6F-9D6B-FDCE6C4FA4A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F545099-3C13-4E6F-9D6B-FDCE6C4FA4A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F545099-3C13-4E6F-9D6B-FDCE6C4FA4A4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
