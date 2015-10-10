@@ -1,3 +1,6 @@
 [submodule "litehtml"]
 	path = litehtml
 	url = https://github.com/litehtml/litehtml.git
+[submodule "CppSharp"]
+	path = CppSharp
+	url = https://github.com/mono/CppSharp.git

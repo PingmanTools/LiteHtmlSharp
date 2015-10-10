@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -8,6 +8,8 @@
     <RootNamespace>CppSharpGen</RootNamespace>
     <AssemblyName>CppSharpGen</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -17,7 +19,8 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Externalconsole>true</Externalconsole>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -26,68 +29,21 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Externalconsole>true</Externalconsole>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="Basic.CSharp">
-      <HintPath>..\packages\CppSharp.0.1.0\lib\net45\Basic.CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="Basic.Tests.CSharp">
-      <HintPath>..\packages\CppSharp.0.1.0\lib\net45\Basic.Tests.CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="CSharpTemp.CSharp">
-      <HintPath>..\packages\CppSharp.0.1.0\lib\net45\CSharpTemp.CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="CSharpTemp.Tests.CSharp">
-      <HintPath>..\packages\CppSharp.0.1.0\lib\net45\CSharpTemp.Tests.CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="CppSharp.AST">
-      <HintPath>..\packages\CppSharp.0.1.0\lib\net45\CppSharp.AST.dll</HintPath>
-    </Reference>
-    <Reference Include="CppSharp.Generator.Tests">
-      <HintPath>..\packages\CppSharp.0.1.0\lib\net45\CppSharp.Generator.Tests.dll</HintPath>
+    <Reference Include="CppSharp">
+      <HintPath>CppSharpAssemblies\CppSharp.dll</HintPath>
     </Reference>
     <Reference Include="CppSharp.Generator">
-      <HintPath>..\packages\CppSharp.0.1.0\lib\net45\CppSharp.Generator.dll</HintPath>
+      <HintPath>CppSharpAssemblies\CppSharp.Generator.dll</HintPath>
+    </Reference>
+    <Reference Include="CppSharp.AST">
+      <HintPath>CppSharpAssemblies\CppSharp.AST.dll</HintPath>
     </Reference>
     <Reference Include="CppSharp.Parser.CSharp">
-      <HintPath>..\packages\CppSharp.0.1.0\lib\net45\CppSharp.Parser.CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="CppSharp.Runtime">
-      <HintPath>..\packages\CppSharp.0.1.0\lib\net45\CppSharp.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="CppSharp">
-      <HintPath>..\packages\CppSharp.0.1.0\lib\net45\CppSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="NamespacesBase.CSharp">
-      <HintPath>..\packages\CppSharp.0.1.0\lib\net45\NamespacesBase.CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="NamespacesBase.Tests.CSharp">
-      <HintPath>..\packages\CppSharp.0.1.0\lib\net45\NamespacesBase.Tests.CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="NamespacesDerived.CSharp">
-      <HintPath>..\packages\CppSharp.0.1.0\lib\net45\NamespacesDerived.CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="NamespacesDerived.Tests.CSharp">
-      <HintPath>..\packages\CppSharp.0.1.0\lib\net45\NamespacesDerived.Tests.CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="TypeMaps.CSharp">
-      <HintPath>..\packages\CppSharp.0.1.0\lib\net45\TypeMaps.CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="TypeMaps.Tests.CSharp">
-      <HintPath>..\packages\CppSharp.0.1.0\lib\net45\TypeMaps.Tests.CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="UTF16.CSharp">
-      <HintPath>..\packages\CppSharp.0.1.0\lib\net45\UTF16.CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="UTF16.Tests.CSharp">
-      <HintPath>..\packages\CppSharp.0.1.0\lib\net45\UTF16.Tests.CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="VTables.CSharp">
-      <HintPath>..\packages\CppSharp.0.1.0\lib\net45\VTables.CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="VTables.Tests.CSharp">
-      <HintPath>..\packages\CppSharp.0.1.0\lib\net45\VTables.Tests.CSharp.dll</HintPath>
+      <HintPath>CppSharpAssemblies\CppSharp.Parser.CSharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -96,9 +52,7 @@
     <Compile Include="LiteHtmlLibrary.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\CppSharp.0.1.0\build\net45\CppSharp.targets" Condition="Exists('..\packages\CppSharp.0.1.0\build\net45\CppSharp.targets')" />
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="..\litehtml\.DS_Store">
       <Link>litehtml\.DS_Store</Link>
     </None>
@@ -609,8 +563,15 @@
       <Link>litehtml\src\gumbo\vector.h</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="liblitehtml.a">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="liblitehtml.dylib">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="litehtml\" />
+    <Folder Include="CppSharpAssemblies\" />
   </ItemGroup>
 </Project>

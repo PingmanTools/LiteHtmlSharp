@@ -7,7 +7,15 @@ namespace CppSharpGen
    {
       public static void Main(string[] args)
       {
+         //var f = new Sample.Foo();
+         //var test = Sample.Sample.FooAdd(f);
+
+
+
          ConsoleDriver.Run(new LiteHtmlLibrary());
+
+
       }
    }
 }
+

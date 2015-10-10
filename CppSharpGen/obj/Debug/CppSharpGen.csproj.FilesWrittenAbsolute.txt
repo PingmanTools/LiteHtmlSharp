@@ -137,3 +137,9 @@
 /Users/mattlittle/Projects/LiteHtmlSharp/CppSharpGen/bin/Debug/UTF16.Tests.CSharp.dll
 /Users/mattlittle/Projects/LiteHtmlSharp/CppSharpGen/bin/Debug/VTables.CSharp.dll
 /Users/mattlittle/Projects/LiteHtmlSharp/CppSharpGen/bin/Debug/VTables.Tests.CSharp.dll
+/Users/mattlittle/Projects/LiteHtmlSharp/CppSharpGen/bin/Debug/CppSharp.Parser.CSharp.dll.mdb
+/Users/mattlittle/Projects/LiteHtmlSharp/CppSharpGen/bin/Debug/Sample.h
+/Users/mattlittle/Projects/LiteHtmlSharp/CppSharpGen/bin/Debug/Sample.dylib
+/Users/mattlittle/Projects/LiteHtmlSharp/CppSharpGen/bin/Debug/Sample
+/Users/mattlittle/Projects/LiteHtmlSharp/CppSharpGen/bin/Debug/liblitehtml.a
+/Users/mattlittle/Projects/LiteHtmlSharp/CppSharpGen/bin/Debug/liblitehtml.dylib

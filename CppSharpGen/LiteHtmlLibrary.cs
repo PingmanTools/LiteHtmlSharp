@@ -16,14 +16,37 @@ namespace CppSharpGen
       {
          var options = driver.Options;
          options.GeneratorKind = GeneratorKind.CSharp;
-         options.LibraryName = "LiteHtmlSharp";
+         options.LibraryName = "LiteHtmlSharpLib";
 
-
-         foreach (var liteHtmlHeaderFile in Directory.GetFiles(Path.Combine("litehtml", "src"), "*.h", SearchOption.AllDirectories))
+         string outputDir = Path.GetFullPath("output");
+         if (Directory.Exists(outputDir))
          {
-            Console.WriteLine("Adding header file: " + liteHtmlHeaderFile);
-            options.Headers.Add(liteHtmlHeaderFile);
+            Directory.CreateDirectory(outputDir);
          }
+
+         options.OutputDir = outputDir;
+         options.OutputNamespace = "LiteHtmlSharpLib";
+         options.OutputDebug = true;
+         options.CompileCode = false;
+
+         options.addArguments("-std=c++11");
+         options.addArguments("-stdlib=libc++");
+
+        
+
+         foreach (var liteHtmlHeaderFile in Directory.GetFiles(Path.Combine("litehtml", "src"), "html.h", SearchOption.AllDirectories))
+         {
+            var fullPath = Path.GetFullPath(liteHtmlHeaderFile);
+            Console.WriteLine("Adding header file: " + fullPath);
+            options.Headers.Add(fullPath);
+         }
+
+         var liblitehtmla = Path.GetFullPath("liblitehtml.dylib");
+         Console.WriteLine("Adding library: " + liblitehtmla);
+         options.Libraries.Add("liblitehtml.dylib");
+
+         //options.Headers.Add(Path.GetFullPath("Sample.h"));
+         //options.Libraries.Add(Path.GetFullPath("Sample.dylib"));
       }
 
       public void SetupPasses(Driver driver)
