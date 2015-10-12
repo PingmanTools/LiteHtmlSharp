@@ -88,7 +88,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;LITEHTMLLIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>\\psf\Home\Projects\LiteHtmlSharp\litehtml\src;\\psf\Home\Projects\LiteHtmlSharp\litehtml\src\gumbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>\\psf\Home\Projects\LiteHtmlSharp\litehtml\src;\\psf\Home\Projects\LiteHtmlSharp\litehtml\src\gumbo;\\psf\Home\Projects\LiteHtmlSharp\LiteHtmlLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -209,10 +209,10 @@
     <ClInclude Include="..\litehtml\src\types.h" />
     <ClInclude Include="..\litehtml\src\utf8_strings.h" />
     <ClInclude Include="..\litehtml\src\web_color.h" />
-    <ClInclude Include="DocContainer.h" />
-    <ClInclude Include="Globals.h" />
-    <ClInclude Include="ManagedCallbacks.h" />
-    <ClInclude Include="myclass.h" />
+    <ClInclude Include="src\DocContainer.h" />
+    <ClInclude Include="src\Globals.h" />
+    <ClInclude Include="src\ManagedCallbacks.h" />
+    <ClInclude Include="src\myclass.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\litehtml\src\background.cpp" />
@@ -262,25 +262,12 @@
     <ClCompile Include="..\litehtml\src\table.cpp" />
     <ClCompile Include="..\litehtml\src\utf8_strings.cpp" />
     <ClCompile Include="..\litehtml\src\web_color.cpp" />
-    <ClCompile Include="dllmain.cpp">
-      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PrecompiledHeader>
-      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsManaged>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-      </PrecompiledHeader>
-      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </PrecompiledHeader>
-      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</CompileAsManaged>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-      </PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="DocContainer.cpp" />
-    <ClCompile Include="Globals.cpp" />
-    <ClCompile Include="LiteHtmlLib.cpp" />
-    <ClCompile Include="ManagedCallbacks.cpp" />
-    <ClCompile Include="myclass.cpp" />
+    <ClCompile Include="src\dllmain.cpp" />
+    <ClCompile Include="src\DocContainer.cpp" />
+    <ClCompile Include="src\Globals.cpp" />
+    <ClCompile Include="src\LiteHtmlLib.cpp" />
+    <ClCompile Include="src\ManagedCallbacks.cpp" />
+    <ClCompile Include="src\myclass.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\litehtml\src\gumbo\char_ref.rl" />

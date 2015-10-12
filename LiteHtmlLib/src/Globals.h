@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../litehtml/src/html.h"
+#include "../../litehtml/src/html.h"
 
 class DocContainer;
 

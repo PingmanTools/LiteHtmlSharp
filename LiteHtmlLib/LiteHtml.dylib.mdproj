@@ -4,22 +4,32 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Default</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ItemType>GenericProject</ItemType>
-    <ProjectGuid>{EF1A558F-2215-4EF2-AF54-21561CC175DE}</ProjectGuid>
+    <ProjectGuid>{6CB85C0B-8486-44E3-825D-A7E49F958943}</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Default|AnyCPU' ">
     <OutputPath>.</OutputPath>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="Build" command="sh build.sh" workingdir="${ProjectDir}" />
+      </CustomCommands>
+    </CustomCommands>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="dllmain.cpp" />
-    <None Include="DocContainer.cpp" />
-    <None Include="DocContainer.h" />
-    <None Include="Globals.cpp" />
-    <None Include="Globals.h" />
-    <None Include="LiteHtmlLib.cpp" />
-    <None Include="ManagedCallbacks.cpp" />
-    <None Include="ManagedCallbacks.h" />
-    <None Include="myclass.cpp" />
-    <None Include="myclass.h" />
+    <Folder Include="src\" />
+    <Folder Include="litehtml_src\" />
+    <Folder Include="litehtml_src\gumbo\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\DocContainer.cpp" />
+    <None Include="src\DocContainer.h" />
+    <None Include="src\Globals.cpp" />
+    <None Include="src\Globals.h" />
+    <None Include="src\LiteHtmlLib.cpp" />
+    <None Include="src\ManagedCallbacks.cpp" />
+    <None Include="src\ManagedCallbacks.h" />
+    <None Include="src\dllmain.cpp" />
+    <None Include="src\myclass.cpp" />
+    <None Include="src\myclass.h" />
     <None Include="..\litehtml\src\attributes.h">
       <Link>litehtml_src\attributes.h</Link>
     </None>
@@ -197,102 +207,6 @@
     <None Include="..\litehtml\src\element.h">
       <Link>litehtml_src\element.h</Link>
     </None>
-    <None Include="..\litehtml\src\gumbo\attribute.c">
-      <Link>litehtml_src\attribute.c</Link>
-    </None>
-    <None Include="..\litehtml\src\gumbo\attribute.h">
-      <Link>litehtml_src\attribute.h</Link>
-    </None>
-    <None Include="..\litehtml\src\gumbo\char_ref.c">
-      <Link>litehtml_src\char_ref.c</Link>
-    </None>
-    <None Include="..\litehtml\src\gumbo\char_ref.h">
-      <Link>litehtml_src\char_ref.h</Link>
-    </None>
-    <None Include="..\litehtml\src\gumbo\char_ref.rl">
-      <Link>litehtml_src\char_ref.rl</Link>
-    </None>
-    <None Include="..\litehtml\src\gumbo\error.c">
-      <Link>litehtml_src\error.c</Link>
-    </None>
-    <None Include="..\litehtml\src\gumbo\error.h">
-      <Link>litehtml_src\error.h</Link>
-    </None>
-    <None Include="..\litehtml\src\gumbo\gumbo.h">
-      <Link>litehtml_src\gumbo.h</Link>
-    </None>
-    <None Include="..\litehtml\src\gumbo\insertion_mode.h">
-      <Link>litehtml_src\insertion_mode.h</Link>
-    </None>
-    <None Include="..\litehtml\src\gumbo\parser.c">
-      <Link>litehtml_src\parser.c</Link>
-    </None>
-    <None Include="..\litehtml\src\gumbo\parser.h">
-      <Link>litehtml_src\parser.h</Link>
-    </None>
-    <None Include="..\litehtml\src\gumbo\string_buffer.c">
-      <Link>litehtml_src\string_buffer.c</Link>
-    </None>
-    <None Include="..\litehtml\src\gumbo\string_buffer.h">
-      <Link>litehtml_src\string_buffer.h</Link>
-    </None>
-    <None Include="..\litehtml\src\gumbo\string_piece.c">
-      <Link>litehtml_src\string_piece.c</Link>
-    </None>
-    <None Include="..\litehtml\src\gumbo\string_piece.h">
-      <Link>litehtml_src\string_piece.h</Link>
-    </None>
-    <None Include="..\litehtml\src\gumbo\strings.h">
-      <Link>litehtml_src\strings.h</Link>
-    </None>
-    <None Include="..\litehtml\src\gumbo\tag_enum.h">
-      <Link>litehtml_src\tag_enum.h</Link>
-    </None>
-    <None Include="..\litehtml\src\gumbo\tag_gperf.h">
-      <Link>litehtml_src\tag_gperf.h</Link>
-    </None>
-    <None Include="..\litehtml\src\gumbo\tag_sizes.h">
-      <Link>litehtml_src\tag_sizes.h</Link>
-    </None>
-    <None Include="..\litehtml\src\gumbo\tag_strings.h">
-      <Link>litehtml_src\tag_strings.h</Link>
-    </None>
-    <None Include="..\litehtml\src\gumbo\tag.c">
-      <Link>litehtml_src\tag.c</Link>
-    </None>
-    <None Include="..\litehtml\src\gumbo\tag.in">
-      <Link>litehtml_src\tag.in</Link>
-    </None>
-    <None Include="..\litehtml\src\gumbo\token_type.h">
-      <Link>litehtml_src\token_type.h</Link>
-    </None>
-    <None Include="..\litehtml\src\gumbo\tokenizer_states.h">
-      <Link>litehtml_src\tokenizer_states.h</Link>
-    </None>
-    <None Include="..\litehtml\src\gumbo\tokenizer.c">
-      <Link>litehtml_src\tokenizer.c</Link>
-    </None>
-    <None Include="..\litehtml\src\gumbo\tokenizer.h">
-      <Link>litehtml_src\tokenizer.h</Link>
-    </None>
-    <None Include="..\litehtml\src\gumbo\utf8.c">
-      <Link>litehtml_src\utf8.c</Link>
-    </None>
-    <None Include="..\litehtml\src\gumbo\utf8.h">
-      <Link>litehtml_src\utf8.h</Link>
-    </None>
-    <None Include="..\litehtml\src\gumbo\util.c">
-      <Link>litehtml_src\util.c</Link>
-    </None>
-    <None Include="..\litehtml\src\gumbo\util.h">
-      <Link>litehtml_src\util.h</Link>
-    </None>
-    <None Include="..\litehtml\src\gumbo\vector.c">
-      <Link>litehtml_src\vector.c</Link>
-    </None>
-    <None Include="..\litehtml\src\gumbo\vector.h">
-      <Link>litehtml_src\vector.h</Link>
-    </None>
     <None Include="..\litehtml\src\html_tag.cpp">
       <Link>litehtml_src\html_tag.cpp</Link>
     </None>
@@ -353,8 +267,103 @@
     <None Include="..\litehtml\src\web_color.h">
       <Link>litehtml_src\web_color.h</Link>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="litehtml_src\" />
+    <None Include="..\..\litehtml\src\gumbo\attribute.c">
+      <Link>litehtml_src\gumbo\attribute.c</Link>
+    </None>
+    <None Include="..\..\litehtml\src\gumbo\attribute.h">
+      <Link>litehtml_src\gumbo\attribute.h</Link>
+    </None>
+    <None Include="..\..\litehtml\src\gumbo\char_ref.c">
+      <Link>litehtml_src\gumbo\char_ref.c</Link>
+    </None>
+    <None Include="..\..\litehtml\src\gumbo\char_ref.h">
+      <Link>litehtml_src\gumbo\char_ref.h</Link>
+    </None>
+    <None Include="..\..\litehtml\src\gumbo\char_ref.rl">
+      <Link>litehtml_src\gumbo\char_ref.rl</Link>
+    </None>
+    <None Include="..\..\litehtml\src\gumbo\error.c">
+      <Link>litehtml_src\gumbo\error.c</Link>
+    </None>
+    <None Include="..\..\litehtml\src\gumbo\error.h">
+      <Link>litehtml_src\gumbo\error.h</Link>
+    </None>
+    <None Include="..\..\litehtml\src\gumbo\gumbo.h">
+      <Link>litehtml_src\gumbo\gumbo.h</Link>
+    </None>
+    <None Include="..\..\litehtml\src\gumbo\insertion_mode.h">
+      <Link>litehtml_src\gumbo\insertion_mode.h</Link>
+    </None>
+    <None Include="..\..\litehtml\src\gumbo\parser.c">
+      <Link>litehtml_src\gumbo\parser.c</Link>
+    </None>
+    <None Include="..\..\litehtml\src\gumbo\parser.h">
+      <Link>litehtml_src\gumbo\parser.h</Link>
+    </None>
+    <None Include="..\..\litehtml\src\gumbo\string_buffer.c">
+      <Link>litehtml_src\gumbo\string_buffer.c</Link>
+    </None>
+    <None Include="..\..\litehtml\src\gumbo\string_buffer.h">
+      <Link>litehtml_src\gumbo\string_buffer.h</Link>
+    </None>
+    <None Include="..\..\litehtml\src\gumbo\string_piece.c">
+      <Link>litehtml_src\gumbo\string_piece.c</Link>
+    </None>
+    <None Include="..\..\litehtml\src\gumbo\string_piece.h">
+      <Link>litehtml_src\gumbo\string_piece.h</Link>
+    </None>
+    <None Include="..\..\litehtml\src\gumbo\strings.h">
+      <Link>litehtml_src\gumbo\strings.h</Link>
+    </None>
+    <None Include="..\..\litehtml\src\gumbo\tag_enum.h">
+      <Link>litehtml_src\gumbo\tag_enum.h</Link>
+    </None>
+    <None Include="..\..\litehtml\src\gumbo\tag_gperf.h">
+      <Link>litehtml_src\gumbo\tag_gperf.h</Link>
+    </None>
+    <None Include="..\..\litehtml\src\gumbo\tag_sizes.h">
+      <Link>litehtml_src\gumbo\tag_sizes.h</Link>
+    </None>
+    <None Include="..\..\litehtml\src\gumbo\tag_strings.h">
+      <Link>litehtml_src\gumbo\tag_strings.h</Link>
+    </None>
+    <None Include="..\..\litehtml\src\gumbo\tag.c">
+      <Link>litehtml_src\gumbo\tag.c</Link>
+    </None>
+    <None Include="..\..\litehtml\src\gumbo\tag.in">
+      <Link>litehtml_src\gumbo\tag.in</Link>
+    </None>
+    <None Include="..\..\litehtml\src\gumbo\token_type.h">
+      <Link>litehtml_src\gumbo\token_type.h</Link>
+    </None>
+    <None Include="..\..\litehtml\src\gumbo\tokenizer_states.h">
+      <Link>litehtml_src\gumbo\tokenizer_states.h</Link>
+    </None>
+    <None Include="..\..\litehtml\src\gumbo\tokenizer.c">
+      <Link>litehtml_src\gumbo\tokenizer.c</Link>
+    </None>
+    <None Include="..\..\litehtml\src\gumbo\tokenizer.h">
+      <Link>litehtml_src\gumbo\tokenizer.h</Link>
+    </None>
+    <None Include="..\..\litehtml\src\gumbo\utf8.c">
+      <Link>litehtml_src\gumbo\utf8.c</Link>
+    </None>
+    <None Include="..\..\litehtml\src\gumbo\utf8.h">
+      <Link>litehtml_src\gumbo\utf8.h</Link>
+    </None>
+    <None Include="..\..\litehtml\src\gumbo\util.c">
+      <Link>litehtml_src\gumbo\util.c</Link>
+    </None>
+    <None Include="..\..\litehtml\src\gumbo\util.h">
+      <Link>litehtml_src\gumbo\util.h</Link>
+    </None>
+    <None Include="..\..\litehtml\src\gumbo\vector.c">
+      <Link>litehtml_src\gumbo\vector.c</Link>
+    </None>
+    <None Include="..\..\litehtml\src\gumbo\vector.h">
+      <Link>litehtml_src\gumbo\vector.h</Link>
+    </None>
+    <None Include="build.sh" />
+    <None Include="CMakeLists.txt" />
   </ItemGroup>
 </Project>

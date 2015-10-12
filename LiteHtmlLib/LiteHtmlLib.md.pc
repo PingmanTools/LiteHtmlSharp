@@ -1,0 +1,5 @@
+Name: LiteHtmlLib
+Description: 
+Version: 0.1
+Libs: -L"/Users/mattlittle/Projects/LiteHtmlSharp/LiteHtmlLib/bin/Release" -lLiteHtmlLib
+Cflags: -I"/Users/mattlittle/Projects/LiteHtmlSharp/LiteHtmlLib/src" -I"/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src" -I"/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo"

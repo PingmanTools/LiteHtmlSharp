@@ -6,12 +6,12 @@ set(CMAKE_CXX_FLAGS "-m32 -DCMAKE_OSX_ARCHITECTURES=i386 -std=c++11 -stdlib=libc
 set(CMAKE_C_FLAGS "-m32 -DCMAKE_OSX_ARCHITECTURES=i386 -std=c99 -O3")
 
 set(SOURCE_LITEHTMLLIB 
-                    dllmain.cpp
-                    DocContainer.cpp
-                    Globals.cpp
-                    LiteHtmlLib.cpp
-                    ManagedCallbacks.cpp
-                    myclass.cpp
+                    src/dllmain.cpp
+                    src/DocContainer.cpp
+                    src/Globals.cpp
+                    src/LiteHtmlLib.cpp
+                    src/ManagedCallbacks.cpp
+                    src/myclass.cpp
 )
 
 set(SOURCE_LITEHTML ../litehtml/src/background.cpp

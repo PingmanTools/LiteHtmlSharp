@@ -123,114 +123,6 @@ litehtml/fast:
 	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/build
 .PHONY : litehtml/fast
 
-DocContainer.o: DocContainer.cpp.o
-
-.PHONY : DocContainer.o
-
-# target to build an object file
-DocContainer.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/DocContainer.cpp.o
-.PHONY : DocContainer.cpp.o
-
-DocContainer.i: DocContainer.cpp.i
-
-.PHONY : DocContainer.i
-
-# target to preprocess a source file
-DocContainer.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/DocContainer.cpp.i
-.PHONY : DocContainer.cpp.i
-
-DocContainer.s: DocContainer.cpp.s
-
-.PHONY : DocContainer.s
-
-# target to generate assembly for a file
-DocContainer.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/DocContainer.cpp.s
-.PHONY : DocContainer.cpp.s
-
-Globals.o: Globals.cpp.o
-
-.PHONY : Globals.o
-
-# target to build an object file
-Globals.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Globals.cpp.o
-.PHONY : Globals.cpp.o
-
-Globals.i: Globals.cpp.i
-
-.PHONY : Globals.i
-
-# target to preprocess a source file
-Globals.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Globals.cpp.i
-.PHONY : Globals.cpp.i
-
-Globals.s: Globals.cpp.s
-
-.PHONY : Globals.s
-
-# target to generate assembly for a file
-Globals.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Globals.cpp.s
-.PHONY : Globals.cpp.s
-
-LiteHtmlLib.o: LiteHtmlLib.cpp.o
-
-.PHONY : LiteHtmlLib.o
-
-# target to build an object file
-LiteHtmlLib.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/LiteHtmlLib.cpp.o
-.PHONY : LiteHtmlLib.cpp.o
-
-LiteHtmlLib.i: LiteHtmlLib.cpp.i
-
-.PHONY : LiteHtmlLib.i
-
-# target to preprocess a source file
-LiteHtmlLib.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/LiteHtmlLib.cpp.i
-.PHONY : LiteHtmlLib.cpp.i
-
-LiteHtmlLib.s: LiteHtmlLib.cpp.s
-
-.PHONY : LiteHtmlLib.s
-
-# target to generate assembly for a file
-LiteHtmlLib.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/LiteHtmlLib.cpp.s
-.PHONY : LiteHtmlLib.cpp.s
-
-ManagedCallbacks.o: ManagedCallbacks.cpp.o
-
-.PHONY : ManagedCallbacks.o
-
-# target to build an object file
-ManagedCallbacks.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/ManagedCallbacks.cpp.o
-.PHONY : ManagedCallbacks.cpp.o
-
-ManagedCallbacks.i: ManagedCallbacks.cpp.i
-
-.PHONY : ManagedCallbacks.i
-
-# target to preprocess a source file
-ManagedCallbacks.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/ManagedCallbacks.cpp.i
-.PHONY : ManagedCallbacks.cpp.i
-
-ManagedCallbacks.s: ManagedCallbacks.cpp.s
-
-.PHONY : ManagedCallbacks.s
-
-# target to generate assembly for a file
-ManagedCallbacks.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/ManagedCallbacks.cpp.s
-.PHONY : ManagedCallbacks.cpp.s
-
 Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/background.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/background.cpp.o
 
 .PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/background.o
@@ -1500,59 +1392,167 @@ Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/web_color.cpp.s:
 	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/web_color.cpp.s
 .PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/web_color.cpp.s
 
-dllmain.o: dllmain.cpp.o
+src/DocContainer.o: src/DocContainer.cpp.o
 
-.PHONY : dllmain.o
-
-# target to build an object file
-dllmain.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/dllmain.cpp.o
-.PHONY : dllmain.cpp.o
-
-dllmain.i: dllmain.cpp.i
-
-.PHONY : dllmain.i
-
-# target to preprocess a source file
-dllmain.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/dllmain.cpp.i
-.PHONY : dllmain.cpp.i
-
-dllmain.s: dllmain.cpp.s
-
-.PHONY : dllmain.s
-
-# target to generate assembly for a file
-dllmain.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/dllmain.cpp.s
-.PHONY : dllmain.cpp.s
-
-myclass.o: myclass.cpp.o
-
-.PHONY : myclass.o
+.PHONY : src/DocContainer.o
 
 # target to build an object file
-myclass.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/myclass.cpp.o
-.PHONY : myclass.cpp.o
+src/DocContainer.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/DocContainer.cpp.o
+.PHONY : src/DocContainer.cpp.o
 
-myclass.i: myclass.cpp.i
+src/DocContainer.i: src/DocContainer.cpp.i
 
-.PHONY : myclass.i
+.PHONY : src/DocContainer.i
 
 # target to preprocess a source file
-myclass.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/myclass.cpp.i
-.PHONY : myclass.cpp.i
+src/DocContainer.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/DocContainer.cpp.i
+.PHONY : src/DocContainer.cpp.i
 
-myclass.s: myclass.cpp.s
+src/DocContainer.s: src/DocContainer.cpp.s
 
-.PHONY : myclass.s
+.PHONY : src/DocContainer.s
 
 # target to generate assembly for a file
-myclass.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/myclass.cpp.s
-.PHONY : myclass.cpp.s
+src/DocContainer.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/DocContainer.cpp.s
+.PHONY : src/DocContainer.cpp.s
+
+src/Globals.o: src/Globals.cpp.o
+
+.PHONY : src/Globals.o
+
+# target to build an object file
+src/Globals.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/Globals.cpp.o
+.PHONY : src/Globals.cpp.o
+
+src/Globals.i: src/Globals.cpp.i
+
+.PHONY : src/Globals.i
+
+# target to preprocess a source file
+src/Globals.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/Globals.cpp.i
+.PHONY : src/Globals.cpp.i
+
+src/Globals.s: src/Globals.cpp.s
+
+.PHONY : src/Globals.s
+
+# target to generate assembly for a file
+src/Globals.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/Globals.cpp.s
+.PHONY : src/Globals.cpp.s
+
+src/LiteHtmlLib.o: src/LiteHtmlLib.cpp.o
+
+.PHONY : src/LiteHtmlLib.o
+
+# target to build an object file
+src/LiteHtmlLib.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/LiteHtmlLib.cpp.o
+.PHONY : src/LiteHtmlLib.cpp.o
+
+src/LiteHtmlLib.i: src/LiteHtmlLib.cpp.i
+
+.PHONY : src/LiteHtmlLib.i
+
+# target to preprocess a source file
+src/LiteHtmlLib.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/LiteHtmlLib.cpp.i
+.PHONY : src/LiteHtmlLib.cpp.i
+
+src/LiteHtmlLib.s: src/LiteHtmlLib.cpp.s
+
+.PHONY : src/LiteHtmlLib.s
+
+# target to generate assembly for a file
+src/LiteHtmlLib.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/LiteHtmlLib.cpp.s
+.PHONY : src/LiteHtmlLib.cpp.s
+
+src/ManagedCallbacks.o: src/ManagedCallbacks.cpp.o
+
+.PHONY : src/ManagedCallbacks.o
+
+# target to build an object file
+src/ManagedCallbacks.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/ManagedCallbacks.cpp.o
+.PHONY : src/ManagedCallbacks.cpp.o
+
+src/ManagedCallbacks.i: src/ManagedCallbacks.cpp.i
+
+.PHONY : src/ManagedCallbacks.i
+
+# target to preprocess a source file
+src/ManagedCallbacks.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/ManagedCallbacks.cpp.i
+.PHONY : src/ManagedCallbacks.cpp.i
+
+src/ManagedCallbacks.s: src/ManagedCallbacks.cpp.s
+
+.PHONY : src/ManagedCallbacks.s
+
+# target to generate assembly for a file
+src/ManagedCallbacks.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/ManagedCallbacks.cpp.s
+.PHONY : src/ManagedCallbacks.cpp.s
+
+src/dllmain.o: src/dllmain.cpp.o
+
+.PHONY : src/dllmain.o
+
+# target to build an object file
+src/dllmain.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/dllmain.cpp.o
+.PHONY : src/dllmain.cpp.o
+
+src/dllmain.i: src/dllmain.cpp.i
+
+.PHONY : src/dllmain.i
+
+# target to preprocess a source file
+src/dllmain.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/dllmain.cpp.i
+.PHONY : src/dllmain.cpp.i
+
+src/dllmain.s: src/dllmain.cpp.s
+
+.PHONY : src/dllmain.s
+
+# target to generate assembly for a file
+src/dllmain.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/dllmain.cpp.s
+.PHONY : src/dllmain.cpp.s
+
+src/myclass.o: src/myclass.cpp.o
+
+.PHONY : src/myclass.o
+
+# target to build an object file
+src/myclass.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/myclass.cpp.o
+.PHONY : src/myclass.cpp.o
+
+src/myclass.i: src/myclass.cpp.i
+
+.PHONY : src/myclass.i
+
+# target to preprocess a source file
+src/myclass.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/myclass.cpp.i
+.PHONY : src/myclass.cpp.i
+
+src/myclass.s: src/myclass.cpp.s
+
+.PHONY : src/myclass.s
+
+# target to generate assembly for a file
+src/myclass.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/myclass.cpp.s
+.PHONY : src/myclass.cpp.s
 
 # Help Target
 help:
@@ -1563,18 +1563,6 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... litehtml"
-	@echo "... DocContainer.o"
-	@echo "... DocContainer.i"
-	@echo "... DocContainer.s"
-	@echo "... Globals.o"
-	@echo "... Globals.i"
-	@echo "... Globals.s"
-	@echo "... LiteHtmlLib.o"
-	@echo "... LiteHtmlLib.i"
-	@echo "... LiteHtmlLib.s"
-	@echo "... ManagedCallbacks.o"
-	@echo "... ManagedCallbacks.i"
-	@echo "... ManagedCallbacks.s"
 	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/background.o"
 	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/background.i"
 	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/background.s"
@@ -1716,12 +1704,24 @@ help:
 	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/web_color.o"
 	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/web_color.i"
 	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/web_color.s"
-	@echo "... dllmain.o"
-	@echo "... dllmain.i"
-	@echo "... dllmain.s"
-	@echo "... myclass.o"
-	@echo "... myclass.i"
-	@echo "... myclass.s"
+	@echo "... src/DocContainer.o"
+	@echo "... src/DocContainer.i"
+	@echo "... src/DocContainer.s"
+	@echo "... src/Globals.o"
+	@echo "... src/Globals.i"
+	@echo "... src/Globals.s"
+	@echo "... src/LiteHtmlLib.o"
+	@echo "... src/LiteHtmlLib.i"
+	@echo "... src/LiteHtmlLib.s"
+	@echo "... src/ManagedCallbacks.o"
+	@echo "... src/ManagedCallbacks.i"
+	@echo "... src/ManagedCallbacks.s"
+	@echo "... src/dllmain.o"
+	@echo "... src/dllmain.i"
+	@echo "... src/dllmain.s"
+	@echo "... src/myclass.o"
+	@echo "... src/myclass.i"
+	@echo "... src/myclass.s"
 .PHONY : help
 
 
