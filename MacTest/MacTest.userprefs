@@ -1,8 +1,10 @@
 ﻿<Properties StartupItem="MacTest.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="AppDelegate.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="../litehtml/src/css_selector.h">
     <Files>
-      <File FileName="AppDelegate.cs" Line="16" Column="7" />
+      <File FileName="AppDelegate.cs" Line="15" Column="41" />
+      <File FileName="../LiteHtmlSharp/Container.cs" Line="12" Column="60" />
+      <File FileName="../litehtml/src/css_selector.h" Line="203" Column="12" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Default</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ItemType>GenericProject</ItemType>
+    <ProjectGuid>{EF1A558F-2215-4EF2-AF54-21561CC175DE}</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Default|AnyCPU' ">
+    <OutputPath>.</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="dllmain.cpp" />
+    <None Include="DocContainer.cpp" />
+    <None Include="DocContainer.h" />
+    <None Include="Globals.cpp" />
+    <None Include="Globals.h" />
+    <None Include="LiteHtmlLib.cpp" />
+    <None Include="ManagedCallbacks.cpp" />
+    <None Include="ManagedCallbacks.h" />
+    <None Include="myclass.cpp" />
+    <None Include="myclass.h" />
+    <None Include="..\litehtml\src\attributes.h">
+      <Link>litehtml_src\attributes.h</Link>
+    </None>
+    <None Include="..\litehtml\src\background.cpp">
+      <Link>litehtml_src\background.cpp</Link>
+    </None>
+    <None Include="..\litehtml\src\background.h">
+      <Link>litehtml_src\background.h</Link>
+    </None>
+    <None Include="..\litehtml\src\borders.h">
+      <Link>litehtml_src\borders.h</Link>
+    </None>
+    <None Include="..\litehtml\src\box.cpp">
+      <Link>litehtml_src\box.cpp</Link>
+    </None>
+    <None Include="..\litehtml\src\box.h">
+      <Link>litehtml_src\box.h</Link>
+    </None>
+    <None Include="..\litehtml\src\context.cpp">
+      <Link>litehtml_src\context.cpp</Link>
+    </None>
+    <None Include="..\litehtml\src\context.h">
+      <Link>litehtml_src\context.h</Link>
+    </None>
+    <None Include="..\litehtml\src\css_length.cpp">
+      <Link>litehtml_src\css_length.cpp</Link>
+    </None>
+    <None Include="..\litehtml\src\css_length.h">
+      <Link>litehtml_src\css_length.h</Link>
+    </None>
+    <None Include="..\litehtml\src\css_margins.h">
+      <Link>litehtml_src\css_margins.h</Link>
+    </None>
+    <None Include="..\litehtml\src\css_offsets.h">
+      <Link>litehtml_src\css_offsets.h</Link>
+    </None>
+    <None Include="..\litehtml\src\css_position.h">
+      <Link>litehtml_src\css_position.h</Link>
+    </None>
+    <None Include="..\litehtml\src\css_selector.cpp">
+      <Link>litehtml_src\css_selector.cpp</Link>
+    </None>
+    <None Include="..\litehtml\src\css_selector.h">
+      <Link>litehtml_src\css_selector.h</Link>
+    </None>
+    <None Include="..\litehtml\src\document.cpp">
+      <Link>litehtml_src\document.cpp</Link>
+    </None>
+    <None Include="..\litehtml\src\document.h">
+      <Link>litehtml_src\document.h</Link>
+    </None>
+    <None Include="..\litehtml\src\el_anchor.cpp">
+      <Link>litehtml_src\el_anchor.cpp</Link>
+    </None>
+    <None Include="..\litehtml\src\el_anchor.h">
+      <Link>litehtml_src\el_anchor.h</Link>
+    </None>
+    <None Include="..\litehtml\src\el_base.cpp">
+      <Link>litehtml_src\el_base.cpp</Link>
+    </None>
+    <None Include="..\litehtml\src\el_base.h">
+      <Link>litehtml_src\el_base.h</Link>
+    </None>
+    <None Include="..\litehtml\src\el_before_after.cpp">
+      <Link>litehtml_src\el_before_after.cpp</Link>
+    </None>
+    <None Include="..\litehtml\src\el_before_after.h">
+      <Link>litehtml_src\el_before_after.h</Link>
+    </None>
+    <None Include="..\litehtml\src\el_body.cpp">
+      <Link>litehtml_src\el_body.cpp</Link>
+    </None>
+    <None Include="..\litehtml\src\el_body.h">
+      <Link>litehtml_src\el_body.h</Link>
+    </None>
+    <None Include="..\litehtml\src\el_break.cpp">
+      <Link>litehtml_src\el_break.cpp</Link>
+    </None>
+    <None Include="..\litehtml\src\el_break.h">
+      <Link>litehtml_src\el_break.h</Link>
+    </None>
+    <None Include="..\litehtml\src\el_cdata.cpp">
+      <Link>litehtml_src\el_cdata.cpp</Link>
+    </None>
+    <None Include="..\litehtml\src\el_cdata.h">
+      <Link>litehtml_src\el_cdata.h</Link>
+    </None>
+    <None Include="..\litehtml\src\el_comment.cpp">
+      <Link>litehtml_src\el_comment.cpp</Link>
+    </None>
+    <None Include="..\litehtml\src\el_comment.h">
+      <Link>litehtml_src\el_comment.h</Link>
+    </None>
+    <None Include="..\litehtml\src\el_div.cpp">
+      <Link>litehtml_src\el_div.cpp</Link>
+    </None>
+    <None Include="..\litehtml\src\el_div.h">
+      <Link>litehtml_src\el_div.h</Link>
+    </None>
+    <None Include="..\litehtml\src\el_font.cpp">
+      <Link>litehtml_src\el_font.cpp</Link>
+    </None>
+    <None Include="..\litehtml\src\el_font.h">
+      <Link>litehtml_src\el_font.h</Link>
+    </None>
+    <None Include="..\litehtml\src\el_image.cpp">
+      <Link>litehtml_src\el_image.cpp</Link>
+    </None>
+    <None Include="..\litehtml\src\el_image.h">
+      <Link>litehtml_src\el_image.h</Link>
+    </None>
+    <None Include="..\litehtml\src\el_link.cpp">
+      <Link>litehtml_src\el_link.cpp</Link>
+    </None>
+    <None Include="..\litehtml\src\el_link.h">
+      <Link>litehtml_src\el_link.h</Link>
+    </None>
+    <None Include="..\litehtml\src\el_para.cpp">
+      <Link>litehtml_src\el_para.cpp</Link>
+    </None>
+    <None Include="..\litehtml\src\el_para.h">
+      <Link>litehtml_src\el_para.h</Link>
+    </None>
+    <None Include="..\litehtml\src\el_script.cpp">
+      <Link>litehtml_src\el_script.cpp</Link>
+    </None>
+    <None Include="..\litehtml\src\el_script.h">
+      <Link>litehtml_src\el_script.h</Link>
+    </None>
+    <None Include="..\litehtml\src\el_space.cpp">
+      <Link>litehtml_src\el_space.cpp</Link>
+    </None>
+    <None Include="..\litehtml\src\el_space.h">
+      <Link>litehtml_src\el_space.h</Link>
+    </None>
+    <None Include="..\litehtml\src\el_style.cpp">
+      <Link>litehtml_src\el_style.cpp</Link>
+    </None>
+    <None Include="..\litehtml\src\el_style.h">
+      <Link>litehtml_src\el_style.h</Link>
+    </None>
+    <None Include="..\litehtml\src\el_table.cpp">
+      <Link>litehtml_src\el_table.cpp</Link>
+    </None>
+    <None Include="..\litehtml\src\el_table.h">
+      <Link>litehtml_src\el_table.h</Link>
+    </None>
+    <None Include="..\litehtml\src\el_td.cpp">
+      <Link>litehtml_src\el_td.cpp</Link>
+    </None>
+    <None Include="..\litehtml\src\el_td.h">
+      <Link>litehtml_src\el_td.h</Link>
+    </None>
+    <None Include="..\litehtml\src\el_text.cpp">
+      <Link>litehtml_src\el_text.cpp</Link>
+    </None>
+    <None Include="..\litehtml\src\el_text.h">
+      <Link>litehtml_src\el_text.h</Link>
+    </None>
+    <None Include="..\litehtml\src\el_title.cpp">
+      <Link>litehtml_src\el_title.cpp</Link>
+    </None>
+    <None Include="..\litehtml\src\el_title.h">
+      <Link>litehtml_src\el_title.h</Link>
+    </None>
+    <None Include="..\litehtml\src\el_tr.cpp">
+      <Link>litehtml_src\el_tr.cpp</Link>
+    </None>
+    <None Include="..\litehtml\src\el_tr.h">
+      <Link>litehtml_src\el_tr.h</Link>
+    </None>
+    <None Include="..\litehtml\src\element.cpp">
+      <Link>litehtml_src\element.cpp</Link>
+    </None>
+    <None Include="..\litehtml\src\element.h">
+      <Link>litehtml_src\element.h</Link>
+    </None>
+    <None Include="..\litehtml\src\gumbo\attribute.c">
+      <Link>litehtml_src\attribute.c</Link>
+    </None>
+    <None Include="..\litehtml\src\gumbo\attribute.h">
+      <Link>litehtml_src\attribute.h</Link>
+    </None>
+    <None Include="..\litehtml\src\gumbo\char_ref.c">
+      <Link>litehtml_src\char_ref.c</Link>
+    </None>
+    <None Include="..\litehtml\src\gumbo\char_ref.h">
+      <Link>litehtml_src\char_ref.h</Link>
+    </None>
+    <None Include="..\litehtml\src\gumbo\char_ref.rl">
+      <Link>litehtml_src\char_ref.rl</Link>
+    </None>
+    <None Include="..\litehtml\src\gumbo\error.c">
+      <Link>litehtml_src\error.c</Link>
+    </None>
+    <None Include="..\litehtml\src\gumbo\error.h">
+      <Link>litehtml_src\error.h</Link>
+    </None>
+    <None Include="..\litehtml\src\gumbo\gumbo.h">
+      <Link>litehtml_src\gumbo.h</Link>
+    </None>
+    <None Include="..\litehtml\src\gumbo\insertion_mode.h">
+      <Link>litehtml_src\insertion_mode.h</Link>
+    </None>
+    <None Include="..\litehtml\src\gumbo\parser.c">
+      <Link>litehtml_src\parser.c</Link>
+    </None>
+    <None Include="..\litehtml\src\gumbo\parser.h">
+      <Link>litehtml_src\parser.h</Link>
+    </None>
+    <None Include="..\litehtml\src\gumbo\string_buffer.c">
+      <Link>litehtml_src\string_buffer.c</Link>
+    </None>
+    <None Include="..\litehtml\src\gumbo\string_buffer.h">
+      <Link>litehtml_src\string_buffer.h</Link>
+    </None>
+    <None Include="..\litehtml\src\gumbo\string_piece.c">
+      <Link>litehtml_src\string_piece.c</Link>
+    </None>
+    <None Include="..\litehtml\src\gumbo\string_piece.h">
+      <Link>litehtml_src\string_piece.h</Link>
+    </None>
+    <None Include="..\litehtml\src\gumbo\strings.h">
+      <Link>litehtml_src\strings.h</Link>
+    </None>
+    <None Include="..\litehtml\src\gumbo\tag_enum.h">
+      <Link>litehtml_src\tag_enum.h</Link>
+    </None>
+    <None Include="..\litehtml\src\gumbo\tag_gperf.h">
+      <Link>litehtml_src\tag_gperf.h</Link>
+    </None>
+    <None Include="..\litehtml\src\gumbo\tag_sizes.h">
+      <Link>litehtml_src\tag_sizes.h</Link>
+    </None>
+    <None Include="..\litehtml\src\gumbo\tag_strings.h">
+      <Link>litehtml_src\tag_strings.h</Link>
+    </None>
+    <None Include="..\litehtml\src\gumbo\tag.c">
+      <Link>litehtml_src\tag.c</Link>
+    </None>
+    <None Include="..\litehtml\src\gumbo\tag.in">
+      <Link>litehtml_src\tag.in</Link>
+    </None>
+    <None Include="..\litehtml\src\gumbo\token_type.h">
+      <Link>litehtml_src\token_type.h</Link>
+    </None>
+    <None Include="..\litehtml\src\gumbo\tokenizer_states.h">
+      <Link>litehtml_src\tokenizer_states.h</Link>
+    </None>
+    <None Include="..\litehtml\src\gumbo\tokenizer.c">
+      <Link>litehtml_src\tokenizer.c</Link>
+    </None>
+    <None Include="..\litehtml\src\gumbo\tokenizer.h">
+      <Link>litehtml_src\tokenizer.h</Link>
+    </None>
+    <None Include="..\litehtml\src\gumbo\utf8.c">
+      <Link>litehtml_src\utf8.c</Link>
+    </None>
+    <None Include="..\litehtml\src\gumbo\utf8.h">
+      <Link>litehtml_src\utf8.h</Link>
+    </None>
+    <None Include="..\litehtml\src\gumbo\util.c">
+      <Link>litehtml_src\util.c</Link>
+    </None>
+    <None Include="..\litehtml\src\gumbo\util.h">
+      <Link>litehtml_src\util.h</Link>
+    </None>
+    <None Include="..\litehtml\src\gumbo\vector.c">
+      <Link>litehtml_src\vector.c</Link>
+    </None>
+    <None Include="..\litehtml\src\gumbo\vector.h">
+      <Link>litehtml_src\vector.h</Link>
+    </None>
+    <None Include="..\litehtml\src\html_tag.cpp">
+      <Link>litehtml_src\html_tag.cpp</Link>
+    </None>
+    <None Include="..\litehtml\src\html_tag.h">
+      <Link>litehtml_src\html_tag.h</Link>
+    </None>
+    <None Include="..\litehtml\src\html.cpp">
+      <Link>litehtml_src\html.cpp</Link>
+    </None>
+    <None Include="..\litehtml\src\html.h">
+      <Link>litehtml_src\html.h</Link>
+    </None>
+    <None Include="..\litehtml\src\iterators.cpp">
+      <Link>litehtml_src\iterators.cpp</Link>
+    </None>
+    <None Include="..\litehtml\src\iterators.h">
+      <Link>litehtml_src\iterators.h</Link>
+    </None>
+    <None Include="..\litehtml\src\media_query.cpp">
+      <Link>litehtml_src\media_query.cpp</Link>
+    </None>
+    <None Include="..\litehtml\src\media_query.h">
+      <Link>litehtml_src\media_query.h</Link>
+    </None>
+    <None Include="..\litehtml\src\os_types.h">
+      <Link>litehtml_src\os_types.h</Link>
+    </None>
+    <None Include="..\litehtml\src\style.cpp">
+      <Link>litehtml_src\style.cpp</Link>
+    </None>
+    <None Include="..\litehtml\src\style.h">
+      <Link>litehtml_src\style.h</Link>
+    </None>
+    <None Include="..\litehtml\src\stylesheet.cpp">
+      <Link>litehtml_src\stylesheet.cpp</Link>
+    </None>
+    <None Include="..\litehtml\src\stylesheet.h">
+      <Link>litehtml_src\stylesheet.h</Link>
+    </None>
+    <None Include="..\litehtml\src\table.cpp">
+      <Link>litehtml_src\table.cpp</Link>
+    </None>
+    <None Include="..\litehtml\src\table.h">
+      <Link>litehtml_src\table.h</Link>
+    </None>
+    <None Include="..\litehtml\src\types.h">
+      <Link>litehtml_src\types.h</Link>
+    </None>
+    <None Include="..\litehtml\src\utf8_strings.cpp">
+      <Link>litehtml_src\utf8_strings.cpp</Link>
+    </None>
+    <None Include="..\litehtml\src\utf8_strings.h">
+      <Link>litehtml_src\utf8_strings.h</Link>
+    </None>
+    <None Include="..\litehtml\src\web_color.cpp">
+      <Link>litehtml_src\web_color.cpp</Link>
+    </None>
+    <None Include="..\litehtml\src\web_color.h">
+      <Link>litehtml_src\web_color.h</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="litehtml_src\" />
+  </ItemGroup>
+</Project>
