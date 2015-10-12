@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 
-namespace LiteHtml
+namespace LiteHtmlSharp
 {
    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
    public delegate void DrawBordersFunc(UIntPtr hdc, ref borders borders, ref position draw_pos, bool root);
@@ -14,5 +14,5 @@ namespace LiteHtml
    public delegate void CallbackFunc(int someNumber);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-   public delegate void DrawBackgroundFunc(UIntPtr hdc, background_repeat repeat, ref web_color color, ref position pos);
+   public delegate void DrawBackgroundFunc(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos);
 }

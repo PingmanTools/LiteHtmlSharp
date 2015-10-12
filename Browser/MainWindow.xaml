@@ -5,7 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Browser"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-   <Grid Name="grid">
+        Title="MainWindow" Height="350" Width="525" WindowStartupLocation="CenterScreen">
+   <Grid Name="grid" Background="WhiteSmoke">
+      <Canvas Name="canvas" Margin="0,0,0,35"></Canvas>
+      <Button x:Name="button" Content="Draw HTML" Click="button_Click" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="75"/>
+      <Button x:Name="btClear" Content="Clear" Click="btClear_Click" HorizontalAlignment="Right" Margin="0,0,90,10" VerticalAlignment="Bottom" Width="75"/>
+      <Label Name="lbTime" Content="Render Time: " HorizontalAlignment="Left" Margin="10,0,0,7" VerticalAlignment="Bottom"/>
    </Grid>
 </Window>

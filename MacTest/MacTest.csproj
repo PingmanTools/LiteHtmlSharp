@@ -60,6 +60,7 @@
       <DependentUpon>AppDelegate.cs</DependentUpon>
     </Compile>
   </ItemGroup>
+  <Import Project="..\LiteHtmlSharp\LiteHtmlSharp.projitems" Label="Shared" Condition="Exists('..\LiteHtmlSharp\LiteHtmlSharp.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <ItemGroup>
     <Content Include="..\LiteHtmlLib\build\liblitehtml.dylib">

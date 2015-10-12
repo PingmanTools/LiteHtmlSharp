@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 
-namespace LiteHtml
+namespace LiteHtmlSharp
 {
    [StructLayout(LayoutKind.Sequential)]
    public struct position

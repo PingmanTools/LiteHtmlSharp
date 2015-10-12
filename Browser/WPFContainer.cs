@@ -1,4 +1,4 @@
-﻿using LiteHtml;
+﻿using LiteHtmlSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,53 +8,87 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows;
+using System.IO;
 
 namespace Browser
 {
-   public class Container : FrameworkElement
+   public class HTMLVisual : FrameworkElement
+   {
+      DrawingVisual _visual;
+      WPFContainer _container;
+
+      public HTMLVisual(Canvas parent)
+      {
+         _visual = new DrawingVisual();
+         _container = new WPFContainer(_visual);
+
+         this.AddVisualChild(_visual);
+         this.AddLogicalChild(_visual);
+         parent.Children.Add(this);
+      }
+
+      protected override int VisualChildrenCount
+      {
+         get { return 1; }
+      }
+
+      protected override Visual GetVisualChild(int index)
+      {
+         return _visual;
+      }
+
+      public void Render(string html)
+      {
+         _container.Render(html);
+      }
+
+      public void Clear()
+      {
+         _container.Clear();
+      }
+   }
+
+   public class WPFContainer : Container
    {
       DrawingContext _dc;
-      DrawingVisual _visual = new DrawingVisual();
+      DrawingVisual _visual;
       Dictionary<string, Brush> _brushes = new Dictionary<string, Brush>();
+      static string _masterCSS;
 
-      [DllImport("LiteHtmlLib.dll", CallingConvention = CallingConvention.Cdecl)]
-      public static extern void SetTestFunction(CallbackFunc func);
-
-      [DllImport("LiteHtmlLib.dll", CallingConvention = CallingConvention.Cdecl)]
-      public static extern void SetDrawBorders(DrawBordersFunc func);
-
-      [DllImport("LiteHtmlLib.dll", CallingConvention = CallingConvention.Cdecl)]
-      public static extern void SetDrawBackground(DrawBackgroundFunc func);
-
-      [DllImport("LiteHtmlLib.dll", CallingConvention = CallingConvention.Cdecl)]
-      public static extern void Init();
-
-      public Container(Grid parent)
+      public WPFContainer(DrawingVisual visual) : base()
       {
-         parent.Children.Add(this);
+         _visual = visual;
 
-         SetTestFunction(MyCallbackFunc);
-         SetDrawBorders(DrawBorders);
-         SetDrawBackground(DrawBackground);
+         if (string.IsNullOrEmpty(_masterCSS))
+         {
+            _masterCSS = File.ReadAllText("master.css");
+         }
 
+         SetMasterCSS(CPPContainer, _masterCSS);
+      }
+
+      public void Render(string html)
+      {
          _dc = _visual.RenderOpen();
-         Init();
+         RenderHTML(CPPContainer, html);
+         _dc.Close();
+         _dc = null;
+      }
+
+      public void Clear()
+      {
+         _dc = _visual.RenderOpen();
          _dc.Close();
          _dc = null;
       }
 
       private void TestDrawing()
       {
-         var color = new web_color() { alpha = 255, red = 255 };
-         DrawRect(0, 0, 100, 100, GetBrush(ref color));
+         var color = new web_color() { alpha = 255, green = 255 };
+         DrawRect(0, 0, 50, 50, GetBrush(ref color));
       }
 
-      private void MyCallbackFunc(Int32 someNumber)
-      {
-         int b = someNumber;
-      }
-
-      private void DrawBackground(UIntPtr hdc, background_repeat repeat, ref web_color color, ref position pos)
+      protected override void DrawBackground(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos)
       {
          if(pos.width > 0 && pos.height  > 0)
          {
@@ -62,7 +96,7 @@ namespace Browser
          }
       }
 
-      private void DrawBorders(UIntPtr hdc, ref borders borders, ref position draw_pos, bool root)
+      protected override void DrawBorders(UIntPtr hdc, ref borders borders, ref position draw_pos, bool root)
       {
          if (borders.top.width > 0)
          {
@@ -103,21 +137,6 @@ namespace Browser
          }
 
          return result;
-      }
-
-      protected override int VisualChildrenCount
-      {
-         get { return 1; }
-      }
-
-      protected override Visual GetVisualChild(int index)
-      {
-         if (index != 0)
-         {
-            throw new ArgumentOutOfRangeException();
-         }
-
-         return _visual;
       }
    }
 }

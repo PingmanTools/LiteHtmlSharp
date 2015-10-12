@@ -44,14 +44,16 @@ public:
    virtual void get_media_features(litehtml::media_features & media) const override;
    virtual void get_language(litehtml::tstring & language, litehtml::tstring & culture) const override;
 
-   void RegisterManagedClass(ManagedCallbacks* managedClass, const litehtml::tchar_t* html);
+   void RenderHTML(const litehtml::tchar_t* html);
+   void SetMasterCSS(const litehtml::tchar_t* css);
 
    std::shared_ptr<litehtml::document> _document;
 
+   DrawBorders_function DrawBorders = 0;
+   DrawBackground_function DrawBackground = 0;
+
 private:
-   ManagedCallbacks* _managedClass = nullptr;
    litehtml::context _context;
-   
    litehtml::position _drawPos;
    //std::vector<MyElement*> _elements;
 };
