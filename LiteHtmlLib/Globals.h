@@ -1,6 +1,6 @@
 #pragma once
 
-#include "src/html.h"
+#include "../litehtml/src/html.h"
 
 typedef void(*Test_function)(int someNumber);
 typedef void(*DrawBorders_function)(litehtml::uint_ptr hdc, const litehtml::borders & borders, const litehtml::position & draw_pos, bool root);

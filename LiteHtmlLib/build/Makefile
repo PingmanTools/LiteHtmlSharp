@@ -231,6 +231,1275 @@ ManagedCallbacks.cpp.s:
 	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/ManagedCallbacks.cpp.s
 .PHONY : ManagedCallbacks.cpp.s
 
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/background.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/background.cpp.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/background.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/background.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/background.cpp.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/background.cpp.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/background.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/background.cpp.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/background.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/background.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/background.cpp.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/background.cpp.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/background.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/background.cpp.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/background.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/background.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/background.cpp.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/background.cpp.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/box.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/box.cpp.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/box.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/box.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/box.cpp.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/box.cpp.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/box.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/box.cpp.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/box.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/box.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/box.cpp.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/box.cpp.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/box.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/box.cpp.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/box.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/box.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/box.cpp.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/box.cpp.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/context.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/context.cpp.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/context.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/context.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/context.cpp.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/context.cpp.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/context.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/context.cpp.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/context.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/context.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/context.cpp.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/context.cpp.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/context.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/context.cpp.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/context.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/context.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/context.cpp.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/context.cpp.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_length.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_length.cpp.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_length.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_length.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_length.cpp.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_length.cpp.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_length.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_length.cpp.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_length.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_length.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_length.cpp.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_length.cpp.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_length.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_length.cpp.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_length.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_length.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_length.cpp.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_length.cpp.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_selector.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_selector.cpp.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_selector.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_selector.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_selector.cpp.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_selector.cpp.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_selector.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_selector.cpp.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_selector.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_selector.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_selector.cpp.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_selector.cpp.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_selector.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_selector.cpp.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_selector.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_selector.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_selector.cpp.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_selector.cpp.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/document.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/document.cpp.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/document.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/document.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/document.cpp.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/document.cpp.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/document.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/document.cpp.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/document.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/document.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/document.cpp.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/document.cpp.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/document.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/document.cpp.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/document.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/document.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/document.cpp.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/document.cpp.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_anchor.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_anchor.cpp.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_anchor.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_anchor.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_anchor.cpp.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_anchor.cpp.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_anchor.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_anchor.cpp.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_anchor.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_anchor.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_anchor.cpp.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_anchor.cpp.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_anchor.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_anchor.cpp.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_anchor.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_anchor.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_anchor.cpp.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_anchor.cpp.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_base.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_base.cpp.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_base.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_base.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_base.cpp.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_base.cpp.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_base.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_base.cpp.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_base.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_base.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_base.cpp.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_base.cpp.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_base.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_base.cpp.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_base.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_base.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_base.cpp.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_base.cpp.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_before_after.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_before_after.cpp.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_before_after.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_before_after.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_before_after.cpp.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_before_after.cpp.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_before_after.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_before_after.cpp.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_before_after.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_before_after.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_before_after.cpp.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_before_after.cpp.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_before_after.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_before_after.cpp.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_before_after.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_before_after.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_before_after.cpp.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_before_after.cpp.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_body.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_body.cpp.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_body.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_body.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_body.cpp.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_body.cpp.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_body.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_body.cpp.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_body.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_body.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_body.cpp.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_body.cpp.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_body.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_body.cpp.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_body.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_body.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_body.cpp.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_body.cpp.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_break.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_break.cpp.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_break.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_break.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_break.cpp.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_break.cpp.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_break.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_break.cpp.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_break.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_break.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_break.cpp.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_break.cpp.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_break.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_break.cpp.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_break.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_break.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_break.cpp.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_break.cpp.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_cdata.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_cdata.cpp.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_cdata.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_cdata.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_cdata.cpp.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_cdata.cpp.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_cdata.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_cdata.cpp.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_cdata.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_cdata.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_cdata.cpp.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_cdata.cpp.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_cdata.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_cdata.cpp.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_cdata.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_cdata.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_cdata.cpp.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_cdata.cpp.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_comment.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_comment.cpp.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_comment.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_comment.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_comment.cpp.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_comment.cpp.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_comment.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_comment.cpp.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_comment.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_comment.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_comment.cpp.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_comment.cpp.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_comment.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_comment.cpp.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_comment.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_comment.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_comment.cpp.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_comment.cpp.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_div.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_div.cpp.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_div.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_div.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_div.cpp.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_div.cpp.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_div.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_div.cpp.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_div.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_div.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_div.cpp.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_div.cpp.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_div.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_div.cpp.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_div.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_div.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_div.cpp.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_div.cpp.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_font.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_font.cpp.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_font.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_font.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_font.cpp.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_font.cpp.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_font.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_font.cpp.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_font.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_font.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_font.cpp.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_font.cpp.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_font.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_font.cpp.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_font.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_font.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_font.cpp.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_font.cpp.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_image.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_image.cpp.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_image.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_image.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_image.cpp.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_image.cpp.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_image.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_image.cpp.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_image.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_image.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_image.cpp.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_image.cpp.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_image.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_image.cpp.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_image.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_image.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_image.cpp.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_image.cpp.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_link.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_link.cpp.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_link.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_link.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_link.cpp.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_link.cpp.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_link.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_link.cpp.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_link.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_link.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_link.cpp.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_link.cpp.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_link.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_link.cpp.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_link.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_link.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_link.cpp.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_link.cpp.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_para.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_para.cpp.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_para.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_para.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_para.cpp.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_para.cpp.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_para.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_para.cpp.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_para.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_para.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_para.cpp.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_para.cpp.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_para.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_para.cpp.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_para.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_para.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_para.cpp.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_para.cpp.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_script.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_script.cpp.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_script.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_script.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_script.cpp.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_script.cpp.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_script.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_script.cpp.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_script.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_script.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_script.cpp.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_script.cpp.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_script.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_script.cpp.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_script.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_script.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_script.cpp.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_script.cpp.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_space.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_space.cpp.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_space.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_space.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_space.cpp.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_space.cpp.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_space.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_space.cpp.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_space.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_space.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_space.cpp.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_space.cpp.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_space.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_space.cpp.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_space.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_space.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_space.cpp.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_space.cpp.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_style.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_style.cpp.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_style.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_style.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_style.cpp.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_style.cpp.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_style.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_style.cpp.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_style.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_style.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_style.cpp.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_style.cpp.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_style.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_style.cpp.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_style.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_style.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_style.cpp.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_style.cpp.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_table.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_table.cpp.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_table.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_table.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_table.cpp.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_table.cpp.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_table.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_table.cpp.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_table.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_table.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_table.cpp.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_table.cpp.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_table.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_table.cpp.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_table.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_table.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_table.cpp.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_table.cpp.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_td.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_td.cpp.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_td.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_td.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_td.cpp.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_td.cpp.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_td.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_td.cpp.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_td.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_td.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_td.cpp.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_td.cpp.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_td.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_td.cpp.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_td.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_td.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_td.cpp.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_td.cpp.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_text.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_text.cpp.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_text.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_text.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_text.cpp.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_text.cpp.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_text.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_text.cpp.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_text.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_text.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_text.cpp.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_text.cpp.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_text.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_text.cpp.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_text.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_text.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_text.cpp.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_text.cpp.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_title.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_title.cpp.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_title.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_title.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_title.cpp.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_title.cpp.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_title.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_title.cpp.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_title.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_title.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_title.cpp.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_title.cpp.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_title.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_title.cpp.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_title.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_title.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_title.cpp.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_title.cpp.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_tr.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_tr.cpp.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_tr.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_tr.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_tr.cpp.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_tr.cpp.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_tr.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_tr.cpp.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_tr.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_tr.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_tr.cpp.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_tr.cpp.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_tr.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_tr.cpp.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_tr.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_tr.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_tr.cpp.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_tr.cpp.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/element.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/element.cpp.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/element.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/element.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/element.cpp.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/element.cpp.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/element.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/element.cpp.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/element.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/element.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/element.cpp.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/element.cpp.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/element.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/element.cpp.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/element.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/element.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/element.cpp.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/element.cpp.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/attribute.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/attribute.c.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/attribute.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/attribute.c.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/attribute.c.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/attribute.c.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/attribute.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/attribute.c.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/attribute.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/attribute.c.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/attribute.c.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/attribute.c.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/attribute.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/attribute.c.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/attribute.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/attribute.c.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/attribute.c.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/attribute.c.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/char_ref.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/char_ref.c.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/char_ref.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/char_ref.c.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/char_ref.c.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/char_ref.c.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/char_ref.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/char_ref.c.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/char_ref.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/char_ref.c.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/char_ref.c.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/char_ref.c.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/char_ref.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/char_ref.c.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/char_ref.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/char_ref.c.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/char_ref.c.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/char_ref.c.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/error.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/error.c.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/error.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/error.c.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/error.c.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/error.c.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/error.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/error.c.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/error.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/error.c.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/error.c.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/error.c.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/error.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/error.c.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/error.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/error.c.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/error.c.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/error.c.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/parser.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/parser.c.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/parser.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/parser.c.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/parser.c.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/parser.c.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/parser.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/parser.c.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/parser.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/parser.c.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/parser.c.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/parser.c.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/parser.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/parser.c.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/parser.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/parser.c.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/parser.c.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/parser.c.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_buffer.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_buffer.c.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_buffer.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_buffer.c.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_buffer.c.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_buffer.c.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_buffer.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_buffer.c.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_buffer.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_buffer.c.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_buffer.c.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_buffer.c.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_buffer.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_buffer.c.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_buffer.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_buffer.c.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_buffer.c.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_buffer.c.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_piece.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_piece.c.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_piece.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_piece.c.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_piece.c.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_piece.c.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_piece.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_piece.c.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_piece.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_piece.c.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_piece.c.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_piece.c.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_piece.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_piece.c.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_piece.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_piece.c.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_piece.c.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_piece.c.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tag.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tag.c.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tag.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tag.c.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tag.c.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tag.c.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tag.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tag.c.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tag.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tag.c.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tag.c.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tag.c.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tag.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tag.c.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tag.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tag.c.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tag.c.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tag.c.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tokenizer.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tokenizer.c.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tokenizer.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tokenizer.c.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tokenizer.c.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tokenizer.c.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tokenizer.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tokenizer.c.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tokenizer.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tokenizer.c.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tokenizer.c.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tokenizer.c.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tokenizer.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tokenizer.c.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tokenizer.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tokenizer.c.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tokenizer.c.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tokenizer.c.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/utf8.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/utf8.c.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/utf8.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/utf8.c.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/utf8.c.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/utf8.c.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/utf8.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/utf8.c.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/utf8.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/utf8.c.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/utf8.c.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/utf8.c.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/utf8.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/utf8.c.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/utf8.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/utf8.c.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/utf8.c.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/utf8.c.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/util.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/util.c.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/util.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/util.c.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/util.c.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/util.c.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/util.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/util.c.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/util.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/util.c.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/util.c.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/util.c.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/util.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/util.c.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/util.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/util.c.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/util.c.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/util.c.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/vector.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/vector.c.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/vector.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/vector.c.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/vector.c.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/vector.c.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/vector.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/vector.c.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/vector.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/vector.c.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/vector.c.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/vector.c.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/vector.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/vector.c.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/vector.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/vector.c.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/vector.c.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/vector.c.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html.cpp.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html.cpp.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html.cpp.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html.cpp.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html.cpp.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html.cpp.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html.cpp.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html.cpp.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html.cpp.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html_tag.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html_tag.cpp.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html_tag.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html_tag.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html_tag.cpp.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html_tag.cpp.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html_tag.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html_tag.cpp.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html_tag.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html_tag.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html_tag.cpp.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html_tag.cpp.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html_tag.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html_tag.cpp.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html_tag.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html_tag.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html_tag.cpp.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html_tag.cpp.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/iterators.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/iterators.cpp.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/iterators.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/iterators.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/iterators.cpp.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/iterators.cpp.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/iterators.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/iterators.cpp.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/iterators.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/iterators.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/iterators.cpp.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/iterators.cpp.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/iterators.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/iterators.cpp.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/iterators.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/iterators.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/iterators.cpp.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/iterators.cpp.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/media_query.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/media_query.cpp.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/media_query.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/media_query.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/media_query.cpp.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/media_query.cpp.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/media_query.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/media_query.cpp.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/media_query.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/media_query.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/media_query.cpp.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/media_query.cpp.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/media_query.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/media_query.cpp.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/media_query.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/media_query.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/media_query.cpp.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/media_query.cpp.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/style.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/style.cpp.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/style.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/style.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/style.cpp.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/style.cpp.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/style.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/style.cpp.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/style.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/style.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/style.cpp.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/style.cpp.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/style.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/style.cpp.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/style.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/style.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/style.cpp.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/style.cpp.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/stylesheet.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/stylesheet.cpp.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/stylesheet.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/stylesheet.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/stylesheet.cpp.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/stylesheet.cpp.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/stylesheet.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/stylesheet.cpp.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/stylesheet.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/stylesheet.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/stylesheet.cpp.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/stylesheet.cpp.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/stylesheet.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/stylesheet.cpp.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/stylesheet.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/stylesheet.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/stylesheet.cpp.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/stylesheet.cpp.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/table.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/table.cpp.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/table.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/table.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/table.cpp.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/table.cpp.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/table.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/table.cpp.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/table.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/table.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/table.cpp.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/table.cpp.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/table.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/table.cpp.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/table.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/table.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/table.cpp.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/table.cpp.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/utf8_strings.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/utf8_strings.cpp.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/utf8_strings.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/utf8_strings.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/utf8_strings.cpp.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/utf8_strings.cpp.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/utf8_strings.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/utf8_strings.cpp.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/utf8_strings.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/utf8_strings.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/utf8_strings.cpp.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/utf8_strings.cpp.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/utf8_strings.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/utf8_strings.cpp.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/utf8_strings.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/utf8_strings.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/utf8_strings.cpp.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/utf8_strings.cpp.s
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/web_color.o: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/web_color.cpp.o
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/web_color.o
+
+# target to build an object file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/web_color.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/web_color.cpp.o
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/web_color.cpp.o
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/web_color.i: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/web_color.cpp.i
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/web_color.i
+
+# target to preprocess a source file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/web_color.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/web_color.cpp.i
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/web_color.cpp.i
+
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/web_color.s: Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/web_color.cpp.s
+
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/web_color.s
+
+# target to generate assembly for a file
+Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/web_color.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/web_color.cpp.s
+.PHONY : Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/web_color.cpp.s
+
 dllmain.o: dllmain.cpp.o
 
 .PHONY : dllmain.o
@@ -285,1275 +1554,6 @@ myclass.cpp.s:
 	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/myclass.cpp.s
 .PHONY : myclass.cpp.s
 
-src/background.o: src/background.cpp.o
-
-.PHONY : src/background.o
-
-# target to build an object file
-src/background.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/background.cpp.o
-.PHONY : src/background.cpp.o
-
-src/background.i: src/background.cpp.i
-
-.PHONY : src/background.i
-
-# target to preprocess a source file
-src/background.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/background.cpp.i
-.PHONY : src/background.cpp.i
-
-src/background.s: src/background.cpp.s
-
-.PHONY : src/background.s
-
-# target to generate assembly for a file
-src/background.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/background.cpp.s
-.PHONY : src/background.cpp.s
-
-src/box.o: src/box.cpp.o
-
-.PHONY : src/box.o
-
-# target to build an object file
-src/box.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/box.cpp.o
-.PHONY : src/box.cpp.o
-
-src/box.i: src/box.cpp.i
-
-.PHONY : src/box.i
-
-# target to preprocess a source file
-src/box.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/box.cpp.i
-.PHONY : src/box.cpp.i
-
-src/box.s: src/box.cpp.s
-
-.PHONY : src/box.s
-
-# target to generate assembly for a file
-src/box.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/box.cpp.s
-.PHONY : src/box.cpp.s
-
-src/context.o: src/context.cpp.o
-
-.PHONY : src/context.o
-
-# target to build an object file
-src/context.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/context.cpp.o
-.PHONY : src/context.cpp.o
-
-src/context.i: src/context.cpp.i
-
-.PHONY : src/context.i
-
-# target to preprocess a source file
-src/context.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/context.cpp.i
-.PHONY : src/context.cpp.i
-
-src/context.s: src/context.cpp.s
-
-.PHONY : src/context.s
-
-# target to generate assembly for a file
-src/context.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/context.cpp.s
-.PHONY : src/context.cpp.s
-
-src/css_length.o: src/css_length.cpp.o
-
-.PHONY : src/css_length.o
-
-# target to build an object file
-src/css_length.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/css_length.cpp.o
-.PHONY : src/css_length.cpp.o
-
-src/css_length.i: src/css_length.cpp.i
-
-.PHONY : src/css_length.i
-
-# target to preprocess a source file
-src/css_length.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/css_length.cpp.i
-.PHONY : src/css_length.cpp.i
-
-src/css_length.s: src/css_length.cpp.s
-
-.PHONY : src/css_length.s
-
-# target to generate assembly for a file
-src/css_length.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/css_length.cpp.s
-.PHONY : src/css_length.cpp.s
-
-src/css_selector.o: src/css_selector.cpp.o
-
-.PHONY : src/css_selector.o
-
-# target to build an object file
-src/css_selector.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/css_selector.cpp.o
-.PHONY : src/css_selector.cpp.o
-
-src/css_selector.i: src/css_selector.cpp.i
-
-.PHONY : src/css_selector.i
-
-# target to preprocess a source file
-src/css_selector.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/css_selector.cpp.i
-.PHONY : src/css_selector.cpp.i
-
-src/css_selector.s: src/css_selector.cpp.s
-
-.PHONY : src/css_selector.s
-
-# target to generate assembly for a file
-src/css_selector.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/css_selector.cpp.s
-.PHONY : src/css_selector.cpp.s
-
-src/document.o: src/document.cpp.o
-
-.PHONY : src/document.o
-
-# target to build an object file
-src/document.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/document.cpp.o
-.PHONY : src/document.cpp.o
-
-src/document.i: src/document.cpp.i
-
-.PHONY : src/document.i
-
-# target to preprocess a source file
-src/document.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/document.cpp.i
-.PHONY : src/document.cpp.i
-
-src/document.s: src/document.cpp.s
-
-.PHONY : src/document.s
-
-# target to generate assembly for a file
-src/document.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/document.cpp.s
-.PHONY : src/document.cpp.s
-
-src/el_anchor.o: src/el_anchor.cpp.o
-
-.PHONY : src/el_anchor.o
-
-# target to build an object file
-src/el_anchor.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_anchor.cpp.o
-.PHONY : src/el_anchor.cpp.o
-
-src/el_anchor.i: src/el_anchor.cpp.i
-
-.PHONY : src/el_anchor.i
-
-# target to preprocess a source file
-src/el_anchor.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_anchor.cpp.i
-.PHONY : src/el_anchor.cpp.i
-
-src/el_anchor.s: src/el_anchor.cpp.s
-
-.PHONY : src/el_anchor.s
-
-# target to generate assembly for a file
-src/el_anchor.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_anchor.cpp.s
-.PHONY : src/el_anchor.cpp.s
-
-src/el_base.o: src/el_base.cpp.o
-
-.PHONY : src/el_base.o
-
-# target to build an object file
-src/el_base.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_base.cpp.o
-.PHONY : src/el_base.cpp.o
-
-src/el_base.i: src/el_base.cpp.i
-
-.PHONY : src/el_base.i
-
-# target to preprocess a source file
-src/el_base.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_base.cpp.i
-.PHONY : src/el_base.cpp.i
-
-src/el_base.s: src/el_base.cpp.s
-
-.PHONY : src/el_base.s
-
-# target to generate assembly for a file
-src/el_base.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_base.cpp.s
-.PHONY : src/el_base.cpp.s
-
-src/el_before_after.o: src/el_before_after.cpp.o
-
-.PHONY : src/el_before_after.o
-
-# target to build an object file
-src/el_before_after.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_before_after.cpp.o
-.PHONY : src/el_before_after.cpp.o
-
-src/el_before_after.i: src/el_before_after.cpp.i
-
-.PHONY : src/el_before_after.i
-
-# target to preprocess a source file
-src/el_before_after.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_before_after.cpp.i
-.PHONY : src/el_before_after.cpp.i
-
-src/el_before_after.s: src/el_before_after.cpp.s
-
-.PHONY : src/el_before_after.s
-
-# target to generate assembly for a file
-src/el_before_after.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_before_after.cpp.s
-.PHONY : src/el_before_after.cpp.s
-
-src/el_body.o: src/el_body.cpp.o
-
-.PHONY : src/el_body.o
-
-# target to build an object file
-src/el_body.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_body.cpp.o
-.PHONY : src/el_body.cpp.o
-
-src/el_body.i: src/el_body.cpp.i
-
-.PHONY : src/el_body.i
-
-# target to preprocess a source file
-src/el_body.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_body.cpp.i
-.PHONY : src/el_body.cpp.i
-
-src/el_body.s: src/el_body.cpp.s
-
-.PHONY : src/el_body.s
-
-# target to generate assembly for a file
-src/el_body.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_body.cpp.s
-.PHONY : src/el_body.cpp.s
-
-src/el_break.o: src/el_break.cpp.o
-
-.PHONY : src/el_break.o
-
-# target to build an object file
-src/el_break.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_break.cpp.o
-.PHONY : src/el_break.cpp.o
-
-src/el_break.i: src/el_break.cpp.i
-
-.PHONY : src/el_break.i
-
-# target to preprocess a source file
-src/el_break.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_break.cpp.i
-.PHONY : src/el_break.cpp.i
-
-src/el_break.s: src/el_break.cpp.s
-
-.PHONY : src/el_break.s
-
-# target to generate assembly for a file
-src/el_break.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_break.cpp.s
-.PHONY : src/el_break.cpp.s
-
-src/el_cdata.o: src/el_cdata.cpp.o
-
-.PHONY : src/el_cdata.o
-
-# target to build an object file
-src/el_cdata.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_cdata.cpp.o
-.PHONY : src/el_cdata.cpp.o
-
-src/el_cdata.i: src/el_cdata.cpp.i
-
-.PHONY : src/el_cdata.i
-
-# target to preprocess a source file
-src/el_cdata.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_cdata.cpp.i
-.PHONY : src/el_cdata.cpp.i
-
-src/el_cdata.s: src/el_cdata.cpp.s
-
-.PHONY : src/el_cdata.s
-
-# target to generate assembly for a file
-src/el_cdata.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_cdata.cpp.s
-.PHONY : src/el_cdata.cpp.s
-
-src/el_comment.o: src/el_comment.cpp.o
-
-.PHONY : src/el_comment.o
-
-# target to build an object file
-src/el_comment.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_comment.cpp.o
-.PHONY : src/el_comment.cpp.o
-
-src/el_comment.i: src/el_comment.cpp.i
-
-.PHONY : src/el_comment.i
-
-# target to preprocess a source file
-src/el_comment.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_comment.cpp.i
-.PHONY : src/el_comment.cpp.i
-
-src/el_comment.s: src/el_comment.cpp.s
-
-.PHONY : src/el_comment.s
-
-# target to generate assembly for a file
-src/el_comment.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_comment.cpp.s
-.PHONY : src/el_comment.cpp.s
-
-src/el_div.o: src/el_div.cpp.o
-
-.PHONY : src/el_div.o
-
-# target to build an object file
-src/el_div.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_div.cpp.o
-.PHONY : src/el_div.cpp.o
-
-src/el_div.i: src/el_div.cpp.i
-
-.PHONY : src/el_div.i
-
-# target to preprocess a source file
-src/el_div.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_div.cpp.i
-.PHONY : src/el_div.cpp.i
-
-src/el_div.s: src/el_div.cpp.s
-
-.PHONY : src/el_div.s
-
-# target to generate assembly for a file
-src/el_div.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_div.cpp.s
-.PHONY : src/el_div.cpp.s
-
-src/el_font.o: src/el_font.cpp.o
-
-.PHONY : src/el_font.o
-
-# target to build an object file
-src/el_font.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_font.cpp.o
-.PHONY : src/el_font.cpp.o
-
-src/el_font.i: src/el_font.cpp.i
-
-.PHONY : src/el_font.i
-
-# target to preprocess a source file
-src/el_font.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_font.cpp.i
-.PHONY : src/el_font.cpp.i
-
-src/el_font.s: src/el_font.cpp.s
-
-.PHONY : src/el_font.s
-
-# target to generate assembly for a file
-src/el_font.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_font.cpp.s
-.PHONY : src/el_font.cpp.s
-
-src/el_image.o: src/el_image.cpp.o
-
-.PHONY : src/el_image.o
-
-# target to build an object file
-src/el_image.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_image.cpp.o
-.PHONY : src/el_image.cpp.o
-
-src/el_image.i: src/el_image.cpp.i
-
-.PHONY : src/el_image.i
-
-# target to preprocess a source file
-src/el_image.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_image.cpp.i
-.PHONY : src/el_image.cpp.i
-
-src/el_image.s: src/el_image.cpp.s
-
-.PHONY : src/el_image.s
-
-# target to generate assembly for a file
-src/el_image.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_image.cpp.s
-.PHONY : src/el_image.cpp.s
-
-src/el_link.o: src/el_link.cpp.o
-
-.PHONY : src/el_link.o
-
-# target to build an object file
-src/el_link.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_link.cpp.o
-.PHONY : src/el_link.cpp.o
-
-src/el_link.i: src/el_link.cpp.i
-
-.PHONY : src/el_link.i
-
-# target to preprocess a source file
-src/el_link.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_link.cpp.i
-.PHONY : src/el_link.cpp.i
-
-src/el_link.s: src/el_link.cpp.s
-
-.PHONY : src/el_link.s
-
-# target to generate assembly for a file
-src/el_link.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_link.cpp.s
-.PHONY : src/el_link.cpp.s
-
-src/el_para.o: src/el_para.cpp.o
-
-.PHONY : src/el_para.o
-
-# target to build an object file
-src/el_para.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_para.cpp.o
-.PHONY : src/el_para.cpp.o
-
-src/el_para.i: src/el_para.cpp.i
-
-.PHONY : src/el_para.i
-
-# target to preprocess a source file
-src/el_para.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_para.cpp.i
-.PHONY : src/el_para.cpp.i
-
-src/el_para.s: src/el_para.cpp.s
-
-.PHONY : src/el_para.s
-
-# target to generate assembly for a file
-src/el_para.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_para.cpp.s
-.PHONY : src/el_para.cpp.s
-
-src/el_script.o: src/el_script.cpp.o
-
-.PHONY : src/el_script.o
-
-# target to build an object file
-src/el_script.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_script.cpp.o
-.PHONY : src/el_script.cpp.o
-
-src/el_script.i: src/el_script.cpp.i
-
-.PHONY : src/el_script.i
-
-# target to preprocess a source file
-src/el_script.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_script.cpp.i
-.PHONY : src/el_script.cpp.i
-
-src/el_script.s: src/el_script.cpp.s
-
-.PHONY : src/el_script.s
-
-# target to generate assembly for a file
-src/el_script.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_script.cpp.s
-.PHONY : src/el_script.cpp.s
-
-src/el_space.o: src/el_space.cpp.o
-
-.PHONY : src/el_space.o
-
-# target to build an object file
-src/el_space.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_space.cpp.o
-.PHONY : src/el_space.cpp.o
-
-src/el_space.i: src/el_space.cpp.i
-
-.PHONY : src/el_space.i
-
-# target to preprocess a source file
-src/el_space.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_space.cpp.i
-.PHONY : src/el_space.cpp.i
-
-src/el_space.s: src/el_space.cpp.s
-
-.PHONY : src/el_space.s
-
-# target to generate assembly for a file
-src/el_space.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_space.cpp.s
-.PHONY : src/el_space.cpp.s
-
-src/el_style.o: src/el_style.cpp.o
-
-.PHONY : src/el_style.o
-
-# target to build an object file
-src/el_style.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_style.cpp.o
-.PHONY : src/el_style.cpp.o
-
-src/el_style.i: src/el_style.cpp.i
-
-.PHONY : src/el_style.i
-
-# target to preprocess a source file
-src/el_style.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_style.cpp.i
-.PHONY : src/el_style.cpp.i
-
-src/el_style.s: src/el_style.cpp.s
-
-.PHONY : src/el_style.s
-
-# target to generate assembly for a file
-src/el_style.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_style.cpp.s
-.PHONY : src/el_style.cpp.s
-
-src/el_table.o: src/el_table.cpp.o
-
-.PHONY : src/el_table.o
-
-# target to build an object file
-src/el_table.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_table.cpp.o
-.PHONY : src/el_table.cpp.o
-
-src/el_table.i: src/el_table.cpp.i
-
-.PHONY : src/el_table.i
-
-# target to preprocess a source file
-src/el_table.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_table.cpp.i
-.PHONY : src/el_table.cpp.i
-
-src/el_table.s: src/el_table.cpp.s
-
-.PHONY : src/el_table.s
-
-# target to generate assembly for a file
-src/el_table.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_table.cpp.s
-.PHONY : src/el_table.cpp.s
-
-src/el_td.o: src/el_td.cpp.o
-
-.PHONY : src/el_td.o
-
-# target to build an object file
-src/el_td.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_td.cpp.o
-.PHONY : src/el_td.cpp.o
-
-src/el_td.i: src/el_td.cpp.i
-
-.PHONY : src/el_td.i
-
-# target to preprocess a source file
-src/el_td.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_td.cpp.i
-.PHONY : src/el_td.cpp.i
-
-src/el_td.s: src/el_td.cpp.s
-
-.PHONY : src/el_td.s
-
-# target to generate assembly for a file
-src/el_td.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_td.cpp.s
-.PHONY : src/el_td.cpp.s
-
-src/el_text.o: src/el_text.cpp.o
-
-.PHONY : src/el_text.o
-
-# target to build an object file
-src/el_text.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_text.cpp.o
-.PHONY : src/el_text.cpp.o
-
-src/el_text.i: src/el_text.cpp.i
-
-.PHONY : src/el_text.i
-
-# target to preprocess a source file
-src/el_text.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_text.cpp.i
-.PHONY : src/el_text.cpp.i
-
-src/el_text.s: src/el_text.cpp.s
-
-.PHONY : src/el_text.s
-
-# target to generate assembly for a file
-src/el_text.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_text.cpp.s
-.PHONY : src/el_text.cpp.s
-
-src/el_title.o: src/el_title.cpp.o
-
-.PHONY : src/el_title.o
-
-# target to build an object file
-src/el_title.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_title.cpp.o
-.PHONY : src/el_title.cpp.o
-
-src/el_title.i: src/el_title.cpp.i
-
-.PHONY : src/el_title.i
-
-# target to preprocess a source file
-src/el_title.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_title.cpp.i
-.PHONY : src/el_title.cpp.i
-
-src/el_title.s: src/el_title.cpp.s
-
-.PHONY : src/el_title.s
-
-# target to generate assembly for a file
-src/el_title.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_title.cpp.s
-.PHONY : src/el_title.cpp.s
-
-src/el_tr.o: src/el_tr.cpp.o
-
-.PHONY : src/el_tr.o
-
-# target to build an object file
-src/el_tr.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_tr.cpp.o
-.PHONY : src/el_tr.cpp.o
-
-src/el_tr.i: src/el_tr.cpp.i
-
-.PHONY : src/el_tr.i
-
-# target to preprocess a source file
-src/el_tr.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_tr.cpp.i
-.PHONY : src/el_tr.cpp.i
-
-src/el_tr.s: src/el_tr.cpp.s
-
-.PHONY : src/el_tr.s
-
-# target to generate assembly for a file
-src/el_tr.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/el_tr.cpp.s
-.PHONY : src/el_tr.cpp.s
-
-src/element.o: src/element.cpp.o
-
-.PHONY : src/element.o
-
-# target to build an object file
-src/element.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/element.cpp.o
-.PHONY : src/element.cpp.o
-
-src/element.i: src/element.cpp.i
-
-.PHONY : src/element.i
-
-# target to preprocess a source file
-src/element.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/element.cpp.i
-.PHONY : src/element.cpp.i
-
-src/element.s: src/element.cpp.s
-
-.PHONY : src/element.s
-
-# target to generate assembly for a file
-src/element.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/element.cpp.s
-.PHONY : src/element.cpp.s
-
-src/gumbo/attribute.o: src/gumbo/attribute.c.o
-
-.PHONY : src/gumbo/attribute.o
-
-# target to build an object file
-src/gumbo/attribute.c.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/gumbo/attribute.c.o
-.PHONY : src/gumbo/attribute.c.o
-
-src/gumbo/attribute.i: src/gumbo/attribute.c.i
-
-.PHONY : src/gumbo/attribute.i
-
-# target to preprocess a source file
-src/gumbo/attribute.c.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/gumbo/attribute.c.i
-.PHONY : src/gumbo/attribute.c.i
-
-src/gumbo/attribute.s: src/gumbo/attribute.c.s
-
-.PHONY : src/gumbo/attribute.s
-
-# target to generate assembly for a file
-src/gumbo/attribute.c.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/gumbo/attribute.c.s
-.PHONY : src/gumbo/attribute.c.s
-
-src/gumbo/char_ref.o: src/gumbo/char_ref.c.o
-
-.PHONY : src/gumbo/char_ref.o
-
-# target to build an object file
-src/gumbo/char_ref.c.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/gumbo/char_ref.c.o
-.PHONY : src/gumbo/char_ref.c.o
-
-src/gumbo/char_ref.i: src/gumbo/char_ref.c.i
-
-.PHONY : src/gumbo/char_ref.i
-
-# target to preprocess a source file
-src/gumbo/char_ref.c.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/gumbo/char_ref.c.i
-.PHONY : src/gumbo/char_ref.c.i
-
-src/gumbo/char_ref.s: src/gumbo/char_ref.c.s
-
-.PHONY : src/gumbo/char_ref.s
-
-# target to generate assembly for a file
-src/gumbo/char_ref.c.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/gumbo/char_ref.c.s
-.PHONY : src/gumbo/char_ref.c.s
-
-src/gumbo/error.o: src/gumbo/error.c.o
-
-.PHONY : src/gumbo/error.o
-
-# target to build an object file
-src/gumbo/error.c.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/gumbo/error.c.o
-.PHONY : src/gumbo/error.c.o
-
-src/gumbo/error.i: src/gumbo/error.c.i
-
-.PHONY : src/gumbo/error.i
-
-# target to preprocess a source file
-src/gumbo/error.c.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/gumbo/error.c.i
-.PHONY : src/gumbo/error.c.i
-
-src/gumbo/error.s: src/gumbo/error.c.s
-
-.PHONY : src/gumbo/error.s
-
-# target to generate assembly for a file
-src/gumbo/error.c.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/gumbo/error.c.s
-.PHONY : src/gumbo/error.c.s
-
-src/gumbo/parser.o: src/gumbo/parser.c.o
-
-.PHONY : src/gumbo/parser.o
-
-# target to build an object file
-src/gumbo/parser.c.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/gumbo/parser.c.o
-.PHONY : src/gumbo/parser.c.o
-
-src/gumbo/parser.i: src/gumbo/parser.c.i
-
-.PHONY : src/gumbo/parser.i
-
-# target to preprocess a source file
-src/gumbo/parser.c.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/gumbo/parser.c.i
-.PHONY : src/gumbo/parser.c.i
-
-src/gumbo/parser.s: src/gumbo/parser.c.s
-
-.PHONY : src/gumbo/parser.s
-
-# target to generate assembly for a file
-src/gumbo/parser.c.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/gumbo/parser.c.s
-.PHONY : src/gumbo/parser.c.s
-
-src/gumbo/string_buffer.o: src/gumbo/string_buffer.c.o
-
-.PHONY : src/gumbo/string_buffer.o
-
-# target to build an object file
-src/gumbo/string_buffer.c.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/gumbo/string_buffer.c.o
-.PHONY : src/gumbo/string_buffer.c.o
-
-src/gumbo/string_buffer.i: src/gumbo/string_buffer.c.i
-
-.PHONY : src/gumbo/string_buffer.i
-
-# target to preprocess a source file
-src/gumbo/string_buffer.c.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/gumbo/string_buffer.c.i
-.PHONY : src/gumbo/string_buffer.c.i
-
-src/gumbo/string_buffer.s: src/gumbo/string_buffer.c.s
-
-.PHONY : src/gumbo/string_buffer.s
-
-# target to generate assembly for a file
-src/gumbo/string_buffer.c.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/gumbo/string_buffer.c.s
-.PHONY : src/gumbo/string_buffer.c.s
-
-src/gumbo/string_piece.o: src/gumbo/string_piece.c.o
-
-.PHONY : src/gumbo/string_piece.o
-
-# target to build an object file
-src/gumbo/string_piece.c.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/gumbo/string_piece.c.o
-.PHONY : src/gumbo/string_piece.c.o
-
-src/gumbo/string_piece.i: src/gumbo/string_piece.c.i
-
-.PHONY : src/gumbo/string_piece.i
-
-# target to preprocess a source file
-src/gumbo/string_piece.c.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/gumbo/string_piece.c.i
-.PHONY : src/gumbo/string_piece.c.i
-
-src/gumbo/string_piece.s: src/gumbo/string_piece.c.s
-
-.PHONY : src/gumbo/string_piece.s
-
-# target to generate assembly for a file
-src/gumbo/string_piece.c.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/gumbo/string_piece.c.s
-.PHONY : src/gumbo/string_piece.c.s
-
-src/gumbo/tag.o: src/gumbo/tag.c.o
-
-.PHONY : src/gumbo/tag.o
-
-# target to build an object file
-src/gumbo/tag.c.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/gumbo/tag.c.o
-.PHONY : src/gumbo/tag.c.o
-
-src/gumbo/tag.i: src/gumbo/tag.c.i
-
-.PHONY : src/gumbo/tag.i
-
-# target to preprocess a source file
-src/gumbo/tag.c.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/gumbo/tag.c.i
-.PHONY : src/gumbo/tag.c.i
-
-src/gumbo/tag.s: src/gumbo/tag.c.s
-
-.PHONY : src/gumbo/tag.s
-
-# target to generate assembly for a file
-src/gumbo/tag.c.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/gumbo/tag.c.s
-.PHONY : src/gumbo/tag.c.s
-
-src/gumbo/tokenizer.o: src/gumbo/tokenizer.c.o
-
-.PHONY : src/gumbo/tokenizer.o
-
-# target to build an object file
-src/gumbo/tokenizer.c.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/gumbo/tokenizer.c.o
-.PHONY : src/gumbo/tokenizer.c.o
-
-src/gumbo/tokenizer.i: src/gumbo/tokenizer.c.i
-
-.PHONY : src/gumbo/tokenizer.i
-
-# target to preprocess a source file
-src/gumbo/tokenizer.c.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/gumbo/tokenizer.c.i
-.PHONY : src/gumbo/tokenizer.c.i
-
-src/gumbo/tokenizer.s: src/gumbo/tokenizer.c.s
-
-.PHONY : src/gumbo/tokenizer.s
-
-# target to generate assembly for a file
-src/gumbo/tokenizer.c.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/gumbo/tokenizer.c.s
-.PHONY : src/gumbo/tokenizer.c.s
-
-src/gumbo/utf8.o: src/gumbo/utf8.c.o
-
-.PHONY : src/gumbo/utf8.o
-
-# target to build an object file
-src/gumbo/utf8.c.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/gumbo/utf8.c.o
-.PHONY : src/gumbo/utf8.c.o
-
-src/gumbo/utf8.i: src/gumbo/utf8.c.i
-
-.PHONY : src/gumbo/utf8.i
-
-# target to preprocess a source file
-src/gumbo/utf8.c.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/gumbo/utf8.c.i
-.PHONY : src/gumbo/utf8.c.i
-
-src/gumbo/utf8.s: src/gumbo/utf8.c.s
-
-.PHONY : src/gumbo/utf8.s
-
-# target to generate assembly for a file
-src/gumbo/utf8.c.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/gumbo/utf8.c.s
-.PHONY : src/gumbo/utf8.c.s
-
-src/gumbo/util.o: src/gumbo/util.c.o
-
-.PHONY : src/gumbo/util.o
-
-# target to build an object file
-src/gumbo/util.c.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/gumbo/util.c.o
-.PHONY : src/gumbo/util.c.o
-
-src/gumbo/util.i: src/gumbo/util.c.i
-
-.PHONY : src/gumbo/util.i
-
-# target to preprocess a source file
-src/gumbo/util.c.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/gumbo/util.c.i
-.PHONY : src/gumbo/util.c.i
-
-src/gumbo/util.s: src/gumbo/util.c.s
-
-.PHONY : src/gumbo/util.s
-
-# target to generate assembly for a file
-src/gumbo/util.c.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/gumbo/util.c.s
-.PHONY : src/gumbo/util.c.s
-
-src/gumbo/vector.o: src/gumbo/vector.c.o
-
-.PHONY : src/gumbo/vector.o
-
-# target to build an object file
-src/gumbo/vector.c.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/gumbo/vector.c.o
-.PHONY : src/gumbo/vector.c.o
-
-src/gumbo/vector.i: src/gumbo/vector.c.i
-
-.PHONY : src/gumbo/vector.i
-
-# target to preprocess a source file
-src/gumbo/vector.c.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/gumbo/vector.c.i
-.PHONY : src/gumbo/vector.c.i
-
-src/gumbo/vector.s: src/gumbo/vector.c.s
-
-.PHONY : src/gumbo/vector.s
-
-# target to generate assembly for a file
-src/gumbo/vector.c.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/gumbo/vector.c.s
-.PHONY : src/gumbo/vector.c.s
-
-src/html.o: src/html.cpp.o
-
-.PHONY : src/html.o
-
-# target to build an object file
-src/html.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/html.cpp.o
-.PHONY : src/html.cpp.o
-
-src/html.i: src/html.cpp.i
-
-.PHONY : src/html.i
-
-# target to preprocess a source file
-src/html.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/html.cpp.i
-.PHONY : src/html.cpp.i
-
-src/html.s: src/html.cpp.s
-
-.PHONY : src/html.s
-
-# target to generate assembly for a file
-src/html.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/html.cpp.s
-.PHONY : src/html.cpp.s
-
-src/html_tag.o: src/html_tag.cpp.o
-
-.PHONY : src/html_tag.o
-
-# target to build an object file
-src/html_tag.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/html_tag.cpp.o
-.PHONY : src/html_tag.cpp.o
-
-src/html_tag.i: src/html_tag.cpp.i
-
-.PHONY : src/html_tag.i
-
-# target to preprocess a source file
-src/html_tag.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/html_tag.cpp.i
-.PHONY : src/html_tag.cpp.i
-
-src/html_tag.s: src/html_tag.cpp.s
-
-.PHONY : src/html_tag.s
-
-# target to generate assembly for a file
-src/html_tag.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/html_tag.cpp.s
-.PHONY : src/html_tag.cpp.s
-
-src/iterators.o: src/iterators.cpp.o
-
-.PHONY : src/iterators.o
-
-# target to build an object file
-src/iterators.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/iterators.cpp.o
-.PHONY : src/iterators.cpp.o
-
-src/iterators.i: src/iterators.cpp.i
-
-.PHONY : src/iterators.i
-
-# target to preprocess a source file
-src/iterators.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/iterators.cpp.i
-.PHONY : src/iterators.cpp.i
-
-src/iterators.s: src/iterators.cpp.s
-
-.PHONY : src/iterators.s
-
-# target to generate assembly for a file
-src/iterators.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/iterators.cpp.s
-.PHONY : src/iterators.cpp.s
-
-src/media_query.o: src/media_query.cpp.o
-
-.PHONY : src/media_query.o
-
-# target to build an object file
-src/media_query.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/media_query.cpp.o
-.PHONY : src/media_query.cpp.o
-
-src/media_query.i: src/media_query.cpp.i
-
-.PHONY : src/media_query.i
-
-# target to preprocess a source file
-src/media_query.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/media_query.cpp.i
-.PHONY : src/media_query.cpp.i
-
-src/media_query.s: src/media_query.cpp.s
-
-.PHONY : src/media_query.s
-
-# target to generate assembly for a file
-src/media_query.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/media_query.cpp.s
-.PHONY : src/media_query.cpp.s
-
-src/style.o: src/style.cpp.o
-
-.PHONY : src/style.o
-
-# target to build an object file
-src/style.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/style.cpp.o
-.PHONY : src/style.cpp.o
-
-src/style.i: src/style.cpp.i
-
-.PHONY : src/style.i
-
-# target to preprocess a source file
-src/style.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/style.cpp.i
-.PHONY : src/style.cpp.i
-
-src/style.s: src/style.cpp.s
-
-.PHONY : src/style.s
-
-# target to generate assembly for a file
-src/style.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/style.cpp.s
-.PHONY : src/style.cpp.s
-
-src/stylesheet.o: src/stylesheet.cpp.o
-
-.PHONY : src/stylesheet.o
-
-# target to build an object file
-src/stylesheet.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/stylesheet.cpp.o
-.PHONY : src/stylesheet.cpp.o
-
-src/stylesheet.i: src/stylesheet.cpp.i
-
-.PHONY : src/stylesheet.i
-
-# target to preprocess a source file
-src/stylesheet.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/stylesheet.cpp.i
-.PHONY : src/stylesheet.cpp.i
-
-src/stylesheet.s: src/stylesheet.cpp.s
-
-.PHONY : src/stylesheet.s
-
-# target to generate assembly for a file
-src/stylesheet.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/stylesheet.cpp.s
-.PHONY : src/stylesheet.cpp.s
-
-src/table.o: src/table.cpp.o
-
-.PHONY : src/table.o
-
-# target to build an object file
-src/table.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/table.cpp.o
-.PHONY : src/table.cpp.o
-
-src/table.i: src/table.cpp.i
-
-.PHONY : src/table.i
-
-# target to preprocess a source file
-src/table.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/table.cpp.i
-.PHONY : src/table.cpp.i
-
-src/table.s: src/table.cpp.s
-
-.PHONY : src/table.s
-
-# target to generate assembly for a file
-src/table.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/table.cpp.s
-.PHONY : src/table.cpp.s
-
-src/utf8_strings.o: src/utf8_strings.cpp.o
-
-.PHONY : src/utf8_strings.o
-
-# target to build an object file
-src/utf8_strings.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/utf8_strings.cpp.o
-.PHONY : src/utf8_strings.cpp.o
-
-src/utf8_strings.i: src/utf8_strings.cpp.i
-
-.PHONY : src/utf8_strings.i
-
-# target to preprocess a source file
-src/utf8_strings.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/utf8_strings.cpp.i
-.PHONY : src/utf8_strings.cpp.i
-
-src/utf8_strings.s: src/utf8_strings.cpp.s
-
-.PHONY : src/utf8_strings.s
-
-# target to generate assembly for a file
-src/utf8_strings.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/utf8_strings.cpp.s
-.PHONY : src/utf8_strings.cpp.s
-
-src/web_color.o: src/web_color.cpp.o
-
-.PHONY : src/web_color.o
-
-# target to build an object file
-src/web_color.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/web_color.cpp.o
-.PHONY : src/web_color.cpp.o
-
-src/web_color.i: src/web_color.cpp.i
-
-.PHONY : src/web_color.i
-
-# target to preprocess a source file
-src/web_color.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/web_color.cpp.i
-.PHONY : src/web_color.cpp.i
-
-src/web_color.s: src/web_color.cpp.s
-
-.PHONY : src/web_color.s
-
-# target to generate assembly for a file
-src/web_color.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/web_color.cpp.s
-.PHONY : src/web_color.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -1575,153 +1575,153 @@ help:
 	@echo "... ManagedCallbacks.o"
 	@echo "... ManagedCallbacks.i"
 	@echo "... ManagedCallbacks.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/background.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/background.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/background.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/box.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/box.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/box.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/context.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/context.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/context.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_length.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_length.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_length.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_selector.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_selector.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/css_selector.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/document.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/document.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/document.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_anchor.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_anchor.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_anchor.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_base.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_base.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_base.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_before_after.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_before_after.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_before_after.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_body.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_body.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_body.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_break.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_break.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_break.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_cdata.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_cdata.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_cdata.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_comment.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_comment.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_comment.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_div.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_div.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_div.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_font.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_font.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_font.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_image.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_image.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_image.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_link.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_link.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_link.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_para.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_para.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_para.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_script.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_script.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_script.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_space.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_space.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_space.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_style.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_style.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_style.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_table.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_table.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_table.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_td.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_td.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_td.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_text.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_text.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_text.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_title.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_title.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_title.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_tr.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_tr.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/el_tr.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/element.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/element.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/element.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/attribute.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/attribute.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/attribute.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/char_ref.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/char_ref.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/char_ref.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/error.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/error.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/error.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/parser.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/parser.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/parser.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_buffer.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_buffer.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_buffer.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_piece.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_piece.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/string_piece.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tag.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tag.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tag.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tokenizer.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tokenizer.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/tokenizer.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/utf8.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/utf8.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/utf8.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/util.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/util.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/util.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/vector.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/vector.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/gumbo/vector.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html_tag.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html_tag.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/html_tag.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/iterators.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/iterators.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/iterators.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/media_query.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/media_query.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/media_query.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/style.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/style.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/style.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/stylesheet.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/stylesheet.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/stylesheet.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/table.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/table.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/table.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/utf8_strings.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/utf8_strings.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/utf8_strings.s"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/web_color.o"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/web_color.i"
+	@echo "... Users/mattlittle/Projects/LiteHtmlSharp/litehtml/src/web_color.s"
 	@echo "... dllmain.o"
 	@echo "... dllmain.i"
 	@echo "... dllmain.s"
 	@echo "... myclass.o"
 	@echo "... myclass.i"
 	@echo "... myclass.s"
-	@echo "... src/background.o"
-	@echo "... src/background.i"
-	@echo "... src/background.s"
-	@echo "... src/box.o"
-	@echo "... src/box.i"
-	@echo "... src/box.s"
-	@echo "... src/context.o"
-	@echo "... src/context.i"
-	@echo "... src/context.s"
-	@echo "... src/css_length.o"
-	@echo "... src/css_length.i"
-	@echo "... src/css_length.s"
-	@echo "... src/css_selector.o"
-	@echo "... src/css_selector.i"
-	@echo "... src/css_selector.s"
-	@echo "... src/document.o"
-	@echo "... src/document.i"
-	@echo "... src/document.s"
-	@echo "... src/el_anchor.o"
-	@echo "... src/el_anchor.i"
-	@echo "... src/el_anchor.s"
-	@echo "... src/el_base.o"
-	@echo "... src/el_base.i"
-	@echo "... src/el_base.s"
-	@echo "... src/el_before_after.o"
-	@echo "... src/el_before_after.i"
-	@echo "... src/el_before_after.s"
-	@echo "... src/el_body.o"
-	@echo "... src/el_body.i"
-	@echo "... src/el_body.s"
-	@echo "... src/el_break.o"
-	@echo "... src/el_break.i"
-	@echo "... src/el_break.s"
-	@echo "... src/el_cdata.o"
-	@echo "... src/el_cdata.i"
-	@echo "... src/el_cdata.s"
-	@echo "... src/el_comment.o"
-	@echo "... src/el_comment.i"
-	@echo "... src/el_comment.s"
-	@echo "... src/el_div.o"
-	@echo "... src/el_div.i"
-	@echo "... src/el_div.s"
-	@echo "... src/el_font.o"
-	@echo "... src/el_font.i"
-	@echo "... src/el_font.s"
-	@echo "... src/el_image.o"
-	@echo "... src/el_image.i"
-	@echo "... src/el_image.s"
-	@echo "... src/el_link.o"
-	@echo "... src/el_link.i"
-	@echo "... src/el_link.s"
-	@echo "... src/el_para.o"
-	@echo "... src/el_para.i"
-	@echo "... src/el_para.s"
-	@echo "... src/el_script.o"
-	@echo "... src/el_script.i"
-	@echo "... src/el_script.s"
-	@echo "... src/el_space.o"
-	@echo "... src/el_space.i"
-	@echo "... src/el_space.s"
-	@echo "... src/el_style.o"
-	@echo "... src/el_style.i"
-	@echo "... src/el_style.s"
-	@echo "... src/el_table.o"
-	@echo "... src/el_table.i"
-	@echo "... src/el_table.s"
-	@echo "... src/el_td.o"
-	@echo "... src/el_td.i"
-	@echo "... src/el_td.s"
-	@echo "... src/el_text.o"
-	@echo "... src/el_text.i"
-	@echo "... src/el_text.s"
-	@echo "... src/el_title.o"
-	@echo "... src/el_title.i"
-	@echo "... src/el_title.s"
-	@echo "... src/el_tr.o"
-	@echo "... src/el_tr.i"
-	@echo "... src/el_tr.s"
-	@echo "... src/element.o"
-	@echo "... src/element.i"
-	@echo "... src/element.s"
-	@echo "... src/gumbo/attribute.o"
-	@echo "... src/gumbo/attribute.i"
-	@echo "... src/gumbo/attribute.s"
-	@echo "... src/gumbo/char_ref.o"
-	@echo "... src/gumbo/char_ref.i"
-	@echo "... src/gumbo/char_ref.s"
-	@echo "... src/gumbo/error.o"
-	@echo "... src/gumbo/error.i"
-	@echo "... src/gumbo/error.s"
-	@echo "... src/gumbo/parser.o"
-	@echo "... src/gumbo/parser.i"
-	@echo "... src/gumbo/parser.s"
-	@echo "... src/gumbo/string_buffer.o"
-	@echo "... src/gumbo/string_buffer.i"
-	@echo "... src/gumbo/string_buffer.s"
-	@echo "... src/gumbo/string_piece.o"
-	@echo "... src/gumbo/string_piece.i"
-	@echo "... src/gumbo/string_piece.s"
-	@echo "... src/gumbo/tag.o"
-	@echo "... src/gumbo/tag.i"
-	@echo "... src/gumbo/tag.s"
-	@echo "... src/gumbo/tokenizer.o"
-	@echo "... src/gumbo/tokenizer.i"
-	@echo "... src/gumbo/tokenizer.s"
-	@echo "... src/gumbo/utf8.o"
-	@echo "... src/gumbo/utf8.i"
-	@echo "... src/gumbo/utf8.s"
-	@echo "... src/gumbo/util.o"
-	@echo "... src/gumbo/util.i"
-	@echo "... src/gumbo/util.s"
-	@echo "... src/gumbo/vector.o"
-	@echo "... src/gumbo/vector.i"
-	@echo "... src/gumbo/vector.s"
-	@echo "... src/html.o"
-	@echo "... src/html.i"
-	@echo "... src/html.s"
-	@echo "... src/html_tag.o"
-	@echo "... src/html_tag.i"
-	@echo "... src/html_tag.s"
-	@echo "... src/iterators.o"
-	@echo "... src/iterators.i"
-	@echo "... src/iterators.s"
-	@echo "... src/media_query.o"
-	@echo "... src/media_query.i"
-	@echo "... src/media_query.s"
-	@echo "... src/style.o"
-	@echo "... src/style.i"
-	@echo "... src/style.s"
-	@echo "... src/stylesheet.o"
-	@echo "... src/stylesheet.i"
-	@echo "... src/stylesheet.s"
-	@echo "... src/table.o"
-	@echo "... src/table.i"
-	@echo "... src/table.s"
-	@echo "... src/utf8_strings.o"
-	@echo "... src/utf8_strings.i"
-	@echo "... src/utf8_strings.s"
-	@echo "... src/web_color.o"
-	@echo "... src/web_color.i"
-	@echo "... src/web_color.s"
 .PHONY : help
 
 

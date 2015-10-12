@@ -1,9 +1,9 @@
 #pragma once
 
 #include "ManagedCallbacks.h"
-#include "src/html.h"
-#include "src/context.h"
-#include "src/document.h"
+#include "../litehtml/src/html.h"
+#include "../litehtml/src/context.h"
+#include "../litehtml/src/document.h"
 
 #if defined(_UNICODE)
 #define _T(x) L ##x
