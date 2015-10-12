@@ -1,0 +1,355 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="mainsource">
+      <UniqueIdentifier>{e5f34df5-2ebd-4e06-80bc-af3684f0ab66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MySource">
+      <UniqueIdentifier>{74e0e457-6c0e-4565-89ff-1a600af6ab85}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\gumbo\attribute.c">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\background.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\box.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gumbo\char_ref.c">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\context.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\css_length.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\css_selector.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\document.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\el_anchor.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\el_base.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\el_before_after.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\el_body.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\el_break.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\el_cdata.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\el_comment.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\el_div.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\el_font.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\el_image.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\el_link.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\el_para.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\el_script.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\el_space.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\el_style.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\el_table.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\el_td.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\el_text.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\el_title.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\el_tr.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\element.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gumbo\error.c">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="containers\gdiplus\gdiplus_container.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\html.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\html_tag.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\iterators.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\media_query.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gumbo\parser.c">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gumbo\string_buffer.c">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gumbo\string_piece.c">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\style.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\stylesheet.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\table.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gumbo\tag.c">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gumbo\tokenizer.c">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gumbo\utf8.c">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utf8_strings.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gumbo\util.c">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gumbo\vector.c">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\web_color.cpp">
+      <Filter>mainsource</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\gumbo\attribute.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\attributes.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\background.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\borders.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\box.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gumbo\char_ref.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\context.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\css_length.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\css_margins.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\css_offsets.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\css_position.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\css_selector.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\document.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\el_anchor.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\el_base.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\el_before_after.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\el_body.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\el_break.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\el_cdata.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\el_comment.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\el_div.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\el_font.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\el_image.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\el_link.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\el_para.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\el_script.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\el_space.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\el_style.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\el_table.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\el_td.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\el_text.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\el_title.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\el_tr.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\element.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gumbo\error.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="containers\gdiplus\gdiplus_container.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gumbo\gumbo.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\html.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\html_tag.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gumbo\insertion_mode.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\iterators.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="include\litehtml.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\media_query.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\os_types.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gumbo\parser.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gumbo\string_buffer.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gumbo\string_piece.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gumbo\strings.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\style.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\stylesheet.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\table.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gumbo\tag_enum.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gumbo\tag_gperf.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gumbo\tag_sizes.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gumbo\tag_strings.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gumbo\token_type.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gumbo\tokenizer.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gumbo\tokenizer_states.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\types.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gumbo\utf8.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utf8_strings.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gumbo\util.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gumbo\vector.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\web_color.h">
+      <Filter>mainsource</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

@@ -1,5 +1,0 @@
-/Users/mattlittle/Projects/LiteHtmlSharp/LiteHtmlSharp/obj/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
-/Users/mattlittle/Projects/LiteHtmlSharp/LiteHtmlSharp/bin/Debug/LiteHtmlSharp.dll.mdb
-/Users/mattlittle/Projects/LiteHtmlSharp/LiteHtmlSharp/bin/Debug/LiteHtmlSharp.dll
-/Users/mattlittle/Projects/LiteHtmlSharp/LiteHtmlSharp/obj/Debug/LiteHtmlSharp.dll
-/Users/mattlittle/Projects/LiteHtmlSharp/LiteHtmlSharp/obj/Debug/LiteHtmlSharp.dll.mdb

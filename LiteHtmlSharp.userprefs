@@ -1,9 +1,9 @@
 ﻿<Properties StartupItem="LiteHtmlSharp/LiteHtmlSharp.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Test/Program.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="CppSharpGen/LiteHtmlLibrary.cs">
     <Files>
       <File FileName="CppSharpGen/Program.cs" Line="18" Column="8" />
-      <File FileName="CppSharpGen/LiteHtmlLibrary.cs" Line="17" Column="1" />
+      <File FileName="CppSharpGen/LiteHtmlLibrary.cs" Line="35" Column="9" />
       <File FileName="CppSharp/src/Generator/Generators/CSharp/CSharpMarshal.cs" Line="189" Column="64" />
       <File FileName="CppSharp/src/Generator/Generators/CSharp/CSharpTextTemplate.cs" Line="418" Column="1" />
       <File FileName="CppSharpGen/Sample.h" Line="10" Column="22" />
@@ -11,8 +11,7 @@
       <File FileName="../../../../Library/Frameworks/Mono.framework/Versions/4.0.4/lib/mono/4.5/Microsoft.Common.targets" Line="1" Column="1" />
       <File FileName="CppSharp/src/Generator/Driver.cs" Line="99" Column="10" />
       <File FileName="CppSharp/src/Core/Parser/Parser.cs" Line="83" Column="1" />
-      <File FileName="Test/Program.cs" Line="18" Column="5" />
-      <File FileName="Test/Sample.h" Line="9" Column="22" />
+      <File FileName="LiteHtmlSharp/MyClass.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
