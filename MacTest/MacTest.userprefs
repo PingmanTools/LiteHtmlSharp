@@ -1,0 +1,15 @@
+﻿<Properties StartupItem="MacTest.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="AppDelegate.cs">
+    <Files>
+      <File FileName="AppDelegate.cs" Line="19" Column="30" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/mattlittle/Projects/LiteHtmlSharp/MacTest/ConsoleTest/Program.cs" line="21" column="1" />
+      <Breakpoint file="/Users/mattlittle/Projects/LiteHtmlSharp/MacTest/ConsoleTest/Program.cs" line="19" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

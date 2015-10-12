@@ -1,9 +1,15 @@
 #pragma once
 
 #include "ManagedCallbacks.h"
-#include "../LiteHtml/src/html.h"
-#include "context.h"
-#include "document.h"
+#include "src/html.h"
+#include "src/context.h"
+#include "src/document.h"
+
+#if defined(_UNICODE)
+#define _T(x) L ##x
+#else
+#define _T(x) x
+#endif
 
 class DocContainer : public litehtml::document_container
 {
@@ -38,12 +44,14 @@ public:
    virtual void get_media_features(litehtml::media_features & media) const override;
    virtual void get_language(litehtml::tstring & language, litehtml::tstring & culture) const override;
 
-   void RegisterManagedClass(ManagedCallbacks* managedClass);
+   void RegisterManagedClass(ManagedCallbacks* managedClass, const litehtml::tchar_t* html);
+
+   std::shared_ptr<litehtml::document> _document;
 
 private:
    ManagedCallbacks* _managedClass = nullptr;
    litehtml::context _context;
-   std::shared_ptr<litehtml::document> _document;
+   
    litehtml::position _drawPos;
    //std::vector<MyElement*> _elements;
 };

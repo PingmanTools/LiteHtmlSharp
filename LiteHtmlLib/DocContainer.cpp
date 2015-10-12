@@ -1,9 +1,8 @@
-#include "stdafx.h"
 #include "DocContainer.h"
 
-#include <sstream>
-#include <fstream>
-#include <codecvt>
+//#include <sstream>
+//#include <fstream>
+//#include <codecvt>
 
 using namespace litehtml;
 
@@ -48,7 +47,7 @@ int DocContainer::get_default_font_size() const
 
 const litehtml::tchar_t * DocContainer::get_default_font_name() const
 {
-   return L"Arial";
+   return _T("Arial");
 }
 
 void DocContainer::draw_list_marker(litehtml::uint_ptr hdc, const litehtml::list_marker & marker)
@@ -68,7 +67,7 @@ void DocContainer::get_image_size(const litehtml::tchar_t * src, const litehtml:
 
 void DocContainer::draw_background(litehtml::uint_ptr hdc, const litehtml::background_paint & bg)
 {
-   _managedClass->DrawBackground(hdc, bg.repeat, bg.color, bg.origin_box);
+   _managedClass->DrawBackground(hdc, bg.image.c_str(), bg.repeat, bg.color, bg.origin_box);
 }
 
 void DocContainer::draw_borders(litehtml::uint_ptr hdc, const litehtml::borders & borders, const litehtml::position & draw_pos, bool root)
@@ -151,34 +150,35 @@ void DocContainer::get_language(litehtml::tstring & language, litehtml::tstring 
    int i = 0;
 }
 
-std::wstring readFile(const char* filename)
-{
-   std::wifstream wif(filename);
-   wif.imbue(std::locale(std::locale::empty(), new std::codecvt_utf8<wchar_t>));
-   std::wstringstream wss;
-   wss << wif.rdbuf();
-   return wss.str();
-}
+//std::wstring readFile(const char* filename)
+//{
+//   std::wifstream wif(filename);
+//   wif.imbue(std::locale(std::locale::empty(), new std::codecvt_utf8<tchar_t>));
+//   std::wstringstream wss;
+//   wss << wif.rdbuf();
+//   return wss.str();
+//}
 
-void DocContainer::RegisterManagedClass(ManagedCallbacks* managedClass)
+void DocContainer::RegisterManagedClass(ManagedCallbacks* managedClass, const tchar_t* html)
 {
    _managedClass = managedClass;
 
-   std::wstring css = readFile("master.css");
+   //std::wstring css = readFile("master.css");
 
-   _context.load_master_stylesheet(css.c_str());
+   //_context.load_master_stylesheet(css.c_str());
 
-   std::wstring html = LR"(<html><head></head><body><div style='width:100px; height:100px; background-color:red'>HELLO WORLD</div></body></html>)";
+   //std::wstring html = LR"(<html><head></head><body><div style='width:100px; height:100px; background-color:red'>HELLO WORLD</div></body></html>)";
+   //   const wchar_t* ptr = html.c_str();
 
    _drawPos.width = 100;
    _drawPos.height = 100;
    _drawPos.x = 0;
    _drawPos.y = 0;
 
-   const wchar_t* ptr = html.c_str();
-   _document = document::createFromString(ptr, this, &_context);
+
+   _document = document::createFromString(html, this, &_context);
    _document->render(100);
-   _document->draw(100, 0, 0, &_drawPos);
+   _document->draw(NULL, 0, 0, &_drawPos);
 }
 
 MyElement::MyElement(std::shared_ptr<document> doc) :element(doc)
