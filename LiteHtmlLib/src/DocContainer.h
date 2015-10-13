@@ -5,10 +5,10 @@
 #include "../../litehtml/src/context.h"
 #include "../../litehtml/src/document.h"
 
-#if defined(_UNICODE)
-#define _T(x) L ##x
-#else
+#if defined(LITEHTML_UTF8)
 #define _T(x) x
+#else
+#define _T(x) L ##x
 #endif
 
 class DocContainer : public litehtml::document_container
