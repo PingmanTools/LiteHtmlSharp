@@ -75,3 +75,18 @@ __declspec(dllexport) void SetDrawText(DocContainer* container, DrawText_functio
 {
    container->DrawText = callback;
 }
+
+__declspec(dllexport) void SetImportCss(DocContainer* container, ImportCss_function callback)
+{
+   container->ImportCss = callback;
+}
+
+__declspec(dllexport) void SetGetClientRect(DocContainer* container, GetClientRect_function callback)
+{
+   container->GetClientRect = callback;
+}
+
+__declspec(dllexport) void SetGetMediaFeatures(DocContainer* container, GetMediaFeatures_function callback)
+{
+   container->GetMediaFeatures = callback;
+}

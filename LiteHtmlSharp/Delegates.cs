@@ -27,4 +27,13 @@ namespace LiteHtmlSharp
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
    public delegate UIntPtr CreateFontFunc(string faceName, int size, int weight, font_style italic, uint decoration, ref font_metrics fm);
+
+   [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
+   public delegate string ImportCssFunc(string url, string baseurl);
+
+   [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
+   public delegate void GetClientRectFunc(ref position client);
+
+   [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
+   public delegate void GetMediaFeaturesFunc(ref media_features media);
 }

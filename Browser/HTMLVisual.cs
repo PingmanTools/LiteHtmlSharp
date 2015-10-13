@@ -57,5 +57,12 @@ namespace Browser
       {
          _container.OnMouseMove(x, y);
       }
+
+      public void OnSizeChanged()
+      {
+         FrameworkElement parent = Parent as FrameworkElement;
+         UpdateLayout();
+         _container.OnSizeChanged(parent.ActualWidth, parent.ActualHeight);
+      }
    }
 }

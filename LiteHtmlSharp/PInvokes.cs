@@ -50,6 +50,14 @@ namespace LiteHtmlSharp
       [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs)]
       public static extern void SetGetTextWidth(IntPtr container, GetTextWidthFunc func);
 
+      [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs)]
+      public static extern void SetImportCss(IntPtr container, ImportCssFunc func);
+
+      [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs)]
+      public static extern void SetGetClientRect(IntPtr container, GetClientRectFunc func);
+
+      [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs)]
+      public static extern void SetGetMediaFeatures(IntPtr container, GetMediaFeaturesFunc func);
       #endregion
 
 

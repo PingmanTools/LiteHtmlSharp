@@ -83,5 +83,15 @@ namespace Browser
          var pos = e.GetPosition(canvas);
          _htmlVisual.OnMouseMove(pos.X, pos.Y);
       }
+
+      private void canvas_SizeChanged(object sender, SizeChangedEventArgs e)
+      {
+         _htmlVisual.OnSizeChanged();
+      }
+
+      private void Window_Loaded(object sender, RoutedEventArgs e)
+      {
+         _htmlVisual.OnSizeChanged();
+      }
    }
 }

@@ -5,3 +5,4 @@ Win32
 Debug
 Release
 /LiteHtml.opensdf
+*.suo
