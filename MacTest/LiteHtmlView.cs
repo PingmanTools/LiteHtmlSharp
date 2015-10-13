@@ -1,6 +1,8 @@
 ﻿using System;
 using AppKit;
 using CoreGraphics;
+using Foundation;
+using System.Collections.Generic;
 
 namespace MacTest
 {
@@ -10,13 +12,24 @@ namespace MacTest
 
       public CGBitmapContext BitmapContext { get; private set; }
 
+      private nfloat bitmapScale;
+
       public LiteHtmlMacContainer LiteHtmlContainer { get; private set; }
 
       public LiteHtmlView(CGRect frame)
          : base(frame)
       {
-         var width = (int)frame.Size.Width;
-         var height = (int)frame.Size.Height;
+         WantsLayer = true;
+         CreateBitmapContext();
+         LiteHtmlContainer = new LiteHtmlMacContainer(this);
+      }
+
+      void CreateBitmapContext()
+      {
+         bitmapScale = Layer.ContentsScale;
+
+         var width = (int)(Bounds.Width * bitmapScale);
+         var height = (int)(Bounds.Height * bitmapScale);
 
          var colorSpace = CGColorSpace.CreateDeviceRGB();
          const int bytesPerPixel = 4;
@@ -24,20 +37,24 @@ namespace MacTest
          int bytesPerRow = bytesPerPixel * width;
          const int bitsPerComponent = 8;
          BitmapContext = new CGBitmapContext(bytes, width, height, bitsPerComponent, bytesPerRow, colorSpace, CGBitmapFlags.PremultipliedLast | CGBitmapFlags.ByteOrder32Big);
-         LiteHtmlContainer = new LiteHtmlMacContainer(this);
-      }
-
-      public void DrawRect(nfloat x, nfloat y, nfloat width, nfloat height, CGColor color)
-      {
-         BitmapContext.SetFillColor(color);
-         BitmapContext.FillRect(new CGRect(x, y, width, height));
       }
 
       public override void DrawRect(CoreGraphics.CGRect dirtyRect)
       {
+         if (bitmapScale != Layer.ContentsScale)
+         {
+            CreateBitmapContext();
+            LiteHtmlContainer.Redraw();
+         }
+
          var gfxc = NSGraphicsContext.CurrentContext.GraphicsPort;
+         gfxc.SaveState();
+         //gfxc.ScaleCTM(bitmapScale, bitmapScale);
          gfxc.DrawImage(Bounds, BitmapContext.ToImage());
+         gfxc.RestoreState();
       }
+
+
    }
 }
 

@@ -88,5 +88,10 @@ namespace LiteHtmlSharp
             //throw e;
          }
       }
+
+      public virtual void Redraw()
+      {
+         PInvokes.Draw(CPPContainer);
+      }
    }
 }
