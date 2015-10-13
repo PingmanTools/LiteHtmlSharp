@@ -58,7 +58,7 @@ void DocContainer::load_image(const litehtml::tchar_t * src, const litehtml::tch
 
 void DocContainer::get_image_size(const litehtml::tchar_t * src, const litehtml::tchar_t * baseurl, litehtml::size & sz)
 {
-   int i = 0;
+   GetImageSize(src, sz);
 }
 
 void DocContainer::draw_background(litehtml::uint_ptr hdc, const litehtml::background_paint & bg)
@@ -153,10 +153,10 @@ void DocContainer::SetMasterCSS(const tchar_t* css)
 
 void DocContainer::RenderHTML(const tchar_t* html)
 {
-   _drawPos.width = 100;
+   /*_drawPos.width = 100;
    _drawPos.height = 100;
    _drawPos.x = 0;
-   _drawPos.y = 0;
+   _drawPos.y = 0;*/
 
    if (_document != nullptr)
    {
@@ -165,10 +165,26 @@ void DocContainer::RenderHTML(const tchar_t* html)
 
    _document = document::createFromString(html, this, &_context);
    _document->render(100);
-   _document->draw(NULL, 0, 0, &_drawPos);
+   _document->draw(NULL, 0, 0, nullptr);
 }
 
-MyElement::MyElement(std::shared_ptr<document> doc) :element(doc)
+void DocContainer::Draw()
 {
+   _document->draw(NULL, 0, 0, nullptr);
+}
 
+bool DocContainer::OnMouseMove(int x, int y)
+{
+   std::vector<litehtml::position> redraw_boxes;
+
+   if (_document->on_mouse_over(x, y, 0, 0, redraw_boxes))
+   {
+      return true;
+      /*for (litehtml::position::vector::iterator box = redraw_boxes.begin(); box != redraw_boxes.end(); box++)
+      {
+         _document->draw(NULL, box->x, box->y, box._Ptr);
+      }*/
+   }
+
+   return false;
 }

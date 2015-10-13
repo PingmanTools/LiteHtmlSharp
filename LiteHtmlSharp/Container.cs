@@ -9,8 +9,8 @@ namespace LiteHtmlSharp
 {
    public abstract class Container
    {
-
       protected IntPtr CPPContainer;
+      private static List<Delegate> _delegates = new List<Delegate>();
 
       public Container()
       {
@@ -33,17 +33,26 @@ namespace LiteHtmlSharp
          {
             throw new Exception("Container instance callback test failed. Something is broken!");
          }
-         #endif
+#endif
 
          PInvokes.SetMasterCSS(CPPContainer, GetMasterCssData());
-         PInvokes.SetDrawBorders(CPPContainer, DrawBorders);
-         PInvokes.SetDrawBackground(CPPContainer, DrawBackground);
 
+         PInvokes.SetDrawBorders(CPPContainer, CreateDelegate(new DrawBordersFunc(DrawBorders)));
+         PInvokes.SetDrawBackground(CPPContainer, CreateDelegate(new DrawBackgroundFunc(DrawBackground)));
+         PInvokes.SetGetImageSize(CPPContainer, CreateDelegate(new GetImageSizeFunc(GetImageSize)));
+      }
+
+      private T CreateDelegate<T>(T someDelegate)
+      {
+         _delegates.Add(someDelegate as Delegate);
+         return someDelegate;
       }
 
       protected abstract void DrawBackground(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos);
 
       protected abstract void DrawBorders(UIntPtr hdc, ref borders borders, ref position draw_pos, bool root);
+
+      protected abstract void GetImageSize(string image, ref size size);
 
       protected abstract string GetMasterCssData();
 

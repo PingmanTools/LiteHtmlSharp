@@ -46,21 +46,17 @@ public:
 
    void RenderHTML(const litehtml::tchar_t* html);
    void SetMasterCSS(const litehtml::tchar_t* css);
+   bool OnMouseMove(int x, int y);
+   void Draw();
 
    std::shared_ptr<litehtml::document> _document;
 
    DrawBorders_function DrawBorders = 0;
    DrawBackground_function DrawBackground = 0;
+   GetImageSize_function GetImageSize = 0;
    Test_function TestCallback = 0;
 
 private:
    litehtml::context _context;
    litehtml::position _drawPos;
-   //std::vector<MyElement*> _elements;
-};
-
-class MyElement : public litehtml::element
-{
-public:
-   MyElement(std::shared_ptr<litehtml::document> doc);
 };

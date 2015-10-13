@@ -13,6 +13,9 @@ namespace LiteHtmlSharp
    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
    public delegate void CallbackFunc(int someNumber);
 
-   [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+   [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
    public delegate void DrawBackgroundFunc(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos);
+
+   [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+   public delegate void GetImageSizeFunc(string image, ref size size);
 }

@@ -59,6 +59,13 @@ namespace LiteHtmlSharp
       public byte alpha;
    }
 
+   [StructLayout(LayoutKind.Sequential)]
+   public struct size
+   {
+      public int width;
+      public int height;
+   };
+
    public enum border_style
    {
       border_style_none,

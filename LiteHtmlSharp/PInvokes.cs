@@ -32,11 +32,20 @@ namespace LiteHtmlSharp
       [DllImport(LiteHtmlLibFile, CallingConvention = CallingConvention.Cdecl)]
       public static extern void SetDrawBackground(IntPtr container, DrawBackgroundFunc func);
 
+      [DllImport(LiteHtmlLibFile, CallingConvention = CallingConvention.Cdecl)]
+      public static extern void SetGetImageSize(IntPtr container, GetImageSizeFunc func);
+   
       [DllImport(LiteHtmlLibFile, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
       public static extern void RenderHTML(IntPtr container, string html);
 
       [DllImport(LiteHtmlLibFile, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
       public static extern void SetMasterCSS(IntPtr container, string css);
+
+      [DllImport(LiteHtmlLibFile, CallingConvention = CallingConvention.Cdecl)]
+      public static extern bool OnMouseMove(IntPtr container, int x, int y);
+
+      [DllImport(LiteHtmlLibFile, CallingConvention = CallingConvention.Cdecl)]
+      public static extern void Draw(IntPtr container);
 
       [DllImport(LiteHtmlLibFile, CallingConvention = CallingConvention.Cdecl)]
       public static extern IntPtr Init();

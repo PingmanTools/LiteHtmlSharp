@@ -15,6 +15,11 @@ __declspec(dllexport) void SetDrawBackground(DocContainer* container, DrawBackgr
    container->DrawBackground = callback;
 }
 
+__declspec(dllexport) void SetGetImageSize(DocContainer* container, GetImageSize_function callback)
+{
+   container->GetImageSize = callback;
+}
+
 __declspec(dllexport) void SetTestCallback(DocContainer* container, Test_function callback)
 {
    container->TestCallback = callback;
@@ -47,7 +52,12 @@ __declspec(dllexport) void SetMasterCSS(DocContainer* container, const litehtml:
    container->SetMasterCSS(css);
 }
 
-__declspec(dllexport) void OnMouseMove(DocContainer* container)
+__declspec(dllexport) bool OnMouseMove(DocContainer* container, int x, int y)
 {
-   //_container._document->on_mouse_over(10, 10, 10, 10);
+   return container->OnMouseMove(x, y);
+}
+
+__declspec(dllexport) void Draw(DocContainer* container)
+{
+   container->Draw();
 }

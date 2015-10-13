@@ -12,52 +12,25 @@ using System.IO;
 
 namespace Browser
 {
-   public class HTMLVisual : FrameworkElement
-   {
-      DrawingVisual _visual;
-      WPFContainer _container;
-
-      public HTMLVisual(Canvas parent)
-      {
-         _visual = new DrawingVisual();
-         _container = new WPFContainer(_visual);
-
-         this.AddVisualChild(_visual);
-         this.AddLogicalChild(_visual);
-         parent.Children.Add(this);
-      }
-
-      protected override int VisualChildrenCount
-      {
-         get { return 1; }
-      }
-
-      protected override Visual GetVisualChild(int index)
-      {
-         return _visual;
-      }
-
-      public void Render(string html)
-      {
-         _container.Render(html);
-      }
-
-      public void Clear()
-      {
-         _container.Clear();
-      }
-   }
-
    public class WPFContainer : Container
    {
       DrawingContext _dc;
       DrawingVisual _visual;
       Dictionary<string, Brush> _brushes = new Dictionary<string, Brush>();
       static string _masterCSS;
+      public bool Loaded = false;
+      private bool _rendering = false;
 
       public WPFContainer(DrawingVisual visual) : base()
       {
          _visual = visual;
+
+         if (string.IsNullOrEmpty(_masterCSS))
+         {
+            _masterCSS = File.ReadAllText("master.css");
+         }
+
+         PInvokes.SetMasterCSS(CPPContainer, _masterCSS);
       }
 
       protected override string GetMasterCssData()
@@ -71,10 +44,15 @@ namespace Browser
 
       public void Render(string html)
       {
+         if (_rendering) return;
+
+         _rendering = true;
          _dc = _visual.RenderOpen();
          PInvokes.RenderHTML(CPPContainer, html);
          _dc.Close();
          _dc = null;
+         _rendering = false;
+         Loaded = true;
       }
 
       public void Clear()
@@ -82,6 +60,25 @@ namespace Browser
          _dc = _visual.RenderOpen();
          _dc.Close();
          _dc = null;
+      }
+
+      public void Draw()
+      {
+         _dc = _visual.RenderOpen();
+         PInvokes.Draw(CPPContainer);
+         _dc.Close();
+         _dc = null;
+      }
+
+      public void OnMouseMove(double x, double y)
+      {
+         if (Loaded)
+         {
+            if(PInvokes.OnMouseMove(CPPContainer, (int)x, (int)y))
+            {
+               Draw();
+            }
+         }
       }
 
       private void TestDrawing()
@@ -139,6 +136,11 @@ namespace Browser
          }
 
          return result;
+      }
+
+      protected override void GetImageSize(string image, ref size size)
+      {
+         throw new NotImplementedException();
       }
    }
 }

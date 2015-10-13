@@ -22,27 +22,65 @@ namespace Browser
    public partial class MainWindow : Window
    {
       Stopwatch _watch = new Stopwatch();
-      HTMLVisual _renderer;
+      HTMLVisual _htmlVisual;
       public MainWindow()
       {
          InitializeComponent();
 
-         _renderer = new HTMLVisual(canvas);
+         _htmlVisual = new HTMLVisual(canvas);
       }
 
       private void button_Click(object sender, RoutedEventArgs e)
       {
-         _watch.Restart();
-         string html = @"<html><head></head><body><div style='width:100px; height:100px; background-color:red'>HELLO WORLD</div></body></html>";
-         _renderer.Render(html);
-         _watch.Stop();
-         lbTime.Content = "Render Time(ms): " + _watch.ElapsedMilliseconds;
+         if (_htmlVisual.HTMLLoaded)
+         {
+            Draw();
+         }
+         else
+         {
+            Render(@"<html><head></head><body><div style='width:100px; height:100px; background-color:red'>HELLO WORLD</div></body></html>");
+         }
       }
 
       private void btClear_Click(object sender, RoutedEventArgs e)
       {
-         _renderer.Clear();
+         _htmlVisual.Clear();
          lbTime.Content = string.Empty;
+      }
+
+      private void btLoad_Click(object sender, RoutedEventArgs e)
+      {
+         Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+         dlg.DefaultExt = "html";
+         dlg.Filter = "HTML files |*.html";
+
+         if (dlg.ShowDialog() == true)
+         {
+            string html = System.IO.File.ReadAllText(dlg.FileName);
+            Render(html);
+         }
+      }
+
+      private void Draw()
+      {
+         _watch.Restart();
+         _htmlVisual.Draw();
+         _watch.Stop();
+         lbTime.Content = "Render Time(ms): " + _watch.ElapsedMilliseconds;
+      }
+
+      private void Render(string html)
+      {
+         _watch.Restart();
+         _htmlVisual.Render(html);
+         _watch.Stop();
+         lbTime.Content = "Render Time(ms): " + _watch.ElapsedMilliseconds;
+      }
+
+      private void canvas_MouseMove(object sender, MouseEventArgs e)
+      {
+         var pos = e.GetPosition(canvas);
+         _htmlVisual.OnMouseMove(pos.X, pos.Y);
       }
    }
 }
