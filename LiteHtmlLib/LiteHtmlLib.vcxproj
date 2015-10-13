@@ -263,7 +263,6 @@
     <ClCompile Include="src\dllmain.cpp" />
     <ClCompile Include="src\DocContainer.cpp" />
     <ClCompile Include="src\Globals.cpp" />
-    <ClCompile Include="src\LiteHtmlLib.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\litehtml\src\gumbo\char_ref.rl" />

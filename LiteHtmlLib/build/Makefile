@@ -1446,33 +1446,6 @@ src/Globals.cpp.s:
 	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/Globals.cpp.s
 .PHONY : src/Globals.cpp.s
 
-src/LiteHtmlLib.o: src/LiteHtmlLib.cpp.o
-
-.PHONY : src/LiteHtmlLib.o
-
-# target to build an object file
-src/LiteHtmlLib.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/LiteHtmlLib.cpp.o
-.PHONY : src/LiteHtmlLib.cpp.o
-
-src/LiteHtmlLib.i: src/LiteHtmlLib.cpp.i
-
-.PHONY : src/LiteHtmlLib.i
-
-# target to preprocess a source file
-src/LiteHtmlLib.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/LiteHtmlLib.cpp.i
-.PHONY : src/LiteHtmlLib.cpp.i
-
-src/LiteHtmlLib.s: src/LiteHtmlLib.cpp.s
-
-.PHONY : src/LiteHtmlLib.s
-
-# target to generate assembly for a file
-src/LiteHtmlLib.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/LiteHtmlLib.cpp.s
-.PHONY : src/LiteHtmlLib.cpp.s
-
 src/dllmain.o: src/dllmain.cpp.o
 
 .PHONY : src/dllmain.o
@@ -1656,9 +1629,6 @@ help:
 	@echo "... src/Globals.o"
 	@echo "... src/Globals.i"
 	@echo "... src/Globals.s"
-	@echo "... src/LiteHtmlLib.o"
-	@echo "... src/LiteHtmlLib.i"
-	@echo "... src/LiteHtmlLib.s"
 	@echo "... src/dllmain.o"
 	@echo "... src/dllmain.i"
 	@echo "... src/dllmain.s"
