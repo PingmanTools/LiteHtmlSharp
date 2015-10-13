@@ -64,6 +64,9 @@ public:
    GetClientRect_function GetClientRect = 0;
    GetMediaFeatures_function GetMediaFeatures = 0;
 
+   OnAnchorClick_function OnAnchorClick = 0;
+   SetBaseURL_function SetBaseURL = 0;
+
 private:
    litehtml::context _context;
    litehtml::position _drawPos;

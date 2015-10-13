@@ -256,5 +256,15 @@ namespace Browser
          media.color = 24;
          media.type = media_type.media_type_all;
       }
+
+      protected override void SetBaseURL(ref string base_url)
+      {
+         base_url = BaseURL;
+      }
+
+      protected override void OnAnchorClick(ref string url)
+      {
+         throw new NotImplementedException();
+      }
    }
 }

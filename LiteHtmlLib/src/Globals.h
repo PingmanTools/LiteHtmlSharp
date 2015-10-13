@@ -19,6 +19,9 @@ typedef litehtml::tchar_t*(*ImportCss_function)(const litehtml::tchar_t* url, co
 typedef void(*GetClientRect_function)(litehtml::position & client);
 typedef void(*GetMediaFeatures_function)(litehtml::media_features & media);
 
+typedef void(*SetBaseURL_function)(const litehtml::tchar_t * base_url);
+typedef void(*OnAnchorClick_function)(const litehtml::tchar_t * url);
+
 // callback registration
 extern "C" __declspec(dllexport) void SetDrawBorders(DocContainer* container, DrawBorders_function callback);
 extern "C" __declspec(dllexport) void SetDrawBackground(DocContainer* container, DrawBackground_function callback);
@@ -33,6 +36,8 @@ extern "C" __declspec(dllexport) void SetImportCss(DocContainer* container, Impo
 extern "C" __declspec(dllexport) void SetGetClientRect(DocContainer* container, GetClientRect_function callback);
 extern "C" __declspec(dllexport) void SetGetMediaFeatures(DocContainer* container, GetMediaFeatures_function callback);
 
+extern "C" __declspec(dllexport) void SetSetBaseURL(DocContainer* container, SetBaseURL_function callback);
+extern "C" __declspec(dllexport) void SetOnAnchorClick(DocContainer* container, OnAnchorClick_function callback);
 
 // container functions
 extern "C" __declspec(dllexport) DocContainer* Init();

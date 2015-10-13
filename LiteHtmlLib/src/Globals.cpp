@@ -90,3 +90,13 @@ __declspec(dllexport) void SetGetMediaFeatures(DocContainer* container, GetMedia
 {
    container->GetMediaFeatures = callback;
 }
+
+__declspec(dllexport) void SetSetBaseURL(DocContainer* container, SetBaseURL_function callback)
+{
+   container->SetBaseURL = callback;
+}
+
+__declspec(dllexport) void SetOnAnchorClick(DocContainer* container, OnAnchorClick_function callback)
+{
+   container->OnAnchorClick = callback;
+}

@@ -36,6 +36,9 @@ namespace LiteHtmlSharp
 
          PInvokes.SetGetClientRect(CPPContainer, CreateDelegate(new GetClientRectFunc(GetClientRect)));
          PInvokes.SetGetMediaFeatures(CPPContainer, CreateDelegate(new GetMediaFeaturesFunc(GetMediaFeatures)));
+
+         PInvokes.SetSetBaseURL(CPPContainer, CreateDelegate(new SetBaseURLFunc(SetBaseURL)));
+         PInvokes.SetOnAnchorClick(CPPContainer, CreateDelegate(new OnAnchorClickFunc(OnAnchorClick)));
       }
 
       static void TestFramework()
@@ -84,6 +87,10 @@ namespace LiteHtmlSharp
       protected abstract void GetClientRect(ref position client);
 
       protected abstract void GetMediaFeatures(ref media_features media);
+
+      protected abstract void SetBaseURL(ref string base_url);
+
+      protected abstract void OnAnchorClick(ref string url);
 
       public virtual void RenderHtml(string html)
       {

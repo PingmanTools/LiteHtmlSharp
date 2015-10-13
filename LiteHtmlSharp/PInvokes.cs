@@ -58,6 +58,12 @@ namespace LiteHtmlSharp
 
       [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs)]
       public static extern void SetGetMediaFeatures(IntPtr container, GetMediaFeaturesFunc func);
+
+      [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs)]
+      public static extern void SetSetBaseURL(IntPtr container, SetBaseURLFunc func);
+
+      [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs)]
+      public static extern void SetOnAnchorClick(IntPtr container, OnAnchorClickFunc func);
       #endregion
 
 

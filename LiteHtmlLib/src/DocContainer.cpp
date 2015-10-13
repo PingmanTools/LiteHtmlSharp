@@ -78,7 +78,7 @@ void DocContainer::set_caption(const litehtml::tchar_t * caption)
 
 void DocContainer::set_base_url(const litehtml::tchar_t * base_url)
 {
-   int i = 0;
+   SetBaseURL(base_url);
 }
 
 void DocContainer::link(const std::shared_ptr<litehtml::document>& doc, const litehtml::element::ptr & el)
@@ -88,7 +88,7 @@ void DocContainer::link(const std::shared_ptr<litehtml::document>& doc, const li
 
 void DocContainer::on_anchor_click(const litehtml::tchar_t * url, const litehtml::element::ptr & el)
 {
-   int i = 0;
+   OnAnchorClick(url);
 }
 
 void DocContainer::set_cursor(const litehtml::tchar_t * cursor)
