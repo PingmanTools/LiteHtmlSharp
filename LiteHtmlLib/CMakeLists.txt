@@ -9,8 +9,6 @@ set(SOURCE_LITEHTMLLIB
                     src/dllmain.cpp
                     src/DocContainer.cpp
                     src/Globals.cpp
-                    src/LiteHtmlLib.cpp
-                    src/ManagedCallbacks.cpp
 )
 
 set(SOURCE_LITEHTML ../litehtml/src/background.cpp

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ManagedCallbacks.h"
+#include "Globals.h"
 #include "../../litehtml/src/html.h"
 #include "../../litehtml/src/context.h"
 #include "../../litehtml/src/document.h"

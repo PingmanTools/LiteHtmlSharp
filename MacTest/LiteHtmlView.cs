@@ -25,8 +25,6 @@ namespace MacTest
          const int bitsPerComponent = 8;
          BitmapContext = new CGBitmapContext(bytes, width, height, bitsPerComponent, bytesPerRow, colorSpace, CGBitmapFlags.PremultipliedLast | CGBitmapFlags.ByteOrder32Big);
          LiteHtmlContainer = new LiteHtmlMacContainer(this);
-
-         //this.SetNeedsDisplayInRect(new CGRect(
       }
 
       public void DrawRect(nfloat x, nfloat y, nfloat width, nfloat height, CGColor color)

@@ -60,9 +60,6 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
-    <Compile Include="AppDelegate.designer.cs">
-      <DependentUpon>AppDelegate.cs</DependentUpon>
-    </Compile>
     <Compile Include="TestWindow.cs" />
     <Compile Include="LiteHtmlView.cs" />
     <Compile Include="LiteHtmlMacContainer.cs" />

@@ -18,6 +18,7 @@ namespace MacTest
       public override void DidFinishLaunching(NSNotification notification)
       {
          var testWindow = new TestWindow(new CoreGraphics.CGRect(50, 50, 500, 500));
+         //testWindow.CascadeTopLeftFromPoint(
          testWindow.MakeKeyAndOrderFront(this);
       }
    }
