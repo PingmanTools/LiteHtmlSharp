@@ -56,6 +56,21 @@ __declspec(dllexport) bool OnMouseMove(DocContainer* container, int x, int y)
    return container->OnMouseMove(x, y);
 }
 
+__declspec(dllexport) bool OnMouseLeave(DocContainer* container)
+{
+   return container->OnMouseLeave();
+}
+
+__declspec(dllexport) bool OnLeftButtonUp(DocContainer* container, int x, int y)
+{
+   return container->OnLeftButtonUp(x, y);
+}
+
+__declspec(dllexport) bool OnLeftButtonDown(DocContainer* container, int x, int y)
+{
+   return container->OnLeftButtonDown(x, y);
+}
+
 __declspec(dllexport) void Draw(DocContainer* container)
 {
    container->Draw();
@@ -99,4 +114,9 @@ __declspec(dllexport) void SetSetBaseURL(DocContainer* container, SetBaseURL_fun
 __declspec(dllexport) void SetOnAnchorClick(DocContainer* container, OnAnchorClick_function callback)
 {
    container->OnAnchorClick = callback;
+}
+
+__declspec(dllexport) void SetPTtoPX(DocContainer* container, PTtoPX_function callback)
+{
+   container->PTtoPX = callback;
 }

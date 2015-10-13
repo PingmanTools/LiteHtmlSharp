@@ -22,6 +22,8 @@ typedef void(*GetMediaFeatures_function)(litehtml::media_features & media);
 typedef void(*SetBaseURL_function)(const litehtml::tchar_t * base_url);
 typedef void(*OnAnchorClick_function)(const litehtml::tchar_t * url);
 
+typedef int(*PTtoPX_function)(int pt);
+
 // callback registration
 extern "C" __declspec(dllexport) void SetDrawBorders(DocContainer* container, DrawBorders_function callback);
 extern "C" __declspec(dllexport) void SetDrawBackground(DocContainer* container, DrawBackground_function callback);
@@ -39,9 +41,16 @@ extern "C" __declspec(dllexport) void SetGetMediaFeatures(DocContainer* containe
 extern "C" __declspec(dllexport) void SetSetBaseURL(DocContainer* container, SetBaseURL_function callback);
 extern "C" __declspec(dllexport) void SetOnAnchorClick(DocContainer* container, OnAnchorClick_function callback);
 
+extern "C" __declspec(dllexport) void SetPTtoPX(DocContainer* container, PTtoPX_function callback);
+
 // container functions
 extern "C" __declspec(dllexport) DocContainer* Init();
+
 extern "C" __declspec(dllexport) bool OnMouseMove(DocContainer* container, int x, int y);
+extern "C" __declspec(dllexport) bool OnMouseLeave(DocContainer* container);
+extern "C" __declspec(dllexport) bool OnLeftButtonUp(DocContainer* container, int x, int y);
+extern "C" __declspec(dllexport) bool OnLeftButtonDown(DocContainer* container, int x, int y);
+
 extern "C" __declspec(dllexport) void RenderHTML(DocContainer* container, const litehtml::tchar_t* html);
 extern "C" __declspec(dllexport) void Draw(DocContainer* container);
 extern "C" __declspec(dllexport) void SetMasterCSS(DocContainer* container, const litehtml::tchar_t* css);
