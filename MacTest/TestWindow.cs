@@ -23,6 +23,7 @@ namespace MacTest
          NSTimer.CreateScheduledTimer(TimeSpan.FromSeconds(0.1), t =>
             {
                containerView.LiteHtmlContainer.RenderHtml(exHtml);
+               Console.WriteLine("called render");
             });
       }
 

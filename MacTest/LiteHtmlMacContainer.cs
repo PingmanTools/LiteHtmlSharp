@@ -27,6 +27,11 @@ namespace MacTest
          return masterCss;
       }
 
+      protected override void GetImageSize(string image, ref size size)
+      {
+         
+      }
+
       protected override void DrawBackground(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos)
       {
          view.BitmapContext.SetFillColor(GetCGColor(ref color));

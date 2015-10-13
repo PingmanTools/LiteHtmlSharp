@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace LiteHtmlSharp
 {
@@ -14,6 +15,8 @@ namespace LiteHtmlSharp
 
       public Container()
       {
+         CheckLastError();
+
          #if DEBUG
          int testStaticCallback = 0;
          PInvokes.SetTestFunction(result => testStaticCallback = result);
@@ -23,6 +26,7 @@ namespace LiteHtmlSharp
          }
          #endif
 
+         CheckLastError();
          CPPContainer = PInvokes.Init();
 
          #if DEBUG
@@ -33,9 +37,13 @@ namespace LiteHtmlSharp
          {
             throw new Exception("Container instance callback test failed. Something is broken!");
          }
-#endif
+         #endif
 
-         PInvokes.SetMasterCSS(CPPContainer, GetMasterCssData());
+         CheckLastError();
+
+         var cssData = GetMasterCssData();
+         PInvokes.SetMasterCSS(CPPContainer, cssData);
+         CheckLastError();
 
          PInvokes.SetDrawBorders(CPPContainer, CreateDelegate(new DrawBordersFunc(DrawBorders)));
          PInvokes.SetDrawBackground(CPPContainer, CreateDelegate(new DrawBackgroundFunc(DrawBackground)));
@@ -59,6 +67,17 @@ namespace LiteHtmlSharp
       public virtual void RenderHtml(string html)
       {
          PInvokes.RenderHTML(CPPContainer, html);
+         CheckLastError();
+      }
+
+      protected virtual void CheckLastError()
+      {
+         var lastError = Marshal.GetLastWin32Error();
+         if (lastError > 0)
+         {
+            var e = new Win32Exception(lastError);
+            throw e;
+         }
       }
    }
 }
