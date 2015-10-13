@@ -34,8 +34,8 @@ namespace MacTest
 
       protected override void DrawBackground(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos)
       {
-         view.BitmapContext.SetFillColor(GetCGColor(ref color));
-         view.BitmapContext.FillRect(new CGRect(pos.x, pos.y, pos.width, pos.height));
+         view.BitmapContext.SetFillColor(color.ToCGColor());
+         view.BitmapContext.FillRect(pos.ToRect());
          view.SetNeedsDisplayInRect(view.Bounds);
       }
 
@@ -43,31 +43,21 @@ namespace MacTest
       {
          if (borders.top.width > 0)
          {
-            view.DrawRect(draw_pos.x, draw_pos.y, draw_pos.width, borders.top.width, GetCGColor(ref borders.top.color));
+            view.DrawRect(draw_pos.x, draw_pos.y, draw_pos.width, borders.top.width, borders.top.color.ToCGColor());
          }
-
          if (borders.left.width > 0)
          {
-            view.DrawRect(draw_pos.x, draw_pos.y, borders.left.width, draw_pos.width, GetCGColor(ref borders.left.color));
+            view.DrawRect(draw_pos.x, draw_pos.y, borders.left.width, draw_pos.width, borders.left.color.ToCGColor());
          }
-
          if (borders.right.width > 0)
          {
-            view.DrawRect(draw_pos.x, draw_pos.y, borders.right.width, draw_pos.width, GetCGColor(ref borders.right.color));
+            view.DrawRect(draw_pos.x, draw_pos.y, borders.right.width, draw_pos.width, borders.right.color.ToCGColor());
          }
-
          if (borders.bottom.width > 0)
          {
-            view.DrawRect(draw_pos.x, draw_pos.y, draw_pos.width, borders.bottom.width, GetCGColor(ref borders.bottom.color));
+            view.DrawRect(draw_pos.x, draw_pos.y, draw_pos.width, borders.bottom.width, borders.bottom.color.ToCGColor());
          }
          view.SetNeedsDisplayInRect(view.Bounds);
-      }
-
-      const float MaxByteAsFloat = (float)byte.MaxValue;
-
-      public static CGColor GetCGColor(ref web_color wc)
-      {
-         return new CGColor(wc.red / MaxByteAsFloat, wc.green / MaxByteAsFloat, wc.blue / MaxByteAsFloat, wc.alpha / MaxByteAsFloat);
       }
 
    }
