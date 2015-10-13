@@ -33,7 +33,7 @@ void DocContainer::draw_text(litehtml::uint_ptr hdc, const litehtml::tchar_t * t
 
 int DocContainer::pt_to_px(int pt)
 {
-   return 0;
+   return pt * 2;
 }
 
 int DocContainer::get_default_font_size() const
@@ -78,7 +78,7 @@ void DocContainer::set_caption(const litehtml::tchar_t * caption)
 
 void DocContainer::set_base_url(const litehtml::tchar_t * base_url)
 {
-   int i = 0;
+   SetBaseURL(base_url);
 }
 
 void DocContainer::link(const std::shared_ptr<litehtml::document>& doc, const litehtml::element::ptr & el)
@@ -88,7 +88,7 @@ void DocContainer::link(const std::shared_ptr<litehtml::document>& doc, const li
 
 void DocContainer::on_anchor_click(const litehtml::tchar_t * url, const litehtml::element::ptr & el)
 {
-   int i = 0;
+   OnAnchorClick(url);
 }
 
 void DocContainer::set_cursor(const litehtml::tchar_t * cursor)
@@ -103,7 +103,7 @@ void DocContainer::transform_text(litehtml::tstring & text, litehtml::text_trans
 
 void DocContainer::import_css(litehtml::tstring & text, const litehtml::tstring & url, litehtml::tstring & baseurl)
 {
-   int i = 0;
+   text = ImportCss(url.c_str(), baseurl.c_str());
 }
 
 void DocContainer::set_clip(const litehtml::position & pos, const litehtml::border_radiuses & bdr_radius, bool valid_x, bool valid_y)
@@ -118,27 +118,17 @@ void DocContainer::del_clip()
 
 void DocContainer::get_client_rect(litehtml::position & client) const
 {
-   int i = 0;
+   GetClientRect(client);
 }
 
 std::shared_ptr<litehtml::element> DocContainer::create_element(const litehtml::tchar_t * tag_name, const litehtml::string_map & attributes, const std::shared_ptr<litehtml::document>& doc)
 {
-   //MyElement* result = new MyElement(doc);
-   //_elements.push_back(result);
-   //return std::shared_ptr<litehtml::element>();
    return 0;
 }
 
 void DocContainer::get_media_features(litehtml::media_features & media) const
 {
-   media.width = 1000;
-   media.height = 400;
-   media.resolution = 96;
-   media.color = 24;
-   media.device_width = 1000;
-   media.device_height = 400;
-   media.color_index = 0;
-   media.type = litehtml::media_type::media_type_all;
+   GetMediaFeatures(media);
 }
 
 void DocContainer::get_language(litehtml::tstring & language, litehtml::tstring & culture) const
@@ -153,11 +143,6 @@ void DocContainer::SetMasterCSS(const tchar_t* css)
 
 void DocContainer::RenderHTML(const tchar_t* html)
 {
-   /*_drawPos.width = 100;
-   _drawPos.height = 100;
-   _drawPos.x = 0;
-   _drawPos.y = 0;*/
-
    if (_document != nullptr)
    {
       _document.reset();

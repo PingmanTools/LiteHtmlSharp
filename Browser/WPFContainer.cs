@@ -25,6 +25,8 @@ namespace Browser
       public bool Loaded = false;
       private bool _rendering = false;
       public static string BaseURL;
+      static uint _nextFontID;
+      public Point _size;
 
       public WPFContainer(DrawingVisual visual) : base()
       {
@@ -84,6 +86,11 @@ namespace Browser
                Draw();
             }
          }
+      }
+
+      public void OnSizeChanged(double x, double y)
+      {
+         _size = new Point(x, y);
       }
 
       private void TestDrawing()
@@ -178,18 +185,25 @@ namespace Browser
          BitmapImage result = null;
          if (!_images.TryGetValue(image, out result))
          {
-            Uri uri;
-            if(!Uri.TryCreate(image, UriKind.Absolute, out uri))
-            {
-               var fullpath = Path.Combine(BaseURL, image);
-               uri = new Uri(fullpath);
-            }
+            Uri uri = GetAbsoluteFile(image);
 
             result = new BitmapImage(uri);
             _images.Add(image, result);
          }
 
          return result;
+      }
+
+      private Uri GetAbsoluteFile(string file)
+      {
+         Uri uri;
+         if (!Uri.TryCreate(file, UriKind.Absolute, out uri))
+         {
+            var fullpath = Path.Combine(BaseURL, file);
+            uri = new Uri(fullpath);
+         }
+
+         return uri;
       }
 
       protected override int GetTextWidth(string text, UIntPtr font)
@@ -210,10 +224,47 @@ namespace Browser
       protected override UIntPtr CreateFont(string faceName, int size, int weight, font_style italic, uint decoration, ref font_metrics fm)
       {
          FontInfo font = new FontInfo(new FontFamily(faceName), italic == font_style.fontStyleItalic ? FontStyles.Italic : FontStyles.Normal, FontWeight.FromOpenTypeWeight(weight), size);
-         Random rand = new Random();
-         UIntPtr fontID = new UIntPtr((uint)rand.Next());
+         UIntPtr fontID = new UIntPtr(_nextFontID++);
          _fonts.Add(fontID, font);
          return fontID;
+      }
+
+      protected override string ImportCss(string url, string baseurl)
+      {
+         var file = GetAbsoluteFile(url);
+         if(File.Exists(file.OriginalString))
+         {
+            return File.ReadAllText(file.OriginalString);
+         }
+
+         return string.Empty;
+      }
+
+      protected override void GetClientRect(ref position client)
+      {
+         client.width = (int)_size.X;
+         client.height = (int)_size.Y;
+      }
+
+      protected override void GetMediaFeatures(ref media_features media)
+      {
+         media.width = (int)_size.X;
+         media.height = (int)_size.Y;
+         media.device_width = media.width;
+         media.device_height = media.height;
+         media.resolution = 96;
+         media.color = 24;
+         media.type = media_type.media_type_all;
+      }
+
+      protected override void SetBaseURL(ref string base_url)
+      {
+         base_url = BaseURL;
+      }
+
+      protected override void OnAnchorClick(ref string url)
+      {
+         throw new NotImplementedException();
       }
    }
 }

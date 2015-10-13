@@ -55,10 +55,17 @@ public:
    DrawBackground_function DrawBackground = 0;
    GetImageSize_function GetImageSize = 0;
    Test_function TestCallback = 0;
+   ImportCss_function ImportCss = 0;
 
    DrawText_function DrawText = 0;
    GetTextWidth_function GetTextWidth = 0;
    CreateFont_function CreateFont = 0;
+
+   GetClientRect_function GetClientRect = 0;
+   GetMediaFeatures_function GetMediaFeatures = 0;
+
+   OnAnchorClick_function OnAnchorClick = 0;
+   SetBaseURL_function SetBaseURL = 0;
 
 private:
    litehtml::context _context;
