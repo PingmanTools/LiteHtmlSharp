@@ -25,8 +25,6 @@
     <None Include="src\Globals.cpp" />
     <None Include="src\Globals.h" />
     <None Include="src\LiteHtmlLib.cpp" />
-    <None Include="src\ManagedCallbacks.cpp" />
-    <None Include="src\ManagedCallbacks.h" />
     <None Include="src\dllmain.cpp" />
     <None Include="..\litehtml\src\attributes.h">
       <Link>litehtml_src\attributes.h</Link>

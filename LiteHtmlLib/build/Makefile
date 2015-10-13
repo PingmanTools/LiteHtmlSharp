@@ -1473,33 +1473,6 @@ src/LiteHtmlLib.cpp.s:
 	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/LiteHtmlLib.cpp.s
 .PHONY : src/LiteHtmlLib.cpp.s
 
-src/ManagedCallbacks.o: src/ManagedCallbacks.cpp.o
-
-.PHONY : src/ManagedCallbacks.o
-
-# target to build an object file
-src/ManagedCallbacks.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/ManagedCallbacks.cpp.o
-.PHONY : src/ManagedCallbacks.cpp.o
-
-src/ManagedCallbacks.i: src/ManagedCallbacks.cpp.i
-
-.PHONY : src/ManagedCallbacks.i
-
-# target to preprocess a source file
-src/ManagedCallbacks.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/ManagedCallbacks.cpp.i
-.PHONY : src/ManagedCallbacks.cpp.i
-
-src/ManagedCallbacks.s: src/ManagedCallbacks.cpp.s
-
-.PHONY : src/ManagedCallbacks.s
-
-# target to generate assembly for a file
-src/ManagedCallbacks.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/ManagedCallbacks.cpp.s
-.PHONY : src/ManagedCallbacks.cpp.s
-
 src/dllmain.o: src/dllmain.cpp.o
 
 .PHONY : src/dllmain.o
@@ -1686,9 +1659,6 @@ help:
 	@echo "... src/LiteHtmlLib.o"
 	@echo "... src/LiteHtmlLib.i"
 	@echo "... src/LiteHtmlLib.s"
-	@echo "... src/ManagedCallbacks.o"
-	@echo "... src/ManagedCallbacks.i"
-	@echo "... src/ManagedCallbacks.s"
 	@echo "... src/dllmain.o"
 	@echo "... src/dllmain.i"
 	@echo "... src/dllmain.s"

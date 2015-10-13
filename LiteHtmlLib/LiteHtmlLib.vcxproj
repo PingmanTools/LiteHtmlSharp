@@ -211,7 +211,6 @@
     <ClInclude Include="..\litehtml\src\web_color.h" />
     <ClInclude Include="src\DocContainer.h" />
     <ClInclude Include="src\Globals.h" />
-    <ClInclude Include="src\ManagedCallbacks.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\litehtml\src\background.cpp" />
@@ -265,7 +264,6 @@
     <ClCompile Include="src\DocContainer.cpp" />
     <ClCompile Include="src\Globals.cpp" />
     <ClCompile Include="src\LiteHtmlLib.cpp" />
-    <ClCompile Include="src\ManagedCallbacks.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\litehtml\src\gumbo\char_ref.rl" />

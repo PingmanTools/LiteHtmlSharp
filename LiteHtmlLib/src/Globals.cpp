@@ -1,7 +1,6 @@
 #include "Globals.h"
 
 #include "DocContainer.h"
-#include "ManagedCallbacks.h"
 
 std::vector<DocContainer*> _containers;
 
