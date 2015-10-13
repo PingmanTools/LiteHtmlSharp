@@ -10,7 +10,7 @@ namespace MacTest
 
       public CGBitmapContext BitmapContext { get; private set; }
 
-      public MacLiteHtmlContainer LiteHtmlContainer { get; private set; }
+      public LiteHtmlMacContainer LiteHtmlContainer { get; private set; }
 
       public LiteHtmlView(CGRect frame)
          : base(frame)
@@ -24,7 +24,7 @@ namespace MacTest
          int bytesPerRow = bytesPerPixel * width;
          const int bitsPerComponent = 8;
          BitmapContext = new CGBitmapContext(bytes, width, height, bitsPerComponent, bytesPerRow, colorSpace, CGBitmapFlags.PremultipliedLast | CGBitmapFlags.ByteOrder32Big);
-         LiteHtmlContainer = new MacLiteHtmlContainer(this);
+         LiteHtmlContainer = new LiteHtmlMacContainer(this);
 
          //this.SetNeedsDisplayInRect(new CGRect(
       }

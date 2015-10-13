@@ -15,8 +15,15 @@ namespace MacTest
       public TestWindow(CGRect rect)
          : base(rect, NSWindowStyle.Titled, NSBackingStore.Buffered, false)
       {
+         const string exHtml = "<html><head></head><body><div style='width:100px; height:100px; background-color:red'>HELLO WORLD</div></body></html>";
          var containerView = new LiteHtmlView(rect);
+
          ContentView.AddSubview(containerView);
+
+         NSTimer.CreateScheduledTimer(TimeSpan.FromSeconds(0.1), t =>
+            {
+               containerView.LiteHtmlContainer.RenderHtml(exHtml);
+            });
       }
 
       #endregion

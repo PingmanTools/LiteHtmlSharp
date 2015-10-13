@@ -51,6 +51,7 @@ public:
 
    DrawBorders_function DrawBorders = 0;
    DrawBackground_function DrawBackground = 0;
+   Test_function TestCallback = 0;
 
 private:
    litehtml::context _context;

@@ -64,17 +64,18 @@
       <DependentUpon>AppDelegate.cs</DependentUpon>
     </Compile>
     <Compile Include="TestWindow.cs" />
-    <Compile Include="TestWindow.designer.cs">
-      <DependentUpon>TestWindow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MacLiteHtmlContainer.cs" />
     <Compile Include="LiteHtmlView.cs" />
+    <Compile Include="LiteHtmlMacContainer.cs" />
   </ItemGroup>
   <Import Project="..\LiteHtmlSharp\LiteHtmlSharp.projitems" Label="Shared" Condition="Exists('..\LiteHtmlSharp\LiteHtmlSharp.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <ItemGroup>
     <Content Include="..\LiteHtmlLib\build\liblitehtml.dylib">
       <Link>liblitehtml.dylib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\litehtml\include\master.css">
+      <Link>master.css</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

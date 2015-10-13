@@ -2,16 +2,29 @@
 using LiteHtmlSharp;
 using AppKit;
 using CoreGraphics;
+using System.IO;
 
 namespace MacTest
 {
-   public class MacLiteHtmlContainer : Container
+   public class LiteHtmlMacContainer : Container
    {
       LiteHtmlView view;
 
-      public MacLiteHtmlContainer(LiteHtmlView view)
+      static string masterCss;
+
+      public LiteHtmlMacContainer(LiteHtmlView view)
+         : base()
       {
          this.view = view;
+      }
+
+      protected override string GetMasterCssData()
+      {
+         if (masterCss == null)
+         {
+            masterCss = File.ReadAllText("master.css");
+         }
+         return masterCss;
       }
 
       protected override void DrawBackground(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos)

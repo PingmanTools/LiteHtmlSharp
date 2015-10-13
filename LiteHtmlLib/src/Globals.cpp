@@ -15,6 +15,16 @@ __declspec(dllexport) void SetDrawBackground(DocContainer* container, DrawBackgr
    container->DrawBackground = callback;
 }
 
+__declspec(dllexport) void SetTestCallback(DocContainer* container, Test_function callback)
+{
+   container->TestCallback = callback;
+}
+
+__declspec(dllexport) void TriggerTestCallback(DocContainer* container)
+{
+   container->TestCallback(1337);
+}
+
 __declspec(dllexport) void SetTestFunction(Test_function callback)
 {
    callback(50);

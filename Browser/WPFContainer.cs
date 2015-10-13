@@ -58,13 +58,15 @@ namespace Browser
       public WPFContainer(DrawingVisual visual) : base()
       {
          _visual = visual;
+      }
 
+      protected override string GetMasterCssData()
+      {
          if (string.IsNullOrEmpty(_masterCSS))
          {
             _masterCSS = File.ReadAllText("master.css");
          }
-
-         PInvokes.SetMasterCSS(CPPContainer, _masterCSS);
+         return _masterCSS;
       }
 
       public void Render(string html)
