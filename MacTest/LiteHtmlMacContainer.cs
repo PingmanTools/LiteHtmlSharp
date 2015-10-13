@@ -27,9 +27,24 @@ namespace MacTest
          return masterCss;
       }
 
+      protected override int GetTextWidth(string text, UIntPtr font)
+      {
+         return 5;
+      }
+
       protected override void GetImageSize(string image, ref size size)
       {
          
+      }
+
+      protected override UIntPtr CreateFont(string faceName, int size, int weight, font_style italic, uint decoration, ref font_metrics fm)
+      {
+         throw new NotImplementedException();
+      }
+
+      protected override void DrawText(string text, UIntPtr font, ref web_color color, ref position pos)
+      {
+         throw new NotImplementedException();
       }
 
       protected override void DrawBackground(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos)
