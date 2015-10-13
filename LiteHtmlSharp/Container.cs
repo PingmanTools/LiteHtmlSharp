@@ -15,39 +15,38 @@ namespace LiteHtmlSharp
 
       public Container()
       {
-         CheckLastError();
-
          #if DEBUG
-         int testStaticCallback = 0;
-         PInvokes.SetTestFunction(result => testStaticCallback = result);
-         if (testStaticCallback == 0)
-         {
-            throw new Exception("Container instance callback test failed. Something is really broken!");
-         }
+         TestFramework();
          #endif
 
-         CheckLastError();
          CPPContainer = PInvokes.Init();
-
-         #if DEBUG
-         int testInstanceCallback = 0;
-         PInvokes.SetTestCallback(CPPContainer, result => testInstanceCallback = result);
-         PInvokes.TriggerTestCallback(CPPContainer);
-         if (testInstanceCallback == 0)
-         {
-            throw new Exception("Container instance callback test failed. Something is broken!");
-         }
-         #endif
-
-         CheckLastError();
 
          var cssData = GetMasterCssData();
          PInvokes.SetMasterCSS(CPPContainer, cssData);
-         CheckLastError();
 
          PInvokes.SetDrawBorders(CPPContainer, CreateDelegate(new DrawBordersFunc(DrawBorders)));
          PInvokes.SetDrawBackground(CPPContainer, CreateDelegate(new DrawBackgroundFunc(DrawBackground)));
          PInvokes.SetGetImageSize(CPPContainer, CreateDelegate(new GetImageSizeFunc(GetImageSize)));
+      }
+
+      static void TestFramework()
+      {
+         string testStaticCallback = null;
+         PInvokes.SetTestFunction(result => testStaticCallback = result);
+         if (string.IsNullOrEmpty(testStaticCallback))
+         {
+            throw new Exception("Container instance callback test failed. Something is really broken!");
+         }
+            
+         var CPPContainer = PInvokes.Init();
+         string testInstanceCallback = null;
+         string testInstanceCallbackResult = "Test 1234 .... ₤ · ₥ · ₦ · ₮ · ₯ · ₹";
+         PInvokes.SetTestCallback(CPPContainer, result => testInstanceCallback = result);
+         PInvokes.TriggerTestCallback(CPPContainer, testInstanceCallbackResult);
+         if (testInstanceCallback != testInstanceCallbackResult)
+         {
+            throw new Exception("Container instance callback test failed. Something is broken!");
+         }
       }
 
       private T CreateDelegate<T>(T someDelegate)
@@ -67,7 +66,6 @@ namespace LiteHtmlSharp
       public virtual void RenderHtml(string html)
       {
          PInvokes.RenderHTML(CPPContainer, html);
-         CheckLastError();
       }
 
       protected virtual void CheckLastError()
@@ -76,7 +74,7 @@ namespace LiteHtmlSharp
          if (lastError > 0)
          {
             var e = new Win32Exception(lastError);
-            throw e;
+            //throw e;
          }
       }
    }

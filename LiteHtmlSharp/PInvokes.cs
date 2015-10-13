@@ -5,7 +5,7 @@ namespace LiteHtmlSharp
 {
    public static class PInvokes
    {
-      
+
       #if __MonoCS__
       const string LiteHtmlLibFile = "litehtml";
       #else
@@ -13,7 +13,7 @@ namespace LiteHtmlSharp
       #endif
 
       public const CallingConvention cc = CallingConvention.Cdecl;
-
+      public const CharSet cs = CharSet.Ansi;
 
 
       #region Tests
@@ -24,8 +24,8 @@ namespace LiteHtmlSharp
       [DllImport(LiteHtmlLibFile, CallingConvention = cc)]
       public static extern void SetTestCallback(IntPtr container, CallbackFunc func);
 
-      [DllImport(LiteHtmlLibFile, CallingConvention = cc)]
-      public static extern void TriggerTestCallback(IntPtr container);
+      [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs)]
+      public static extern void TriggerTestCallback(IntPtr container, string testString);
 
       #endregion
 
@@ -48,10 +48,10 @@ namespace LiteHtmlSharp
 
       #region Instance Methods
 
-      [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = CharSet.Unicode, SetLastError = true)]
+      [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs, SetLastError = true)]
       public static extern void RenderHTML(IntPtr container, string html);
 
-      [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = CharSet.Unicode, SetLastError = true)]
+      [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs, SetLastError = true)]
       public static extern void SetMasterCSS(IntPtr container, string css);
 
       [DllImport(LiteHtmlLibFile, CallingConvention = cc, SetLastError = true)]

@@ -24,14 +24,14 @@ __declspec(dllexport) void SetTestCallback(DocContainer* container, Test_functio
    container->TestCallback = callback;
 }
 
-__declspec(dllexport) void TriggerTestCallback(DocContainer* container)
+__declspec(dllexport) void TriggerTestCallback(DocContainer* container, const litehtml::tchar_t* testString)
 {
-   container->TestCallback(1337);
+   container->TestCallback(testString);
 }
 
 __declspec(dllexport) void SetTestFunction(Test_function callback)
 {
-   callback(50);
+   callback(_T("xxx test string"));
 }
 
 __declspec(dllexport) DocContainer* Init()
