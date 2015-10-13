@@ -1527,33 +1527,6 @@ src/dllmain.cpp.s:
 	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/dllmain.cpp.s
 .PHONY : src/dllmain.cpp.s
 
-src/myclass.o: src/myclass.cpp.o
-
-.PHONY : src/myclass.o
-
-# target to build an object file
-src/myclass.cpp.o:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/myclass.cpp.o
-.PHONY : src/myclass.cpp.o
-
-src/myclass.i: src/myclass.cpp.i
-
-.PHONY : src/myclass.i
-
-# target to preprocess a source file
-src/myclass.cpp.i:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/myclass.cpp.i
-.PHONY : src/myclass.cpp.i
-
-src/myclass.s: src/myclass.cpp.s
-
-.PHONY : src/myclass.s
-
-# target to generate assembly for a file
-src/myclass.cpp.s:
-	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/myclass.cpp.s
-.PHONY : src/myclass.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -1719,9 +1692,6 @@ help:
 	@echo "... src/dllmain.o"
 	@echo "... src/dllmain.i"
 	@echo "... src/dllmain.s"
-	@echo "... src/myclass.o"
-	@echo "... src/myclass.i"
-	@echo "... src/myclass.s"
 .PHONY : help
 
 

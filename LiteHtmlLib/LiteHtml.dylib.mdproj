@@ -10,7 +10,7 @@
     <OutputPath>.</OutputPath>
     <CustomCommands>
       <CustomCommands>
-        <Command type="Build" command="sh build.sh" workingdir="${ProjectDir}" />
+        <Command type="Build" command="sh build.sh" workingdir="${ProjectDir}" externalConsole="True" />
       </CustomCommands>
     </CustomCommands>
   </PropertyGroup>
@@ -28,8 +28,6 @@
     <None Include="src\ManagedCallbacks.cpp" />
     <None Include="src\ManagedCallbacks.h" />
     <None Include="src\dllmain.cpp" />
-    <None Include="src\myclass.cpp" />
-    <None Include="src\myclass.h" />
     <None Include="..\litehtml\src\attributes.h">
       <Link>litehtml_src\attributes.h</Link>
     </None>

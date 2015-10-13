@@ -64,13 +64,13 @@ namespace Browser
             _masterCSS = File.ReadAllText("master.css");
          }
 
-         SetMasterCSS(CPPContainer, _masterCSS);
+         PInvokes.SetMasterCSS(CPPContainer, _masterCSS);
       }
 
       public void Render(string html)
       {
          _dc = _visual.RenderOpen();
-         RenderHTML(CPPContainer, html);
+         PInvokes.RenderHTML(CPPContainer, html);
          _dc.Close();
          _dc = null;
       }
@@ -90,7 +90,7 @@ namespace Browser
 
       protected override void DrawBackground(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos)
       {
-         if(pos.width > 0 && pos.height  > 0)
+         if (pos.width > 0 && pos.height > 0)
          {
             DrawRect(pos.x, pos.y, pos.width, pos.height, GetBrush(ref color));
          }
@@ -130,7 +130,7 @@ namespace Browser
          string key = color.red.ToString() + color.green.ToString() + color.blue.ToString();
 
          Brush result = null;
-         if(!_brushes.TryGetValue(key, out result))
+         if (!_brushes.TryGetValue(key, out result))
          {
             result = new SolidColorBrush(Color.FromArgb(color.alpha, color.red, color.green, color.blue));
             _brushes.Add(key, result);

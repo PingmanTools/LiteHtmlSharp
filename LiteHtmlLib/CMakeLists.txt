@@ -11,7 +11,6 @@ set(SOURCE_LITEHTMLLIB
                     src/Globals.cpp
                     src/LiteHtmlLib.cpp
                     src/ManagedCallbacks.cpp
-                    src/myclass.cpp
 )
 
 set(SOURCE_LITEHTML ../litehtml/src/background.cpp

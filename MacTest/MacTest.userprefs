@@ -1,12 +1,19 @@
 ﻿<Properties StartupItem="MacTest.csproj">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="../LiteHtmlLib/src/DocContainer.h">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="../LiteHtmlLib/CMakeLists.txt">
     <Files>
-      <File FileName="AppDelegate.cs" Line="15" Column="41" />
-      <File FileName="../LiteHtmlSharp/Container.cs" Line="29" Column="7" />
-      <File FileName="../LiteHtmlLib/build.sh" Line="4" Column="9" />
-      <File FileName="../LiteHtmlLib/src/Globals.h" Line="3" Column="16" />
-      <File FileName="../LiteHtmlLib/src/DocContainer.h" Line="6" Column="14" />
+      <File FileName="AppDelegate.cs" Line="15" Column="43" />
+      <File FileName="../LiteHtmlSharp/Container.cs" Line="32" Column="25" />
+      <File FileName="TestWindow.cs" Line="18" Column="9" />
+      <File FileName="MacLiteHtmlContainer.cs" Line="20" Column="8" />
+      <File FileName="../LiteHtmlLib/src/DocContainer.cpp" Line="1" Column="1" />
+      <File FileName="../LiteHtmlLib/src/ManagedCallbacks.cpp" Line="4" Column="35" />
+      <File FileName="../LiteHtmlLib/src/ManagedCallbacks.h" Line="11" Column="36" />
+      <File FileName="../LiteHtmlLib/src/DocContainer.h" Line="3" Column="11" />
+      <File FileName="../LiteHtmlLib/src/Globals.cpp" Line="38" Column="2" />
+      <File FileName="../LiteHtmlLib/src/Globals.h" Line="10" Column="1" />
+      <File FileName="../LiteHtmlLib/src/LiteHtmlLib.cpp" Line="1" Column="1" />
+      <File FileName="../LiteHtmlLib/CMakeLists.txt" Line="13" Column="45" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

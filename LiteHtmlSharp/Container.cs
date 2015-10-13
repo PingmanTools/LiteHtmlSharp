@@ -9,35 +9,24 @@ namespace LiteHtmlSharp
 {
    public abstract class Container
    {
-      [DllImport("LiteHtmlLib.dll", CallingConvention = CallingConvention.Cdecl)]
-      public static extern void SetTestFunction(CallbackFunc func);
-
-      [DllImport("LiteHtmlLib.dll", CallingConvention = CallingConvention.Cdecl)]
-      public static extern void SetDrawBorders(IntPtr container, DrawBordersFunc func);
-
-      [DllImport("LiteHtmlLib.dll", CallingConvention = CallingConvention.Cdecl)]
-      public static extern void SetDrawBackground(IntPtr container, DrawBackgroundFunc func);
-
-      [DllImport("LiteHtmlLib.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-      public static extern void RenderHTML(IntPtr container, string html);
-
-      [DllImport("LiteHtmlLib.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-      public static extern void SetMasterCSS(IntPtr container, string css);
-
-      [DllImport("LiteHtmlLib.dll", CallingConvention = CallingConvention.Cdecl)]
-      public static extern IntPtr Init();
 
       protected IntPtr CPPContainer;
 
       public Container()
       {
-         CPPContainer = Init();
+         CPPContainer = PInvokes.Init();
 
-         SetDrawBorders(CPPContainer, DrawBorders);
-         SetDrawBackground(CPPContainer, DrawBackground);
+         PInvokes.SetDrawBorders(CPPContainer, DrawBorders);
+         PInvokes.SetDrawBackground(CPPContainer, DrawBackground);
       }
 
       protected abstract void DrawBackground(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos);
+
       protected abstract void DrawBorders(UIntPtr hdc, ref borders borders, ref position draw_pos, bool root);
+
+      public virtual void RenderHtml(string html)
+      {
+         PInvokes.RenderHTML(CPPContainer, html);
+      }
    }
 }
