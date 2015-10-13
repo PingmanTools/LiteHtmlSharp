@@ -16,12 +16,24 @@ namespace MacTest
 
       public LiteHtmlMacContainer LiteHtmlContainer { get; private set; }
 
+      NSTrackingArea trackingArea = null;
+
       public LiteHtmlView(CGRect frame)
          : base(frame)
       {
          WantsLayer = true;
          CreateBitmapContext();
          LiteHtmlContainer = new LiteHtmlMacContainer(this);
+      }
+
+      public override void UpdateTrackingAreas()
+      {
+         if (trackingArea != null)
+         {
+            RemoveTrackingArea(trackingArea);
+         }
+         trackingArea = new NSTrackingArea(Bounds, NSTrackingAreaOptions.ActiveAlways | NSTrackingAreaOptions.MouseMoved, this, null);
+         AddTrackingArea(trackingArea);
       }
 
       void CreateBitmapContext()
@@ -54,6 +66,12 @@ namespace MacTest
          gfxc.RestoreState();
       }
 
+      public override void MouseMoved(NSEvent theEvent)
+      {
+         var point = ConvertPointFromView(theEvent.LocationInWindow, null);
+         LiteHtmlContainer.OnMouseMove((int)point.X, (int)point.Y);
+         base.MouseMoved(theEvent);
+      }
 
    }
 }

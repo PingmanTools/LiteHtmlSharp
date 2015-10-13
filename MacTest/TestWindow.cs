@@ -17,9 +17,20 @@ namespace MacTest
       {
          const string exHtml = @"
 <html>
-<head></head>
+<head>
+<style>
+#test{
+   width:100px;
+   height:100px; 
+   background-color:red;
+}
+#test:hover {
+   background-color: blue;
+}
+</style>
+</head>
 <body>
-<div style='width:100px; height:100px; background-color:red'>HELLO WORLD</div>
+<div id='test'>HELLO WORLD</div>
 <div style='margin:20px; width:100px; height:100px; background-color:green'>second</div>
 </body>
 </html>

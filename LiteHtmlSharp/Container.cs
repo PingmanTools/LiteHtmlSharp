@@ -111,5 +111,15 @@ namespace LiteHtmlSharp
       {
          PInvokes.Draw(CPPContainer);
       }
+
+      public virtual void OnMouseMove(int x, int y)
+      {
+         var updated = PInvokes.OnMouseMove(CPPContainer, x, y);
+         if (updated)
+         {
+            Redraw();
+         }
+      }
+
    }
 }

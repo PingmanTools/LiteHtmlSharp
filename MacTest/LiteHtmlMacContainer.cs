@@ -43,6 +43,33 @@ namespace MacTest
          fontCache = new Dictionary<UIntPtr, FontHolder>();
       }
 
+      protected override string ImportCss(string url, string baseurl)
+      {
+         return "";
+      }
+
+      protected override void GetClientRect(ref position client)
+      {
+         client.width = (int)view.Bounds.Width;
+         client.height = (int)view.Bounds.Height;
+      }
+
+      protected override void GetMediaFeatures(ref media_features media)
+      {
+         media.device_width = (int)view.Bounds.Width;
+         media.device_height = (int)view.Bounds.Height;
+      }
+
+      protected override void SetBaseURL(ref string base_url)
+      {
+         
+      }
+
+      protected override void OnAnchorClick(ref string url)
+      {
+         
+      }
+
       protected override UIntPtr CreateFont(string faceName, int size, int weight, font_style italic, uint decoration, ref font_metrics fm)
       {
          var symbolicTrait = italic == font_style.fontStyleItalic ? CTFontSymbolicTraits.Italic : CTFontSymbolicTraits.None;
