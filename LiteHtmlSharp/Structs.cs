@@ -14,6 +14,14 @@ namespace LiteHtmlSharp
       public int y;
       public int width;
       public int height;
+
+      public void Scale(int scaleFactor)
+      {
+         x *= scaleFactor;
+         y *= scaleFactor;
+         width *= scaleFactor;
+         height *= scaleFactor;
+      }
    }
 
    [StructLayout(LayoutKind.Sequential)]
@@ -30,6 +38,18 @@ namespace LiteHtmlSharp
 
       public int bottom_left_x;
       public int bottom_left_y;
+
+      public void Scale(int scaleFactor)
+      {
+         top_left_x *= scaleFactor;
+         top_left_y *= scaleFactor;
+         top_right_x *= scaleFactor;
+         top_right_y *= scaleFactor;
+         bottom_right_x *= scaleFactor;
+         bottom_right_y *= scaleFactor;
+         bottom_left_x *= scaleFactor;
+         bottom_left_y *= scaleFactor;
+      }
    }
 
    [StructLayout(LayoutKind.Sequential)]
@@ -40,6 +60,15 @@ namespace LiteHtmlSharp
       public border right;
       public border bottom;
       public border_radiuses radius;
+
+      public void Scale(int scaleFactor)
+      {
+         left.Scale(scaleFactor);
+         top.Scale(scaleFactor);
+         right.Scale(scaleFactor);
+         bottom.Scale(scaleFactor);
+         radius.Scale(scaleFactor);
+      }
    }
 
    [StructLayout(LayoutKind.Sequential)]
@@ -48,6 +77,11 @@ namespace LiteHtmlSharp
       public int width;
       public border_style style;
       public web_color color;
+
+      public void Scale(int scaleFactor)
+      {
+         width *= scaleFactor;
+      }
    }
 
    [StructLayout(LayoutKind.Sequential)]
@@ -64,6 +98,12 @@ namespace LiteHtmlSharp
    {
       public int width;
       public int height;
+
+      public void Scale(int scaleFactor)
+      {
+         width *= scaleFactor;
+         height *= scaleFactor;
+      }
    }
 
    [StructLayout(LayoutKind.Sequential)]
@@ -80,14 +120,22 @@ namespace LiteHtmlSharp
    public struct media_features
    {
       public media_type type;
-      public int width;        // (pixels) For continuous media, this is the width of the viewport including the size of a rendered scroll bar (if any). For paged media, this is the width of the page box.
-      public int height;       // (pixels) The height of the targeted display area of the output device. For continuous media, this is the height of the viewport including the size of a rendered scroll bar (if any). For paged media, this is the height of the page box.
-      public int device_width; // (pixels) The width of the rendering surface of the output device. For continuous media, this is the width of the screen. For paged media, this is the width of the page sheet size.
-      public int device_height;   // (pixels) The height of the rendering surface of the output device. For continuous media, this is the height of the screen. For paged media, this is the height of the page sheet size.
-      public int color;        // The number of bits per color component of the output device. If the device is not a color device, the value is zero.
-      public int color_index;  // The number of entries in the color lookup table of the output device. If the device does not use a color lookup table, the value is zero.
-      public int monochrome;      // The number of bits per pixel in a monochrome frame buffer. If the device is not a monochrome device, the output device value will be 0.
-      public int resolution;      // The resolution of the output device (in DPI)
+      public int width;
+      // (pixels) For continuous media, this is the width of the viewport including the size of a rendered scroll bar (if any). For paged media, this is the width of the page box.
+      public int height;
+      // (pixels) The height of the targeted display area of the output device. For continuous media, this is the height of the viewport including the size of a rendered scroll bar (if any). For paged media, this is the height of the page box.
+      public int device_width;
+      // (pixels) The width of the rendering surface of the output device. For continuous media, this is the width of the screen. For paged media, this is the width of the page sheet size.
+      public int device_height;
+      // (pixels) The height of the rendering surface of the output device. For continuous media, this is the height of the screen. For paged media, this is the height of the page sheet size.
+      public int color;
+      // The number of bits per color component of the output device. If the device is not a color device, the value is zero.
+      public int color_index;
+      // The number of entries in the color lookup table of the output device. If the device does not use a color lookup table, the value is zero.
+      public int monochrome;
+      // The number of bits per pixel in a monochrome frame buffer. If the device is not a monochrome device, the output device value will be 0.
+      public int resolution;
+      // The resolution of the output device (in DPI)
    };
 
    public enum media_type

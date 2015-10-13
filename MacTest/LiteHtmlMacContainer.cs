@@ -17,8 +17,6 @@ namespace MacTest
          public CTStringAttributes Attributes { get; set; }
 
          public CTFont Font { get; set; }
-
-         public nfloat Height { get; set; }
       }
 
       static string masterCss;
@@ -41,6 +39,11 @@ namespace MacTest
       {
          this.view = view;
          fontCache = new Dictionary<UIntPtr, FontHolder>();
+      }
+
+      protected override int PTtoPX(int pt)
+      {
+         return 1;
       }
 
       protected override string ImportCss(string url, string baseurl)
@@ -78,8 +81,7 @@ namespace MacTest
          var fontHolder = new FontHolder
          { 
             Font = font, 
-            Attributes = strAttrs, 
-            Height = new NSAttributedString("H", strAttrs).Size.Height
+            Attributes = strAttrs
          };
 
          lastFontId++;
@@ -110,13 +112,13 @@ namespace MacTest
       protected override void DrawText(string text, UIntPtr fontId, ref web_color color, ref position pos)
       {
          var fontHolder = fontCache[fontId];
-
-         var ctAttrs = new CTStringAttributes{ Font = fontHolder.Font, ForegroundColor = color.ToCGColor() };
+         var scaledFont = new CTFont(fontHolder.Font.GetFontDescriptor(), fontHolder.Font.Size * ScaleFactor);
+         var ctAttrs = new CTStringAttributes{ Font = scaledFont, ForegroundColor = color.ToCGColor() };
          var attrString = new NSAttributedString(text, ctAttrs);
-
+         var height = new NSAttributedString("H", ctAttrs).Size.Height;
 
          gfx.SaveState();
-         gfx.TranslateCTM(pos.x, pos.y + fontHolder.Height);
+         gfx.TranslateCTM(pos.x, pos.y + height);
          gfx.ScaleCTM(1, -1);
          gfx.TextMatrix = CGAffineTransform.MakeIdentity();
 

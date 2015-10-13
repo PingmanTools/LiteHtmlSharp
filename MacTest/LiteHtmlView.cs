@@ -12,8 +12,6 @@ namespace MacTest
 
       public CGBitmapContext BitmapContext { get; private set; }
 
-      private nfloat bitmapScale;
-
       public LiteHtmlMacContainer LiteHtmlContainer { get; private set; }
 
       NSTrackingArea trackingArea = null;
@@ -22,8 +20,8 @@ namespace MacTest
          : base(frame)
       {
          WantsLayer = true;
-         CreateBitmapContext();
          LiteHtmlContainer = new LiteHtmlMacContainer(this);
+         CreateBitmapContext();
       }
 
       public override void UpdateTrackingAreas()
@@ -38,10 +36,10 @@ namespace MacTest
 
       void CreateBitmapContext()
       {
-         bitmapScale = Layer.ContentsScale;
+         LiteHtmlContainer.ScaleFactor = (int)Layer.ContentsScale;
 
-         var width = (int)(Bounds.Width * bitmapScale);
-         var height = (int)(Bounds.Height * bitmapScale);
+         var width = (int)(Bounds.Width * Layer.ContentsScale);
+         var height = (int)(Bounds.Height * Layer.ContentsScale);
 
          var colorSpace = CGColorSpace.CreateDeviceRGB();
          const int bytesPerPixel = 4;
@@ -53,7 +51,7 @@ namespace MacTest
 
       public override void DrawRect(CoreGraphics.CGRect dirtyRect)
       {
-         if (bitmapScale != Layer.ContentsScale)
+         if (LiteHtmlContainer.ScaleFactor != (int)Layer.ContentsScale)
          {
             CreateBitmapContext();
             LiteHtmlContainer.Redraw();

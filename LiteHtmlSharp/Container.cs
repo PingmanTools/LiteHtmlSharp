@@ -13,6 +13,8 @@ namespace LiteHtmlSharp
       protected IntPtr CPPContainer;
       private static List<Delegate> _delegates = new List<Delegate>();
 
+      public int ScaleFactor = 1;
+
       public Container()
       {
          #if DEBUG
@@ -24,11 +26,11 @@ namespace LiteHtmlSharp
          var cssData = GetMasterCssData();
          PInvokes.SetMasterCSS(CPPContainer, cssData);
 
-         PInvokes.SetDrawBorders(CPPContainer, CreateDelegate(new DrawBordersFunc(DrawBorders)));
-         PInvokes.SetDrawBackground(CPPContainer, CreateDelegate(new DrawBackgroundFunc(DrawBackground)));
+         PInvokes.SetDrawBorders(CPPContainer, CreateDelegate(new DrawBordersFunc(DrawBordersScaled)));
+         PInvokes.SetDrawBackground(CPPContainer, CreateDelegate(new DrawBackgroundFunc(DrawBackgroundScaled)));
          PInvokes.SetGetImageSize(CPPContainer, CreateDelegate(new GetImageSizeFunc(GetImageSize)));
 
-         PInvokes.SetDrawText(CPPContainer, CreateDelegate(new DrawTextFunc(DrawText)));
+         PInvokes.SetDrawText(CPPContainer, CreateDelegate(new DrawTextFunc(DrawTextScaled)));
          PInvokes.SetGetTextWidth(CPPContainer, CreateDelegate(new GetTextWidthFunc(GetTextWidth)));
          PInvokes.SetCreateFont(CPPContainer, CreateDelegate(new CreateFontFunc(CreateFont)));
 
@@ -70,23 +72,50 @@ namespace LiteHtmlSharp
          return someDelegate;
       }
 
+      // -----
+
+      private void DrawBackgroundScaled(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos)
+      {
+         pos.Scale(ScaleFactor);
+         DrawBackground(hdc, image, repeat, ref color, ref pos);
+      }
+
       protected abstract void DrawBackground(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos);
 
+      // -----
+
+      private void DrawBordersScaled(UIntPtr hdc, ref borders borders, ref position draw_pos, bool root)
+      {
+         borders.Scale(ScaleFactor);
+         draw_pos.Scale(ScaleFactor);
+         DrawBorders(hdc, ref borders, ref draw_pos, root);
+      }
+
       protected abstract void DrawBorders(UIntPtr hdc, ref borders borders, ref position draw_pos, bool root);
+
+      // -----
+
+      private void DrawTextScaled(string text, UIntPtr font, ref web_color color, ref position pos)
+      {
+         pos.Scale(ScaleFactor);
+         DrawText(text, font, ref color, ref pos);
+      }
+
+      protected abstract void DrawText(string text, UIntPtr font, ref web_color color, ref position pos);
+
+      // -----
 
       protected abstract void GetImageSize(string image, ref size size);
 
       protected abstract int GetTextWidth(string text, UIntPtr font);
 
-      protected abstract void DrawText(string text, UIntPtr font, ref web_color color, ref position pos);
+      protected abstract void GetClientRect(ref position client);
 
       protected abstract UIntPtr CreateFont(string faceName, int size, int weight, font_style italic, uint decoration, ref font_metrics fm);
 
       protected abstract string ImportCss(string url, string baseurl);
 
       protected abstract string GetMasterCssData();
-
-      protected abstract void GetClientRect(ref position client);
 
       protected abstract void GetMediaFeatures(ref media_features media);
 
