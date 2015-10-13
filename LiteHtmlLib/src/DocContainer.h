@@ -47,6 +47,9 @@ public:
    void RenderHTML(const litehtml::tchar_t* html);
    void SetMasterCSS(const litehtml::tchar_t* css);
    bool OnMouseMove(int x, int y);
+   bool OnMouseLeave();
+   bool OnLeftButtonDown(int x, int y);
+   bool OnLeftButtonUp(int x, int y);
    void Draw();
 
    std::shared_ptr<litehtml::document> _document;
@@ -66,6 +69,7 @@ public:
 
    OnAnchorClick_function OnAnchorClick = 0;
    SetBaseURL_function SetBaseURL = 0;
+   PTtoPX_function PTtoPX = 0;
 
 private:
    litehtml::context _context;

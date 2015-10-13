@@ -39,6 +39,8 @@ namespace LiteHtmlSharp
 
          PInvokes.SetSetBaseURL(CPPContainer, CreateDelegate(new SetBaseURLFunc(SetBaseURL)));
          PInvokes.SetOnAnchorClick(CPPContainer, CreateDelegate(new OnAnchorClickFunc(OnAnchorClick)));
+
+         PInvokes.SetPTtoPX(CPPContainer, CreateDelegate(new PTtoPXFunct(PTtoPX)));
       }
 
       static void TestFramework()
@@ -91,6 +93,8 @@ namespace LiteHtmlSharp
       protected abstract void SetBaseURL(ref string base_url);
 
       protected abstract void OnAnchorClick(ref string url);
+
+      protected abstract int PTtoPX(int pt);
 
       public virtual void RenderHtml(string html)
       {

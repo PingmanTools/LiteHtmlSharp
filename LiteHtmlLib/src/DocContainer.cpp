@@ -33,7 +33,7 @@ void DocContainer::draw_text(litehtml::uint_ptr hdc, const litehtml::tchar_t * t
 
 int DocContainer::pt_to_px(int pt)
 {
-   return pt * 2;
+   return PTtoPX(pt);
 }
 
 int DocContainer::get_default_font_size() const
@@ -161,15 +161,23 @@ void DocContainer::Draw()
 bool DocContainer::OnMouseMove(int x, int y)
 {
    std::vector<litehtml::position> redraw_boxes;
+   return _document->on_mouse_over(x, y, 0, 0, redraw_boxes);
+}
 
-   if (_document->on_mouse_over(x, y, 0, 0, redraw_boxes))
-   {
-      return true;
-      /*for (litehtml::position::vector::iterator box = redraw_boxes.begin(); box != redraw_boxes.end(); box++)
-      {
-         _document->draw(NULL, box->x, box->y, box._Ptr);
-      }*/
-   }
+bool DocContainer::OnMouseLeave()
+{
+   std::vector<litehtml::position> redraw_boxes;
+   return _document->on_mouse_leave(redraw_boxes);
+}
 
-   return false;
+bool DocContainer::OnLeftButtonDown(int x, int y)
+{
+   std::vector<litehtml::position> redraw_boxes;
+   return _document->on_lbutton_down(x, y, 0, 0, redraw_boxes);
+}
+
+bool DocContainer::OnLeftButtonUp(int x, int y)
+{
+   std::vector<litehtml::position> redraw_boxes;
+   return _document->on_lbutton_up(x, y, 0, 0, redraw_boxes);
 }

@@ -88,6 +88,39 @@ namespace Browser
          }
       }
 
+      public void OnMouseLeave()
+      {
+         if (Loaded)
+         {
+            if (PInvokes.OnMouseLeave(CPPContainer))
+            {
+               Draw();
+            }
+         }
+      }
+
+      public void OnLeftButtonDown(double x, double y)
+      {
+         if (Loaded)
+         {
+            if (PInvokes.OnLeftButtonDown(CPPContainer, (int)x, (int)y))
+            {
+               Draw();
+            }
+         }
+      }
+
+      public void OnLeftButtonUp(double x, double y)
+      {
+         if (Loaded)
+         {
+            if (PInvokes.OnLeftButtonUp(CPPContainer, (int)x, (int)y))
+            {
+               Draw();
+            }
+         }
+      }
+
       public void OnSizeChanged(double x, double y)
       {
          _size = new Point(x, y);
@@ -265,6 +298,11 @@ namespace Browser
       protected override void OnAnchorClick(ref string url)
       {
          throw new NotImplementedException();
+      }
+
+      protected override int PTtoPX(int pt)
+      {
+         return pt;
       }
    }
 }

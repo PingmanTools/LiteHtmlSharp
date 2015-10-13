@@ -64,6 +64,9 @@ namespace LiteHtmlSharp
 
       [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs)]
       public static extern void SetOnAnchorClick(IntPtr container, OnAnchorClickFunc func);
+
+      [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs)]
+      public static extern void SetPTtoPX(IntPtr container, PTtoPXFunct func);
       #endregion
 
 
@@ -77,6 +80,15 @@ namespace LiteHtmlSharp
 
       [DllImport(LiteHtmlLibFile, CallingConvention = cc, SetLastError = true)]
       public static extern bool OnMouseMove(IntPtr container, int x, int y);
+
+      [DllImport(LiteHtmlLibFile, CallingConvention = cc, SetLastError = true)]
+      public static extern bool OnMouseLeave(IntPtr container);
+
+      [DllImport(LiteHtmlLibFile, CallingConvention = cc, SetLastError = true)]
+      public static extern bool OnLeftButtonUp(IntPtr container, int x, int y);
+
+      [DllImport(LiteHtmlLibFile, CallingConvention = cc, SetLastError = true)]
+      public static extern bool OnLeftButtonDown(IntPtr container, int x, int y);
 
       [DllImport(LiteHtmlLibFile, CallingConvention = cc, SetLastError = true)]
       public static extern void Draw(IntPtr container);
