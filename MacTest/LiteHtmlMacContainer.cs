@@ -11,12 +11,23 @@ namespace MacTest
 {
    public class LiteHtmlMacContainer : Container
    {
+      public delegate byte[] LoadImageDelegate(string imageUrl);
+
+      public LoadImageDelegate LoadImageCallback;
+
 
       class FontHolder
       {
          public CTStringAttributes Attributes { get; set; }
 
          public CTFont Font { get; set; }
+      }
+
+      class ImageHolder
+      {
+         public CGImage Image{ get; set; }
+
+         public CGSize Size { get; set; }
       }
 
       static string masterCss;
@@ -35,20 +46,18 @@ namespace MacTest
       Dictionary<UIntPtr, FontHolder> fontCache;
       uint lastFontId = 0;
 
+      Dictionary<string, ImageHolder> imageCache;
+
       public LiteHtmlMacContainer(LiteHtmlView view)
       {
          this.view = view;
          fontCache = new Dictionary<UIntPtr, FontHolder>();
+         imageCache = new Dictionary<string, ImageHolder>();
       }
 
       protected override int PTtoPX(int pt)
       {
          return 1;
-      }
-
-      protected override string ImportCss(string url, string baseurl)
-      {
-         return "";
       }
 
       protected override void GetClientRect(ref position client)
@@ -96,9 +105,20 @@ namespace MacTest
          return (int)Math.Round(size.Width);
       }
 
-      protected override void GetImageSize(string image, ref size size)
+      protected override void GetImageSize(string imageUrl, ref size size)
       {
-         
+         ImageHolder imageHolder;
+         if (!imageCache.TryGetValue(imageUrl, out imageHolder))
+         {
+            var imgBytes = LoadImageCallback(imageUrl);
+            var nsImage = new NSImage(NSData.FromArray(imgBytes));
+            var rect = new CGRect(new CGPoint(0, 0), nsImage.Size);
+            var image = nsImage.AsCGImage(ref rect, null, null);
+            imageHolder = new ImageHolder{ Image = image, Size = nsImage.Size };
+            imageCache.Add(imageUrl, imageHolder);
+         }
+         size.width = (int)imageHolder.Size.Width;
+         size.height = (int)imageHolder.Size.Height;
       }
 
       private CGBitmapContext gfx { get { return view.BitmapContext; } }
@@ -148,7 +168,12 @@ namespace MacTest
          }
          else
          {
-
+            var imageHolder = imageCache[image];
+            gfx.SaveState();
+            //gfx.ScaleCTM(1, -1);
+            //gfx.TranslateCTM(0, -(view.Bounds.Height - imageHolder.Size.Height));
+            gfx.DrawImage(rect, imageHolder.Image);
+            gfx.RestoreState();
          }
 
       }

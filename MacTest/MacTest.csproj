@@ -53,6 +53,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
+    <Folder Include="WebPage\" />
+    <Folder Include="WebPage\da900255-ffe1-46f2-a78f-88f6ac671c49_files\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -74,6 +76,14 @@
     </Content>
     <Content Include="..\..\litehtml\include\master.css">
       <Link>master.css</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WebPage\da900255-ffe1-46f2-a78f-88f6ac671c49_files\about.css" />
+    <Content Include="WebPage\da900255-ffe1-46f2-a78f-88f6ac671c49_files\core.css" />
+    <Content Include="WebPage\da900255-ffe1-46f2-a78f-88f6ac671c49_files\free-bg.png" />
+    <Content Include="WebPage\da900255-ffe1-46f2-a78f-88f6ac671c49_files\free-logo.png" />
+    <Content Include="WebPage\da900255-ffe1-46f2-a78f-88f6ac671c49_files\free-wordmark.png" />
+    <Content Include="WebPage\da900255-ffe1-46f2-a78f-88f6ac671c49.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

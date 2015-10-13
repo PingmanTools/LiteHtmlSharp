@@ -113,7 +113,16 @@ namespace LiteHtmlSharp
 
       protected abstract UIntPtr CreateFont(string faceName, int size, int weight, font_style italic, uint decoration, ref font_metrics fm);
 
-      protected abstract string ImportCss(string url, string baseurl);
+      public ImportCssFunc ImportCssCallback;
+
+      protected virtual string ImportCss(string url, string baseurl)
+      {
+         if (ImportCssCallback == null)
+         {
+            throw new Exception("ImportCss must be overridden or the callback delegate set");
+         }
+         return ImportCssCallback(url, baseurl);
+      }
 
       protected abstract string GetMasterCssData();
 
