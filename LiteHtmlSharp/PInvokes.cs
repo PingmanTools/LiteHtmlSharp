@@ -30,7 +30,6 @@ namespace LiteHtmlSharp
       #endregion
 
 
-
       #region Callback Injection
 
       [DllImport(LiteHtmlLibFile, CallingConvention = cc)]
@@ -42,8 +41,16 @@ namespace LiteHtmlSharp
       [DllImport(LiteHtmlLibFile, CallingConvention = cc)]
       public static extern void SetGetImageSize(IntPtr container, GetImageSizeFunc func);
 
-      #endregion
+      [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs, SetLastError = true)]
+      public static extern void SetDrawText(IntPtr container, DrawTextFunc func);
 
+      [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs)]
+      public static extern void SetCreateFont(IntPtr container, CreateFontFunc func);
+
+      [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs)]
+      public static extern void SetGetTextWidth(IntPtr container, GetTextWidthFunc func);
+
+      #endregion
 
 
       #region Instance Methods
@@ -51,16 +58,7 @@ namespace LiteHtmlSharp
       [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs, SetLastError = true)]
       public static extern void RenderHTML(IntPtr container, string html);
 
-      [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs, SetLastError = true)]
-      public static extern void SetDrawText(IntPtr container, DrawTextFunc func);
-
-      [DllImport(LiteHtmlLibFile, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-      public static extern void SetCreateFont(IntPtr container, CreateFontFunc func);
-
-      [DllImport(LiteHtmlLibFile, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-      public static extern void SetGetTextWidth(IntPtr container, GetTextWidthFunc func);
-
-      [DllImport(LiteHtmlLibFile, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+      [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs)]
       public static extern void SetMasterCSS(IntPtr container, string css);
 
       [DllImport(LiteHtmlLibFile, CallingConvention = cc, SetLastError = true)]

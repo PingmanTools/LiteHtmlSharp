@@ -19,12 +19,12 @@ namespace LiteHtmlSharp
    [UnmanagedFunctionPointer(PInvokes.cc, CharSet = PInvokes.cs)]
    public delegate void GetImageSizeFunc(string image,ref size size);
 
-   [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+   [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
    public delegate void DrawTextFunc(string text, UIntPtr font, ref web_color color, ref position pos);
 
-   [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+   [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
    public delegate int GetTextWidthFunc(string text, UIntPtr font);
 
-   [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+   [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
    public delegate UIntPtr CreateFontFunc(string faceName, int size, int weight, font_style italic, uint decoration, ref font_metrics fm);
 }
