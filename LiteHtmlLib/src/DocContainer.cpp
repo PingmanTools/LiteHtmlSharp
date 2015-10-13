@@ -13,7 +13,7 @@ DocContainer::~DocContainer()
 
 litehtml::uint_ptr DocContainer::create_font(const litehtml::tchar_t * faceName, int size, int weight, litehtml::font_style italic, unsigned int decoration, litehtml::font_metrics * fm)
 {
-   return litehtml::uint_ptr();
+   return CreateFont(faceName, size, weight, italic, decoration, *fm);
 }
 
 void DocContainer::delete_font(litehtml::uint_ptr hFont)
@@ -23,12 +23,12 @@ void DocContainer::delete_font(litehtml::uint_ptr hFont)
 
 int DocContainer::text_width(const litehtml::tchar_t * text, litehtml::uint_ptr hFont)
 {
-   return 0;
+   return GetTextWidth(text, hFont);
 }
 
 void DocContainer::draw_text(litehtml::uint_ptr hdc, const litehtml::tchar_t * text, litehtml::uint_ptr hFont, litehtml::web_color color, const litehtml::position & pos)
 {
-   int i = 0;
+   DrawText(text, hFont, color, pos);
 }
 
 int DocContainer::pt_to_px(int pt)
@@ -131,12 +131,12 @@ std::shared_ptr<litehtml::element> DocContainer::create_element(const litehtml::
 
 void DocContainer::get_media_features(litehtml::media_features & media) const
 {
-   media.width = 100;
-   media.height = 100;
+   media.width = 1000;
+   media.height = 400;
    media.resolution = 96;
    media.color = 24;
-   media.device_width = 100;
-   media.device_height = 100;
+   media.device_width = 1000;
+   media.device_height = 400;
    media.color_index = 0;
    media.type = litehtml::media_type::media_type_all;
 }

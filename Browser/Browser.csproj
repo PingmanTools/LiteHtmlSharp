@@ -64,6 +64,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="FontInfo.cs" />
     <Compile Include="HTMLVisual.cs" />
     <Compile Include="WPFContainer.cs" />
     <Compile Include="MainWindow.xaml.cs">

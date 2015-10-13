@@ -34,9 +34,18 @@ namespace LiteHtmlSharp
 
       [DllImport(LiteHtmlLibFile, CallingConvention = CallingConvention.Cdecl)]
       public static extern void SetGetImageSize(IntPtr container, GetImageSizeFunc func);
-   
+
       [DllImport(LiteHtmlLibFile, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
       public static extern void RenderHTML(IntPtr container, string html);
+
+      [DllImport(LiteHtmlLibFile, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+      public static extern void SetDrawText(IntPtr container, DrawTextFunc func);
+
+      [DllImport(LiteHtmlLibFile, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+      public static extern void SetCreateFont(IntPtr container, CreateFontFunc func);
+
+      [DllImport(LiteHtmlLibFile, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+      public static extern void SetGetTextWidth(IntPtr container, GetTextWidthFunc func);
 
       [DllImport(LiteHtmlLibFile, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
       public static extern void SetMasterCSS(IntPtr container, string css);

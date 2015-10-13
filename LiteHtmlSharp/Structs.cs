@@ -64,7 +64,17 @@ namespace LiteHtmlSharp
    {
       public int width;
       public int height;
-   };
+   }
+
+   [StructLayout(LayoutKind.Sequential)]
+   public struct font_metrics
+   {
+      public int height;
+      public int ascent;
+      public int descent;
+      public int x_height;
+      public bool draw_spaces;
+   }
 
    public enum border_style
    {
@@ -86,5 +96,17 @@ namespace LiteHtmlSharp
       background_repeat_repeat_x,
       background_repeat_repeat_y,
       background_repeat_no_repeat
+   }
+
+   public enum font_style
+   {
+      fontStyleNormal,
+      fontStyleItalic
+   }
+
+   public enum font_variant
+   {
+      font_variant_normal,
+      font_variant_italic
    }
 }

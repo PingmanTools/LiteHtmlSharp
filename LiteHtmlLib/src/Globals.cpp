@@ -61,3 +61,18 @@ __declspec(dllexport) void Draw(DocContainer* container)
 {
    container->Draw();
 }
+
+__declspec(dllexport) void SetCreateFont(DocContainer* container, CreateFont_function callback)
+{
+   container->CreateFont = callback;
+}
+
+__declspec(dllexport) void SetGetTextWidth(DocContainer* container, GetTextWidth_function callback)
+{
+   container->GetTextWidth = callback;
+}
+
+__declspec(dllexport) void SetDrawText(DocContainer* container, DrawText_function callback)
+{
+   container->DrawText = callback;
+}

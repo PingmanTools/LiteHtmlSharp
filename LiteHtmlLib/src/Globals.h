@@ -10,10 +10,18 @@ typedef void(*DrawBorders_function)(litehtml::uint_ptr hdc, const litehtml::bord
 typedef void(*DrawBackground_function)(litehtml::uint_ptr hdc, const litehtml::tchar_t* image, litehtml::background_repeat repeat, const litehtml::web_color& color, const litehtml::position& pos);
 typedef void(*GetImageSize_function)(const litehtml::tchar_t* image, litehtml::size& size);
 
+typedef void(*DrawText_function)(const litehtml::tchar_t* text, litehtml::uint_ptr font, litehtml::web_color& color, const litehtml::position& pos);
+typedef int(*GetTextWidth_function)(const litehtml::tchar_t* text, litehtml::uint_ptr font);
+typedef litehtml::uint_ptr(*CreateFont_function)(const litehtml::tchar_t* faceName, int size, int weight, litehtml::font_style italic, unsigned int decoration, litehtml::font_metrics& fm);
+
 // callback registration
 extern "C" __declspec(dllexport) void SetDrawBorders(DocContainer* container, DrawBorders_function callback);
 extern "C" __declspec(dllexport) void SetDrawBackground(DocContainer* container, DrawBackground_function callback);
 extern "C" __declspec(dllexport) void SetGetImageSize(DocContainer* container, GetImageSize_function callback);
+
+extern "C" __declspec(dllexport) void SetCreateFont(DocContainer* container, CreateFont_function callback);
+extern "C" __declspec(dllexport) void SetGetTextWidth(DocContainer* container, GetTextWidth_function callback);
+extern "C" __declspec(dllexport) void SetDrawText(DocContainer* container, DrawText_function callback);
 
 // container functions
 extern "C" __declspec(dllexport) DocContainer* Init();

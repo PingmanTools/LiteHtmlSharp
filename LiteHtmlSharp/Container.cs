@@ -33,13 +33,17 @@ namespace LiteHtmlSharp
          {
             throw new Exception("Container instance callback test failed. Something is broken!");
          }
-#endif
+         #endif
 
          PInvokes.SetMasterCSS(CPPContainer, GetMasterCssData());
 
          PInvokes.SetDrawBorders(CPPContainer, CreateDelegate(new DrawBordersFunc(DrawBorders)));
          PInvokes.SetDrawBackground(CPPContainer, CreateDelegate(new DrawBackgroundFunc(DrawBackground)));
          PInvokes.SetGetImageSize(CPPContainer, CreateDelegate(new GetImageSizeFunc(GetImageSize)));
+
+         PInvokes.SetDrawText(CPPContainer, CreateDelegate(new DrawTextFunc(DrawText)));
+         PInvokes.SetGetTextWidth(CPPContainer, CreateDelegate(new GetTextWidthFunc(GetTextWidth)));
+         PInvokes.SetCreateFont(CPPContainer, CreateDelegate(new CreateFontFunc(CreateFont)));
       }
 
       private T CreateDelegate<T>(T someDelegate)
@@ -53,6 +57,12 @@ namespace LiteHtmlSharp
       protected abstract void DrawBorders(UIntPtr hdc, ref borders borders, ref position draw_pos, bool root);
 
       protected abstract void GetImageSize(string image, ref size size);
+
+      protected abstract int GetTextWidth(string text, UIntPtr font);
+
+      protected abstract void DrawText(string text, UIntPtr font, ref web_color color, ref position pos);
+
+      protected abstract UIntPtr CreateFont(string faceName, int size, int weight, font_style italic, uint decoration, ref font_metrics fm);
 
       protected abstract string GetMasterCssData();
 

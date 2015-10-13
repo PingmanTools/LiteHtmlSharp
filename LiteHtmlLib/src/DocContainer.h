@@ -56,6 +56,10 @@ public:
    GetImageSize_function GetImageSize = 0;
    Test_function TestCallback = 0;
 
+   DrawText_function DrawText = 0;
+   GetTextWidth_function GetTextWidth = 0;
+   CreateFont_function CreateFont = 0;
+
 private:
    litehtml::context _context;
    litehtml::position _drawPos;

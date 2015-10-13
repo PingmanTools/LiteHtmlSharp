@@ -57,6 +57,7 @@ namespace Browser
          if (dlg.ShowDialog() == true)
          {
             string html = System.IO.File.ReadAllText(dlg.FileName);
+            WPFContainer.BaseURL = System.IO.Path.GetDirectoryName(dlg.FileName);
             Render(html);
          }
       }
