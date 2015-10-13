@@ -63,6 +63,7 @@
     <Compile Include="TestWindow.cs" />
     <Compile Include="LiteHtmlView.cs" />
     <Compile Include="LiteHtmlMacContainer.cs" />
+    <Compile Include="LiteHtmlMacExtensions.cs" />
   </ItemGroup>
   <Import Project="..\LiteHtmlSharp\LiteHtmlSharp.projitems" Label="Shared" Condition="Exists('..\LiteHtmlSharp\LiteHtmlSharp.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
