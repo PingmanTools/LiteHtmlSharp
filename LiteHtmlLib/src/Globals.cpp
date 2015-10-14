@@ -1,7 +1,5 @@
 #include "Globals.h"
 
-#include "DocContainer.h"
-
 std::vector<DocContainer*> _containers;
 
 __declspec(dllexport) void SetDrawBorders(DocContainer* container, DrawBorders_function callback)
@@ -44,6 +42,11 @@ __declspec(dllexport) DocContainer* Init()
 __declspec(dllexport) void RenderHTML(DocContainer* container, const litehtml::tchar_t* html, int maxWidth)
 {
    container->RenderHTML(html, maxWidth);
+}
+
+__declspec(dllexport) void Render(DocContainer* container, int maxWidth)
+{
+   container->Render(maxWidth);
 }
 
 __declspec(dllexport) void SetMasterCSS(DocContainer* container, const litehtml::tchar_t* css)
@@ -126,7 +129,12 @@ __declspec(dllexport) void SetCreateElement(DocContainer* container, CreateEleme
    container->CreateElement = callback;
 }
 
-__declspec(dllexport) ElementInfo& GetElementInfo(DocContainer* container, int ID)
+__declspec(dllexport) ElementInfo GetElementInfo(DocContainer* container, int ID)
 {
    return container->GetTagElementInfo(ID);
+}
+
+__declspec(dllexport) bool OnMediaChanged(DocContainer* container)
+{
+   return container->OnMediaChanged();
 }

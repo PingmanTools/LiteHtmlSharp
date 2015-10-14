@@ -22,32 +22,15 @@ namespace Browser
       Dictionary<string, BitmapImage> _images = new Dictionary<string, BitmapImage>();
       Dictionary<UIntPtr, FontInfo> _fonts = new Dictionary<UIntPtr, FontInfo>();
       List<int> _inputs = new List<int>();
-      static string _masterCSS;
       public bool Loaded = false;
       private bool _rendering = false;
       public static string BaseURL;
       static uint _nextFontID;
       public Point _size;
 
-      public WPFContainer(DrawingVisual visual) : base()
+      public WPFContainer(DrawingVisual visual, string css) : base(css)
       {
          _visual = visual;
-
-         if (string.IsNullOrEmpty(_masterCSS))
-         {
-            _masterCSS = File.ReadAllText("master.css");
-         }
-
-         PInvokes.SetMasterCSS(CPPContainer, _masterCSS);
-      }
-
-      protected override string GetMasterCssData()
-      {
-         if (string.IsNullOrEmpty(_masterCSS))
-         {
-            _masterCSS = File.ReadAllText("master.css");
-         }
-         return _masterCSS;
       }
 
       public void Render(string html)
@@ -71,7 +54,7 @@ namespace Browser
          {
             ElementInfo info = PInvokes.GetElementInfo(CPPContainer, i);
             TextBox tb = new TextBox();
-
+            _visual.Children.Add(tb);
          }
       }
 
@@ -142,6 +125,13 @@ namespace Browser
       public void OnSizeChanged(double x, double y)
       {
          _size = new Point(x, y);
+
+         if (Loaded)
+         {
+            PInvokes.OnMediaChanged(CPPContainer);
+            PInvokes.Render(CPPContainer, (int)_size.X);
+            Draw();
+         }
       }
 
       private void TestDrawing()
@@ -276,12 +266,17 @@ namespace Browser
 
       protected override UIntPtr CreateFont(string faceName, int size, int weight, font_style italic, uint decoration, ref font_metrics fm)
       {
-         FontInfo font = new FontInfo(new FontFamily(faceName), italic == font_style.fontStyleItalic ? FontStyles.Italic : FontStyles.Normal, FontWeight.FromOpenTypeWeight(weight), size);
+         fm.draw_spaces = true;
+         FontInfo font = new FontInfo(faceName, italic == font_style.fontStyleItalic ? FontStyles.Italic : FontStyles.Normal, FontWeight.FromOpenTypeWeight(weight), size);
          if((decoration & (int)font_decoration.font_decoration_underline) != 0)
          {
             font.Decorations.Add(TextDecorations.Underline);
          }
          UIntPtr fontID = new UIntPtr(_nextFontID++);
+         fm.x_height = 7;
+         fm.ascent = 10;
+         fm.descent = 3;
+         fm.height = fm.ascent + fm.descent + 2;
          _fonts.Add(fontID, font);
          return fontID;
       }
@@ -333,7 +328,9 @@ namespace Browser
       {
          if (string.Equals(tag, "input", StringComparison.OrdinalIgnoreCase))
          {
-            return 1;
+            int elementID = _inputs.Count + 1;
+            _inputs.Add(elementID);
+            return elementID;
          }
          else
          {

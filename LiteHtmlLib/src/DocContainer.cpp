@@ -127,7 +127,7 @@ std::shared_ptr<litehtml::element> DocContainer::create_element(const litehtml::
    if (elementID > 0)
    {
       std::shared_ptr<TagElement> result(new TagElement(_document));
-      _elements[0] = result;
+      _elements[elementID] = result;
       return std::shared_ptr<litehtml::element>(result.get());
    }
    else
@@ -168,6 +168,11 @@ void DocContainer::RenderHTML(const tchar_t* html, int maxWidth)
    _document->render(maxWidth);
 }
 
+void DocContainer::Render(int maxWidth)
+{
+   _document->render(maxWidth);
+}
+
 void DocContainer::Draw(int x, int y, litehtml::position clip)
 {
    _document->draw(NULL, x, y, &clip);
@@ -195,4 +200,9 @@ bool DocContainer::OnLeftButtonUp(int x, int y)
 {
    std::vector<litehtml::position> redraw_boxes;
    return _document->on_lbutton_up(x, y, 0, 0, redraw_boxes);
+}
+
+bool DocContainer::OnMediaChanged()
+{
+   return _document->media_changed();
 }

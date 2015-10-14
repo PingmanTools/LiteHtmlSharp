@@ -209,6 +209,7 @@
     <ClInclude Include="..\litehtml\src\types.h" />
     <ClInclude Include="..\litehtml\src\utf8_strings.h" />
     <ClInclude Include="..\litehtml\src\web_color.h" />
+    <ClInclude Include="src\CallbackDelegates.h" />
     <ClInclude Include="src\DocContainer.h" />
     <ClInclude Include="src\Globals.h" />
     <ClInclude Include="src\TagElement.h" />

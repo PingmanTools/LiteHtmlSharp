@@ -216,6 +216,9 @@
     <ClInclude Include="src\TagElement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\CallbackDelegates.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\litehtml\src\media_query.cpp">
