@@ -15,7 +15,7 @@ namespace LiteHtmlSharp
 
       public int ScaleFactor = 1;
 
-      public Container()
+      public Container(string masterCssData)
       {
          #if DEBUG
          //TestFramework();
@@ -23,8 +23,7 @@ namespace LiteHtmlSharp
 
          CPPContainer = PInvokes.Init();
 
-         var cssData = GetMasterCssData();
-         PInvokes.SetMasterCSS(CPPContainer, cssData);
+         PInvokes.SetMasterCSS(CPPContainer, masterCssData);
 
          PInvokes.SetDrawBorders(CPPContainer, CreateDelegate(new DrawBordersFunc(DrawBordersScaled)));
          PInvokes.SetDrawBackground(CPPContainer, CreateDelegate(new DrawBackgroundFunc(DrawBackgroundScaled)));
@@ -124,8 +123,6 @@ namespace LiteHtmlSharp
          }
          return ImportCssCallback(url, baseurl);
       }
-
-      protected abstract string GetMasterCssData();
 
       protected abstract void GetMediaFeatures(ref media_features media);
 

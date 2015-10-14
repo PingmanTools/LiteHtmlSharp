@@ -15,12 +15,13 @@ namespace MacTest
       public LiteHtmlMacContainer LiteHtmlContainer { get; private set; }
 
       NSTrackingArea trackingArea = null;
+      private CGSize lastBounds;
 
-      public LiteHtmlView(CGRect frame)
+      public LiteHtmlView(CGRect frame, string masterCssData)
          : base(frame)
       {
          WantsLayer = true;
-         LiteHtmlContainer = new LiteHtmlMacContainer(this);
+         LiteHtmlContainer = new LiteHtmlMacContainer(this, masterCssData);
          CreateBitmapContext();
       }
 
@@ -37,7 +38,7 @@ namespace MacTest
       void CreateBitmapContext()
       {
          LiteHtmlContainer.ScaleFactor = (int)Layer.ContentsScale;
-
+         lastBounds = new CGSize(Bounds.Width, Bounds.Height);
          var width = (int)(Bounds.Width * Layer.ContentsScale);
          var height = (int)(Bounds.Height * Layer.ContentsScale);
 
@@ -51,15 +52,15 @@ namespace MacTest
 
       public override void DrawRect(CoreGraphics.CGRect dirtyRect)
       {
-         if (LiteHtmlContainer.ScaleFactor != (int)Layer.ContentsScale)
+         if (LiteHtmlContainer.ScaleFactor != (int)Layer.ContentsScale || lastBounds != Bounds.Size)
          {
             CreateBitmapContext();
             LiteHtmlContainer.Redraw();
+            Log.W("redraw called");
          }
 
          var gfxc = NSGraphicsContext.CurrentContext.GraphicsPort;
          gfxc.SaveState();
-         //gfxc.ScaleCTM(bitmapScale, bitmapScale);
          gfxc.DrawImage(Bounds, BitmapContext.ToImage());
          gfxc.RestoreState();
       }
