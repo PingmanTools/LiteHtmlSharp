@@ -45,4 +45,7 @@ namespace LiteHtmlSharp
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
    public delegate int PTtoPXFunct(int pt);
+
+   [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
+   public delegate int CreateElementFunc(string tag);
 }

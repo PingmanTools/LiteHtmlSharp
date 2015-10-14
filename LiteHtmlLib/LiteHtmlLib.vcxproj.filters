@@ -213,6 +213,9 @@
     <ClInclude Include="src\Globals.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\TagElement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\litehtml\src\media_query.cpp">
@@ -363,6 +366,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Globals.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TagElement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

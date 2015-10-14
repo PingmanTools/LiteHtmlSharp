@@ -12,6 +12,7 @@ namespace LiteHtmlSharp
       FontFamily Family;
       public Typeface TypeFace;
       public int Size;
+      public TextDecorationCollection Decorations = new TextDecorationCollection();
 
       public FontInfo(FontFamily family, FontStyle style, FontWeight weight, int size)
       {

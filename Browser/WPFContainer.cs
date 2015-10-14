@@ -21,6 +21,7 @@ namespace Browser
       Dictionary<string, Brush> _brushes = new Dictionary<string, Brush>();
       Dictionary<string, BitmapImage> _images = new Dictionary<string, BitmapImage>();
       Dictionary<UIntPtr, FontInfo> _fonts = new Dictionary<UIntPtr, FontInfo>();
+      List<int> _inputs = new List<int>();
       static string _masterCSS;
       public bool Loaded = false;
       private bool _rendering = false;
@@ -53,13 +54,25 @@ namespace Browser
       {
          if (_rendering) return;
 
+         _inputs.Clear();
          _rendering = true;
-         _dc = _visual.RenderOpen();
-         PInvokes.RenderHTML(CPPContainer, html);
-         _dc.Close();
-         _dc = null;
+
+         PInvokes.RenderHTML(CPPContainer, html, (int)_size.X);
+         Draw();
+         ProcessInputs();
+
          _rendering = false;
          Loaded = true;
+      }
+
+      private void ProcessInputs()
+      {
+         foreach(int i in _inputs)
+         {
+            ElementInfo info = PInvokes.GetElementInfo(CPPContainer, i);
+            TextBox tb = new TextBox();
+
+         }
       }
 
       public void Clear()
@@ -72,7 +85,12 @@ namespace Browser
       public void Draw()
       {
          _dc = _visual.RenderOpen();
-         PInvokes.Draw(CPPContainer);
+         var clip = new position()
+         {
+            width = (int)_size.X,
+            height = (int)_size.Y
+         };
+         PInvokes.Draw(CPPContainer, 0, 0, clip);
          _dc.Close();
          _dc = null;
       }
@@ -243,13 +261,15 @@ namespace Browser
       {
          var fontInfo = GetFont(font);
          var formattedText = GetFormattedText(text, fontInfo);
-         return (int)formattedText.Width;
+         formattedText.SetTextDecorations(fontInfo.Decorations);
+         return (int)formattedText.WidthIncludingTrailingWhitespace;
       }
 
       protected override void DrawText(string text, UIntPtr font, ref web_color color, ref position pos)
       {
          var fontInfo = GetFont(font);
          var formattedText = new FormattedText(text, CultureInfo.InvariantCulture, System.Windows.FlowDirection.LeftToRight, fontInfo.TypeFace, fontInfo.Size, null);
+         formattedText.SetTextDecorations(fontInfo.Decorations);
          formattedText.SetForegroundBrush(GetBrush(ref color));
          _dc.DrawText(formattedText, new Point(pos.x, pos.y));
       }
@@ -257,6 +277,10 @@ namespace Browser
       protected override UIntPtr CreateFont(string faceName, int size, int weight, font_style italic, uint decoration, ref font_metrics fm)
       {
          FontInfo font = new FontInfo(new FontFamily(faceName), italic == font_style.fontStyleItalic ? FontStyles.Italic : FontStyles.Normal, FontWeight.FromOpenTypeWeight(weight), size);
+         if((decoration & (int)font_decoration.font_decoration_underline) != 0)
+         {
+            font.Decorations.Add(TextDecorations.Underline);
+         }
          UIntPtr fontID = new UIntPtr(_nextFontID++);
          _fonts.Add(fontID, font);
          return fontID;
@@ -303,6 +327,18 @@ namespace Browser
       protected override int PTtoPX(int pt)
       {
          return pt;
+      }
+
+      protected override int CreateElement(string tag)
+      {
+         if (string.Equals(tag, "input", StringComparison.OrdinalIgnoreCase))
+         {
+            return 1;
+         }
+         else
+         {
+            return 0;
+         }
       }
    }
 }

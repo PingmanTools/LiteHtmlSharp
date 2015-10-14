@@ -4,6 +4,7 @@
 #include "../../litehtml/src/html.h"
 #include "../../litehtml/src/context.h"
 #include "../../litehtml/src/document.h"
+#include "TagElement.h"
 
 #if defined(LITEHTML_UTF8)
 #define _T(x) x
@@ -44,13 +45,15 @@ public:
    virtual void get_media_features(litehtml::media_features & media) const override;
    virtual void get_language(litehtml::tstring & language, litehtml::tstring & culture) const override;
 
-   void RenderHTML(const litehtml::tchar_t* html);
+   void RenderHTML(const litehtml::tchar_t* html, int maxWidth);
    void SetMasterCSS(const litehtml::tchar_t* css);
    bool OnMouseMove(int x, int y);
    bool OnMouseLeave();
    bool OnLeftButtonDown(int x, int y);
    bool OnLeftButtonUp(int x, int y);
-   void Draw();
+   void Draw(int x, int y, litehtml::position clip);
+   ElementInfo& GetTagElementInfo(int ID);
+
 
    std::shared_ptr<litehtml::document> _document;
 
@@ -70,8 +73,11 @@ public:
    OnAnchorClick_function OnAnchorClick = 0;
    SetBaseURL_function SetBaseURL = 0;
    PTtoPX_function PTtoPX = 0;
+   CreateElement_function CreateElement = 0;
 
 private:
    litehtml::context _context;
    litehtml::position _drawPos;
+
+   std::map<int, std::shared_ptr<TagElement>> _elements;
 };

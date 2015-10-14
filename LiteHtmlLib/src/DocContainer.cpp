@@ -123,7 +123,23 @@ void DocContainer::get_client_rect(litehtml::position & client) const
 
 std::shared_ptr<litehtml::element> DocContainer::create_element(const litehtml::tchar_t * tag_name, const litehtml::string_map & attributes, const std::shared_ptr<litehtml::document>& doc)
 {
-   return 0;
+   int elementID = CreateElement(tag_name);
+   if (elementID > 0)
+   {
+      std::shared_ptr<TagElement> result(new TagElement(_document));
+      _elements[0] = result;
+      return std::shared_ptr<litehtml::element>(result.get());
+   }
+   else
+   {
+      return 0;
+   }
+}
+
+ElementInfo& DocContainer::GetTagElementInfo(int ID)
+{
+   auto element = _elements[ID];
+   return element->GetManagedInfo();
 }
 
 void DocContainer::get_media_features(litehtml::media_features & media) const
@@ -141,7 +157,7 @@ void DocContainer::SetMasterCSS(const tchar_t* css)
    _context.load_master_stylesheet(css);
 }
 
-void DocContainer::RenderHTML(const tchar_t* html)
+void DocContainer::RenderHTML(const tchar_t* html, int maxWidth)
 {
    if (_document != nullptr)
    {
@@ -149,13 +165,12 @@ void DocContainer::RenderHTML(const tchar_t* html)
    }
 
    _document = document::createFromString(html, this, &_context);
-   _document->render(100);
-   _document->draw(NULL, 0, 0, nullptr);
+   _document->render(maxWidth);
 }
 
-void DocContainer::Draw()
+void DocContainer::Draw(int x, int y, litehtml::position clip)
 {
-   _document->draw(NULL, 0, 0, nullptr);
+   _document->draw(NULL, x, y, &clip);
 }
 
 bool DocContainer::OnMouseMove(int x, int y)

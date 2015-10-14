@@ -43,6 +43,7 @@ namespace LiteHtmlSharp
          PInvokes.SetOnAnchorClick(CPPContainer, CreateDelegate(new OnAnchorClickFunc(OnAnchorClick)));
 
          PInvokes.SetPTtoPX(CPPContainer, CreateDelegate(new PTtoPXFunct(PTtoPX)));
+         PInvokes.SetCreateElement(CPPContainer, CreateDelegate(new CreateElementFunc(CreateElement)));
       }
 
       static void TestFramework()
@@ -134,9 +135,11 @@ namespace LiteHtmlSharp
 
       protected abstract int PTtoPX(int pt);
 
-      public virtual void RenderHtml(string html)
+      protected abstract int CreateElement(string tag);
+
+      public virtual void RenderHtml(string html, int maxWidth)
       {
-         PInvokes.RenderHTML(CPPContainer, html);
+         PInvokes.RenderHTML(CPPContainer, html, maxWidth);
       }
 
       protected virtual void CheckLastError()
@@ -149,9 +152,9 @@ namespace LiteHtmlSharp
          }
       }
 
-      public virtual void Redraw()
+      public virtual void Redraw(int x, int y, position clip)
       {
-         PInvokes.Draw(CPPContainer);
+         PInvokes.Draw(CPPContainer, x, y, clip);
       }
 
       public virtual void OnMouseMove(int x, int y)
@@ -159,7 +162,7 @@ namespace LiteHtmlSharp
          var updated = PInvokes.OnMouseMove(CPPContainer, x, y);
          if (updated)
          {
-            Redraw();
+            //Redraw();
          }
       }
 

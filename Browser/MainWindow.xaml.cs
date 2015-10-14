@@ -38,7 +38,7 @@ namespace Browser
          }
          else
          {
-            Render(@"<html><head></head><body><div style='width:100px; height:100px; background-color:red'>HELLO WORLD</div></body></html>");
+            Render(@"<html><head></head><body><div style='width:100px; height:100px; background-color:red'><input type=text value='HELLO WORLD'/></div></body></html>");
          }
       }
 

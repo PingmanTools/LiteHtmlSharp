@@ -67,13 +67,16 @@ namespace LiteHtmlSharp
 
       [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs)]
       public static extern void SetPTtoPX(IntPtr container, PTtoPXFunct func);
+
+      [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs)]
+      public static extern void SetCreateElement(IntPtr container, CreateElementFunc func);
       #endregion
 
 
       #region Instance Methods
 
       [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs, SetLastError = true)]
-      public static extern void RenderHTML(IntPtr container, string html);
+      public static extern void RenderHTML(IntPtr container, string html, int maxWidth);
 
       [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs)]
       public static extern void SetMasterCSS(IntPtr container, string css);
@@ -91,8 +94,10 @@ namespace LiteHtmlSharp
       public static extern bool OnLeftButtonDown(IntPtr container, int x, int y);
 
       [DllImport(LiteHtmlLibFile, CallingConvention = cc, SetLastError = true)]
-      public static extern void Draw(IntPtr container);
+      public static extern void Draw(IntPtr container, int x, int y, position clip);
 
+      [DllImport(LiteHtmlLibFile, CallingConvention = cc, SetLastError = true)]
+      public static extern ElementInfo GetElementInfo(IntPtr container, int ID);
       #endregion
 
 

@@ -186,4 +186,22 @@ namespace LiteHtmlSharp
       font_variant_normal,
       font_variant_italic
    }
+
+   [Flags]
+   public enum font_decoration
+   {
+      font_decoration_none = 0x00,
+      font_decoration_underline = 0x01,
+      font_decoration_linethrough = 0x02,
+      font_decoration_overline = 0x04
+   }
+
+   [StructLayout(LayoutKind.Sequential)]
+   public struct ElementInfo
+   {
+      public int PosX;
+      public int PosY;
+      public int Width;
+      public int Height;
+   }
 }

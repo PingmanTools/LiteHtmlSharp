@@ -41,9 +41,9 @@ __declspec(dllexport) DocContainer* Init()
    return container;
 }
 
-__declspec(dllexport) void RenderHTML(DocContainer* container, const litehtml::tchar_t* html)
+__declspec(dllexport) void RenderHTML(DocContainer* container, const litehtml::tchar_t* html, int maxWidth)
 {
-   container->RenderHTML(html);
+   container->RenderHTML(html, maxWidth);
 }
 
 __declspec(dllexport) void SetMasterCSS(DocContainer* container, const litehtml::tchar_t* css)
@@ -71,9 +71,9 @@ __declspec(dllexport) bool OnLeftButtonDown(DocContainer* container, int x, int 
    return container->OnLeftButtonDown(x, y);
 }
 
-__declspec(dllexport) void Draw(DocContainer* container)
+__declspec(dllexport) void Draw(DocContainer* container, int x, int y, litehtml::position clip)
 {
-   container->Draw();
+   container->Draw(x, y, clip);
 }
 
 __declspec(dllexport) void SetCreateFont(DocContainer* container, CreateFont_function callback)
@@ -119,4 +119,14 @@ __declspec(dllexport) void SetOnAnchorClick(DocContainer* container, OnAnchorCli
 __declspec(dllexport) void SetPTtoPX(DocContainer* container, PTtoPX_function callback)
 {
    container->PTtoPX = callback;
+}
+
+__declspec(dllexport) void SetCreateElement(DocContainer* container, CreateElement_function callback)
+{
+   container->CreateElement = callback;
+}
+
+__declspec(dllexport) ElementInfo& GetElementInfo(DocContainer* container, int ID)
+{
+   return container->GetTagElementInfo(ID);
 }
