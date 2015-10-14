@@ -3,6 +3,7 @@ using AppKit;
 using CoreGraphics;
 using Foundation;
 using System.Collections.Generic;
+using LiteHtmlSharp;
 
 namespace MacTest
 {
@@ -12,17 +13,29 @@ namespace MacTest
 
       public CGBitmapContext BitmapContext { get; private set; }
 
+      public CGSize BitmapContextSize { get; private set; }
+
       public LiteHtmlMacContainer LiteHtmlContainer { get; private set; }
 
       NSTrackingArea trackingArea = null;
-      private CGSize lastBounds;
+
+      public event Action Drawn;
+
+      public LiteHtmlView(string masterCssData)
+      {
+         Init(masterCssData);
+      }
 
       public LiteHtmlView(CGRect frame, string masterCssData)
          : base(frame)
       {
+         Init(masterCssData);
+      }
+
+      void Init(string masterCssData)
+      {
          WantsLayer = true;
          LiteHtmlContainer = new LiteHtmlMacContainer(this, masterCssData);
-         CreateBitmapContext();
       }
 
       public override void UpdateTrackingAreas()
@@ -38,7 +51,7 @@ namespace MacTest
       void CreateBitmapContext()
       {
          LiteHtmlContainer.ScaleFactor = (int)Layer.ContentsScale;
-         lastBounds = new CGSize(Bounds.Width, Bounds.Height);
+         BitmapContextSize = new CGSize(Bounds.Width, Bounds.Height);
          var width = (int)(Bounds.Width * Layer.ContentsScale);
          var height = (int)(Bounds.Height * Layer.ContentsScale);
 
@@ -52,23 +65,35 @@ namespace MacTest
 
       public override void DrawRect(CoreGraphics.CGRect dirtyRect)
       {
-         if (LiteHtmlContainer.ScaleFactor != (int)Layer.ContentsScale || lastBounds != Bounds.Size)
+         if (LiteHtmlContainer.ScaleFactor != (int)Layer.ContentsScale || BitmapContextSize != Bounds.Size)
          {
             CreateBitmapContext();
-            LiteHtmlContainer.Redraw();
-            Log.W("redraw called");
+            Redraw();
          }
 
          var gfxc = NSGraphicsContext.CurrentContext.GraphicsPort;
          gfxc.SaveState();
          gfxc.DrawImage(Bounds, BitmapContext.ToImage());
          gfxc.RestoreState();
+
+         if (Drawn != null)
+         {
+            Drawn();
+         }
+      }
+
+      void Redraw()
+      {
+         LiteHtmlContainer.Draw(0, 0, new position{ x = 0, y = 0, width = (int)Bounds.Width, height = (int)Bounds.Height });
       }
 
       public override void MouseMoved(NSEvent theEvent)
       {
          var point = ConvertPointFromView(theEvent.LocationInWindow, null);
-         LiteHtmlContainer.OnMouseMove((int)point.X, (int)point.Y);
+         if (LiteHtmlContainer.OnMouseMove((int)point.X, (int)point.Y))
+         {
+            Redraw();
+         }
          base.MouseMoved(theEvent);
       }
 
