@@ -30,17 +30,6 @@ namespace MacTest
          public CGSize Size { get; set; }
       }
 
-      static string masterCss;
-
-      protected override string GetMasterCssData()
-      {
-         if (masterCss == null)
-         {
-            masterCss = File.ReadAllText("master.css");
-         }
-         return masterCss;
-      }
-
       LiteHtmlView view;
 
       Dictionary<UIntPtr, FontHolder> fontCache;
@@ -48,7 +37,8 @@ namespace MacTest
 
       Dictionary<string, ImageHolder> imageCache;
 
-      public LiteHtmlMacContainer(LiteHtmlView view)
+      public LiteHtmlMacContainer(LiteHtmlView view, string masterCssData)
+         : base(masterCssData)
       {
          this.view = view;
          fontCache = new Dictionary<UIntPtr, FontHolder>();
@@ -62,6 +52,7 @@ namespace MacTest
 
       protected override void GetClientRect(ref position client)
       {
+         Log.W("get client rect");
          client.width = (int)view.Bounds.Width;
          client.height = (int)view.Bounds.Height;
       }
@@ -138,7 +129,7 @@ namespace MacTest
          var height = new NSAttributedString("H", ctAttrs).Size.Height;
 
          gfx.SaveState();
-         gfx.TranslateCTM(pos.x, pos.y + height);
+         gfx.TranslateCTM(pos.x, pos.y);
          gfx.ScaleCTM(1, -1);
          gfx.TextMatrix = CGAffineTransform.MakeIdentity();
 
@@ -170,9 +161,9 @@ namespace MacTest
          {
             var imageHolder = imageCache[image];
             gfx.SaveState();
+            gfx.TranslateCTM(rect.X, rect.Y);
             //gfx.ScaleCTM(1, -1);
-            //gfx.TranslateCTM(0, -(view.Bounds.Height - imageHolder.Size.Height));
-            gfx.DrawImage(rect, imageHolder.Image);
+            gfx.DrawImage(new CGRect(0, 0, rect.Width, rect.Height), imageHolder.Image);
             gfx.RestoreState();
          }
 
