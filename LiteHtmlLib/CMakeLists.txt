@@ -9,6 +9,7 @@ set(SOURCE_LITEHTMLLIB
                     src/dllmain.cpp
                     src/DocContainer.cpp
                     src/Globals.cpp
+                    src/TagElement.cpp
 )
 
 set(SOURCE_LITEHTML ../litehtml/src/background.cpp

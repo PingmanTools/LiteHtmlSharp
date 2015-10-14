@@ -360,5 +360,7 @@
     </None>
     <None Include="build.sh" />
     <None Include="CMakeLists.txt" />
+    <None Include="src\TagElement.cpp" />
+    <None Include="src\TagElement.h" />
   </ItemGroup>
 </Project>

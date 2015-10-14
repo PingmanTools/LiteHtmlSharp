@@ -1446,6 +1446,33 @@ src/Globals.cpp.s:
 	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/Globals.cpp.s
 .PHONY : src/Globals.cpp.s
 
+src/TagElement.o: src/TagElement.cpp.o
+
+.PHONY : src/TagElement.o
+
+# target to build an object file
+src/TagElement.cpp.o:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/TagElement.cpp.o
+.PHONY : src/TagElement.cpp.o
+
+src/TagElement.i: src/TagElement.cpp.i
+
+.PHONY : src/TagElement.i
+
+# target to preprocess a source file
+src/TagElement.cpp.i:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/TagElement.cpp.i
+.PHONY : src/TagElement.cpp.i
+
+src/TagElement.s: src/TagElement.cpp.s
+
+.PHONY : src/TagElement.s
+
+# target to generate assembly for a file
+src/TagElement.cpp.s:
+	$(MAKE) -f CMakeFiles/litehtml.dir/build.make CMakeFiles/litehtml.dir/src/TagElement.cpp.s
+.PHONY : src/TagElement.cpp.s
+
 src/dllmain.o: src/dllmain.cpp.o
 
 .PHONY : src/dllmain.o
@@ -1629,6 +1656,9 @@ help:
 	@echo "... src/Globals.o"
 	@echo "... src/Globals.i"
 	@echo "... src/Globals.s"
+	@echo "... src/TagElement.o"
+	@echo "... src/TagElement.i"
+	@echo "... src/TagElement.s"
 	@echo "... src/dllmain.o"
 	@echo "... src/dllmain.i"
 	@echo "... src/dllmain.s"

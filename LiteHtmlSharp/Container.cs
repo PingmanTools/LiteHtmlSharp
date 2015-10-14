@@ -149,18 +149,14 @@ namespace LiteHtmlSharp
          }
       }
 
-      public virtual void Redraw(int x, int y, position clip)
+      public virtual void Draw(int x, int y, position clip)
       {
          PInvokes.Draw(CPPContainer, x, y, clip);
       }
 
-      public virtual void OnMouseMove(int x, int y)
+      public virtual bool OnMouseMove(int x, int y)
       {
-         var updated = PInvokes.OnMouseMove(CPPContainer, x, y);
-         if (updated)
-         {
-            //Redraw();
-         }
+         return PInvokes.OnMouseMove(CPPContainer, x, y);
       }
 
    }

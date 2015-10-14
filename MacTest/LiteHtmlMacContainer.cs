@@ -45,6 +45,11 @@ namespace MacTest
          imageCache = new Dictionary<string, ImageHolder>();
       }
 
+      protected override int CreateElement(string tag)
+      {
+         return 0;
+      }
+
       protected override int PTtoPX(int pt)
       {
          return 1;
@@ -52,7 +57,6 @@ namespace MacTest
 
       protected override void GetClientRect(ref position client)
       {
-         Log.W("get client rect");
          client.width = (int)view.Bounds.Width;
          client.height = (int)view.Bounds.Height;
       }
@@ -77,6 +81,13 @@ namespace MacTest
       {
          var symbolicTrait = italic == font_style.fontStyleItalic ? CTFontSymbolicTraits.Italic : CTFontSymbolicTraits.None;
          var font = new CTFont(faceName, size).WithSymbolicTraits(size, symbolicTrait, symbolicTrait);
+
+         fm.ascent = (int)Math.Round(font.AscentMetric);
+         fm.descent = (int)Math.Round(font.DescentMetric);
+         fm.draw_spaces = false;
+         fm.height = (int)Math.Round(font.AscentMetric + font.DescentMetric);
+         fm.x_height = (int)Math.Round(font.XHeightMetric);
+
          var strAttrs = new CTStringAttributes { Font = font };
          var fontHolder = new FontHolder
          { 
@@ -96,40 +107,15 @@ namespace MacTest
          return (int)Math.Round(size.Width);
       }
 
-      protected override void GetImageSize(string imageUrl, ref size size)
-      {
-         ImageHolder imageHolder;
-         if (!imageCache.TryGetValue(imageUrl, out imageHolder))
-         {
-            var imgBytes = LoadImageCallback(imageUrl);
-            var nsImage = new NSImage(NSData.FromArray(imgBytes));
-            var rect = new CGRect(new CGPoint(0, 0), nsImage.Size);
-            var image = nsImage.AsCGImage(ref rect, null, null);
-            imageHolder = new ImageHolder{ Image = image, Size = nsImage.Size };
-            imageCache.Add(imageUrl, imageHolder);
-         }
-         size.width = (int)imageHolder.Size.Width;
-         size.height = (int)imageHolder.Size.Height;
-      }
-
-      private CGBitmapContext gfx { get { return view.BitmapContext; } }
-
-      public void DrawRect(nfloat x, nfloat y, nfloat width, nfloat height, CGColor color)
-      {
-         gfx.SetFillColor(color);
-         gfx.FillRect(new CGRect(x, y, width, height));
-      }
-
       protected override void DrawText(string text, UIntPtr fontId, ref web_color color, ref position pos)
       {
          var fontHolder = fontCache[fontId];
          var scaledFont = new CTFont(fontHolder.Font.GetFontDescriptor(), fontHolder.Font.Size * ScaleFactor);
          var ctAttrs = new CTStringAttributes{ Font = scaledFont, ForegroundColor = color.ToCGColor() };
          var attrString = new NSAttributedString(text, ctAttrs);
-         var height = new NSAttributedString("H", ctAttrs).Size.Height;
 
          gfx.SaveState();
-         gfx.TranslateCTM(pos.x, pos.y);
+         gfx.TranslateCTM(pos.x, pos.y + scaledFont.AscentMetric);
          gfx.ScaleCTM(1, -1);
          gfx.TextMatrix = CGAffineTransform.MakeIdentity();
 
@@ -147,6 +133,32 @@ namespace MacTest
 
       }
 
+      private CGBitmapContext gfx { get { return view.BitmapContext; } }
+
+      private CGSize gfxSize { get { return view.BitmapContextSize; } }
+
+      public void DrawRect(nfloat x, nfloat y, nfloat width, nfloat height, CGColor color)
+      {
+         gfx.SetFillColor(color);
+         gfx.FillRect(new CGRect(x, y, width, height));
+      }
+
+      protected override void GetImageSize(string imageUrl, ref size size)
+      {
+         ImageHolder imageHolder;
+         if (!imageCache.TryGetValue(imageUrl, out imageHolder))
+         {
+            var imgBytes = LoadImageCallback(imageUrl);
+            var nsImage = new NSImage(NSData.FromArray(imgBytes));
+            var rect = new CGRect(new CGPoint(0, 0), nsImage.Size);
+            var image = nsImage.AsCGImage(ref rect, null, null);
+            imageHolder = new ImageHolder{ Image = image, Size = nsImage.Size };
+            imageCache.Add(imageUrl, imageHolder);
+         }
+         size.width = (int)imageHolder.Size.Width;
+         size.height = (int)imageHolder.Size.Height;
+      }
+
       protected override void DrawBackground(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos)
       {
          var cgColor = color.ToCGColor();
@@ -161,8 +173,8 @@ namespace MacTest
          {
             var imageHolder = imageCache[image];
             gfx.SaveState();
-            gfx.TranslateCTM(rect.X, rect.Y);
-            //gfx.ScaleCTM(1, -1);
+            gfx.TranslateCTM(rect.X, rect.Y + rect.Height);
+            gfx.ScaleCTM(1, -1);
             gfx.DrawImage(new CGRect(0, 0, rect.Width, rect.Height), imageHolder.Image);
             gfx.RestoreState();
          }
