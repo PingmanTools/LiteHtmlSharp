@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Globals.h"
+#include "CallbackDelegates.h"
 #include "../../litehtml/src/html.h"
 #include "../../litehtml/src/context.h"
 #include "../../litehtml/src/document.h"
@@ -46,6 +46,7 @@ public:
    virtual void get_language(litehtml::tstring & language, litehtml::tstring & culture) const override;
 
    void RenderHTML(const litehtml::tchar_t* html, int maxWidth);
+   void Render(int maxWidth);
    void SetMasterCSS(const litehtml::tchar_t* css);
    bool OnMouseMove(int x, int y);
    bool OnMouseLeave();
@@ -53,6 +54,7 @@ public:
    bool OnLeftButtonUp(int x, int y);
    void Draw(int x, int y, litehtml::position clip);
    ElementInfo& GetTagElementInfo(int ID);
+   bool OnMediaChanged();
 
 
    std::shared_ptr<litehtml::document> _document;

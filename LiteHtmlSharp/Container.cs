@@ -45,6 +45,10 @@ namespace LiteHtmlSharp
          PInvokes.SetCreateElement(CPPContainer, CreateDelegate(new CreateElementFunc(CreateElement)));
       }
 
+      public Container()
+      {
+      }
+
       static void TestFramework()
       {
          string testStaticCallback = null;

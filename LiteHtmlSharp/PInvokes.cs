@@ -78,6 +78,12 @@ namespace LiteHtmlSharp
       [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs, SetLastError = true)]
       public static extern void RenderHTML(IntPtr container, string html, int maxWidth);
 
+      [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs, SetLastError = true)]
+      public static extern void Render(IntPtr container, int maxWidth);
+
+      [DllImport(LiteHtmlLibFile, CallingConvention = cc, SetLastError = true)]
+      public static extern void Draw(IntPtr container, int x, int y, position clip);
+
       [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs)]
       public static extern void SetMasterCSS(IntPtr container, string css);
 
@@ -94,10 +100,10 @@ namespace LiteHtmlSharp
       public static extern bool OnLeftButtonDown(IntPtr container, int x, int y);
 
       [DllImport(LiteHtmlLibFile, CallingConvention = cc, SetLastError = true)]
-      public static extern void Draw(IntPtr container, int x, int y, position clip);
+      public static extern ElementInfo GetElementInfo(IntPtr container, int ID);
 
       [DllImport(LiteHtmlLibFile, CallingConvention = cc, SetLastError = true)]
-      public static extern ElementInfo GetElementInfo(IntPtr container, int ID);
+      public static extern bool OnMediaChanged(IntPtr container);
       #endregion
 
 

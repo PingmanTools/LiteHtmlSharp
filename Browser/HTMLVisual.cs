@@ -21,7 +21,9 @@ namespace Browser
       public HTMLVisual(Canvas parent)
       {
          _visual = new DrawingVisual();
-         _container = new WPFContainer(_visual);
+
+         string css =System.IO.File.ReadAllText("master.css");
+         _container = new WPFContainer(_visual, css);
 
          this.AddVisualChild(_visual);
          this.AddLogicalChild(_visual);
