@@ -36,6 +36,7 @@ namespace MacTest
       {
          WantsLayer = true;
          LiteHtmlContainer = new LiteHtmlMacContainer(this, masterCssData);
+         LiteHtmlContainer.ScaleFactor = (int)Layer.ContentsScale;
       }
 
       public override void UpdateTrackingAreas()
