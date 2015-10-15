@@ -22,4 +22,4 @@ typedef void(*OnAnchorClick_function)(const litehtml::tchar_t * url);
 
 typedef int(*PTtoPX_function)(int pt);
 
-typedef int(*CreateElement_function)(const litehtml::tchar_t * tag);
+typedef int(*CreateElement_function)(const litehtml::tchar_t * tag, const litehtml::tchar_t * attributes);

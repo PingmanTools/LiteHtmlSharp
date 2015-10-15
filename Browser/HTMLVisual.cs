@@ -13,6 +13,8 @@ namespace Browser
    {
       DrawingVisual _visual;
       WPFContainer _container;
+      Canvas _canvas;
+
       public bool HTMLLoaded
       {
          get { return _container.Loaded; }
@@ -20,14 +22,25 @@ namespace Browser
 
       public HTMLVisual(Canvas parent)
       {
+         _canvas = parent;
          _visual = new DrawingVisual();
 
          string css =System.IO.File.ReadAllText("master.css");
-         _container = new WPFContainer(_visual, css);
+         _container = new WPFContainer(this, css);
 
          this.AddVisualChild(_visual);
          this.AddLogicalChild(_visual);
          parent.Children.Add(this);
+      }
+
+      public DrawingVisual GetDrawingVisual()
+      {
+         return _visual;
+      }
+
+      public void AddChildControl(FrameworkElement control)
+      {
+         _canvas.Children.Add(control);
       }
 
       protected override int VisualChildrenCount

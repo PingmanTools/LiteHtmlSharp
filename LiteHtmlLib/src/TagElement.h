@@ -8,9 +8,10 @@ struct ElementInfo
    int PosY;
    int Width;
    int Height;
+   const litehtml::tchar_t* Attributes;
 };
 
-class TagElement : public litehtml::element
+class TagElement : public litehtml::html_tag
 {
 public:
    TagElement(std::shared_ptr<litehtml::document> doc);

@@ -17,6 +17,7 @@ namespace Browser
    public class WPFContainer : Container
    {
       DrawingContext _dc;
+      HTMLVisual _visualControl;
       DrawingVisual _visual;
       Dictionary<string, Brush> _brushes = new Dictionary<string, Brush>();
       Dictionary<string, BitmapImage> _images = new Dictionary<string, BitmapImage>();
@@ -28,9 +29,10 @@ namespace Browser
       static uint _nextFontID;
       public Point _size;
 
-      public WPFContainer(DrawingVisual visual, string css) : base(css)
+      public WPFContainer(HTMLVisual visual, string css) : base(css)
       {
-         _visual = visual;
+         _visualControl = visual;
+         _visual = _visualControl.GetDrawingVisual();
       }
 
       public void Render(string html)
@@ -54,7 +56,15 @@ namespace Browser
          {
             ElementInfo info = PInvokes.GetElementInfo(CPPContainer, i);
             TextBox tb = new TextBox();
-            _visual.Children.Add(tb);
+            tb.HorizontalAlignment = HorizontalAlignment.Left;
+            tb.VerticalAlignment = VerticalAlignment.Top;
+            tb.Width = info.Width;
+            if(info.Height > 0)
+            {
+               tb.Height = info.Height;
+            }
+            tb.Margin = new Thickness(info.PosX, info.PosY, 0, 0);
+            _visualControl.AddChildControl(tb);
          }
       }
 
@@ -257,6 +267,7 @@ namespace Browser
 
       protected override void DrawText(string text, UIntPtr font, ref web_color color, ref position pos)
       {
+         text = text.Replace(' ', (char)160);
          var fontInfo = GetFont(font);
          var formattedText = new FormattedText(text, CultureInfo.InvariantCulture, System.Windows.FlowDirection.LeftToRight, fontInfo.TypeFace, fontInfo.Size, null);
          formattedText.SetTextDecorations(fontInfo.Decorations);
@@ -266,18 +277,21 @@ namespace Browser
 
       protected override UIntPtr CreateFont(string faceName, int size, int weight, font_style italic, uint decoration, ref font_metrics fm)
       {
-         fm.draw_spaces = true;
          FontInfo font = new FontInfo(faceName, italic == font_style.fontStyleItalic ? FontStyles.Italic : FontStyles.Normal, FontWeight.FromOpenTypeWeight(weight), size);
          if((decoration & (int)font_decoration.font_decoration_underline) != 0)
          {
             font.Decorations.Add(TextDecorations.Underline);
          }
+
          UIntPtr fontID = new UIntPtr(_nextFontID++);
+         _fonts.Add(fontID, font);
+
          fm.x_height = 7;
          fm.ascent = 10;
          fm.descent = 3;
          fm.height = fm.ascent + fm.descent + 2;
-         _fonts.Add(fontID, font);
+         fm.draw_spaces = decoration > 0;
+
          return fontID;
       }
 
@@ -324,7 +338,7 @@ namespace Browser
          return pt;
       }
 
-      protected override int CreateElement(string tag)
+      protected override int CreateElement(string tag, string attributes)
       {
          if (string.Equals(tag, "input", StringComparison.OrdinalIgnoreCase))
          {

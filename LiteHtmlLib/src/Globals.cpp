@@ -39,6 +39,16 @@ __declspec(dllexport) DocContainer* Init()
    return container;
 }
 
+__declspec(dllexport) void Delete(DocContainer* container)
+{
+   auto foundAt = std::find(_containers.begin(), _containers.end(), container);
+   if (foundAt != _containers.end())
+   {
+      _containers.erase(_containers.begin() + (foundAt - _containers.begin()));
+   }
+   delete container;
+}
+
 __declspec(dllexport) void RenderHTML(DocContainer* container, const litehtml::tchar_t* html, int maxWidth)
 {
    container->RenderHTML(html, maxWidth);

@@ -26,6 +26,7 @@ extern "C" __declspec(dllexport) void SetCreateElement(DocContainer* container, 
 
 // container functions
 extern "C" __declspec(dllexport) DocContainer* Init();
+extern "C" __declspec(dllexport) void Delete(DocContainer* container);
 
 extern "C" __declspec(dllexport) bool OnMouseMove(DocContainer* container, int x, int y);
 extern "C" __declspec(dllexport) bool OnMouseLeave(DocContainer* container);

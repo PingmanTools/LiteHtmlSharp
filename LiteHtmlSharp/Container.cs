@@ -136,7 +136,7 @@ namespace LiteHtmlSharp
 
       protected abstract int PTtoPX(int pt);
 
-      protected abstract int CreateElement(string tag);
+      protected abstract int CreateElement(string tag, string attributes);
 
       public virtual void RenderHtml(string html, int maxWidth)
       {

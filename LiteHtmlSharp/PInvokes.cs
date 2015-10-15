@@ -106,10 +106,11 @@ namespace LiteHtmlSharp
       public static extern bool OnMediaChanged(IntPtr container);
       #endregion
 
-
-
       [DllImport(LiteHtmlLibFile, CallingConvention = cc, SetLastError = true)]
       public static extern IntPtr Init();
+
+      [DllImport(LiteHtmlLibFile, CallingConvention = cc, SetLastError = true)]
+      public static extern void Delete(IntPtr container);
    }
 }
 
