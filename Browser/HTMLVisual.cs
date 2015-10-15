@@ -43,6 +43,11 @@ namespace Browser
          _canvas.Children.Add(control);
       }
 
+      public void RemoveChildControl(FrameworkElement control)
+      {
+         _canvas.Children.Remove(control);
+      }
+
       protected override int VisualChildrenCount
       {
          get { return 1; }
@@ -71,6 +76,16 @@ namespace Browser
       public void OnMouseMove(double x, double y)
       {
          _container.OnMouseMove(x, y);
+      }
+
+      public void OnLeftButtonDown(double x, double y)
+      {
+         _container.OnLeftButtonDown(x, y);
+      }
+
+      public void OnLeftButtonUp(double x, double y)
+      {
+         _container.OnLeftButtonUp(x, y);
       }
 
       public void OnSizeChanged()

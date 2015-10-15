@@ -137,7 +137,7 @@ namespace LiteHtmlSharp
 
       protected abstract void SetBaseURL(ref string base_url);
 
-      protected abstract void OnAnchorClick(ref string url);
+      protected abstract void OnAnchorClick(string url);
 
       protected abstract int PTtoPX(int pt);
 

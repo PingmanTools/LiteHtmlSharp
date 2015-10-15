@@ -41,7 +41,7 @@ namespace LiteHtmlSharp
    public delegate void SetBaseURLFunc(ref string base_url);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
-   public delegate void OnAnchorClickFunc(ref string url);
+   public delegate void OnAnchorClickFunc(string url);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
    public delegate int PTtoPXFunct(int pt);

@@ -22,7 +22,7 @@ namespace Browser
       Dictionary<string, Brush> _brushes = new Dictionary<string, Brush>();
       Dictionary<string, BitmapImage> _images = new Dictionary<string, BitmapImage>();
       Dictionary<UIntPtr, FontInfo> _fonts = new Dictionary<UIntPtr, FontInfo>();
-      List<int> _inputs = new List<int>();
+      List<Input> _inputs = new List<Input>();
       public bool Loaded = false;
       private bool _rendering = false;
       public static string BaseURL;
@@ -37,6 +37,7 @@ namespace Browser
 
       public void Render(string html)
       {
+         Clear();
          if (_rendering) return;
 
          _inputs.Clear();
@@ -44,7 +45,6 @@ namespace Browser
 
          PInvokes.RenderHTML(CPPContainer, html, (int)_size.X);
          Draw();
-         ProcessInputs();
 
          _rendering = false;
          Loaded = true;
@@ -52,24 +52,41 @@ namespace Browser
 
       private void ProcessInputs()
       {
-         foreach(int i in _inputs)
+         foreach (var input in _inputs)
          {
-            ElementInfo info = PInvokes.GetElementInfo(CPPContainer, i);
-            TextBox tb = new TextBox();
-            tb.HorizontalAlignment = HorizontalAlignment.Left;
-            tb.VerticalAlignment = VerticalAlignment.Top;
-            tb.Width = info.Width;
-            if(info.Height > 0)
+            if (input.TextBox == null)
             {
-               tb.Height = info.Height;
+               ElementInfo info = PInvokes.GetElementInfo(CPPContainer, input.ID);
+               input.TextBox = new TextBox();
+               input.TextBox.HorizontalAlignment = HorizontalAlignment.Left;
+               input.TextBox.VerticalAlignment = VerticalAlignment.Top;
+               input.TextBox.Width = info.Width;
+               if (info.Height > 0)
+               {
+                  input.TextBox.Height = info.Height;
+               }
+               input.TextBox.Margin = new Thickness(info.PosX, info.PosY, 0, 0);
             }
-            tb.Margin = new Thickness(info.PosX, info.PosY, 0, 0);
-            _visualControl.AddChildControl(tb);
+
+            if (!input.IsPlaced)
+            {
+               _visualControl.AddChildControl(input.TextBox);
+               input.IsPlaced = true;
+            }
          }
       }
 
       public void Clear()
       {
+         foreach(var input in _inputs)
+         {
+            if (input.IsPlaced)
+            {
+               _visualControl.RemoveChildControl(input.TextBox);
+               input.IsPlaced = false;
+            }
+         }
+
          _dc = _visual.RenderOpen();
          _dc.Close();
          _dc = null;
@@ -86,13 +103,14 @@ namespace Browser
          PInvokes.Draw(CPPContainer, 0, 0, clip);
          _dc.Close();
          _dc = null;
+         ProcessInputs();
       }
 
       public void OnMouseMove(double x, double y)
       {
          if (Loaded)
          {
-            if(PInvokes.OnMouseMove(CPPContainer, (int)x, (int)y))
+            if (PInvokes.OnMouseMove(CPPContainer, (int)x, (int)y))
             {
                Draw();
             }
@@ -278,7 +296,7 @@ namespace Browser
       protected override UIntPtr CreateFont(string faceName, int size, int weight, font_style italic, font_decoration decoration, ref font_metrics fm)
       {
          FontInfo font = new FontInfo(faceName, italic == font_style.fontStyleItalic ? FontStyles.Italic : FontStyles.Normal, FontWeight.FromOpenTypeWeight(weight), size);
-         if((decoration & font_decoration.font_decoration_underline) != 0)
+         if ((decoration & font_decoration.font_decoration_underline) != 0)
          {
             font.Decorations.Add(TextDecorations.Underline);
          }
@@ -298,7 +316,7 @@ namespace Browser
       protected override string ImportCss(string url, string baseurl)
       {
          var file = GetAbsoluteFile(url);
-         if(File.Exists(file.OriginalString))
+         if (File.Exists(file.OriginalString))
          {
             return File.ReadAllText(file.OriginalString);
          }
@@ -328,9 +346,9 @@ namespace Browser
          base_url = BaseURL;
       }
 
-      protected override void OnAnchorClick(ref string url)
+      protected override void OnAnchorClick(string url)
       {
-         throw new NotImplementedException();
+         MessageBox.Show("Link URL: " + url);
       }
 
       protected override int PTtoPX(int pt)
@@ -342,14 +360,22 @@ namespace Browser
       {
          if (string.Equals(tag, "input", StringComparison.OrdinalIgnoreCase))
          {
-            int elementID = _inputs.Count + 1;
-            _inputs.Add(elementID);
-            return elementID;
+            Input input = new Input();
+            input.ID = _inputs.Count + 1;
+            _inputs.Add(input);
+            return input.ID;
          }
          else
          {
             return 0;
          }
       }
+   }
+
+   class Input
+   {
+      public int ID;
+      public TextBox TextBox;
+      public bool IsPlaced;
    }
 }
