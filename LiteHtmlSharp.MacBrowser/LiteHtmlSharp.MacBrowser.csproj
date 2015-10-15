@@ -53,8 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
-    <Folder Include="WebPage\" />
-    <Folder Include="WebPage\da900255-ffe1-46f2-a78f-88f6ac671c49_files\" />
+    <Folder Include="ExampleWebPage\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -69,19 +68,19 @@
       <Link>master.css</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="WebPage\da900255-ffe1-46f2-a78f-88f6ac671c49_files\about.css" />
-    <Content Include="WebPage\da900255-ffe1-46f2-a78f-88f6ac671c49_files\core.css" />
-    <Content Include="WebPage\da900255-ffe1-46f2-a78f-88f6ac671c49_files\free-bg.png" />
-    <Content Include="WebPage\da900255-ffe1-46f2-a78f-88f6ac671c49_files\free-logo.png" />
-    <Content Include="WebPage\da900255-ffe1-46f2-a78f-88f6ac671c49_files\free-wordmark.png" />
-    <Content Include="WebPage\da900255-ffe1-46f2-a78f-88f6ac671c49.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LiteHtmlSharp.Mac\LiteHtmlSharp.Mac.csproj">
       <Project>{81EC8297-3616-428D-89D1-06B7AC68574B}</Project>
       <Name>LiteHtmlSharp.Mac</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="ExampleWebPage\free-bg.png" />
+    <BundleResource Include="ExampleWebPage\free-logo.png" />
+    <BundleResource Include="ExampleWebPage\free-wordmark.png" />
+    <BundleResource Include="ExampleWebPage\about.css" />
+    <BundleResource Include="ExampleWebPage\core.css" />
+    <BundleResource Include="ExampleWebPage\index.html" />
   </ItemGroup>
 </Project>

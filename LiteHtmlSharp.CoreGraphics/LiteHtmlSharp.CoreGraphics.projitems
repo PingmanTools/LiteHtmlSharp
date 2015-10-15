@@ -11,5 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)CGContainer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CGExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FontHolder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ImageHolder.cs" />
   </ItemGroup>
 </Project>

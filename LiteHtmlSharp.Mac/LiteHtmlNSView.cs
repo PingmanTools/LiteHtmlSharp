@@ -18,11 +18,23 @@ namespace LiteHtmlSharp.Mac
 
       public event Action Drawn;
 
-      public LiteHtmlNSView(string masterCssData)
+      public LiteHtmlNSView(CGRect rect, string masterCssData)
+         : base(rect)
       {
          WantsLayer = true;
          LiteHtmlContainer = new CGContainer(masterCssData);
-         LiteHtmlContainer.ContextDrawn += () => SetNeedsDisplayInRect(Bounds);
+         LiteHtmlContainer.ContextDrawn += LiteHtmlContainer_ContextDrawn;
+      }
+
+      public void RenderHtml(string html)
+      {
+         LiteHtmlContainer.RenderHtml(html);
+         ResetContainerContext();
+      }
+
+      void LiteHtmlContainer_ContextDrawn()
+      {
+         SetNeedsDisplayInRect(Bounds);
       }
 
       public override void UpdateTrackingAreas()
@@ -56,6 +68,11 @@ namespace LiteHtmlSharp.Mac
 
       public override void DrawRect(CGRect dirtyRect)
       {
+         if (!LiteHtmlContainer.HasRendered)
+         {
+            return;
+         }
+
          if (LiteHtmlContainer.ScaleFactor != (int)Layer.ContentsScale || LiteHtmlContainer.ContextSize != Bounds.Size)
          {
             ResetContainerContext();
@@ -65,7 +82,6 @@ namespace LiteHtmlSharp.Mac
          gfxc.SaveState();
          gfxc.DrawImage(Bounds, ((CGBitmapContext)LiteHtmlContainer.Context).ToImage());
          gfxc.RestoreState();
-
          if (Drawn != null)
          {
             Drawn();
@@ -74,6 +90,11 @@ namespace LiteHtmlSharp.Mac
 
       public override void MouseMoved(NSEvent theEvent)
       {
+         if (!LiteHtmlContainer.HasRendered)
+         {
+            return;
+         }
+
          var point = ConvertPointFromView(theEvent.LocationInWindow, null);
          LiteHtmlContainer.OnMouseMove((int)point.X, (int)point.Y);
          base.MouseMoved(theEvent);
@@ -81,13 +102,23 @@ namespace LiteHtmlSharp.Mac
 
       public override void MouseDown(NSEvent theEvent)
       {
+         if (!LiteHtmlContainer.HasRendered)
+         {
+            return;
+         }
+
          var point = ConvertPointFromView(theEvent.LocationInWindow, null);
          LiteHtmlContainer.OnLeftButtonDown((int)point.X, (int)point.Y);
          base.MouseDown(theEvent);
       }
 
       public override void MouseUp(NSEvent theEvent)
-      {
+      {         
+         if (!LiteHtmlContainer.HasRendered)
+         {
+            return;
+         }
+
          var point = ConvertPointFromView(theEvent.LocationInWindow, null);
          LiteHtmlContainer.OnLeftButtonDown((int)point.X, (int)point.Y);
          base.MouseUp(theEvent);

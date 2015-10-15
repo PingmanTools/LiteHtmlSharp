@@ -15,6 +15,10 @@ namespace LiteHtmlSharp
 
       public int ScaleFactor = 1;
 
+      public string HtmlContent { get; private set; }
+
+      public bool HasRendered { get; private set; }
+
       public Container(string masterCssData)
       {
          #if DEBUG
@@ -145,6 +149,7 @@ namespace LiteHtmlSharp
 
       public virtual void RenderHtml(string html, int maxWidth)
       {
+         HtmlContent = html;
          PInvokes.RenderHTML(CPPContainer, html, maxWidth);
       }
 
@@ -160,6 +165,7 @@ namespace LiteHtmlSharp
 
       public void Render(int maxWidth)
       {
+         HasRendered = true;
          PInvokes.Render(CPPContainer, maxWidth);
       }
 

@@ -21,64 +21,6 @@ namespace LiteHtmlSharp.CoreGraphics
 
       public CGSize ContextSize { get; private set; }
 
-      class FontHolder
-      {
-         public CTStringAttributes Attributes { get; set; }
-
-         public int Scale { get; set; }
-
-         public int Size { get; set; }
-
-         public font_decoration Decoration { get; set; }
-
-         public int Weight { get; set; }
-
-         public NSAttributedString GetAttributedString(string text, web_color color)
-         {
-            Attributes.ForegroundColor = color.ToCGColor();
-
-            // CoreText won't draw underlines for whitespace so draw a transparent dot
-            if (text == " ")
-            {
-               text = ".";
-               Attributes.ForegroundColor = new CGColor(0, 0, 0, 0);
-            }
-
-            var range = new NSRange(0, text.Length);
-            var attrString = new NSMutableAttributedString(text, Attributes);
-
-            // these styles can only be applied to the NSAttributedString
-            if (Decoration.HasFlag(font_decoration.font_decoration_linethrough))
-            {
-               attrString.AddAttribute(NSStringAttributeKey.StrikethroughStyle, new NSNumber(1), range);
-            }
-            if (Decoration.HasFlag(font_decoration.font_decoration_underline))
-            {
-               attrString.AddAttribute(NSStringAttributeKey.UnderlineStyle, new NSNumber(1), range);
-               attrString.AddAttribute(NSStringAttributeKey.UnderlineColor, new NSObject(color.ToCGColor().Handle), range);
-            }
-
-            if (Decoration.HasFlag(font_decoration.font_decoration_overline))
-            {
-
-            }
-
-            if (Weight > 400)
-            {
-               attrString.ApplyFontTraits(NSFontTraitMask.Bold, new NSRange(0, text.Length));
-            }
-
-            return attrString;
-         }
-      }
-
-      class ImageHolder
-      {
-         public CGImage Image { get; set; }
-
-         public CGSize Size { get; set; }
-
-      }
 
       Dictionary<UIntPtr, FontHolder> fontCache;
       uint lastFontId = 0;
@@ -104,6 +46,11 @@ namespace LiteHtmlSharp.CoreGraphics
             Render();
             Draw();
          }
+      }
+
+      public void RenderHtml(string html)
+      {
+         base.RenderHtml(html, (int)ContextSize.Width);
       }
 
       public override bool OnMouseMove(int x, int y)
@@ -265,6 +212,10 @@ namespace LiteHtmlSharp.CoreGraphics
          ImageHolder imageHolder;
          if (!imageCache.TryGetValue(imageUrl, out imageHolder))
          {
+            if (LoadImageCallback == null)
+            {
+               throw new Exception(nameof(LoadImageCallback) + " must be set before an image is requested while rendering");
+            }
             var imgBytes = LoadImageCallback(imageUrl);
             var nsImage = new NSImage(NSData.FromArray(imgBytes));
             var rect = new CGRect(new CGPoint(0, 0), nsImage.Size);
