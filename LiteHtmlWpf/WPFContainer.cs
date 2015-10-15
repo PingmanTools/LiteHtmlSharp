@@ -1,21 +1,22 @@
-﻿using LiteHtmlSharp;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows;
 using System.IO;
 using System.Windows.Media.Imaging;
-using System.Globalization;
 
 namespace LiteHtmlSharp
 {
+   public interface IResourceLoader
+   {
+      byte[] GetResourceBytes(string resource);
+      string GetResourceString(string resource);
+   }
+
    public class WPFContainer : Container
    {
+      IResourceLoader _loader;
       DrawingContext _dc;
       HTMLVisual _visualControl;
       DrawingVisual _visual;
@@ -29,8 +30,9 @@ namespace LiteHtmlSharp
       static uint _nextFontID;
       public Point _size;
 
-      public WPFContainer(HTMLVisual visual, string css) : base(css)
+      public WPFContainer(HTMLVisual visual, string css, IResourceLoader loader) : base(css)
       {
+         _loader = loader;
          _visualControl = visual;
          _visual = _visualControl.GetDrawingVisual();
       }
@@ -40,6 +42,7 @@ namespace LiteHtmlSharp
          Clear();
          if (_rendering) return;
 
+         _images.Clear();
          _inputs.Clear();
          _rendering = true;
 
@@ -238,12 +241,6 @@ namespace LiteHtmlSharp
          return _fonts[fontID];
       }
 
-      FormattedText GetFormattedText(string text, FontInfo font, TextAlignment alignment = TextAlignment.Left)
-      {
-         var formattedText = new FormattedText(text, CultureInfo.InvariantCulture, System.Windows.FlowDirection.LeftToRight, font.TypeFace, font.Size, null);
-         return formattedText;
-      }
-
       private void DrawImage(BitmapImage image, Rect rect)
       {
          _dc.DrawImage(image, rect);
@@ -251,34 +248,35 @@ namespace LiteHtmlSharp
 
       private BitmapImage LoadImage(string image)
       {
-         BitmapImage result = null;
-         if (!_images.TryGetValue(image, out result))
-         {
-            Uri uri = GetAbsoluteFile(image);
+         BitmapImage result;
 
-            result = new BitmapImage(uri);
-            _images.Add(image, result);
+         if(_images.TryGetValue(image, out result))
+         {
+            return result;
+         }
+
+         result = new BitmapImage();
+         var bytes = _loader.GetResourceBytes(image);
+         if (bytes != null)
+         {
+            using (var stream = new MemoryStream(bytes))
+            {
+               result.BeginInit();
+               result.CacheOption = BitmapCacheOption.OnLoad;
+               result.StreamSource = stream;
+               result.EndInit();
+
+               _images.Add(image, result);
+            }
          }
 
          return result;
       }
 
-      private Uri GetAbsoluteFile(string file)
-      {
-         Uri uri;
-         if (!Uri.TryCreate(file, UriKind.Absolute, out uri))
-         {
-            var fullpath = Path.Combine(BaseURL, file);
-            uri = new Uri(fullpath);
-         }
-
-         return uri;
-      }
-
       protected override int GetTextWidth(string text, UIntPtr font)
       {
          var fontInfo = GetFont(font);
-         var formattedText = GetFormattedText(text, fontInfo);
+         var formattedText = fontInfo.GetFormattedText(text);
          formattedText.SetTextDecorations(fontInfo.Decorations);
          return (int)formattedText.WidthIncludingTrailingWhitespace;
       }
@@ -287,8 +285,7 @@ namespace LiteHtmlSharp
       {
          text = text.Replace(' ', (char)160);
          var fontInfo = GetFont(font);
-         var formattedText = new FormattedText(text, CultureInfo.InvariantCulture, System.Windows.FlowDirection.LeftToRight, fontInfo.TypeFace, fontInfo.Size, null);
-         formattedText.SetTextDecorations(fontInfo.Decorations);
+         var formattedText = fontInfo.GetFormattedText(text);
          formattedText.SetForegroundBrush(GetBrush(ref color));
          _dc.DrawText(formattedText, new Point(pos.x, pos.y));
       }
@@ -304,10 +301,10 @@ namespace LiteHtmlSharp
          UIntPtr fontID = new UIntPtr(_nextFontID++);
          _fonts.Add(fontID, font);
 
-         fm.x_height = 7;
-         fm.ascent = 10;
-         fm.descent = 3;
-         fm.height = fm.ascent + fm.descent + 2;
+         fm.x_height = font.xHeight;
+         fm.ascent = font.Ascent;
+         fm.descent = font.Descent;
+         fm.height = font.LineHeight;
          fm.draw_spaces = decoration > 0;
 
          return fontID;
@@ -315,13 +312,7 @@ namespace LiteHtmlSharp
 
       protected override string ImportCss(string url, string baseurl)
       {
-         var file = GetAbsoluteFile(url);
-         if (File.Exists(file.OriginalString))
-         {
-            return File.ReadAllText(file.OriginalString);
-         }
-
-         return string.Empty;
+         return _loader.GetResourceString(url);
       }
 
       protected override void GetClientRect(ref position client)

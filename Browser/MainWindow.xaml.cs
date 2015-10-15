@@ -1,34 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+//using System.Windows.Shapes;
 using System.Diagnostics;
 using LiteHtmlSharp;
+using System.IO;
 
 namespace Browser
 {
    /// <summary>
    /// Interaction logic for MainWindow.xaml
    /// </summary>
-   public partial class MainWindow : Window
+   public partial class MainWindow : Window, IResourceLoader
    {
+      string _baseURL;
       Stopwatch _watch = new Stopwatch();
       HTMLVisual _htmlVisual;
       public MainWindow()
       {
          InitializeComponent();
 
-         _htmlVisual = new HTMLVisual(canvas);
+         string css = System.IO.File.ReadAllText("master.css");
+         _htmlVisual = new HTMLVisual(canvas, css, this);
       }
 
       private void button_Click(object sender, RoutedEventArgs e)
@@ -59,6 +52,7 @@ namespace Browser
          {
             string html = System.IO.File.ReadAllText(dlg.FileName);
             WPFContainer.BaseURL = System.IO.Path.GetDirectoryName(dlg.FileName);
+            _baseURL = WPFContainer.BaseURL;
             Render(html);
          }
       }
@@ -105,6 +99,40 @@ namespace Browser
       {
          var pos = e.GetPosition(canvas);
          _htmlVisual.OnLeftButtonUp(pos.X, pos.Y);
+      }
+
+      public byte[] GetResourceBytes(string resource)
+      {
+         var file = GetAbsoluteFile(resource);
+         if (File.Exists(file.OriginalString))
+         {
+            return File.ReadAllBytes(file.OriginalString);
+         }
+
+         return new byte[0];
+      }
+
+      public string GetResourceString(string resource)
+      {
+         var file = GetAbsoluteFile(resource);
+         if (File.Exists(file.OriginalString))
+         {
+            return File.ReadAllText(file.OriginalString);
+         }
+
+         return string.Empty;
+      }
+
+      private Uri GetAbsoluteFile(string file)
+      {
+         Uri uri;
+         if (!Uri.TryCreate(file, UriKind.Absolute, out uri))
+         {
+            var fullpath = Path.Combine(_baseURL, file);
+            uri = new Uri(fullpath);
+         }
+
+         return uri;
       }
    }
 }

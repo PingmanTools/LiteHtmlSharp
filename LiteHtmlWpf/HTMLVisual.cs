@@ -20,13 +20,12 @@ namespace LiteHtmlSharp
          get { return _container.Loaded; }
       }
 
-      public HTMLVisual(Canvas parent)
+      public HTMLVisual(Canvas parent, string masterCSS, IResourceLoader loader)
       {
          _canvas = parent;
          _visual = new DrawingVisual();
 
-         string css =System.IO.File.ReadAllText("master.css");
-         _container = new WPFContainer(this, css);
+         _container = new WPFContainer(this, masterCSS, loader);
 
          this.AddVisualChild(_visual);
          this.AddLogicalChild(_visual);
