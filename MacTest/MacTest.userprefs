@@ -1,19 +1,19 @@
 ﻿<Properties StartupItem="MacTest.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="../LiteHtmlLib/CMakeLists.txt">
+  <MonoDevelop.Ide.Workbench ActiveDocument="LiteHtmlCGContainer/MyClass.cs">
     <Files>
-      <File FileName="AppDelegate.cs" Line="15" Column="43" />
-      <File FileName="../LiteHtmlSharp/Container.cs" Line="32" Column="25" />
-      <File FileName="TestWindow.cs" Line="18" Column="9" />
-      <File FileName="MacLiteHtmlContainer.cs" Line="20" Column="8" />
+      <File FileName="AppDelegate.cs" Line="15" Column="8" />
+      <File FileName="../LiteHtmlSharp/Container.cs" Line="166" Column="35" />
+      <File FileName="TestWindow.cs" Line="53" Column="54" />
       <File FileName="../LiteHtmlLib/src/DocContainer.cpp" Line="1" Column="1" />
-      <File FileName="../LiteHtmlLib/src/ManagedCallbacks.cpp" Line="4" Column="35" />
-      <File FileName="../LiteHtmlLib/src/ManagedCallbacks.h" Line="11" Column="36" />
-      <File FileName="../LiteHtmlLib/src/DocContainer.h" Line="3" Column="11" />
-      <File FileName="../LiteHtmlLib/src/Globals.cpp" Line="38" Column="2" />
-      <File FileName="../LiteHtmlLib/src/Globals.h" Line="10" Column="1" />
-      <File FileName="../LiteHtmlLib/src/LiteHtmlLib.cpp" Line="1" Column="1" />
-      <File FileName="../LiteHtmlLib/CMakeLists.txt" Line="13" Column="45" />
+      <File FileName="../LiteHtmlLib/src/DocContainer.h" Line="1" Column="1" />
+      <File FileName="../LiteHtmlLib/src/Globals.cpp" Line="1" Column="1" />
+      <File FileName="../LiteHtmlLib/src/Globals.h" Line="1" Column="1" />
+      <File FileName="../LiteHtmlLib/CMakeLists.txt" Line="18" Column="51" />
+      <File FileName="LiteHtmlCGContainer.cs" Line="12" Column="36" />
+      <File FileName="LiteHtmlView.cs" Line="17" Column="7" />
+      <File FileName="LiteHtmlMacExtensions.cs" Line="1" Column="1" />
+      <File FileName="LiteHtmlCGContainer/MyClass.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

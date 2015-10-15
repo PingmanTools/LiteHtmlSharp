@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\README = ..\README
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiteHtmlCGContainer", "LiteHtmlCGContainer\LiteHtmlCGContainer.csproj", "{42A6F515-348F-4C6B-84F5-E1BA6F9A5E8F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,12 @@ Global
 		Default|Any CPU = Default|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{42A6F515-348F-4C6B-84F5-E1BA6F9A5E8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42A6F515-348F-4C6B-84F5-E1BA6F9A5E8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42A6F515-348F-4C6B-84F5-E1BA6F9A5E8F}.Default|Any CPU.ActiveCfg = Debug|Any CPU
+		{42A6F515-348F-4C6B-84F5-E1BA6F9A5E8F}.Default|Any CPU.Build.0 = Debug|Any CPU
+		{42A6F515-348F-4C6B-84F5-E1BA6F9A5E8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42A6F515-348F-4C6B-84F5-E1BA6F9A5E8F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6CB85C0B-8486-44E3-825D-A7E49F958943}.Debug|Any CPU.ActiveCfg = Default|Any CPU
 		{6CB85C0B-8486-44E3-825D-A7E49F958943}.Debug|Any CPU.Build.0 = Default|Any CPU
 		{6CB85C0B-8486-44E3-825D-A7E49F958943}.Default|Any CPU.ActiveCfg = Default|Any CPU

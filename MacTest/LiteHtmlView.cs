@@ -11,11 +11,7 @@ namespace MacTest
    {
       public override bool IsFlipped { get { return true; } }
 
-      public CGBitmapContext BitmapContext { get; private set; }
-
-      public CGSize BitmapContextSize { get; private set; }
-
-      public LiteHtmlMacContainer LiteHtmlContainer { get; private set; }
+      public LiteHtmlCGContainer LiteHtmlContainer { get; private set; }
 
       NSTrackingArea trackingArea = null;
 
@@ -35,8 +31,8 @@ namespace MacTest
       void Init(string masterCssData)
       {
          WantsLayer = true;
-         LiteHtmlContainer = new LiteHtmlMacContainer(this, masterCssData);
-         LiteHtmlContainer.ScaleFactor = (int)Layer.ContentsScale;
+         LiteHtmlContainer = new LiteHtmlCGContainer(masterCssData);
+         LiteHtmlContainer.ContextDrawn += () => SetNeedsDisplayInRect(Bounds);
       }
 
       public override void UpdateTrackingAreas()
@@ -49,10 +45,8 @@ namespace MacTest
          AddTrackingArea(trackingArea);
       }
 
-      void CreateBitmapContext()
+      CGContext CreateBitmapContext()
       {
-         LiteHtmlContainer.ScaleFactor = (int)Layer.ContentsScale;
-         BitmapContextSize = new CGSize(Bounds.Width, Bounds.Height);
          var width = (int)(Bounds.Width * Layer.ContentsScale);
          var height = (int)(Bounds.Height * Layer.ContentsScale);
 
@@ -61,20 +55,25 @@ namespace MacTest
          var bytes = new byte[width * height * bytesPerPixel];
          int bytesPerRow = bytesPerPixel * width;
          const int bitsPerComponent = 8;
-         BitmapContext = new CGBitmapContext(bytes, width, height, bitsPerComponent, bytesPerRow, colorSpace, CGBitmapFlags.PremultipliedLast | CGBitmapFlags.ByteOrder32Big);
+         var bitmapContext = new CGBitmapContext(bytes, width, height, bitsPerComponent, bytesPerRow, colorSpace, CGBitmapFlags.PremultipliedLast | CGBitmapFlags.ByteOrder32Big);
+         return bitmapContext;
+      }
+
+      void ResetContainerContext()
+      {
+         LiteHtmlContainer.SetContext(CreateBitmapContext(), Bounds.Size, (int)Layer.ContentsScale);
       }
 
       public override void DrawRect(CoreGraphics.CGRect dirtyRect)
       {
-         if (LiteHtmlContainer.ScaleFactor != (int)Layer.ContentsScale || BitmapContextSize != Bounds.Size)
+         if (LiteHtmlContainer.ScaleFactor != (int)Layer.ContentsScale || LiteHtmlContainer.ContextSize != Bounds.Size)
          {
-            CreateBitmapContext();
-            Redraw();
+            ResetContainerContext();
          }
 
          var gfxc = NSGraphicsContext.CurrentContext.GraphicsPort;
          gfxc.SaveState();
-         gfxc.DrawImage(Bounds, BitmapContext.ToImage());
+         gfxc.DrawImage(Bounds, ((CGBitmapContext)LiteHtmlContainer.Context).ToImage());
          gfxc.RestoreState();
 
          if (Drawn != null)
@@ -83,21 +82,26 @@ namespace MacTest
          }
       }
 
-      void Redraw()
-      {
-         LiteHtmlContainer.Draw(0, 0, new position{ x = 0, y = 0, width = (int)Bounds.Width, height = (int)Bounds.Height });
-      }
-
       public override void MouseMoved(NSEvent theEvent)
       {
          var point = ConvertPointFromView(theEvent.LocationInWindow, null);
-         if (LiteHtmlContainer.OnMouseMove((int)point.X, (int)point.Y))
-         {
-            Redraw();
-         }
+         LiteHtmlContainer.OnMouseMove((int)point.X, (int)point.Y);
          base.MouseMoved(theEvent);
       }
 
+      public override void MouseDown(NSEvent theEvent)
+      {
+         var point = ConvertPointFromView(theEvent.LocationInWindow, null);
+         LiteHtmlContainer.OnLeftButtonDown((int)point.X, (int)point.Y);
+         base.MouseDown(theEvent);
+      }
+
+      public override void MouseUp(NSEvent theEvent)
+      {
+         var point = ConvertPointFromView(theEvent.LocationInWindow, null);
+         LiteHtmlContainer.OnLeftButtonDown((int)point.X, (int)point.Y);
+         base.MouseUp(theEvent);
+      }
    }
 }
 

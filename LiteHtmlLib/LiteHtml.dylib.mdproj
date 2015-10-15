@@ -362,5 +362,6 @@
     <None Include="CMakeLists.txt" />
     <None Include="src\TagElement.cpp" />
     <None Include="src\TagElement.h" />
+    <None Include="src\CallbackDelegates.h" />
   </ItemGroup>
 </Project>
