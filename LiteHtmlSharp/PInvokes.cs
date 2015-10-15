@@ -51,6 +51,12 @@ namespace LiteHtmlSharp
       public static extern void SetGetTextWidth(IntPtr container, GetTextWidthFunc func);
 
       [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs)]
+      public static extern void SetGetDefaultFontSize(IntPtr container, GetDefaultFontSizeFunc func);
+
+      [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs)]
+      public static extern void SetGetDefaultFontName(IntPtr container, GetDefaultFontNameFunc Func);
+
+      [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs)]
       public static extern void SetImportCss(IntPtr container, ImportCssFunc func);
 
       [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs)]

@@ -36,6 +36,8 @@ namespace LiteHtmlSharp
          PInvokes.SetDrawText(CPPContainer, CreateDelegate(new DrawTextFunc(DrawTextScaled)));
          PInvokes.SetGetTextWidth(CPPContainer, CreateDelegate(new GetTextWidthFunc(GetTextWidth)));
          PInvokes.SetCreateFont(CPPContainer, CreateDelegate(new CreateFontFunc(CreateFontWrapper)));
+         PInvokes.SetGetDefaultFontSize(CPPContainer, CreateDelegate(new GetDefaultFontSizeFunc(GetDefaultFontSize)));
+         PInvokes.SetGetDefaultFontName(CPPContainer, CreateDelegate(new GetDefaultFontNameFunc(GetDefaultFontName)));
 
          PInvokes.SetImportCss(CPPContainer, CreateDelegate(new ImportCssFunc(ImportCss)));
 
@@ -82,13 +84,15 @@ namespace LiteHtmlSharp
 
       // -----
 
-      private void DrawBackgroundScaled(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos)
+      private void DrawBackgroundScaled(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos, ref border_radiuses borderRadiuses, ref position borderBox)
       {
          pos.Scale(ScaleFactor);
-         DrawBackground(hdc, image, repeat, ref color, ref pos);
+         borderRadiuses.Scale(ScaleFactor);
+         borderBox.Scale(ScaleFactor);
+         DrawBackground(hdc, image, repeat, ref color, ref pos, ref borderRadiuses, ref borderBox);
       }
 
-      protected abstract void DrawBackground(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos);
+      protected abstract void DrawBackground(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos, ref border_radiuses borderRadiuses, ref position borderBox);
 
       // -----
 
@@ -113,18 +117,24 @@ namespace LiteHtmlSharp
 
       // -----
 
-      protected abstract void GetImageSize(string image, ref size size);
-
-      protected abstract int GetTextWidth(string text, UIntPtr font);
-
-      protected abstract void GetClientRect(ref position client);
-
       protected UIntPtr CreateFontWrapper(string faceName, int size, int weight, font_style italic, uint decoration, ref font_metrics fm)
       {
          return CreateFont(faceName, size, weight, italic, (font_decoration)decoration, ref fm);
       }
 
       protected abstract UIntPtr CreateFont(string faceName, int size, int weight, font_style italic, font_decoration decoration, ref font_metrics fm);
+
+      // -----
+
+      protected abstract void GetImageSize(string image, ref size size);
+
+      protected abstract int GetTextWidth(string text, UIntPtr font);
+
+      protected abstract void GetClientRect(ref position client);
+
+      protected abstract int GetDefaultFontSize();
+
+      protected abstract string GetDefaultFontName();
 
       public ImportCssFunc ImportCssCallback;
 
@@ -183,6 +193,15 @@ namespace LiteHtmlSharp
       {
          PInvokes.OnLeftButtonUp(CPPContainer, x, y);
       }
-
+      /*
+         TODO: 
+         set_clip
+         del_clip
+         set_cursor
+         transform_text
+         set_caption
+         draw_list_marker
+         delete_font
+      */
    }
 }

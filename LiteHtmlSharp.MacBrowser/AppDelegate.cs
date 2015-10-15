@@ -21,52 +21,36 @@ namespace LiteHtmlSharp.MacBrowser
 
       public override void DidFinishLaunching(NSNotification notification)
       {
-         #if DEBUG
-         TestLibLoadTime();
-         Stopwatch stop = new Stopwatch();
-         stop.Start();
-         #endif
+         var testWindow = new LiteHtmlNSWindow(
+                             new CGRect(0, 0, 400, 400), 
+                             NSWindowStyle.Closable | NSWindowStyle.Titled | NSWindowStyle.Resizable, 
+                             File.ReadAllText("master.css", Encoding.UTF8)
+                          );
+         testWindow.WillClose += (s, e) => NSApplication.SharedApplication.Terminate(this);
+         testWindow.Center();
+         testWindow.MakeKeyAndOrderFront(this);
 
-
-         var masterCss = File.ReadAllText("master.css", Encoding.UTF8);
-         var htmlStr = File.ReadAllText(Path.Combine("ExampleWebPage", "index.html"));
-
-         var testWindow = new LiteHtmlNSWindow(new CGRect(0, 0, 400, 400), NSWindowStyle.Titled | NSWindowStyle.Resizable, masterCss);
          testWindow.LiteHtmlContainer.ImportCssCallback = (url, baseUrl) => File.ReadAllText(Path.Combine("ExampleWebPage", url), Encoding.UTF8);
          testWindow.LiteHtmlContainer.LoadImageCallback = (url) => File.ReadAllBytes(Path.Combine("ExampleWebPage", url));
-         testWindow.LiteHtmlView.RenderHtml(htmlStr);
 
 
-         #if DEBUG
+         Stopwatch stop = new Stopwatch();
+         stop.Start();
+
+         var htmlStr = File.ReadAllText(Path.Combine("ExampleWebPage", "index.html"));
+         testWindow.LiteHtmlView.LoadHtml(htmlStr);
+
          Action drawnCallback = null;
          drawnCallback = () =>
          {
             testWindow.LiteHtmlView.Drawn -= drawnCallback;
             stop.Stop();
-            testWindow.Title = String.Format("draw took: {0} ms", stop.ElapsedMilliseconds);
+            testWindow.Title = String.Format("Cold start took: {0} ms", stop.ElapsedMilliseconds);
          };
          testWindow.LiteHtmlView.Drawn += drawnCallback;
-         #endif
 
-
-         testWindow.Center();
-         testWindow.MakeKeyAndOrderFront(this);
       }
 
-      void TestLibLoadTime()
-      {
-         Stopwatch stop = new Stopwatch();
-         stop.Start();
-         string testStaticCallback = null;
-         PInvokes.SetTestFunction(result => testStaticCallback = result);
-         if (string.IsNullOrEmpty(testStaticCallback))
-         {
-            throw new Exception("Container instance callback test failed. Something is really broken!");
-         }
-
-         stop.Stop();
-         Console.WriteLine("Lib load took: {0} ms", stop.ElapsedTicks / (float)TimeSpan.TicksPerMillisecond);
-      }
    }
 }
 

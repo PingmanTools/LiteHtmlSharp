@@ -104,6 +104,16 @@ __declspec(dllexport) void SetDrawText(DocContainer* container, DrawText_functio
    container->DrawText = callback;
 }
 
+__declspec(dllexport) void SetGetDefaultFontSize(DocContainer* container, GetDefaultFontSize_function callback)
+{
+	container->GetDefaultFontSize = callback;
+}
+
+__declspec(dllexport) void SetGetDefaultFontName(DocContainer* container, GetDefaultFontName_function callback)
+{
+	container->GetDefaultFontName = callback;
+}
+
 __declspec(dllexport) void SetImportCss(DocContainer* container, ImportCss_function callback)
 {
    container->ImportCss = callback;

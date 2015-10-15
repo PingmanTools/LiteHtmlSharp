@@ -68,6 +68,8 @@ public:
    DrawText_function DrawText = 0;
    GetTextWidth_function GetTextWidth = 0;
    CreateFont_function CreateFont = 0;
+   GetDefaultFontSize_function GetDefaultFontSize = 0;
+   GetDefaultFontName_function GetDefaultFontName = 0;
 
    GetClientRect_function GetClientRect = 0;
    GetMediaFeatures_function GetMediaFeatures = 0;

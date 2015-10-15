@@ -26,7 +26,7 @@ namespace LiteHtmlSharp.Mac
          LiteHtmlContainer.ContextDrawn += LiteHtmlContainer_ContextDrawn;
       }
 
-      public void RenderHtml(string html)
+      public void LoadHtml(string html)
       {
          LiteHtmlContainer.RenderHtml(html);
          ResetContainerContext();
@@ -57,7 +57,8 @@ namespace LiteHtmlSharp.Mac
          var bytes = new byte[width * height * bytesPerPixel];
          int bytesPerRow = bytesPerPixel * width;
          const int bitsPerComponent = 8;
-         var bitmapContext = new CGBitmapContext(bytes, width, height, bitsPerComponent, bytesPerRow, colorSpace, CGBitmapFlags.PremultipliedLast | CGBitmapFlags.ByteOrder32Big);
+         var bitmapFlags = CGBitmapFlags.PremultipliedLast | CGBitmapFlags.ByteOrder32Big;
+         var bitmapContext = new CGBitmapContext(bytes, width, height, bitsPerComponent, bytesPerRow, colorSpace, bitmapFlags);
          return bitmapContext;
       }
 
@@ -120,7 +121,7 @@ namespace LiteHtmlSharp.Mac
          }
 
          var point = ConvertPointFromView(theEvent.LocationInWindow, null);
-         LiteHtmlContainer.OnLeftButtonDown((int)point.X, (int)point.Y);
+         LiteHtmlContainer.OnLeftButtonUp((int)point.X, (int)point.Y);
          base.MouseUp(theEvent);
       }
    }

@@ -21,17 +21,26 @@ namespace LiteHtmlSharp.CoreGraphics
 
       public CGSize ContextSize { get; private set; }
 
-
+      Dictionary<string, ImageHolder> imageCache;
       Dictionary<UIntPtr, FontHolder> fontCache;
       uint lastFontId = 0;
 
-      Dictionary<string, ImageHolder> imageCache;
 
       public CGContainer(string masterCssData)
          : base(masterCssData)
       {
          fontCache = new Dictionary<UIntPtr, FontHolder>();
          imageCache = new Dictionary<string, ImageHolder>();
+      }
+
+      public void DrawRect(nfloat x, nfloat y, nfloat width, nfloat height, CGColor color)
+      {
+         Context.SetFillColor(color);
+         Context.FillRect(new CGRect(x, y, width, height));
+         if (ContextDrawn != null)
+         {
+            ContextDrawn();
+         }
       }
 
       public void SetContext(CGContext context, CGSize contextSize, int scaleFactor)
@@ -53,16 +62,6 @@ namespace LiteHtmlSharp.CoreGraphics
          base.RenderHtml(html, (int)ContextSize.Width);
       }
 
-      public override bool OnMouseMove(int x, int y)
-      {
-         var needsRedraw = base.OnMouseMove(x, y);
-         if (needsRedraw)
-         {
-            Draw();
-         }
-         return needsRedraw;
-      }
-
       void Render()
       {
          Render((int)ContextSize.Width);
@@ -71,6 +70,16 @@ namespace LiteHtmlSharp.CoreGraphics
       void Draw()
       {
          Draw(0, 0, new position{ x = 0, y = 0, width = (int)ContextSize.Width, height = (int)ContextSize.Height });
+      }
+
+      public override bool OnMouseMove(int x, int y)
+      {
+         var needsRedraw = base.OnMouseMove(x, y);
+         if (needsRedraw)
+         {
+            Draw();
+         }
+         return needsRedraw;
       }
 
       protected override void OnAnchorClick(string url)
@@ -105,41 +114,14 @@ namespace LiteHtmlSharp.CoreGraphics
          
       }
 
+
+      #region Font / Text
+
       protected override UIntPtr CreateFont(string faceName, int size, int weight, font_style italic, font_decoration decoration, ref font_metrics fm)
       {
-         var font = new CTFont(faceName, size);
-         var strAttrs = new CTStringAttributes { Font = font };
-
-         // Bold & italic are properties of the CTFont
-         var traits = CTFontSymbolicTraits.None;
-         if (italic == font_style.fontStyleItalic)
-         {
-            traits |= CTFontSymbolicTraits.Italic;
-         }
-         if (weight > 400)
-         {
-            traits |= CTFontSymbolicTraits.Bold;
-         }
-         font = font.WithSymbolicTraits(font.Size, traits, traits);
-
-         // initial size must be unscaled when getting these metrics
-         fm.ascent = (int)Math.Round(font.AscentMetric);
-         fm.descent = (int)Math.Round(font.DescentMetric);
-         fm.height = (int)Math.Round(font.AscentMetric + font.DescentMetric);
-         fm.x_height = (int)Math.Round(font.XHeightMetric);
-
-         fm.draw_spaces = decoration.HasFlag(font_decoration.font_decoration_underline) || decoration.HasFlag(font_decoration.font_decoration_linethrough);
-
-         var fontHolder = new FontHolder
-         { 
-            Size = size,
-            Attributes = strAttrs,
-            Decoration = decoration,
-            Weight = weight
-         };
-
          lastFontId++;
          var fontId = new UIntPtr(lastFontId);
+         var fontHolder = FontHolder.Create(faceName, size, weight, italic, decoration, ref fm);
          fontCache.Add(fontId, fontHolder);
          return fontId;
       }
@@ -156,6 +138,16 @@ namespace LiteHtmlSharp.CoreGraphics
          return fontHolder;
       }
 
+      protected override int GetDefaultFontSize()
+      {
+         return (int)Math.Round(NSFont.SystemFontSize) + 20;
+      }
+
+      protected override string GetDefaultFontName()
+      {
+         return NSFont.SystemFontOfSize(NSFont.SystemFontSize).FontName;
+      }
+
       protected override int GetTextWidth(string text, UIntPtr fontId)
       {
          var fontHolder = GetFont(fontId);
@@ -168,46 +160,36 @@ namespace LiteHtmlSharp.CoreGraphics
       {
          var fontHolder = GetFont(fontId);
 
-
          var attrString = fontHolder.GetAttributedString(text, color);
 
-         gfx.SaveState();
-         gfx.TranslateCTM(pos.x, pos.y + fontHolder.Attributes.Font.AscentMetric);
-         gfx.ScaleCTM(1, -1);
-         gfx.TextMatrix = CGAffineTransform.MakeIdentity();
+         Context.SaveState();
+         Context.TranslateCTM(pos.x, pos.y + fontHolder.Attributes.Font.AscentMetric);
+         Context.ScaleCTM(1, -1);
+         Context.TextMatrix = CGAffineTransform.MakeIdentity();
 
-         gfx.SetAllowsAntialiasing(true);
-         gfx.SetShouldAntialias(true);
-         gfx.SetAllowsFontSmoothing(true);
-         gfx.SetShouldSmoothFonts(true);
+         /*Context.SetAllowsAntialiasing(true);
+         Context.SetShouldAntialias(true);
+         Context.SetAllowsFontSmoothing(true);
+         Context.SetShouldSmoothFonts(true);*/
 
          using (var textLine = new CTLine(attrString))
          {
-            textLine.Draw(gfx);
+            textLine.Draw(Context);
          }
 
-         gfx.RestoreState();
+         Context.RestoreState();
          if (ContextDrawn != null)
          {
             ContextDrawn();
          }
       }
 
-      private CGContext gfx { get { return Context; } }
+      #endregion
 
-      private CGSize gfxSize { get { return ContextSize; } }
 
-      public void DrawRect(nfloat x, nfloat y, nfloat width, nfloat height, CGColor color)
-      {
-         gfx.SetFillColor(color);
-         gfx.FillRect(new CGRect(x, y, width, height));
-         if (ContextDrawn != null)
-         {
-            ContextDrawn();
-         }
-      }
+      #region Image
 
-      protected override void GetImageSize(string imageUrl, ref size size)
+      ImageHolder GetCacheImage(string imageUrl)
       {
          ImageHolder imageHolder;
          if (!imageCache.TryGetValue(imageUrl, out imageHolder))
@@ -223,28 +205,58 @@ namespace LiteHtmlSharp.CoreGraphics
             imageHolder = new ImageHolder{ Image = image, Size = nsImage.Size };
             imageCache.Add(imageUrl, imageHolder);
          }
+         return imageHolder;
+      }
+
+      protected override void GetImageSize(string imageUrl, ref size size)
+      {
+         var imageHolder = GetCacheImage(imageUrl);
          size.width = (int)imageHolder.Size.Width;
          size.height = (int)imageHolder.Size.Height;
       }
 
-      protected override void DrawBackground(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos)
+      private void DrawImage(string image, CGRect rect)
+      {
+         var imageHolder = GetCacheImage(image);
+         Context.SaveState();
+         Context.TranslateCTM(rect.X, rect.Y + rect.Height);
+         Context.ScaleCTM(1, -1);
+         Context.DrawImage(new CGRect(0, 0, rect.Width, rect.Height), imageHolder.Image);
+         Context.RestoreState();
+      }
+
+      #endregion
+
+
+      #region Rect
+
+      protected override void DrawBackground(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos, ref border_radiuses br, ref position borderBox)
       {
          var cgColor = color.ToCGColor();
          var rect = pos.ToRect();
 
          if (string.IsNullOrEmpty(image))
          {
-            gfx.SetFillColor(cgColor);
-            gfx.FillRect(rect);
+            CGPath path = new CGPath();
+            path.MoveToPoint(rect.Left + br.top_left_x, rect.Top);
+            path.AddLineToPoint(rect.Right - br.top_right_x, rect.Top);
+            path.AddQuadCurveToPoint(rect.Right, rect.Top, rect.Right, rect.Top + br.top_right_y);
+            path.AddLineToPoint(rect.Right, rect.Bottom - br.bottom_right_y);
+            path.AddQuadCurveToPoint(rect.Right, rect.Bottom, rect.Right - br.bottom_right_x, rect.Bottom);
+            path.AddLineToPoint(rect.Left + br.bottom_left_x, rect.Bottom);
+            path.AddQuadCurveToPoint(rect.Left, rect.Bottom, rect.Left, rect.Bottom - br.bottom_left_y);
+            path.AddLineToPoint(rect.Left, rect.Top + br.top_left_y);
+            path.AddQuadCurveToPoint(rect.Left, rect.Top, rect.Left + br.top_left_x, rect.Top);
+
+
+            Context.SetFillColor(cgColor);
+            Context.AddPath(path);
+            Context.FillPath();
+            //Context.FillRect(rect);
          }
          else
          {
-            var imageHolder = imageCache[image];
-            gfx.SaveState();
-            gfx.TranslateCTM(rect.X, rect.Y + rect.Height);
-            gfx.ScaleCTM(1, -1);
-            gfx.DrawImage(new CGRect(0, 0, rect.Width, rect.Height), imageHolder.Image);
-            gfx.RestoreState();
+            DrawImage(image, rect);
          }
          if (ContextDrawn != null)
          {
@@ -275,6 +287,8 @@ namespace LiteHtmlSharp.CoreGraphics
             ContextDrawn();
          }
       }
+
+      #endregion
 
    }
 }

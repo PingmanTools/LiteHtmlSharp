@@ -22,6 +22,11 @@ namespace LiteHtmlSharp
          width *= scaleFactor;
          height *= scaleFactor;
       }
+
+      public override string ToString()
+      {
+         return string.Format("x: {0}, y: {1}, w: {2}, h: {3}", x, y, width, height);
+      }
    }
 
    [StructLayout(LayoutKind.Sequential)]
@@ -49,6 +54,14 @@ namespace LiteHtmlSharp
          bottom_right_y *= scaleFactor;
          bottom_left_x *= scaleFactor;
          bottom_left_y *= scaleFactor;
+      }
+
+      public override string ToString()
+      {
+         return string.Format(
+            "tlx: {0}, tly: {1}, trx: {2}, try: {3}, brx: {4}, bry: {5}, blx: {6}, bly: {7}", 
+            top_left_x, top_left_y, top_right_x, top_right_y, bottom_right_x, bottom_right_x, bottom_left_x, bottom_left_y
+         );
       }
    }
 
