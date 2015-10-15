@@ -148,16 +148,6 @@ namespace LiteHtmlSharp
          PInvokes.RenderHTML(CPPContainer, html, maxWidth);
       }
 
-      protected virtual void CheckLastError()
-      {
-         var lastError = Marshal.GetLastWin32Error();
-         if (lastError > 0)
-         {
-            var e = new Win32Exception(lastError);
-            //throw e;
-         }
-      }
-
       public virtual void Draw(int x, int y, position clip)
       {
          PInvokes.Draw(CPPContainer, x, y, clip);
@@ -166,6 +156,26 @@ namespace LiteHtmlSharp
       public virtual bool OnMouseMove(int x, int y)
       {
          return PInvokes.OnMouseMove(CPPContainer, x, y);
+      }
+
+      public void Render(int maxWidth)
+      {
+         PInvokes.Render(CPPContainer, maxWidth);
+      }
+
+      public void OnMediaChanged()
+      {
+         PInvokes.OnMediaChanged(CPPContainer);
+      }
+
+      public void OnLeftButtonDown(int x, int y)
+      {
+         PInvokes.OnLeftButtonDown(CPPContainer, x, y);
+      }
+
+      public void OnLeftButtonUp(int x, int y)
+      {
+         PInvokes.OnLeftButtonUp(CPPContainer, x, y);
       }
 
    }

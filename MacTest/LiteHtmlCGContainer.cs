@@ -9,12 +9,17 @@ using Foundation;
 
 namespace MacTest
 {
-   public class LiteHtmlMacContainer : Container
+   public class LiteHtmlCGContainer : Container
    {
       public delegate byte[] LoadImageDelegate(string imageUrl);
 
+      public event Action ContextDrawn;
+
       public LoadImageDelegate LoadImageCallback;
 
+      public CGContext Context { get; private set; }
+
+      public CGSize ContextSize { get; private set; }
 
       class FontHolder
       {
@@ -32,7 +37,7 @@ namespace MacTest
          {
             Attributes.ForegroundColor = color.ToCGColor();
 
-            // CoreText won't draw underlines for whitespace so draw a transparent X
+            // CoreText won't draw underlines for whitespace so draw a transparent dot
             if (text == " ")
             {
                text = ".";
@@ -69,28 +74,64 @@ namespace MacTest
 
       class ImageHolder
       {
-         public CGImage Image{ get; set; }
+         public CGImage Image { get; set; }
 
          public CGSize Size { get; set; }
 
       }
-
-      LiteHtmlView view;
 
       Dictionary<UIntPtr, FontHolder> fontCache;
       uint lastFontId = 0;
 
       Dictionary<string, ImageHolder> imageCache;
 
-      public LiteHtmlMacContainer(LiteHtmlView view, string masterCssData)
+      public LiteHtmlCGContainer(string masterCssData)
          : base(masterCssData)
       {
-         this.view = view;
          fontCache = new Dictionary<UIntPtr, FontHolder>();
          imageCache = new Dictionary<string, ImageHolder>();
       }
 
-      protected override int CreateElement(string tag)
+      public void SetContext(CGContext context, CGSize contextSize, int scaleFactor)
+      {
+         var needsUpdate = contextSize != ContextSize || ScaleFactor != scaleFactor;
+         Context = context;
+         ContextSize = contextSize;
+         ScaleFactor = scaleFactor;
+         if (needsUpdate)
+         {
+            OnMediaChanged();
+            Render();
+            Draw();
+         }
+      }
+
+      public override bool OnMouseMove(int x, int y)
+      {
+         var needsRedraw = base.OnMouseMove(x, y);
+         if (needsRedraw)
+         {
+            Draw();
+         }
+         return needsRedraw;
+      }
+
+      void Render()
+      {
+         Render((int)ContextSize.Width);
+      }
+
+      void Draw()
+      {
+         Draw(0, 0, new position{ x = 0, y = 0, width = (int)ContextSize.Width, height = (int)ContextSize.Height });
+      }
+
+      protected override void OnAnchorClick(string url)
+      {
+         NSAlert.WithMessage("URL", "Okay", null, null, url).RunModal();
+      }
+
+      protected override int CreateElement(string tag, string attributes)
       {
          return 0;
       }
@@ -102,22 +143,17 @@ namespace MacTest
 
       protected override void GetClientRect(ref position client)
       {
-         client.width = (int)view.Bounds.Width;
-         client.height = (int)view.Bounds.Height;
+         client.width = (int)ContextSize.Width;
+         client.height = (int)ContextSize.Height;
       }
 
       protected override void GetMediaFeatures(ref media_features media)
       {
-         media.device_width = (int)view.Bounds.Width;
-         media.device_height = (int)view.Bounds.Height;
+         media.width = media.device_width = (int)ContextSize.Width;
+         media.height = media.device_height = (int)ContextSize.Height;
       }
 
       protected override void SetBaseURL(ref string base_url)
-      {
-         
-      }
-
-      protected override void OnAnchorClick(ref string url)
       {
          
       }
@@ -204,17 +240,24 @@ namespace MacTest
          }
 
          gfx.RestoreState();
-
+         if (ContextDrawn != null)
+         {
+            ContextDrawn();
+         }
       }
 
-      private CGBitmapContext gfx { get { return view.BitmapContext; } }
+      private CGContext gfx { get { return Context; } }
 
-      private CGSize gfxSize { get { return view.BitmapContextSize; } }
+      private CGSize gfxSize { get { return ContextSize; } }
 
       public void DrawRect(nfloat x, nfloat y, nfloat width, nfloat height, CGColor color)
       {
          gfx.SetFillColor(color);
          gfx.FillRect(new CGRect(x, y, width, height));
+         if (ContextDrawn != null)
+         {
+            ContextDrawn();
+         }
       }
 
       protected override void GetImageSize(string imageUrl, ref size size)
@@ -252,7 +295,10 @@ namespace MacTest
             gfx.DrawImage(new CGRect(0, 0, rect.Width, rect.Height), imageHolder.Image);
             gfx.RestoreState();
          }
-
+         if (ContextDrawn != null)
+         {
+            ContextDrawn();
+         }
       }
 
       protected override void DrawBorders(UIntPtr hdc, ref borders borders, ref position draw_pos, bool root)
@@ -273,7 +319,10 @@ namespace MacTest
          {
             DrawRect(draw_pos.x, draw_pos.y, draw_pos.width, borders.bottom.width, borders.bottom.color.ToCGColor());
          }
-         view.SetNeedsDisplayInRect(view.Bounds);
+         if (ContextDrawn != null)
+         {
+            ContextDrawn();
+         }
       }
 
    }

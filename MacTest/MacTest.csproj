@@ -64,8 +64,8 @@
     <Compile Include="AppDelegate.cs" />
     <Compile Include="TestWindow.cs" />
     <Compile Include="LiteHtmlView.cs" />
-    <Compile Include="LiteHtmlMacContainer.cs" />
     <Compile Include="LiteHtmlMacExtensions.cs" />
+    <Compile Include="LiteHtmlCGContainer.cs" />
   </ItemGroup>
   <Import Project="..\LiteHtmlSharp\LiteHtmlSharp.projitems" Label="Shared" Condition="Exists('..\LiteHtmlSharp\LiteHtmlSharp.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
@@ -86,5 +86,11 @@
     <Content Include="WebPage\da900255-ffe1-46f2-a78f-88f6ac671c49.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="LiteHtmlCGContainer\LiteHtmlCGContainer.csproj">
+      <Project>{42A6F515-348F-4C6B-84F5-E1BA6F9A5E8F}</Project>
+      <Name>LiteHtmlCGContainer</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>
