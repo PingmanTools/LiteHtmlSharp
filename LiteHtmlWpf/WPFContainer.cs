@@ -1,16 +1,10 @@
-﻿using LiteHtmlSharp;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows;
 using System.IO;
 using System.Windows.Media.Imaging;
-using System.Globalization;
 
 namespace LiteHtmlSharp
 {
@@ -265,9 +259,10 @@ namespace LiteHtmlSharp
          var bytes = _loader.GetResourceBytes(image);
          if (bytes != null)
          {
-            using (var stream = new System.IO.MemoryStream(bytes))
+            using (var stream = new MemoryStream(bytes))
             {
                result.BeginInit();
+               result.CacheOption = BitmapCacheOption.OnLoad;
                result.StreamSource = stream;
                result.EndInit();
 
