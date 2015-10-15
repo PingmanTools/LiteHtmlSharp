@@ -14,8 +14,15 @@ using System.Globalization;
 
 namespace LiteHtmlSharp
 {
+   public interface IResourceLoader
+   {
+      byte[] GetResourceBytes(string resource);
+      string GetResourceString(string resource);
+   }
+
    public class WPFContainer : Container
    {
+      IResourceLoader _loader;
       DrawingContext _dc;
       HTMLVisual _visualControl;
       DrawingVisual _visual;
@@ -29,8 +36,9 @@ namespace LiteHtmlSharp
       static uint _nextFontID;
       public Point _size;
 
-      public WPFContainer(HTMLVisual visual, string css) : base(css)
+      public WPFContainer(HTMLVisual visual, string css, IResourceLoader loader) : base(css)
       {
+         _loader = loader;
          _visualControl = visual;
          _visual = _visualControl.GetDrawingVisual();
       }
@@ -40,6 +48,7 @@ namespace LiteHtmlSharp
          Clear();
          if (_rendering) return;
 
+         _images.Clear();
          _inputs.Clear();
          _rendering = true;
 
@@ -245,28 +254,28 @@ namespace LiteHtmlSharp
 
       private BitmapImage LoadImage(string image)
       {
-         BitmapImage result = null;
-         if (!_images.TryGetValue(image, out result))
-         {
-            Uri uri = GetAbsoluteFile(image);
+         BitmapImage result;
 
-            result = new BitmapImage(uri);
-            _images.Add(image, result);
+         if(_images.TryGetValue(image, out result))
+         {
+            return result;
+         }
+
+         result = new BitmapImage();
+         var bytes = _loader.GetResourceBytes(image);
+         if (bytes != null)
+         {
+            using (var stream = new System.IO.MemoryStream(bytes))
+            {
+               result.BeginInit();
+               result.StreamSource = stream;
+               result.EndInit();
+
+               _images.Add(image, result);
+            }
          }
 
          return result;
-      }
-
-      private Uri GetAbsoluteFile(string file)
-      {
-         Uri uri;
-         if (!Uri.TryCreate(file, UriKind.Absolute, out uri))
-         {
-            var fullpath = Path.Combine(BaseURL, file);
-            uri = new Uri(fullpath);
-         }
-
-         return uri;
       }
 
       protected override int GetTextWidth(string text, UIntPtr font)
@@ -308,13 +317,7 @@ namespace LiteHtmlSharp
 
       protected override string ImportCss(string url, string baseurl)
       {
-         var file = GetAbsoluteFile(url);
-         if (File.Exists(file.OriginalString))
-         {
-            return File.ReadAllText(file.OriginalString);
-         }
-
-         return string.Empty;
+         return _loader.GetResourceString(url);
       }
 
       protected override void GetClientRect(ref position client)
