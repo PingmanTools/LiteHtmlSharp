@@ -53,6 +53,8 @@ about{
     left:171px;
     z-index: 2;
     font-size: 16px;
+    font-weight: 950;
+	font-style: italic;
 }
 
 .license-info {

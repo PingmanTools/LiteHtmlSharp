@@ -31,7 +31,7 @@ namespace LiteHtmlSharp
 
          PInvokes.SetDrawText(CPPContainer, CreateDelegate(new DrawTextFunc(DrawTextScaled)));
          PInvokes.SetGetTextWidth(CPPContainer, CreateDelegate(new GetTextWidthFunc(GetTextWidth)));
-         PInvokes.SetCreateFont(CPPContainer, CreateDelegate(new CreateFontFunc(CreateFont)));
+         PInvokes.SetCreateFont(CPPContainer, CreateDelegate(new CreateFontFunc(CreateFontWrapper)));
 
          PInvokes.SetImportCss(CPPContainer, CreateDelegate(new ImportCssFunc(ImportCss)));
 
@@ -115,7 +115,12 @@ namespace LiteHtmlSharp
 
       protected abstract void GetClientRect(ref position client);
 
-      protected abstract UIntPtr CreateFont(string faceName, int size, int weight, font_style italic, uint decoration, ref font_metrics fm);
+      protected UIntPtr CreateFontWrapper(string faceName, int size, int weight, font_style italic, uint decoration, ref font_metrics fm)
+      {
+         return CreateFont(faceName, size, weight, italic, (font_decoration)decoration, ref fm);
+      }
+
+      protected abstract UIntPtr CreateFont(string faceName, int size, int weight, font_style italic, font_decoration decoration, ref font_metrics fm);
 
       public ImportCssFunc ImportCssCallback;
 

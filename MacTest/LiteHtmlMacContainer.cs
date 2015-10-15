@@ -20,7 +20,51 @@ namespace MacTest
       {
          public CTStringAttributes Attributes { get; set; }
 
-         public CTFont Font { get; set; }
+         public int Scale { get; set; }
+
+         public int Size { get; set; }
+
+         public font_decoration Decoration { get; set; }
+
+         public int Weight { get; set; }
+
+         public NSAttributedString GetAttributedString(string text, web_color color)
+         {
+            Attributes.ForegroundColor = color.ToCGColor();
+
+            // CoreText won't draw underlines for whitespace so draw a transparent X
+            if (text == " ")
+            {
+               text = ".";
+               Attributes.ForegroundColor = new CGColor(0, 0, 0, 0);
+            }
+
+            var range = new NSRange(0, text.Length);
+            var attrString = new NSMutableAttributedString(text, Attributes);
+
+            // these styles can only be applied to the NSAttributedString
+            if (Decoration.HasFlag(font_decoration.font_decoration_linethrough))
+            {
+               attrString.AddAttribute(NSStringAttributeKey.StrikethroughStyle, new NSNumber(1), range);
+            }
+            if (Decoration.HasFlag(font_decoration.font_decoration_underline))
+            {
+               attrString.AddAttribute(NSStringAttributeKey.UnderlineStyle, new NSNumber(1), range);
+               attrString.AddAttribute(NSStringAttributeKey.UnderlineColor, new NSObject(color.ToCGColor().Handle), range);
+            }
+
+            if (Decoration.HasFlag(font_decoration.font_decoration_overline))
+            {
+
+            }
+
+            if (Weight > 400)
+            {
+               attrString.ApplyFontTraits(NSFontTraitMask.Bold, new NSRange(0, text.Length));
+            }
+
+            return attrString;
+         }
       }
 
       class ImageHolder
@@ -28,6 +72,7 @@ namespace MacTest
          public CGImage Image{ get; set; }
 
          public CGSize Size { get; set; }
+
       }
 
       LiteHtmlView view;
@@ -77,22 +122,37 @@ namespace MacTest
          
       }
 
-      protected override UIntPtr CreateFont(string faceName, int size, int weight, font_style italic, uint decoration, ref font_metrics fm)
+      protected override UIntPtr CreateFont(string faceName, int size, int weight, font_style italic, font_decoration decoration, ref font_metrics fm)
       {
-         var symbolicTrait = italic == font_style.fontStyleItalic ? CTFontSymbolicTraits.Italic : CTFontSymbolicTraits.None;
-         var font = new CTFont(faceName, size).WithSymbolicTraits(size, symbolicTrait, symbolicTrait);
+         var font = new CTFont(faceName, size);
+         var strAttrs = new CTStringAttributes { Font = font };
 
+         // Bold & italic are properties of the CTFont
+         var traits = CTFontSymbolicTraits.None;
+         if (italic == font_style.fontStyleItalic)
+         {
+            traits |= CTFontSymbolicTraits.Italic;
+         }
+         if (weight > 400)
+         {
+            traits |= CTFontSymbolicTraits.Bold;
+         }
+         font = font.WithSymbolicTraits(font.Size, traits, traits);
+
+         // initial size must be unscaled when getting these metrics
          fm.ascent = (int)Math.Round(font.AscentMetric);
          fm.descent = (int)Math.Round(font.DescentMetric);
-         fm.draw_spaces = false;
          fm.height = (int)Math.Round(font.AscentMetric + font.DescentMetric);
          fm.x_height = (int)Math.Round(font.XHeightMetric);
 
-         var strAttrs = new CTStringAttributes { Font = font };
+         fm.draw_spaces = decoration.HasFlag(font_decoration.font_decoration_underline) || decoration.HasFlag(font_decoration.font_decoration_linethrough);
+
          var fontHolder = new FontHolder
          { 
-            Font = font, 
-            Attributes = strAttrs
+            Size = size,
+            Attributes = strAttrs,
+            Decoration = decoration,
+            Weight = weight
          };
 
          lastFontId++;
@@ -101,21 +161,35 @@ namespace MacTest
          return fontId;
       }
 
+      FontHolder GetFont(UIntPtr fontId)
+      {
+         var fontHolder = fontCache[fontId];
+         // if different scale then recreate the font with new size
+         if (fontHolder.Scale != ScaleFactor)
+         {
+            fontHolder.Attributes.Font = fontHolder.Attributes.Font.WithSymbolicTraits(fontHolder.Size * ScaleFactor, CTFontSymbolicTraits.None, CTFontSymbolicTraits.None);
+            fontHolder.Scale = ScaleFactor;
+         }
+         return fontHolder;
+      }
+
       protected override int GetTextWidth(string text, UIntPtr fontId)
       {
-         var size = new NSAttributedString(text, fontCache[fontId].Attributes).Size;
-         return (int)Math.Round(size.Width);
+         var fontHolder = GetFont(fontId);
+         var attrString = fontHolder.GetAttributedString(text, new web_color());
+         var size = attrString.Size;
+         return (int)Math.Round(size.Width / ScaleFactor);
       }
 
       protected override void DrawText(string text, UIntPtr fontId, ref web_color color, ref position pos)
       {
-         var fontHolder = fontCache[fontId];
-         var scaledFont = new CTFont(fontHolder.Font.GetFontDescriptor(), fontHolder.Font.Size * ScaleFactor);
-         var ctAttrs = new CTStringAttributes{ Font = scaledFont, ForegroundColor = color.ToCGColor() };
-         var attrString = new NSAttributedString(text, ctAttrs);
+         var fontHolder = GetFont(fontId);
+
+
+         var attrString = fontHolder.GetAttributedString(text, color);
 
          gfx.SaveState();
-         gfx.TranslateCTM(pos.x, pos.y + scaledFont.AscentMetric);
+         gfx.TranslateCTM(pos.x, pos.y + fontHolder.Attributes.Font.AscentMetric);
          gfx.ScaleCTM(1, -1);
          gfx.TextMatrix = CGAffineTransform.MakeIdentity();
 
