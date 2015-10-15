@@ -4,6 +4,7 @@ using System.Text;
 using System.Windows.Media;
 using System.Linq;
 using System.Windows;
+using System.Globalization;
 
 namespace LiteHtmlSharp
 {
@@ -14,7 +15,8 @@ namespace LiteHtmlSharp
       public int Size;
       public int Ascent;
       public int Descent;
-      public int Height;
+      public int xHeight;
+      public int LineHeight;
 
       public TextDecorationCollection Decorations = new TextDecorationCollection();
 
@@ -24,9 +26,23 @@ namespace LiteHtmlSharp
          TypeFace = new Typeface(Family, style, weight, new FontStretch());
          Size = size;
 
-         //System.Drawing.FontFamily ff = new System.Drawing.FontFamily(faceName);
-         //Ascent = ff.GetCellAscent(System.Drawing.FontStyle.Regular);
-         //Descent = ff.GetCellDescent(System.Drawing.FontStyle.Regular);
+         FormattedText format = GetFormattedText("x");
+         xHeight = (int)Math.Round(format.Extent);
+         LineHeight = (int)Math.Ceiling(size * Family.LineSpacing);
+
+         format = GetFormattedText("X");
+
+         Ascent = (int)Math.Round(format.Extent) - xHeight;
+
+         format = GetFormattedText("p");
+         Descent = (int)Math.Round(format.Extent) - xHeight;
+      }
+
+      public FormattedText GetFormattedText(string text, TextAlignment alignment = TextAlignment.Left)
+      {
+         var formattedText = new FormattedText(text, CultureInfo.InvariantCulture, System.Windows.FlowDirection.LeftToRight, TypeFace, Size, null);
+         formattedText.SetTextDecorations(Decorations);
+         return formattedText;
       }
 
    }

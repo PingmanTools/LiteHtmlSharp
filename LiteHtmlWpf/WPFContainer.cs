@@ -238,12 +238,6 @@ namespace LiteHtmlSharp
          return _fonts[fontID];
       }
 
-      FormattedText GetFormattedText(string text, FontInfo font, TextAlignment alignment = TextAlignment.Left)
-      {
-         var formattedText = new FormattedText(text, CultureInfo.InvariantCulture, System.Windows.FlowDirection.LeftToRight, font.TypeFace, font.Size, null);
-         return formattedText;
-      }
-
       private void DrawImage(BitmapImage image, Rect rect)
       {
          _dc.DrawImage(image, rect);
@@ -278,7 +272,7 @@ namespace LiteHtmlSharp
       protected override int GetTextWidth(string text, UIntPtr font)
       {
          var fontInfo = GetFont(font);
-         var formattedText = GetFormattedText(text, fontInfo);
+         var formattedText = fontInfo.GetFormattedText(text);
          formattedText.SetTextDecorations(fontInfo.Decorations);
          return (int)formattedText.WidthIncludingTrailingWhitespace;
       }
@@ -287,8 +281,7 @@ namespace LiteHtmlSharp
       {
          text = text.Replace(' ', (char)160);
          var fontInfo = GetFont(font);
-         var formattedText = new FormattedText(text, CultureInfo.InvariantCulture, System.Windows.FlowDirection.LeftToRight, fontInfo.TypeFace, fontInfo.Size, null);
-         formattedText.SetTextDecorations(fontInfo.Decorations);
+         var formattedText = fontInfo.GetFormattedText(text);
          formattedText.SetForegroundBrush(GetBrush(ref color));
          _dc.DrawText(formattedText, new Point(pos.x, pos.y));
       }
@@ -304,10 +297,10 @@ namespace LiteHtmlSharp
          UIntPtr fontID = new UIntPtr(_nextFontID++);
          _fonts.Add(fontID, font);
 
-         fm.x_height = 7;
-         fm.ascent = 10;
-         fm.descent = 3;
-         fm.height = fm.ascent + fm.descent + 2;
+         fm.x_height = font.xHeight;
+         fm.ascent = font.Ascent;
+         fm.descent = font.Descent;
+         fm.height = font.LineHeight;
          fm.draw_spaces = decoration > 0;
 
          return fontID;
