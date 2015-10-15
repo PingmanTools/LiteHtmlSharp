@@ -2,7 +2,7 @@
 
 using AppKit;
 
-namespace MacTest
+namespace LiteHtmlSharp.MacBrowser
 {
    static class MainClass
    {

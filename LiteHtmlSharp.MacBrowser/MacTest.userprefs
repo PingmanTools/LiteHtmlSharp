@@ -1,4 +1,4 @@
-﻿<Properties StartupItem="MacTest.csproj">
+﻿<Properties StartupItem="LiteHtmlSharp.Mac.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="LiteHtmlCGContainer/MyClass.cs">
     <Files>

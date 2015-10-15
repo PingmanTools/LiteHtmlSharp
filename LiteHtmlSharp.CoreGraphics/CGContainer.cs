@@ -7,9 +7,9 @@ using CoreText;
 using System.Collections.Generic;
 using Foundation;
 
-namespace MacTest
+namespace LiteHtmlSharp.CoreGraphics
 {
-   public class LiteHtmlCGContainer : Container
+   public class CGContainer : Container
    {
       public delegate byte[] LoadImageDelegate(string imageUrl);
 
@@ -85,7 +85,7 @@ namespace MacTest
 
       Dictionary<string, ImageHolder> imageCache;
 
-      public LiteHtmlCGContainer(string masterCssData)
+      public CGContainer(string masterCssData)
          : base(masterCssData)
       {
          fontCache = new Dictionary<UIntPtr, FontHolder>();

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -6,9 +6,9 @@
     <ProjectTypeGuids>{A3F8F2AB-B479-4A4A-A458-A89E7DC349F1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <ProjectGuid>{88DC2F6C-0092-428D-B62A-33F7AF0F2AD8}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>MacTest</RootNamespace>
+    <RootNamespace>LiteHtmlSharp.MacBrowser</RootNamespace>
     <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
-    <AssemblyName>MacTest</AssemblyName>
+    <AssemblyName>LiteHtmlSharp.MacBrowser</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -62,18 +62,9 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
-    <Compile Include="TestWindow.cs" />
-    <Compile Include="LiteHtmlView.cs" />
-    <Compile Include="LiteHtmlMacExtensions.cs" />
-    <Compile Include="LiteHtmlCGContainer.cs" />
   </ItemGroup>
-  <Import Project="..\LiteHtmlSharp\LiteHtmlSharp.projitems" Label="Shared" Condition="Exists('..\LiteHtmlSharp\LiteHtmlSharp.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <ItemGroup>
-    <Content Include="..\LiteHtmlLib\build\liblitehtml.dylib">
-      <Link>liblitehtml.dylib</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="..\..\litehtml\include\master.css">
       <Link>master.css</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -88,9 +79,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="LiteHtmlCGContainer\LiteHtmlCGContainer.csproj">
-      <Project>{42A6F515-348F-4C6B-84F5-E1BA6F9A5E8F}</Project>
-      <Name>LiteHtmlCGContainer</Name>
+    <ProjectReference Include="..\LiteHtmlSharp.Mac\LiteHtmlSharp.Mac.csproj">
+      <Project>{81EC8297-3616-428D-89D1-06B7AC68574B}</Project>
+      <Name>LiteHtmlSharp.Mac</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

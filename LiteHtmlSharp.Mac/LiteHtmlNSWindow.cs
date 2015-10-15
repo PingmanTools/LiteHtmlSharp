@@ -9,48 +9,30 @@ using System.Diagnostics;
 using LiteHtmlSharp;
 using System.Text;
 
-namespace MacTest
+namespace LiteHtmlSharp.Mac
 {
-   public partial class TestWindow : NSWindow
+   public class LiteHtmlNSWindow : NSWindow
    {
-      #region Constructors
 
-      class WindowContentView : NSView
-      {
-         public override bool IsFlipped { get { return true; } }
-      }
-
-      LiteHtmlView liteHtmlView;
-      NSButton drawBtn;
-
+      LiteHtmlNSView liteHtmlView;
 
       // Called when created from unmanaged code
-      public TestWindow()
-         : base(new CGRect(0, 0, 400, 450), NSWindowStyle.Titled | NSWindowStyle.Resizable, NSBackingStore.Buffered, false)
+      public LiteHtmlNSWindow(CGRect rect, NSWindowStyle windowStyle)
+         : base(rect, windowStyle, NSBackingStore.Buffered, false)
       {
+         #if DEBUG
          TestLibLoadTime();
+         #endif
 
-         this.ContentView = new WindowContentView();
          DidResize += TestWindow_DidResize;
-
-         drawBtn = new NSButton { BezelStyle = NSBezelStyle.TexturedSquare, Title = "Draw" };
-         drawBtn.Activated += (s, e) => Init();
-         ContentView.AddSubview(drawBtn);
-
-         NSTimer.CreateScheduledTimer(TimeSpan.FromMilliseconds(20), t => Init());
-      }
-
-      CGRect liteHtmlViewFrame()
-      {
-         return new CGRect(0, 0, ContentView.Bounds.Width, ContentView.Bounds.Height - 50);
+         Init();
       }
 
       void TestWindow_DidResize(object sender, EventArgs e)
       {
-         drawBtn.Frame = new CGRect(50, ContentView.Bounds.Height - 40, 100, 30);
          if (liteHtmlView != null)
          {
-            liteHtmlView.Frame = liteHtmlViewFrame();
+            liteHtmlView.Frame = ContentView.Bounds;
          }
       }
 
@@ -72,36 +54,29 @@ namespace MacTest
 
       void Init()
       {
-
          Stopwatch stop = new Stopwatch();
          stop.Start();
 
-         if (liteHtmlView != null)
-         {
-            liteHtmlView.RemoveFromSuperview();
-            liteHtmlView.Dispose();
-         }
-
-         liteHtmlView = new LiteHtmlView(liteHtmlViewFrame(), File.ReadAllText("master.css", Encoding.UTF8));
+         liteHtmlView = new LiteHtmlNSView(File.ReadAllText("master.css", Encoding.UTF8));
          liteHtmlView.LiteHtmlContainer.ImportCssCallback = (url, baseUrl) => File.ReadAllText(Path.Combine("WebPage", url), Encoding.UTF8);
          liteHtmlView.LiteHtmlContainer.LoadImageCallback = (url) => File.ReadAllBytes(Path.Combine("WebPage", url));
 
-         ContentView.AddSubview(liteHtmlView);
+         ContentView = liteHtmlView;
 
          var htmlStr = File.ReadAllText(Path.Combine("WebPage", "da900255-ffe1-46f2-a78f-88f6ac671c49.html"));
          liteHtmlView.LiteHtmlContainer.RenderHtml(htmlStr, (int)liteHtmlView.Bounds.Width);
+
+         #if DEBUG
          Action drawnCallback = null;
          drawnCallback = () =>
          {
             liteHtmlView.Drawn -= drawnCallback;
             stop.Stop();
-            Console.WriteLine("total litehtml init->draw took: {0} ms", stop.ElapsedMilliseconds);
+            this.Title = String.Format("draw took: {0} ms", stop.ElapsedMilliseconds);
          };
          liteHtmlView.Drawn += drawnCallback;
-
+         #endif
       }
 
-
-      #endregion
    }
 }

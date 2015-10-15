@@ -70,6 +70,7 @@ namespace LiteHtmlSharp
 
       [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs)]
       public static extern void SetCreateElement(IntPtr container, CreateElementFunc func);
+
       #endregion
 
 
@@ -104,6 +105,7 @@ namespace LiteHtmlSharp
 
       [DllImport(LiteHtmlLibFile, CallingConvention = cc, SetLastError = true)]
       public static extern bool OnMediaChanged(IntPtr container);
+
       #endregion
 
       [DllImport(LiteHtmlLibFile, CallingConvention = cc, SetLastError = true)]

@@ -4,34 +4,24 @@ using CoreGraphics;
 using Foundation;
 using System.Collections.Generic;
 using LiteHtmlSharp;
+using LiteHtmlSharp.CoreGraphics;
 
-namespace MacTest
+namespace LiteHtmlSharp.Mac
 {
-   public class LiteHtmlView : NSView
+   public class LiteHtmlNSView : NSView
    {
       public override bool IsFlipped { get { return true; } }
 
-      public LiteHtmlCGContainer LiteHtmlContainer { get; private set; }
+      public CGContainer LiteHtmlContainer { get; private set; }
 
       NSTrackingArea trackingArea = null;
 
       public event Action Drawn;
 
-      public LiteHtmlView(string masterCssData)
-      {
-         Init(masterCssData);
-      }
-
-      public LiteHtmlView(CGRect frame, string masterCssData)
-         : base(frame)
-      {
-         Init(masterCssData);
-      }
-
-      void Init(string masterCssData)
+      public LiteHtmlNSView(string masterCssData)
       {
          WantsLayer = true;
-         LiteHtmlContainer = new LiteHtmlCGContainer(masterCssData);
+         LiteHtmlContainer = new CGContainer(masterCssData);
          LiteHtmlContainer.ContextDrawn += () => SetNeedsDisplayInRect(Bounds);
       }
 
@@ -64,7 +54,7 @@ namespace MacTest
          LiteHtmlContainer.SetContext(CreateBitmapContext(), Bounds.Size, (int)Layer.ContentsScale);
       }
 
-      public override void DrawRect(CoreGraphics.CGRect dirtyRect)
+      public override void DrawRect(CGRect dirtyRect)
       {
          if (LiteHtmlContainer.ScaleFactor != (int)Layer.ContentsScale || LiteHtmlContainer.ContextSize != Bounds.Size)
          {
