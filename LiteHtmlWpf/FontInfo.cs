@@ -32,7 +32,7 @@ namespace LiteHtmlSharp
 
          format = GetFormattedText("X");
 
-         Ascent = (int)Math.Round(format.Extent) - xHeight;
+         Ascent = (int)Math.Round(format.Extent);
 
          format = GetFormattedText("p");
          Descent = (int)Math.Round(format.Extent) - xHeight;
