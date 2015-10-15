@@ -275,10 +275,10 @@ namespace Browser
          _dc.DrawText(formattedText, new Point(pos.x, pos.y));
       }
 
-      protected override UIntPtr CreateFont(string faceName, int size, int weight, font_style italic, uint decoration, ref font_metrics fm)
+      protected override UIntPtr CreateFont(string faceName, int size, int weight, font_style italic, font_decoration decoration, ref font_metrics fm)
       {
          FontInfo font = new FontInfo(faceName, italic == font_style.fontStyleItalic ? FontStyles.Italic : FontStyles.Normal, FontWeight.FromOpenTypeWeight(weight), size);
-         if((decoration & (int)font_decoration.font_decoration_underline) != 0)
+         if((decoration & font_decoration.font_decoration_underline) != 0)
          {
             font.Decorations.Add(TextDecorations.Underline);
          }
