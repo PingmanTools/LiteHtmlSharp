@@ -6,11 +6,11 @@ namespace LiteHtmlSharp
    public static class PInvokes
    {
 
-      #if __MonoCS__
+#if __MonoCS__
       const string LiteHtmlLibFile = "litehtml";
-      #else
+#else
       const string LiteHtmlLibFile = "LiteHtmlLib.dll";
-      #endif
+#endif
 
       public const CallingConvention cc = CallingConvention.Cdecl;
       public const CharSet cs = CharSet.Ansi;
@@ -70,6 +70,9 @@ namespace LiteHtmlSharp
 
       [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs)]
       public static extern void SetOnAnchorClick(IntPtr container, OnAnchorClickFunc func);
+
+      [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs)]
+      public static extern void SetSetCursor(IntPtr container, SetCursorFunc func);
 
       [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs)]
       public static extern void SetPTtoPX(IntPtr container, PTtoPXFunct func);

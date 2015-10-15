@@ -75,6 +75,7 @@ public:
    GetMediaFeatures_function GetMediaFeatures = 0;
 
    OnAnchorClick_function OnAnchorClick = 0;
+   SetCursor_function SetCursor = 0;
    SetBaseURL_function SetBaseURL = 0;
    PTtoPX_function PTtoPX = 0;
    CreateElement_function CreateElement = 0;

@@ -43,7 +43,8 @@ namespace LiteHtmlSharp.Mac
          {
             RemoveTrackingArea(trackingArea);
          }
-         trackingArea = new NSTrackingArea(Bounds, NSTrackingAreaOptions.ActiveAlways | NSTrackingAreaOptions.MouseMoved, this, null);
+         var areaOptions = NSTrackingAreaOptions.ActiveAlways | NSTrackingAreaOptions.MouseMoved | NSTrackingAreaOptions.MouseEnteredAndExited;
+         trackingArea = new NSTrackingArea(Bounds, areaOptions, this, null);
          AddTrackingArea(trackingArea);
       }
 
@@ -91,39 +92,43 @@ namespace LiteHtmlSharp.Mac
 
       public override void MouseMoved(NSEvent theEvent)
       {
-         if (!LiteHtmlContainer.HasRendered)
+         if (LiteHtmlContainer.HasRendered)
          {
-            return;
+            var point = ConvertPointFromView(theEvent.LocationInWindow, null);
+            LiteHtmlContainer.OnMouseMove((int)point.X, (int)point.Y);
          }
-
-         var point = ConvertPointFromView(theEvent.LocationInWindow, null);
-         LiteHtmlContainer.OnMouseMove((int)point.X, (int)point.Y);
          base.MouseMoved(theEvent);
+      }
+
+      public override void MouseExited(NSEvent theEvent)
+      {
+         if (LiteHtmlContainer.HasRendered)
+         {
+            LiteHtmlContainer.OnMouseLeave();
+         }
+         base.MouseExited(theEvent);
       }
 
       public override void MouseDown(NSEvent theEvent)
       {
-         if (!LiteHtmlContainer.HasRendered)
+         if (LiteHtmlContainer.HasRendered)
          {
-            return;
+            var point = ConvertPointFromView(theEvent.LocationInWindow, null);
+            LiteHtmlContainer.OnLeftButtonDown((int)point.X, (int)point.Y);
          }
-
-         var point = ConvertPointFromView(theEvent.LocationInWindow, null);
-         LiteHtmlContainer.OnLeftButtonDown((int)point.X, (int)point.Y);
          base.MouseDown(theEvent);
       }
 
       public override void MouseUp(NSEvent theEvent)
       {         
-         if (!LiteHtmlContainer.HasRendered)
+         if (LiteHtmlContainer.HasRendered)
          {
-            return;
+            var point = ConvertPointFromView(theEvent.LocationInWindow, null);
+            LiteHtmlContainer.OnLeftButtonUp((int)point.X, (int)point.Y);
          }
-
-         var point = ConvertPointFromView(theEvent.LocationInWindow, null);
-         LiteHtmlContainer.OnLeftButtonUp((int)point.X, (int)point.Y);
          base.MouseUp(theEvent);
       }
+
    }
 }
 

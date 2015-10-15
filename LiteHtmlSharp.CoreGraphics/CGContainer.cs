@@ -82,6 +82,29 @@ namespace LiteHtmlSharp.CoreGraphics
          return needsRedraw;
       }
 
+      public override bool OnMouseLeave()
+      {
+         var needsRedraw = base.OnMouseLeave();
+         if (needsRedraw)
+         {
+            Draw();
+         }
+         return needsRedraw;
+      }
+
+      protected override void SetCursor(string cursor)
+      {
+         switch (cursor)
+         {
+            case "pointer":
+               NSCursor.PointingHandCursor.Set();
+               break;
+            default:
+               NSCursor.ArrowCursor.Set();
+               break;
+         }
+      }
+
       protected override void OnAnchorClick(string url)
       {
          NSAlert.WithMessage("URL", "Okay", null, null, url).RunModal();
@@ -248,11 +271,9 @@ namespace LiteHtmlSharp.CoreGraphics
             path.AddLineToPoint(rect.Left, rect.Top + br.top_left_y);
             path.AddQuadCurveToPoint(rect.Left, rect.Top, rect.Left + br.top_left_x, rect.Top);
 
-
             Context.SetFillColor(cgColor);
             Context.AddPath(path);
             Context.FillPath();
-            //Context.FillRect(rect);
          }
          else
          {

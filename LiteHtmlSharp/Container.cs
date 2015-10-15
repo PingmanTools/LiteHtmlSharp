@@ -21,9 +21,9 @@ namespace LiteHtmlSharp
 
       public Container(string masterCssData)
       {
-         #if DEBUG
+#if DEBUG
          //TestFramework();
-         #endif
+#endif
 
          CPPContainer = PInvokes.Init();
 
@@ -46,6 +46,7 @@ namespace LiteHtmlSharp
 
          PInvokes.SetSetBaseURL(CPPContainer, CreateDelegate(new SetBaseURLFunc(SetBaseURL)));
          PInvokes.SetOnAnchorClick(CPPContainer, CreateDelegate(new OnAnchorClickFunc(OnAnchorClick)));
+         PInvokes.SetSetCursor(CPPContainer, CreateDelegate(new SetCursorFunc(SetCursor)));
 
          PInvokes.SetPTtoPX(CPPContainer, CreateDelegate(new PTtoPXFunct(PTtoPX)));
          PInvokes.SetCreateElement(CPPContainer, CreateDelegate(new CreateElementFunc(CreateElement)));
@@ -153,6 +154,8 @@ namespace LiteHtmlSharp
 
       protected abstract void OnAnchorClick(string url);
 
+      protected abstract void SetCursor(string cursor);
+
       protected abstract int PTtoPX(int pt);
 
       protected abstract int CreateElement(string tag, string attributes);
@@ -166,11 +169,6 @@ namespace LiteHtmlSharp
       public virtual void Draw(int x, int y, position clip)
       {
          PInvokes.Draw(CPPContainer, x, y, clip);
-      }
-
-      public virtual bool OnMouseMove(int x, int y)
-      {
-         return PInvokes.OnMouseMove(CPPContainer, x, y);
       }
 
       public void Render(int maxWidth)
@@ -193,6 +191,17 @@ namespace LiteHtmlSharp
       {
          PInvokes.OnLeftButtonUp(CPPContainer, x, y);
       }
+
+      public virtual bool OnMouseMove(int x, int y)
+      {
+         return PInvokes.OnMouseMove(CPPContainer, x, y);
+      }
+
+      public virtual bool OnMouseLeave()
+      {
+         return PInvokes.OnMouseLeave(CPPContainer);
+      }
+
       /*
          TODO: 
          set_clip

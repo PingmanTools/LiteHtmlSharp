@@ -106,12 +106,12 @@ __declspec(dllexport) void SetDrawText(DocContainer* container, DrawText_functio
 
 __declspec(dllexport) void SetGetDefaultFontSize(DocContainer* container, GetDefaultFontSize_function callback)
 {
-	container->GetDefaultFontSize = callback;
+   container->GetDefaultFontSize = callback;
 }
 
 __declspec(dllexport) void SetGetDefaultFontName(DocContainer* container, GetDefaultFontName_function callback)
 {
-	container->GetDefaultFontName = callback;
+   container->GetDefaultFontName = callback;
 }
 
 __declspec(dllexport) void SetImportCss(DocContainer* container, ImportCss_function callback)
@@ -137,6 +137,11 @@ __declspec(dllexport) void SetSetBaseURL(DocContainer* container, SetBaseURL_fun
 __declspec(dllexport) void SetOnAnchorClick(DocContainer* container, OnAnchorClick_function callback)
 {
    container->OnAnchorClick = callback;
+}
+
+__declspec(dllexport) void SetSetCursor(DocContainer* container, SetCursor_function callback)
+{
+   container->SetCursor = callback;
 }
 
 __declspec(dllexport) void SetPTtoPX(DocContainer* container, PTtoPX_function callback)

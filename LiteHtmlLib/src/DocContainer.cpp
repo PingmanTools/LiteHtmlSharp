@@ -93,7 +93,7 @@ void DocContainer::on_anchor_click(const litehtml::tchar_t * url, const litehtml
 
 void DocContainer::set_cursor(const litehtml::tchar_t * cursor)
 {
-   int i = 0;
+   SetCursor(cursor);
 }
 
 void DocContainer::transform_text(litehtml::tstring & text, litehtml::text_transform tt)
