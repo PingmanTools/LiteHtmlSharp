@@ -1,6 +1,4 @@
-﻿# LiteHtmlSharp
-
-LiteHtmlSharp is a C# wrapper for the fantastic [litehtml](https://github.com/litehtml/litehtml) C++ library. 
+﻿LiteHtmlSharp is a C# wrapper for the fantastic [litehtml](https://github.com/litehtml/litehtml) C++ library. 
 
 > litehtml is the lightweight HTML rendering engine with CSS2/CSS3 support. Note, litehtml itself does
 > not draw any text, pictures or other graphics and litehtml does not depend of any image/draw/font library. 
@@ -44,7 +42,8 @@ use the original litehtml usage documentation:
 [how to use litehtml](https://github.com/litehtml/litehtml/wiki/How-to-use-litehtml)
 
 Our WPF & Mac implementations can be used as examples when implementing a new platform. 
-Some cool, unplemented ideas
+Some cool, unimplemented ideas:
+
 * An OpenTK implementation (provides html -> OpenGL rendering on most platforms)
 * A Mono.Cairo implementation
 * A Winforms GTK+ (System.Drawing) implementation
