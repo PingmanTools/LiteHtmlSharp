@@ -13,6 +13,9 @@ namespace LiteHtmlSharp
    {
       protected IntPtr CPPContainer;
       private static List<Delegate> _delegates = new List<Delegate>();
+      protected List<int> _elementIDs = new List<int>();
+
+      public IEnumerable<int> ElementIDs { get { return _elementIDs; } }
 
       public int ScaleFactor = 1;
 
@@ -52,7 +55,7 @@ namespace LiteHtmlSharp
          PInvokes.SetCaption(CPPContainer, CreateDelegate(new SetCaptionFunc(SetCaption)));
 
          PInvokes.SetPTtoPX(CPPContainer, CreateDelegate(new PTtoPXFunct(PTtoPX)));
-         PInvokes.SetCreateElement(CPPContainer, CreateDelegate(new CreateElementFunc(CreateElement)));
+         PInvokes.SetCreateElement(CPPContainer, CreateDelegate(new CreateElementFunc(CreateElementWrapper)));
       }
 
       public Container()
@@ -146,7 +149,7 @@ namespace LiteHtmlSharp
       {
          if (ImportCssCallback == null)
          {
-            throw new Exception("ImportCss must be overridden or the callback delegate set");
+            throw new Exception(nameof(ImportCss) + " must be overridden or the callback delegate set");
          }
          return ImportCssCallback(url, baseurl);
       }
@@ -178,17 +181,50 @@ namespace LiteHtmlSharp
 
       protected abstract int PTtoPX(int pt);
 
-      protected abstract int CreateElement(string tag, string attributes);
+      public CreateElementFunc CreateElementCallback;
 
-      public virtual void RenderHtml(string html, int maxWidth)
+      public event Action ViewElementsNeedLayout;
+
+      protected int CreateElementWrapper(string tag, string attributes)
       {
-         HtmlContent = html;
-         PInvokes.RenderHTML(CPPContainer, html, maxWidth);
+         int elementID = 0;
+
+         if (CreateElementCallback != null)
+         {
+            elementID = CreateElementCallback(tag, attributes);
+         }
+         else
+         {
+            elementID = CreateElement(tag, attributes);
+         }
+
+         if (elementID != 0)
+         {
+            _elementIDs.Add(elementID);
+         }
+
+         return elementID;
+      }
+
+      protected virtual int CreateElement(string tag, string attributes)
+      {
+         return 0;
       }
 
       public virtual void Draw(int x, int y, position clip)
       {
          PInvokes.Draw(CPPContainer, x, y, clip);
+
+         if (ViewElementsNeedLayout != null)
+         {
+            ViewElementsNeedLayout();
+         }
+      }
+
+      public virtual void RenderHtml(string html, int maxWidth)
+      {
+         HtmlContent = html;
+         PInvokes.RenderHTML(CPPContainer, html, maxWidth);
       }
 
       public void Render(int maxWidth)
@@ -220,6 +256,11 @@ namespace LiteHtmlSharp
       public virtual bool OnMouseLeave()
       {
          return PInvokes.OnMouseLeave(CPPContainer);
+      }
+
+      public ElementInfo GetElementInfo(int id)
+      {
+         return PInvokes.GetElementInfo(CPPContainer, id);
       }
 
       /*

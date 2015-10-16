@@ -5,6 +5,8 @@ using Foundation;
 using System.Collections.Generic;
 using LiteHtmlSharp;
 using LiteHtmlSharp.CoreGraphics;
+using System.Linq;
+using System.Diagnostics;
 
 namespace LiteHtmlSharp.Mac
 {
@@ -18,12 +20,44 @@ namespace LiteHtmlSharp.Mac
 
       public event Action Drawn;
 
+      int lastViewElementId = 0;
+      Dictionary<int, NSView> viewElements;
+
       public LiteHtmlNSView(CGRect rect, string masterCssData)
          : base(rect)
       {
          WantsLayer = true;
          LiteHtmlContainer = new CGContainer(masterCssData);
          LiteHtmlContainer.ContextDrawn += LiteHtmlContainer_ContextDrawn;
+         LiteHtmlContainer.CreateElementCallback = CreateElement;
+         LiteHtmlContainer.ViewElementsNeedLayout += LiteHtmlContainer_ViewElementsNeedLayout;
+         viewElements = new Dictionary<int, NSView>();
+      }
+
+      void LiteHtmlContainer_ViewElementsNeedLayout()
+      {
+         foreach (var id in LiteHtmlContainer.ElementIDs)
+         {
+            var elementInfo = LiteHtmlContainer.GetElementInfo(id);
+            NSView view;
+            if (!viewElements.TryGetValue(id, out view))
+            {
+               view = new LiteHtmlNSInput();
+               AddSubview(view);
+               viewElements.Add(id, view);
+            }
+            view.Frame = new CGRect(elementInfo.PosX, elementInfo.PosY, elementInfo.Width, elementInfo.Height);
+         }
+
+      }
+
+      int CreateElement(string tag, string attributes)
+      {
+         if (string.Equals(tag, "input", StringComparison.InvariantCultureIgnoreCase))
+         {
+            return ++lastViewElementId;
+         }
+         return 0;
       }
 
       public void LoadHtml(string html)

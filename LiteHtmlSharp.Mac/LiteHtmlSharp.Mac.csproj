@@ -9,8 +9,8 @@
     <RootNamespace>LiteHtmlSharp.Mac</RootNamespace>
     <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
     <AssemblyName>LiteHtmlSharp.Mac</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <TargetFrameworkIdentifier>Xamarin.Mac</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -54,6 +54,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LiteHtmlNSView.cs" />
     <Compile Include="LiteHtmlNSWindow.cs" />
+    <Compile Include="LiteHtmlNSInput.cs" />
   </ItemGroup>
   <Import Project="..\LiteHtmlSharp.CoreGraphics\LiteHtmlSharp.CoreGraphics.projitems" Label="Shared" Condition="Exists('..\LiteHtmlSharp.CoreGraphics\LiteHtmlSharp.CoreGraphics.projitems')" />
   <Import Project="..\LiteHtmlSharp\LiteHtmlSharp.projitems" Label="Shared" Condition="Exists('..\LiteHtmlSharp\LiteHtmlSharp.projitems')" />

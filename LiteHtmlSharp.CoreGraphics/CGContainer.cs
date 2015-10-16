@@ -7,6 +7,7 @@ using CoreText;
 using System.Collections.Generic;
 using Foundation;
 using System.Globalization;
+using System.Diagnostics;
 
 namespace LiteHtmlSharp.CoreGraphics
 {
@@ -113,11 +114,6 @@ namespace LiteHtmlSharp.CoreGraphics
          NSAlert.WithMessage("URL", "Okay", null, null, url).RunModal();
       }
 
-      protected override int CreateElement(string tag, string attributes)
-      {
-         return 0;
-      }
-
       protected override int PTtoPX(int pt)
       {
          return 1;
@@ -148,14 +144,12 @@ namespace LiteHtmlSharp.CoreGraphics
          }
       }
 
+
       #region Font / Text
-
-
 
       protected override UIntPtr CreateFont(string faceName, int size, int weight, font_style italic, font_decoration decoration, ref font_metrics fm)
       {
-         lastFontId++;
-         var fontId = new UIntPtr(lastFontId);
+         var fontId = new UIntPtr(++lastFontId);
          var fontHolder = FontHolder.Create(faceName, size, weight, italic, decoration, ref fm);
          fontCache.Add(fontId, fontHolder);
          return fontId;
