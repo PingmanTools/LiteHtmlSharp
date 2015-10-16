@@ -6,9 +6,9 @@ namespace LiteHtmlSharp
    public static class PInvokes
    {
 
-#if __MonoCS__
+      #if __MonoCS__
       const string LiteHtmlLibFile = "litehtml";
-#else
+      #else
       const string LiteHtmlLibFile = "LiteHtmlLib.dll";
 #endif
 
@@ -58,6 +58,9 @@ namespace LiteHtmlSharp
 
       [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs)]
       public static extern void SetImportCss(IntPtr container, ImportCssFunc func);
+
+      [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs)]
+      public static extern void SetTransformText(IntPtr container, TransformTextFunc func);
 
       [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs)]
       public static extern void SetGetClientRect(IntPtr container, GetClientRectFunc func);

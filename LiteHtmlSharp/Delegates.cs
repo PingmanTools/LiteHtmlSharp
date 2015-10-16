@@ -8,22 +8,22 @@ using System.Runtime.InteropServices;
 namespace LiteHtmlSharp
 {
    [UnmanagedFunctionPointer(PInvokes.cc)]
-   public delegate void DrawBordersFunc(UIntPtr hdc, ref borders borders, ref position draw_pos, bool root);
+   public delegate void DrawBordersFunc(UIntPtr hdc,ref borders borders,ref position draw_pos,bool root);
 
    [UnmanagedFunctionPointer(PInvokes.cc, CharSet = PInvokes.cs)]
    public delegate void CallbackFunc(string testString);
 
    [UnmanagedFunctionPointer(PInvokes.cc, CharSet = PInvokes.cs)]
-   public delegate void DrawBackgroundFunc(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos, ref border_radiuses borderRadiuses, ref position borderBox);
+   public delegate void DrawBackgroundFunc(UIntPtr hdc,string image,background_repeat repeat,ref web_color color,ref position pos,ref border_radiuses borderRadiuses,ref position borderBox);
 
    [UnmanagedFunctionPointer(PInvokes.cc, CharSet = PInvokes.cs)]
-   public delegate void GetImageSizeFunc(string image, ref size size);
+   public delegate void GetImageSizeFunc(string image,ref size size);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
-   public delegate void DrawTextFunc(string text, UIntPtr font, ref web_color color, ref position pos);
+   public delegate void DrawTextFunc(string text,UIntPtr font,ref web_color color,ref position pos);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
-   public delegate int GetTextWidthFunc(string text, UIntPtr font);
+   public delegate int GetTextWidthFunc(string text,UIntPtr font);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
    public delegate int GetDefaultFontSizeFunc();
@@ -32,10 +32,13 @@ namespace LiteHtmlSharp
    public delegate string GetDefaultFontNameFunc();
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
-   public delegate UIntPtr CreateFontFunc(string faceName, int size, int weight, font_style italic, uint decoration, ref font_metrics fm);
+   public delegate UIntPtr CreateFontFunc(string faceName,int size,int weight,font_style italic,uint decoration,ref font_metrics fm);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
-   public delegate string ImportCssFunc(string url, string baseurl);
+   public delegate string ImportCssFunc(string url,string baseurl);
+
+   [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
+   public delegate string TransformTextFunc(string text,text_transform tt);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
    public delegate void GetClientRectFunc(ref position client);
@@ -56,5 +59,5 @@ namespace LiteHtmlSharp
    public delegate int PTtoPXFunct(int pt);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
-   public delegate int CreateElementFunc(string tag, string attributes);
+   public delegate int CreateElementFunc(string tag,string attributes);
 }

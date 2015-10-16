@@ -6,6 +6,7 @@ using System.IO;
 using CoreText;
 using System.Collections.Generic;
 using Foundation;
+using System.Globalization;
 
 namespace LiteHtmlSharp.CoreGraphics
 {
@@ -139,6 +140,21 @@ namespace LiteHtmlSharp.CoreGraphics
 
 
       #region Font / Text
+
+      protected override string TransformText(string text, text_transform t)
+      {
+         switch (t)
+         {
+            case text_transform.text_transform_capitalize:
+               return CultureInfo.InvariantCulture.TextInfo.ToTitleCase(text);
+            case text_transform.text_transform_lowercase:
+               return text.ToLower();
+            case text_transform.text_transform_uppercase:
+               return text.ToUpper();
+            default:
+               return text;
+         }
+      }
 
       protected override UIntPtr CreateFont(string faceName, int size, int weight, font_style italic, font_decoration decoration, ref font_metrics fm)
       {

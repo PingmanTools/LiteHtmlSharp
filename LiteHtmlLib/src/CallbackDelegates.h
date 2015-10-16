@@ -15,6 +15,7 @@ typedef int(*GetDefaultFontSize_function)();
 typedef litehtml::tchar_t*(*GetDefaultFontName_function)();
 
 typedef litehtml::tchar_t*(*ImportCss_function)(const litehtml::tchar_t* url, const litehtml::tchar_t* baseurl);
+typedef litehtml::tchar_t*(*TransformText_function)(const litehtml::tchar_t* text, litehtml::text_transform tt);
 
 typedef void(*GetClientRect_function)(litehtml::position & client);
 typedef void(*GetMediaFeatures_function)(litehtml::media_features & media);

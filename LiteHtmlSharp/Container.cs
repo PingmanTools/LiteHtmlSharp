@@ -40,6 +40,7 @@ namespace LiteHtmlSharp
          PInvokes.SetGetDefaultFontName(CPPContainer, CreateDelegate(new GetDefaultFontNameFunc(GetDefaultFontName)));
 
          PInvokes.SetImportCss(CPPContainer, CreateDelegate(new ImportCssFunc(ImportCss)));
+         PInvokes.SetTransformText(CPPContainer, CreateDelegate(new TransformTextFunc(TransformText)));
 
          PInvokes.SetGetClientRect(CPPContainer, CreateDelegate(new GetClientRectFunc(GetClientRect)));
          PInvokes.SetGetMediaFeatures(CPPContainer, CreateDelegate(new GetMediaFeaturesFunc(GetMediaFeatures)));
@@ -148,6 +149,8 @@ namespace LiteHtmlSharp
          return ImportCssCallback(url, baseurl);
       }
 
+      protected abstract string TransformText(string text, text_transform t);
+
       protected abstract void GetMediaFeatures(ref media_features media);
 
       protected abstract void SetBaseURL(ref string base_url);
@@ -206,7 +209,6 @@ namespace LiteHtmlSharp
          TODO: 
          set_clip
          del_clip
-         set_cursor
          transform_text
          set_caption
          draw_list_marker

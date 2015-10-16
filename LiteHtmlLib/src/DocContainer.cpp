@@ -98,7 +98,7 @@ void DocContainer::set_cursor(const litehtml::tchar_t * cursor)
 
 void DocContainer::transform_text(litehtml::tstring & text, litehtml::text_transform tt)
 {
-   int i = 0;
+   text = TransformText(text.c_str(), tt);
 }
 
 void DocContainer::import_css(litehtml::tstring & text, const litehtml::tstring & url, litehtml::tstring & baseurl)

@@ -151,6 +151,13 @@ namespace LiteHtmlSharp
       // The resolution of the output device (in DPI)
    };
 
+   public enum text_transform
+   {
+      text_transform_capitalize,
+      text_transform_uppercase,
+      text_transform_lowercase
+   }
+
    public enum media_type
    {
       media_type_none,

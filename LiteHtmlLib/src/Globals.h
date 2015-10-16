@@ -16,6 +16,7 @@ extern "C" __declspec(dllexport) void SetGetDefaultFontSize(DocContainer* contai
 extern "C" __declspec(dllexport) void SetGetDefaultFontName(DocContainer* container, GetDefaultFontName_function callback);
 
 extern "C" __declspec(dllexport) void SetImportCss(DocContainer* container, ImportCss_function callback);
+extern "C" __declspec(dllexport) void SetTransformText(DocContainer* container, TransformText_function callback);
 
 extern "C" __declspec(dllexport) void SetGetClientRect(DocContainer* container, GetClientRect_function callback);
 extern "C" __declspec(dllexport) void SetGetMediaFeatures(DocContainer* container, GetMediaFeatures_function callback);

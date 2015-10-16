@@ -119,6 +119,11 @@ __declspec(dllexport) void SetImportCss(DocContainer* container, ImportCss_funct
    container->ImportCss = callback;
 }
 
+__declspec(dllexport) void SetTransformText(DocContainer* container, TransformText_function callback)
+{
+   container->TransformText = callback;
+}
+
 __declspec(dllexport) void SetGetClientRect(DocContainer* container, GetClientRect_function callback)
 {
    container->GetClientRect = callback;

@@ -64,6 +64,7 @@ public:
    GetImageSize_function GetImageSize = 0;
    Test_function TestCallback = 0;
    ImportCss_function ImportCss = 0;
+   TransformText_function TransformText = 0;
 
    DrawText_function DrawText = 0;
    GetTextWidth_function GetTextWidth = 0;
