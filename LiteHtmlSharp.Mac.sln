@@ -11,6 +11,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiteHtmlSharp.MacBrowser", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiteHtmlSharp.Mac", "LiteHtmlSharp.Mac\LiteHtmlSharp.Mac.csproj", "{81EC8297-3616-428D-89D1-06B7AC68574B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D84732A5-2D01-4917-9C4A-7E5618DCB55B}"
+	ProjectSection(SolutionItems) = preProject
+		README = README
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +41,7 @@ Global
 		{88DC2F6C-0092-428D-B62A-33F7AF0F2AD8}.Default|Any CPU.Build.0 = Debug|Any CPU
 		{88DC2F6C-0092-428D-B62A-33F7AF0F2AD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88DC2F6C-0092-428D-B62A-33F7AF0F2AD8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection
 EndGlobal

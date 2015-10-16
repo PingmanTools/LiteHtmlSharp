@@ -1,13 +1,16 @@
 ﻿using System;
-using LiteHtmlSharp;
-using AppKit;
-using CoreGraphics;
 using System.IO;
-using CoreText;
 using System.Collections.Generic;
-using Foundation;
 using System.Globalization;
 using System.Diagnostics;
+
+using AppKit;
+using Foundation;
+using CoreGraphics;
+using CoreText;
+
+using LiteHtmlSharp;
+
 
 namespace LiteHtmlSharp.CoreGraphics
 {
