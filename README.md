@@ -20,6 +20,7 @@ Use the `LiteHtmlLib/LiteHtmlLib.vcxproj` project in Visual Studio 2015.
 Install CMake. Open `LiteHtmlLib/LiteHtml.dyblib.mdproj` in Xamarin Studio and run build. 
 
 Or just call the build script from terminal:
+
 ```bash
 cd LiteHtmlLib
 sh build.sh
@@ -74,7 +75,7 @@ windowContentView.AddSubview(myView);
 var htmlWindow = new LiteHtmlNSWindow(
                     new CGRect(0, 0, 400, 400), 
                     NSWindowStyle.Closable | NSWindowStyle.Titled | NSWindowStyle.Resizable, 
-                    File.ReadAllText("master.css", Encoding.UTF8)
+                    File.ReadAllText("master.css")
                 );
 htmlWindow.LiteHtmlContainer.ImportCssCallback = (url, baseUrl) => File.ReadAllText(url);
 htmlWindow.LiteHtmlContainer.LoadImageCallback = (url) => File.ReadAllBytes(url);

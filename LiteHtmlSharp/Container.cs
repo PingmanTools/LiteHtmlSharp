@@ -13,9 +13,6 @@ namespace LiteHtmlSharp
    {
       protected IntPtr CPPContainer;
       private static List<Delegate> _delegates = new List<Delegate>();
-      protected List<int> _elementIDs = new List<int>();
-
-      public IEnumerable<int> ElementIDs { get { return _elementIDs; } }
 
       public int ScaleFactor = 1;
 
@@ -187,23 +184,14 @@ namespace LiteHtmlSharp
 
       protected int CreateElementWrapper(string tag, string attributes)
       {
-         int elementID = 0;
-
          if (CreateElementCallback != null)
          {
-            elementID = CreateElementCallback(tag, attributes);
+            return CreateElementCallback(tag, attributes);
          }
          else
          {
-            elementID = CreateElement(tag, attributes);
+            return CreateElement(tag, attributes);
          }
-
-         if (elementID != 0)
-         {
-            _elementIDs.Add(elementID);
-         }
-
-         return elementID;
       }
 
       protected virtual int CreateElement(string tag, string attributes)

@@ -63,6 +63,10 @@ namespace LiteHtmlSharp.CoreGraphics
             text = ".";
             Attributes.ForegroundColor = new CGColor(0, 0, 0, 0);
          }
+         else if (text == null)
+         {
+            text = "";
+         }
 
          var range = new NSRange(0, text.Length);
          var attrString = new NSMutableAttributedString(text, Attributes);

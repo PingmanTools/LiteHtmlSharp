@@ -21,6 +21,23 @@ namespace LiteHtmlSharp.MacBrowser
 
       public override void DidFinishLaunching(NSNotification notification)
       {
+         //LoadExamplePage();
+         OpenBrowserWindow();
+      }
+
+      void OpenBrowserWindow()
+      {
+         var browserWindow = new BrowserWindow(
+                                new CGRect(0, 0, 400, 425), 
+                                NSWindowStyle.Closable | NSWindowStyle.Titled | NSWindowStyle.Resizable);
+         browserWindow.WillClose += (s, e) => NSApplication.SharedApplication.Terminate(this);
+         browserWindow.Center();
+         browserWindow.MakeKeyAndOrderFront(this);
+         browserWindow.GoToUrl(new Uri("example://local/index.html"));
+      }
+
+      void LoadExamplePage()
+      {
          var testWindow = new LiteHtmlNSWindow(
                              new CGRect(0, 0, 400, 400), 
                              NSWindowStyle.Closable | NSWindowStyle.Titled | NSWindowStyle.Resizable, 
@@ -50,7 +67,6 @@ namespace LiteHtmlSharp.MacBrowser
             //testWindow.Title = result;
          };
          testWindow.LiteHtmlView.Drawn += drawnCallback;
-
       }
 
    }

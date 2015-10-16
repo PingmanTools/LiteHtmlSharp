@@ -21,7 +21,8 @@ namespace LiteHtmlSharp.Mac
       public event Action Drawn;
 
       int lastViewElementId = 0;
-      Dictionary<int, NSView> viewElements;
+      List<int> elementIDs = new List<int>();
+      Dictionary<int, NSView> viewElements = new Dictionary<int, NSView>();
 
       public LiteHtmlNSView(CGRect rect, string masterCssData)
          : base(rect)
@@ -31,12 +32,11 @@ namespace LiteHtmlSharp.Mac
          LiteHtmlContainer.ContextDrawn += LiteHtmlContainer_ContextDrawn;
          LiteHtmlContainer.CreateElementCallback = CreateElement;
          LiteHtmlContainer.ViewElementsNeedLayout += LiteHtmlContainer_ViewElementsNeedLayout;
-         viewElements = new Dictionary<int, NSView>();
       }
 
       void LiteHtmlContainer_ViewElementsNeedLayout()
       {
-         foreach (var id in LiteHtmlContainer.ElementIDs)
+         foreach (var id in elementIDs)
          {
             var elementInfo = LiteHtmlContainer.GetElementInfo(id);
             NSView view;
@@ -46,7 +46,11 @@ namespace LiteHtmlSharp.Mac
                AddSubview(view);
                viewElements.Add(id, view);
             }
-            view.Frame = new CGRect(elementInfo.PosX, elementInfo.PosY, elementInfo.Width, elementInfo.Height);
+            var newRect = new CGRect(elementInfo.PosX, elementInfo.PosY, elementInfo.Width, elementInfo.Height);
+            if (newRect != view.Frame)
+            {
+               view.Frame = newRect;
+            }
          }
 
       }
@@ -55,15 +59,31 @@ namespace LiteHtmlSharp.Mac
       {
          if (string.Equals(tag, "input", StringComparison.InvariantCultureIgnoreCase))
          {
-            return ++lastViewElementId;
+            var newID = ++lastViewElementId;
+            elementIDs.Add(newID);
+            return newID;
          }
          return 0;
       }
 
+      private void RemoveAllViewElements()
+      {
+         foreach (var el in viewElements)
+         {
+            el.Value.RemoveFromSuperview();
+         }
+         viewElements.Clear();
+         elementIDs.Clear();
+      }
+
       public void LoadHtml(string html)
       {
-         LiteHtmlContainer.RenderHtml(html);
-         ResetContainerContext();
+         InvokeOnMainThread(() =>
+            {
+               RemoveAllViewElements();
+               LiteHtmlContainer.RenderHtml(html);
+               ResetContainerContext();
+            });
       }
 
       void LiteHtmlContainer_ContextDrawn()
