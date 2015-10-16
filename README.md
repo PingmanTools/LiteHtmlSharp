@@ -18,6 +18,7 @@ Use the `LiteHtmlLib/LiteHtmlLib.vcxproj` project in Visual Studio 2015.
 
 ### Compiling on OSX
 Install CMake. Open `LiteHtmlLib/LiteHtml.dyblib.mdproj` in Xamarin Studio and run build. 
+
 Or just call the build script from terminal:
 ```bash
 cd LiteHtmlLib
@@ -47,6 +48,7 @@ Some cool, unimplemented ideas:
 * An OpenTK implementation (provides html -> OpenGL rendering on most platforms)
 * A Mono.Cairo implementation
 * A Winforms GTK+ (System.Drawing) implementation
+
 
 
 ## Platform Implementations
