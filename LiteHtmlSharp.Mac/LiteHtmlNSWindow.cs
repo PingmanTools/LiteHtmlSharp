@@ -27,8 +27,13 @@ namespace LiteHtmlSharp.Mac
          DidResize += TestWindow_DidResize;
 
          LiteHtmlView = new LiteHtmlNSView(new CGRect(0, 0, rect.Width, rect.Height), masterCssData);
-
+         LiteHtmlView.LiteHtmlContainer.CaptionDefined += LiteHtmlView_LiteHtmlContainer_CaptionDefined;
          ContentView = LiteHtmlView;
+      }
+
+      void LiteHtmlView_LiteHtmlContainer_CaptionDefined(string caption)
+      {
+         Title = caption;
       }
 
       void TestWindow_DidResize(object sender, EventArgs e)

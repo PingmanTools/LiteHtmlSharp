@@ -139,6 +139,11 @@ __declspec(dllexport) void SetSetBaseURL(DocContainer* container, SetBaseURL_fun
    container->SetBaseURL = callback;
 }
 
+__declspec(dllexport) void SetCaption(DocContainer* container, SetCaption_function callback)
+{
+   container->SetCaption = callback;
+}
+
 __declspec(dllexport) void SetOnAnchorClick(DocContainer* container, OnAnchorClick_function callback)
 {
    container->OnAnchorClick = callback;

@@ -45,7 +45,9 @@ namespace LiteHtmlSharp.MacBrowser
          {
             testWindow.LiteHtmlView.Drawn -= drawnCallback;
             stop.Stop();
-            testWindow.Title = String.Format("Cold start took: {0} ms", stop.ElapsedMilliseconds);
+            var result = String.Format("Cold start took: {0} ms", stop.ElapsedMilliseconds);
+            Console.WriteLine(result);
+            //testWindow.Title = result;
          };
          testWindow.LiteHtmlView.Drawn += drawnCallback;
 

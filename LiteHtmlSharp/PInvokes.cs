@@ -75,6 +75,9 @@ namespace LiteHtmlSharp
       public static extern void SetOnAnchorClick(IntPtr container, OnAnchorClickFunc func);
 
       [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs)]
+      public static extern void SetCaption(IntPtr container, SetCaptionFunc func);
+
+      [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs)]
       public static extern void SetSetCursor(IntPtr container, SetCursorFunc func);
 
       [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs)]

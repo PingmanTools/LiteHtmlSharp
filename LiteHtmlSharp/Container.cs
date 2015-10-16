@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using System.Globalization;
 
 namespace LiteHtmlSharp
 {
@@ -48,6 +49,7 @@ namespace LiteHtmlSharp
          PInvokes.SetSetBaseURL(CPPContainer, CreateDelegate(new SetBaseURLFunc(SetBaseURL)));
          PInvokes.SetOnAnchorClick(CPPContainer, CreateDelegate(new OnAnchorClickFunc(OnAnchorClick)));
          PInvokes.SetSetCursor(CPPContainer, CreateDelegate(new SetCursorFunc(SetCursor)));
+         PInvokes.SetCaption(CPPContainer, CreateDelegate(new SetCaptionFunc(SetCaption)));
 
          PInvokes.SetPTtoPX(CPPContainer, CreateDelegate(new PTtoPXFunct(PTtoPX)));
          PInvokes.SetCreateElement(CPPContainer, CreateDelegate(new CreateElementFunc(CreateElement)));
@@ -149,13 +151,28 @@ namespace LiteHtmlSharp
          return ImportCssCallback(url, baseurl);
       }
 
-      protected abstract string TransformText(string text, text_transform t);
+      protected virtual string TransformText(string text, text_transform t)
+      {
+         switch (t)
+         {
+            case text_transform.text_transform_capitalize:
+               return CultureInfo.InvariantCulture.TextInfo.ToTitleCase(text);
+            case text_transform.text_transform_lowercase:
+               return text.ToLower();
+            case text_transform.text_transform_uppercase:
+               return text.ToUpper();
+            default:
+               return text;
+         }
+      }
 
       protected abstract void GetMediaFeatures(ref media_features media);
 
       protected abstract void SetBaseURL(ref string base_url);
 
       protected abstract void OnAnchorClick(string url);
+
+      protected abstract void SetCaption(string caption);
 
       protected abstract void SetCursor(string cursor);
 
@@ -209,8 +226,6 @@ namespace LiteHtmlSharp
          TODO: 
          set_clip
          del_clip
-         transform_text
-         set_caption
          draw_list_marker
          delete_font
       */

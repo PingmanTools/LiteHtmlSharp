@@ -21,6 +21,7 @@ typedef void(*GetClientRect_function)(litehtml::position & client);
 typedef void(*GetMediaFeatures_function)(litehtml::media_features & media);
 
 typedef void(*SetBaseURL_function)(const litehtml::tchar_t * base_url);
+typedef void(*SetCaption_function)(const litehtml::tchar_t * caption);
 typedef void(*OnAnchorClick_function)(const litehtml::tchar_t * url);
 typedef void(*SetCursor_function)(const litehtml::tchar_t * cursor);
 

@@ -22,6 +22,7 @@ extern "C" __declspec(dllexport) void SetGetClientRect(DocContainer* container, 
 extern "C" __declspec(dllexport) void SetGetMediaFeatures(DocContainer* container, GetMediaFeatures_function callback);
 
 extern "C" __declspec(dllexport) void SetSetBaseURL(DocContainer* container, SetBaseURL_function callback);
+extern "C" __declspec(dllexport) void SetCaption(DocContainer* container, SetCaption_function callback);
 extern "C" __declspec(dllexport) void SetOnAnchorClick(DocContainer* container, OnAnchorClick_function callback);
 extern "C" __declspec(dllexport) void SetSetCursor(DocContainer* container, SetCursor_function callback);
 

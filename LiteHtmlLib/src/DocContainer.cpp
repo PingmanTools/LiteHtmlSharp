@@ -73,7 +73,7 @@ void DocContainer::draw_borders(litehtml::uint_ptr hdc, const litehtml::borders 
 
 void DocContainer::set_caption(const litehtml::tchar_t * caption)
 {
-   int i = 0;
+   SetCaption(caption);
 }
 
 void DocContainer::set_base_url(const litehtml::tchar_t * base_url)
