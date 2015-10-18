@@ -1,20 +1,28 @@
 ﻿<Properties StartupItem="LiteHtmlSharp.MacBrowser/LiteHtmlSharp.MacBrowser.csproj">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="LiteHtmlLib/CMakeLists.txt">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="LiteHtmlLib/src/DocContainer.cpp">
     <Files>
       <File FileName="../litehtml/include/master.css" Line="1" Column="1" />
       <File FileName="LiteHtmlSharp.MacBrowser/Main.cs" Line="5" Column="11" />
-      <File FileName="LiteHtmlSharp.MacBrowser/AppDelegate.cs" Line="17" Column="10" />
-      <File FileName="LiteHtmlSharp.Mac/LiteHtmlNSView.cs" Line="11" Column="31" />
-      <File FileName="LiteHtmlSharp.Mac/LiteHtmlNSWindow.cs" Line="67" Column="27" />
-      <File FileName="LiteHtmlSharp/PInvokes.cs" Line="10" Column="39" />
-      <File FileName="LiteHtmlSharp/Container.cs" Line="1" Column="1" />
+      <File FileName="LiteHtmlSharp.MacBrowser/AppDelegate.cs" Line="60" Column="33" />
+      <File FileName="LiteHtmlSharp.Mac/LiteHtmlNSView.cs" Line="43" Column="52" />
+      <File FileName="LiteHtmlSharp.Mac/LiteHtmlNSWindow.cs" Line="49" Column="1" />
+      <File FileName="LiteHtmlSharp/PInvokes.cs" Line="119" Column="54" />
+      <File FileName="LiteHtmlSharp/Container.cs" Line="251" Column="34" />
       <File FileName="LiteHtmlLib/build.sh" Line="1" Column="1" />
-      <File FileName="LiteHtmlLib/CMakeLists.txt" Line="9" Column="44" />
+      <File FileName="LiteHtmlLib/CMakeLists.txt" Line="9" Column="36" />
+      <File FileName="LiteHtmlSharp.MacBrowser/BrowserWindow.cs" Line="118" Column="16" />
+      <File FileName="LiteHtmlSharp.CoreGraphics/CGContainer.cs" Line="65" Column="10" />
+      <File FileName="LiteHtmlLib/src/Globals.cpp" Line="169" Column="22" />
+      <File FileName="LiteHtmlLib/src/Globals.h" Line="45" Column="46" />
+      <File FileName="LiteHtmlLib/src/DocContainer.h" Line="56" Column="17" />
+      <File FileName="LiteHtmlLib/src/DocContainer.cpp" Line="149" Column="28" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/Users/mattlittle/Projects/LiteHtmlSharp/LiteHtmlSharp.Mac/LiteHtmlNSView.cs" line="60" column="11" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

@@ -11,14 +11,17 @@ namespace LiteHtmlSharp.MacBrowser
 {
    public class BrowserWindow : NSWindow
    {
+      // derive from LiteHtmlNSWindow
+
       class BrowserContentView : NSView
       {
          public override bool IsFlipped { get { return true; } }
       }
 
+      NSScrollView scrollView;
       NSTextField urlInput;
       LiteHtmlNSView LiteHtmlView;
-      HttpClient httpClient;
+      HttpClient httpClient = new HttpClient();
 
       Uri target;
 
@@ -26,22 +29,29 @@ namespace LiteHtmlSharp.MacBrowser
          : base(rect, windowStyle, NSBackingStore.Buffered, false)
       {
          DidResize += TestWindow_DidResize;
-         ContentView = new BrowserContentView();
 
          var masterCssData = File.ReadAllText("master.css", Encoding.UTF8);
          LiteHtmlView = new LiteHtmlNSView(new CGRect(0, 0, rect.Width, rect.Height), masterCssData);
-         //LiteHtmlView.LiteHtmlContainer.InvokeOnMainThread = InvokeOnMainThread;
          LiteHtmlView.LiteHtmlContainer.CaptionDefined += LiteHtmlView_LiteHtmlContainer_CaptionDefined;
          LiteHtmlView.LiteHtmlContainer.ImportCssCallback = (url, baseUrl) => Encoding.UTF8.GetString(DownloadResource(url, baseUrl));
          LiteHtmlView.LiteHtmlContainer.LoadImageCallback = (url) => DownloadResource(url);
          LiteHtmlView.LiteHtmlContainer.AnchorClicked += LiteHtmlView_LiteHtmlContainer_AnchorClicked;
-         ContentView.AddSubview(LiteHtmlView);
+         LiteHtmlView.DocumentSizeKnown += LiteHtmlView_DocumentSizeKnown;
+
+         scrollView = new NSScrollView();
+         scrollView.AutohidesScrollers = true;
+         scrollView.HasHorizontalScroller = true;
+         scrollView.HasVerticalScroller = true;
+         scrollView.DocumentView = LiteHtmlView;
 
          urlInput = new NSTextField();
          urlInput.Activated += TextField_Activated;
+
+         ContentView = new BrowserContentView();
+         ContentView.AddSubview(scrollView);
          ContentView.AddSubview(urlInput);
 
-         httpClient = new HttpClient();
+         LayoutViews();
       }
 
       byte[] DownloadResource(Uri url)
@@ -53,7 +63,14 @@ namespace LiteHtmlSharp.MacBrowser
          }
          else
          {
-            content = httpClient.GetByteArrayAsync(url).Result;
+            try
+            {
+               content = httpClient.GetByteArrayAsync(url).Result;
+            }
+            catch (Exception ex)
+            {
+               return null;
+            }
          }
 
          return content;
@@ -72,13 +89,9 @@ namespace LiteHtmlSharp.MacBrowser
       {
          target = url;
          urlInput.StringValue = url.ToString();
-         //Task.Run(() =>
-         //   {
          var html = Encoding.UTF8.GetString(DownloadResource(url.ToString()));
          LiteHtmlView.LoadHtml(html);
          LiteHtmlView.SetNeedsDisplayInRect(LiteHtmlView.Bounds);
-         //   });
-         
       }
 
       void TextField_Activated(object sender, EventArgs e)
@@ -114,13 +127,19 @@ namespace LiteHtmlSharp.MacBrowser
 
       void LiteHtmlView_LiteHtmlContainer_CaptionDefined(string caption)
       {
-         InvokeOnMainThread(() => Title = caption);
+         Title = caption;
+      }
+
+      void LiteHtmlView_DocumentSizeKnown(CGSize size)
+      {
+         LiteHtmlView.Frame = new CGRect(0, 0, scrollView.Bounds.Width, size.Height);
       }
 
       void LayoutViews()
       {
          urlInput.Frame = new CGRect(0, 0, ContentView.Frame.Width, 25);
-         LiteHtmlView.Frame = new CGRect(0, urlInput.Frame.Bottom, ContentView.Frame.Width, ContentView.Frame.Height - urlInput.Frame.Height);
+         scrollView.Frame = new CGRect(0, urlInput.Frame.Bottom, ContentView.Frame.Width, ContentView.Frame.Height - urlInput.Frame.Height);
+         LiteHtmlView.Frame = new CGRect(0, 0, scrollView.Bounds.Width, LiteHtmlView.Bounds.Height);
       }
 
       void TestWindow_DidResize(object sender, EventArgs e)

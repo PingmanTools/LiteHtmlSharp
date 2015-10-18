@@ -188,6 +188,16 @@ void DocContainer::Draw(int x, int y, litehtml::position clip)
    _document->draw(NULL, x, y, &clip);
 }
 
+int DocContainer::Height()
+{
+	return _document->height();
+}
+
+int DocContainer::Width()
+{
+	return _document->width();
+}
+
 bool DocContainer::OnMouseMove(int x, int y)
 {
    std::vector<litehtml::position> redraw_boxes;

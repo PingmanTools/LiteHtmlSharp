@@ -100,6 +100,12 @@ namespace LiteHtmlSharp
       [DllImport(LiteHtmlLibFile, CallingConvention = cc, SetLastError = true)]
       public static extern void Draw(IntPtr container, int x, int y, position clip);
 
+      [DllImport(LiteHtmlLibFile, CallingConvention = cc)]
+      public static extern int Height(IntPtr container);
+
+      [DllImport(LiteHtmlLibFile, CallingConvention = cc)]
+      public static extern int Width(IntPtr container);
+
       [DllImport(LiteHtmlLibFile, CallingConvention = cc, CharSet = cs)]
       public static extern void SetMasterCSS(IntPtr container, string css);
 

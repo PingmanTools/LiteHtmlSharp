@@ -47,6 +47,8 @@ public:
 
    void RenderHTML(const litehtml::tchar_t* html, int maxWidth);
    void Render(int maxWidth);
+   int Height();
+   int Width();
    void SetMasterCSS(const litehtml::tchar_t* css);
    bool OnMouseMove(int x, int y);
    bool OnMouseLeave();

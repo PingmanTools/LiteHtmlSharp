@@ -59,6 +59,16 @@ __declspec(dllexport) void Render(DocContainer* container, int maxWidth)
    container->Render(maxWidth);
 }
 
+__declspec(dllexport) int Height(DocContainer* container)
+{
+	return container->Height();
+}
+
+__declspec(dllexport) int Width(DocContainer* container)
+{
+	return container->Width();
+}
+
 __declspec(dllexport) void SetMasterCSS(DocContainer* container, const litehtml::tchar_t* css)
 {
    container->SetMasterCSS(css);

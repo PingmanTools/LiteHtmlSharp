@@ -20,6 +20,8 @@ namespace LiteHtmlSharp.Mac
 
       public event Action Drawn;
 
+      public event Action<CGSize> DocumentSizeKnown;
+
       int lastViewElementId = 0;
       List<int> elementIDs = new List<int>();
       Dictionary<int, NSView> viewElements = new Dictionary<int, NSView>();
@@ -36,23 +38,28 @@ namespace LiteHtmlSharp.Mac
 
       void LiteHtmlContainer_ViewElementsNeedLayout()
       {
-         foreach (var id in elementIDs)
+         try
          {
-            var elementInfo = LiteHtmlContainer.GetElementInfo(id);
-            NSView view;
-            if (!viewElements.TryGetValue(id, out view))
+            foreach (var id in elementIDs)
             {
-               view = new LiteHtmlNSInput();
-               AddSubview(view);
-               viewElements.Add(id, view);
-            }
-            var newRect = new CGRect(elementInfo.PosX, elementInfo.PosY, elementInfo.Width, elementInfo.Height);
-            if (newRect != view.Frame)
-            {
-               view.Frame = newRect;
+               var elementInfo = LiteHtmlContainer.GetElementInfo(id);
+               NSView view;
+               if (!viewElements.TryGetValue(id, out view))
+               {
+                  view = new LiteHtmlNSInput();
+                  AddSubview(view);
+                  viewElements.Add(id, view);
+               }
+               var newRect = new CGRect(elementInfo.PosX, elementInfo.PosY, elementInfo.Width, elementInfo.Height);
+               if (newRect != view.Frame)
+               {
+                  view.Frame = newRect;
+               }
             }
          }
-
+         catch (Exception ex)
+         {
+         }
       }
 
       int CreateElement(string tag, string attributes)
@@ -78,12 +85,12 @@ namespace LiteHtmlSharp.Mac
 
       public void LoadHtml(string html)
       {
-         InvokeOnMainThread(() =>
-            {
-               RemoveAllViewElements();
-               LiteHtmlContainer.RenderHtml(html);
-               ResetContainerContext();
-            });
+         //InvokeOnMainThread(() =>
+         //   {
+         RemoveAllViewElements();
+         LiteHtmlContainer.RenderHtml(html);
+         ResetContainerContext();
+         //   });
       }
 
       void LiteHtmlContainer_ContextDrawn()
@@ -104,6 +111,7 @@ namespace LiteHtmlSharp.Mac
 
       CGContext CreateBitmapContext()
       {
+         Console.WriteLine("creating bmc");
          var width = (int)(Bounds.Width * Layer.ContentsScale);
          var height = (int)(Bounds.Height * Layer.ContentsScale);
 
@@ -120,6 +128,10 @@ namespace LiteHtmlSharp.Mac
       void ResetContainerContext()
       {
          LiteHtmlContainer.SetContext(CreateBitmapContext(), Bounds.Size, (int)Layer.ContentsScale);
+         if (DocumentSizeKnown != null)
+         {
+            DocumentSizeKnown(new CGSize(LiteHtmlContainer.Width(), LiteHtmlContainer.Height()));
+         }
       }
 
       public override void DrawRect(CGRect dirtyRect)

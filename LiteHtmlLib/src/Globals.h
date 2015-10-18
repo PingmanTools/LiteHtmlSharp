@@ -40,6 +40,8 @@ extern "C" __declspec(dllexport) bool OnLeftButtonDown(DocContainer* container, 
 
 extern "C" __declspec(dllexport) void RenderHTML(DocContainer* container, const litehtml::tchar_t* html, int maxWidth);
 extern "C" __declspec(dllexport) void Render(DocContainer* container, int maxWidth);
+extern "C" __declspec(dllexport) int Height(DocContainer* container);
+extern "C" __declspec(dllexport) int Width(DocContainer* container);
 extern "C" __declspec(dllexport) void Draw(DocContainer* container, int x, int y, litehtml::position clip);
 extern "C" __declspec(dllexport) void SetMasterCSS(DocContainer* container, const litehtml::tchar_t* css);
 extern "C" __declspec(dllexport) ElementInfo GetElementInfo(DocContainer* container, int ID);

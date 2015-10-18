@@ -34,19 +34,11 @@ namespace LiteHtmlSharp.CoreGraphics
       Dictionary<UIntPtr, FontHolder> fontCache;
       uint lastFontId = 0;
 
-      /// <summary>
-      /// If any container functions are called from a background thread, then set
-      /// this to run the action on the main thread, otherwise callbacks that require main thread
-      /// will error.
-      /// </summary>
-      public Action<Action> InvokeOnMainThread { get; set; }
-
       public CGContainer(string masterCssData)
          : base(masterCssData)
       {
          fontCache = new Dictionary<UIntPtr, FontHolder>();
          imageCache = new Dictionary<string, ImageHolder>();
-         InvokeOnMainThread = act => act();
       }
 
       public void DrawRect(nfloat x, nfloat y, nfloat width, nfloat height, CGColor color)
@@ -59,12 +51,12 @@ namespace LiteHtmlSharp.CoreGraphics
          }
       }
 
-      T InvokeOnMainThreadFunc<T>(Func<T> func)
+      /*T InvokeOnMainThreadFunc<T>(Func<T> func)
       {
          T result = default(T);
          InvokeOnMainThread(() => result = func());
          return result;
-      }
+      }*/
 
       public void SetContext(CGContext context, CGSize contextSize, int scaleFactor)
       {
@@ -188,23 +180,20 @@ namespace LiteHtmlSharp.CoreGraphics
 
       protected override int GetDefaultFontSize()
       {
-         return InvokeOnMainThreadFunc(() => (int)Math.Round(NSFont.SystemFontSize));
+         return (int)Math.Round(NSFont.SystemFontSize);
       }
 
       protected override string GetDefaultFontName()
       {
-         return InvokeOnMainThreadFunc(() => NSFont.SystemFontOfSize(NSFont.SystemFontSize).FontName);
+         return NSFont.SystemFontOfSize(NSFont.SystemFontSize).FontName;
       }
 
       protected override int GetTextWidth(string text, UIntPtr fontId)
       {
-         return InvokeOnMainThreadFunc(() =>
-            {
-               var fontHolder = GetFont(fontId);
-               var attrString = fontHolder.GetAttributedString(text, new web_color());
-               var size = attrString.Size;
-               return (int)Math.Round(size.Width / ScaleFactor);
-            });
+         var fontHolder = GetFont(fontId);
+         var attrString = fontHolder.GetAttributedString(text, new web_color());
+         var size = attrString.Size;
+         return (int)Math.Round(size.Width / ScaleFactor);
       }
 
       protected override void DrawText(string text, UIntPtr fontId, ref web_color color, ref position pos)
@@ -243,27 +232,26 @@ namespace LiteHtmlSharp.CoreGraphics
       ImageHolder GetCacheImage(string imageUrl)
       {
          ImageHolder imageHolder;
-         if (!imageCache.TryGetValue(imageUrl, out imageHolder))
+         if (imageCache.TryGetValue(imageUrl, out imageHolder))
          {
-            return InvokeOnMainThreadFunc(() =>
-               {
-                  if (LoadImageCallback == null)
-                  {
-                     throw new Exception(nameof(LoadImageCallback) + " must be set before an image is requested while rendering");
-                  }
-                  var imgBytes = LoadImageCallback(imageUrl);
-                  if (imgBytes == null)
-                  {
-                     return null;
-                  }
-                  var nsImage = new NSImage(NSData.FromArray(imgBytes));
-                  var rect = new CGRect(new CGPoint(0, 0), nsImage.Size);
-                  var image = nsImage.AsCGImage(ref rect, null, null);
-                  imageHolder = new ImageHolder{ Image = image, Size = nsImage.Size };
-                  imageCache.Add(imageUrl, imageHolder);
-                  return imageHolder;
-               });
+            return imageHolder;
          }
+
+         if (LoadImageCallback == null)
+         {
+            throw new Exception(nameof(LoadImageCallback) + " must be set before an image is requested while rendering");
+         }
+         var imgBytes = LoadImageCallback(imageUrl);
+         if (imgBytes == null)
+         {
+            imageCache.Add(imageUrl, null);
+            return null;
+         }
+         var nsImage = new NSImage(NSData.FromArray(imgBytes));
+         var rect = new CGRect(new CGPoint(0, 0), nsImage.Size);
+         var image = nsImage.AsCGImage(ref rect, null, null);
+         imageHolder = new ImageHolder{ Image = image, Size = nsImage.Size };
+         imageCache.Add(imageUrl, imageHolder);
          return imageHolder;
       }
 
@@ -280,11 +268,14 @@ namespace LiteHtmlSharp.CoreGraphics
       private void DrawImage(string image, CGRect rect)
       {
          var imageHolder = GetCacheImage(image);
-         Context.SaveState();
-         Context.TranslateCTM(rect.X, rect.Y + rect.Height);
-         Context.ScaleCTM(1, -1);
-         Context.DrawImage(new CGRect(0, 0, rect.Width, rect.Height), imageHolder.Image);
-         Context.RestoreState();
+         if (imageHolder != null)
+         {
+            Context.SaveState();
+            Context.TranslateCTM(rect.X, rect.Y + rect.Height);
+            Context.ScaleCTM(1, -1);
+            Context.DrawImage(new CGRect(0, 0, rect.Width, rect.Height), imageHolder.Image);
+            Context.RestoreState();
+         }
       }
 
       #endregion

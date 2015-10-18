@@ -39,7 +39,7 @@ namespace LiteHtmlSharp.MacBrowser
       void LoadExamplePage()
       {
          var testWindow = new LiteHtmlNSWindow(
-                             new CGRect(0, 0, 400, 400), 
+                             new CGRect(0, 0, 400, 200), 
                              NSWindowStyle.Closable | NSWindowStyle.Titled | NSWindowStyle.Resizable, 
                              File.ReadAllText("master.css", Encoding.UTF8)
                           );

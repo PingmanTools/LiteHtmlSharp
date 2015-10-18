@@ -251,6 +251,16 @@ namespace LiteHtmlSharp
          return PInvokes.GetElementInfo(CPPContainer, id);
       }
 
+      public int Height()
+      {
+         return PInvokes.Height(CPPContainer);
+      }
+
+      public int Width()
+      {
+         return PInvokes.Width(CPPContainer);
+      }
+
       /*
          TODO: 
          set_clip

@@ -37,6 +37,26 @@ namespace LiteHtmlSharp
          _visual = _visualControl.GetDrawingVisual();
       }
 
+      protected override void SetCaption(string caption)
+      {
+
+      }
+
+      protected override string GetDefaultFontName()
+      {
+         return "Arial";
+      }
+
+      protected override int GetDefaultFontSize()
+      {
+         return 12;
+      }
+
+      protected override void SetCursor(string cursor)
+      {
+
+      }
+
       public void Render(string html)
       {
          Clear();
@@ -81,7 +101,7 @@ namespace LiteHtmlSharp
 
       public void Clear()
       {
-         foreach(var input in _inputs)
+         foreach (var input in _inputs)
          {
             if (input.IsPlaced)
             {
@@ -171,7 +191,7 @@ namespace LiteHtmlSharp
          DrawRect(0, 0, 50, 50, GetBrush(ref color));
       }
 
-      protected override void DrawBackground(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos)
+      protected override void DrawBackground(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos, ref border_radiuses borderRadiuses, ref position borderBox)
       {
          if (pos.width > 0 && pos.height > 0)
          {
@@ -250,7 +270,7 @@ namespace LiteHtmlSharp
       {
          BitmapImage result;
 
-         if(_images.TryGetValue(image, out result))
+         if (_images.TryGetValue(image, out result))
          {
             return result;
          }
