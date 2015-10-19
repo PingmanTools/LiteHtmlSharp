@@ -24,6 +24,8 @@ namespace LiteHtmlSharp
       public HTMLVisual(Canvas parent, string masterCSS, IResourceLoader loader)
       {
          _canvas = parent;
+         _canvas.ClipToBounds = true;
+
          _visual = new DrawingVisual();
 
          _container = new WPFContainer(this, masterCSS, loader);
@@ -37,6 +39,11 @@ namespace LiteHtmlSharp
          _canvas.MouseMove += OnMouseMove;
          _canvas.MouseLeftButtonDown += OnMouseLeftButtonDown;
          _canvas.MouseLeftButtonUp += OnMouseLeftButtonUp;
+      }
+
+      public void SetHeight(double height)
+      {
+         _canvas.Height = height;
       }
 
       private void CanvasSizeChanged(object sender, SizeChangedEventArgs e)

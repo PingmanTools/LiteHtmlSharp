@@ -75,13 +75,13 @@ namespace LiteHtmlSharp
 
       void TestFramework()
       {
-         string testInstanceCallbackResult = "Test 1234 .... ₤ · ₥ · ₦ · ₮ · ₯ · ₹";
+         string testStringResult = "Test 1234 .... ₤ · ₥ · ₦ · ₮ · ₯ · ₹";
 
-         Document.TriggerTestCallback(50, testInstanceCallbackResult);
-         //if (testStaticCallback != testInstanceCallbackResult || someNumber != 50)
-         //{
-         //   throw new Exception("Container instance callback test failed. Something is broken!");
-         //}
+         Document.TriggerTestCallback(50, testStringResult);
+         if (_testText != testStringResult || _testNumber != 50)
+         {
+            throw new Exception("Container instance callback test failed. Something is broken!");
+         }
       }
 
       // -----

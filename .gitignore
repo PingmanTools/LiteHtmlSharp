@@ -5,7 +5,7 @@ Win32
 Debug
 Release
 /LiteHtml.opensdf
+*.sdf
 *.suo
 /.vs/LiteHtml/v14/.suo
 /.vs/config/applicationhost.config
-/*.sdf

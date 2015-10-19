@@ -25,13 +25,13 @@ namespace LiteHtmlSharp
    public delegate string GetDefaultFontNameFunc();
 
    [UnmanagedFunctionPointer(PInvokes.cc)]
-   public delegate void DrawBordersFunc(UIntPtr hdc,ref borders borders,ref position draw_pos,bool root);
+   public delegate void DrawBordersFunc(UIntPtr hdc, ref borders borders, ref position draw_pos, [MarshalAs(UnmanagedType.I1)] bool root);
 
    [UnmanagedFunctionPointer(PInvokes.cc, CharSet = PInvokes.cs)]
    public delegate void DrawBackgroundFunc(UIntPtr hdc,string image,background_repeat repeat,ref web_color color,ref position pos,ref border_radiuses borderRadiuses,ref position borderBox);
 
    [UnmanagedFunctionPointer(PInvokes.cc, CharSet = PInvokes.cs)]
-   public delegate void GetImageSizeFunc(string image,ref size size);
+   public delegate void GetImageSizeFunc(string image, ref size size);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
    public delegate void DrawTextFunc(string text,UIntPtr font,ref web_color color,ref position pos);
@@ -90,21 +90,26 @@ namespace LiteHtmlSharp
    public delegate void SetMasterCSSFunc(IntPtr container,string css);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
+   [return: MarshalAs(UnmanagedType.I1)]
    public delegate bool OnMouseMoveFunc(IntPtr container,int x,int y);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
+   [return: MarshalAs(UnmanagedType.I1)]
    public delegate bool OnMouseLeaveFunc(IntPtr container);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
+   [return: MarshalAs(UnmanagedType.I1)]
    public delegate bool OnLeftButtonUpFunc(IntPtr container,int x,int y);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
+   [return: MarshalAs(UnmanagedType.I1)]
    public delegate bool OnLeftButtonDownFunc(IntPtr container,int x,int y);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
    public delegate ElementInfo GetElementInfoFunc(IntPtr container,int ID);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
+   [return: MarshalAs(UnmanagedType.I1)]
    public delegate bool OnMediaChangedFunc(IntPtr container);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
