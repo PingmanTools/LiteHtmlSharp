@@ -7,11 +7,16 @@ using System.Runtime.InteropServices;
 
 namespace LiteHtmlSharp
 {
-   [UnmanagedFunctionPointer(PInvokes.cc)]
-   public delegate void DrawBordersFunc(UIntPtr hdc,ref borders borders,ref position draw_pos,bool root);
+   // test methods
+   [UnmanagedFunctionPointer(PInvokes.cc, CharSet = PInvokes.cs)]
+   public delegate void TestCallbackFunc(int x, string testString);
 
    [UnmanagedFunctionPointer(PInvokes.cc, CharSet = PInvokes.cs)]
-   public delegate void CallbackFunc(string testString);
+   public delegate void TriggerTestCallbackFunc(IntPtr container, int x, string testString);
+
+   // callbacks
+   [UnmanagedFunctionPointer(PInvokes.cc)]
+   public delegate void DrawBordersFunc(UIntPtr hdc,ref borders borders,ref position draw_pos,bool root);
 
    [UnmanagedFunctionPointer(PInvokes.cc, CharSet = PInvokes.cs)]
    public delegate void DrawBackgroundFunc(UIntPtr hdc,string image,background_repeat repeat,ref web_color color,ref position pos);
@@ -44,8 +49,55 @@ namespace LiteHtmlSharp
    public delegate void OnAnchorClickFunc(string url);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
-   public delegate int PTtoPXFunct(int pt);
+   public delegate int PTtoPXFunc(int pt);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
    public delegate int CreateElementFunc(string tag, string attributes);
+
+   [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
+   public delegate void SetCursorFunc(string cursor);
+
+   [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
+   public delegate void DrawListMarkerFunc(string image, string baseURL, list_style_type marker_type, ref web_color color, ref position pos);
+
+   [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
+   public delegate string TransformTextFunc(string text, text_transform tt);
+
+   [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
+   public delegate void InitCallbacksFunc(ref Callbacks callbacks);
+
+   // Invoke methods
+
+   [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
+   public delegate void RenderHTMLFunc(IntPtr container, string html, int maxWidth);
+
+   [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
+   public delegate void RenderFunc(IntPtr container, int maxWidth);
+
+   [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
+   public delegate void DrawFunc(IntPtr container, int x, int y, position clip);
+
+   [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
+   public delegate void SetMasterCSSFunc(IntPtr container, string css);
+
+   [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
+   public delegate bool OnMouseMoveFunc(IntPtr container, int x, int y);
+
+   [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
+   public delegate bool OnMouseLeaveFunc(IntPtr container);
+
+   [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
+   public delegate bool OnLeftButtonUpFunc(IntPtr container, int x, int y);
+
+   [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
+   public delegate bool OnLeftButtonDownFunc(IntPtr container, int x, int y);
+
+   [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
+   public delegate ElementInfo GetElementInfoFunc(IntPtr container, int ID);
+
+   [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
+   public delegate bool OnMediaChangedFunc(IntPtr container);
+
+   [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
+   public delegate void DeleteFunc(IntPtr container);
 }

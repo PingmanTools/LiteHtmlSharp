@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CallbackDelegates.h"
+#include "../../litehtml/src/html.h"
 
 struct ElementInfo
 {

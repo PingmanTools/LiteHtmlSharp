@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="600" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
    <Grid Name="grid" Background="WhiteSmoke">
-      <Canvas Name="canvas" SizeChanged="canvas_SizeChanged" Background="White" MouseMove="canvas_MouseMove" MouseLeftButtonDown="canvas_MouseLeftButtonDown" MouseLeftButtonUp="canvas_MouseLeftButtonUp" Margin="0,0,0,35"></Canvas>
+      <Canvas Name="canvas" Background="White" Margin="0,0,0,35"></Canvas>
       <Button x:Name="button" Content="Draw" Click="button_Click" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="75"/>
       <Button x:Name="btClear" Content="Clear" Click="btClear_Click" HorizontalAlignment="Right" Margin="0,0,90,10" VerticalAlignment="Bottom" Width="75"/>
       <Label Name="lbTime" Content="Render Time: " HorizontalAlignment="Left" Margin="10,0,0,7" VerticalAlignment="Bottom"/>

@@ -10,70 +10,72 @@ namespace LiteHtmlSharp
 {
    public abstract class Container
    {
-      protected IntPtr CPPContainer;
-      private static List<Delegate> _delegates = new List<Delegate>();
+      public Document Document;
 
       public int ScaleFactor = 1;
 
       public Container(string masterCssData)
       {
-         #if DEBUG
-         //TestFramework();
-         #endif
+         Document = new Document();
 
-         CPPContainer = PInvokes.Init();
+         PInvokes.Init(ref Document.Calls, InitCallbacks);
 
-         PInvokes.SetMasterCSS(CPPContainer, masterCssData);
+#if DEBUG
+         TestFramework();
+#endif
 
-         PInvokes.SetDrawBorders(CPPContainer, CreateDelegate(new DrawBordersFunc(DrawBordersScaled)));
-         PInvokes.SetDrawBackground(CPPContainer, CreateDelegate(new DrawBackgroundFunc(DrawBackgroundScaled)));
-         PInvokes.SetGetImageSize(CPPContainer, CreateDelegate(new GetImageSizeFunc(GetImageSize)));
-
-         PInvokes.SetDrawText(CPPContainer, CreateDelegate(new DrawTextFunc(DrawTextScaled)));
-         PInvokes.SetGetTextWidth(CPPContainer, CreateDelegate(new GetTextWidthFunc(GetTextWidth)));
-         PInvokes.SetCreateFont(CPPContainer, CreateDelegate(new CreateFontFunc(CreateFontWrapper)));
-
-         PInvokes.SetImportCss(CPPContainer, CreateDelegate(new ImportCssFunc(ImportCss)));
-
-         PInvokes.SetGetClientRect(CPPContainer, CreateDelegate(new GetClientRectFunc(GetClientRect)));
-         PInvokes.SetGetMediaFeatures(CPPContainer, CreateDelegate(new GetMediaFeaturesFunc(GetMediaFeatures)));
-
-         PInvokes.SetSetBaseURL(CPPContainer, CreateDelegate(new SetBaseURLFunc(SetBaseURL)));
-         PInvokes.SetOnAnchorClick(CPPContainer, CreateDelegate(new OnAnchorClickFunc(OnAnchorClick)));
-
-         PInvokes.SetPTtoPX(CPPContainer, CreateDelegate(new PTtoPXFunct(PTtoPX)));
-         PInvokes.SetCreateElement(CPPContainer, CreateDelegate(new CreateElementFunc(CreateElement)));
+         Document.SetMasterCSS(masterCssData);
       }
 
-      public Container()
+      Callbacks cbs;
+      private void InitCallbacks(ref Callbacks callbacks)
       {
+         callbacks.DrawBorders = DrawBordersScaled;
+         callbacks.DrawBackground = DrawBackgroundScaled;
+         callbacks.GetImageSize = GetImageSize;
+
+         callbacks.DrawText = DrawTextScaled;
+         callbacks.GetTextWidth = GetTextWidth;
+         callbacks.CreateFont = CreateFontWrapper;
+
+         callbacks.ImportCss = ImportCss;
+
+         callbacks.GetClientRect = GetClientRect;
+         callbacks.GetMediaFeatures = GetMediaFeatures;
+
+         callbacks.SetBaseURL = SetBaseURL;
+         callbacks.OnAnchorClick = OnAnchorClick;
+
+         callbacks.PTtoPX = PTtoPX;
+         callbacks.CreateElement = CreateElement;
+
+         callbacks.SetCursor = SetCursor;
+         callbacks.DrawListMarker = DrawListMarker;
+
+         callbacks.TransformText = TransformText;
+         callbacks.TestCallback = TestCallback;
+
+         cbs = callbacks;
       }
 
-      static void TestFramework()
+      int someNumber = 0;
+      string testStaticCallback = null;
+
+      void TestCallback(int number, string text)
       {
-         string testStaticCallback = null;
-         PInvokes.SetTestFunction(result => testStaticCallback = result);
-         if (string.IsNullOrEmpty(testStaticCallback))
-         {
-            throw new Exception("Container instance callback test failed. Something is really broken!");
-         }
+         testStaticCallback = text;
+         someNumber = number;
+      }
 
-         var CPPContainer = PInvokes.Init();
-
-         string testInstanceCallback = null;
+      void TestFramework()
+      {
          string testInstanceCallbackResult = "Test 1234 .... ₤ · ₥ · ₦ · ₮ · ₯ · ₹";
-         PInvokes.SetTestCallback(CPPContainer, result => testInstanceCallback = result);
-         PInvokes.TriggerTestCallback(CPPContainer, testInstanceCallbackResult);
-         if (testInstanceCallback != testInstanceCallbackResult)
-         {
-            throw new Exception("Container instance callback test failed. Something is broken!");
-         }
-      }
 
-      private T CreateDelegate<T>(T someDelegate)
-      {
-         _delegates.Add(someDelegate as Delegate);
-         return someDelegate;
+         Document.TriggerTestCallback(50, testInstanceCallbackResult);
+         //if (testStaticCallback != testInstanceCallbackResult || someNumber != 50)
+         //{
+         //   throw new Exception("Container instance callback test failed. Something is broken!");
+         //}
       }
 
       // -----
@@ -143,40 +145,10 @@ namespace LiteHtmlSharp
 
       protected abstract int CreateElement(string tag, string attributes);
 
-      public virtual void RenderHtml(string html, int maxWidth)
-      {
-         PInvokes.RenderHTML(CPPContainer, html, maxWidth);
-      }
+      protected abstract void SetCursor(string cursor);
 
-      public virtual void Draw(int x, int y, position clip)
-      {
-         PInvokes.Draw(CPPContainer, x, y, clip);
-      }
+      protected abstract void DrawListMarker(string image, string baseURL, list_style_type marker_type, ref web_color color, ref position pos);
 
-      public virtual bool OnMouseMove(int x, int y)
-      {
-         return PInvokes.OnMouseMove(CPPContainer, x, y);
-      }
-
-      public void Render(int maxWidth)
-      {
-         PInvokes.Render(CPPContainer, maxWidth);
-      }
-
-      public void OnMediaChanged()
-      {
-         PInvokes.OnMediaChanged(CPPContainer);
-      }
-
-      public void OnLeftButtonDown(int x, int y)
-      {
-         PInvokes.OnLeftButtonDown(CPPContainer, x, y);
-      }
-
-      public void OnLeftButtonUp(int x, int y)
-      {
-         PInvokes.OnLeftButtonUp(CPPContainer, x, y);
-      }
-
+      protected abstract string TransformText(string text, text_transform tt);
    }
 }
