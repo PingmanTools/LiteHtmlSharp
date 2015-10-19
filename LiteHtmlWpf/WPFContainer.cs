@@ -37,6 +37,21 @@ namespace LiteHtmlSharp
          _visual = _visualControl.GetDrawingVisual();
       }
 
+      protected override void SetCaption(string caption)
+      {
+
+      }
+
+      protected override string GetDefaultFontName()
+      {
+         return "Arial";
+      }
+
+      protected override int GetDefaultFontSize()
+      {
+         return 12;
+      }
+
       public void Render(string html)
       {
          Clear();
@@ -46,7 +61,7 @@ namespace LiteHtmlSharp
          _inputs.Clear();
          _rendering = true;
 
-         PInvokes.RenderHTML(CPPContainer, html, (int)_size.X);
+         Document.RenderHtml(html, (int)_size.X);
          Draw();
 
          _rendering = false;
@@ -59,7 +74,7 @@ namespace LiteHtmlSharp
          {
             if (input.TextBox == null)
             {
-               ElementInfo info = PInvokes.GetElementInfo(CPPContainer, input.ID);
+               ElementInfo info = Document.GetElementInfo(input.ID);
                input.TextBox = new TextBox();
                input.TextBox.HorizontalAlignment = HorizontalAlignment.Left;
                input.TextBox.VerticalAlignment = VerticalAlignment.Top;
@@ -81,7 +96,7 @@ namespace LiteHtmlSharp
 
       public void Clear()
       {
-         foreach(var input in _inputs)
+         foreach (var input in _inputs)
          {
             if (input.IsPlaced)
             {
@@ -103,7 +118,7 @@ namespace LiteHtmlSharp
             width = (int)_size.X,
             height = (int)_size.Y
          };
-         PInvokes.Draw(CPPContainer, 0, 0, clip);
+         Document.Draw(0, 0, clip);
          _dc.Close();
          _dc = null;
          ProcessInputs();
@@ -113,7 +128,7 @@ namespace LiteHtmlSharp
       {
          if (Loaded)
          {
-            if (PInvokes.OnMouseMove(CPPContainer, (int)x, (int)y))
+            if (Document.OnMouseMove((int)x, (int)y))
             {
                Draw();
             }
@@ -124,7 +139,7 @@ namespace LiteHtmlSharp
       {
          if (Loaded)
          {
-            if (PInvokes.OnMouseLeave(CPPContainer))
+            if (Document.OnMouseLeave())
             {
                Draw();
             }
@@ -135,7 +150,7 @@ namespace LiteHtmlSharp
       {
          if (Loaded)
          {
-            if (PInvokes.OnLeftButtonDown(CPPContainer, (int)x, (int)y))
+            if (Document.OnLeftButtonDown((int)x, (int)y))
             {
                Draw();
             }
@@ -146,7 +161,7 @@ namespace LiteHtmlSharp
       {
          if (Loaded)
          {
-            if (PInvokes.OnLeftButtonUp(CPPContainer, (int)x, (int)y))
+            if (Document.OnLeftButtonUp((int)x, (int)y))
             {
                Draw();
             }
@@ -159,8 +174,8 @@ namespace LiteHtmlSharp
 
          if (Loaded)
          {
-            PInvokes.OnMediaChanged(CPPContainer);
-            PInvokes.Render(CPPContainer, (int)_size.X);
+            Document.OnMediaChanged();
+            Document.Render((int)_size.X);
             Draw();
          }
       }
@@ -171,7 +186,7 @@ namespace LiteHtmlSharp
          DrawRect(0, 0, 50, 50, GetBrush(ref color));
       }
 
-      protected override void DrawBackground(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos)
+      protected override void DrawBackground(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos, ref border_radiuses borderRadiuses, ref position borderBox)
       {
          if (pos.width > 0 && pos.height > 0)
          {
@@ -188,6 +203,11 @@ namespace LiteHtmlSharp
 
       protected override void DrawBorders(UIntPtr hdc, ref borders borders, ref position draw_pos, bool root)
       {
+         if(borders.radius.top_left_x != 0)
+         {
+            int i = 0;
+         }
+
          if (borders.top.width > 0)
          {
             DrawRect(draw_pos.x, draw_pos.y, draw_pos.width, borders.top.width, GetBrush(ref borders.top.color));
@@ -250,7 +270,7 @@ namespace LiteHtmlSharp
       {
          BitmapImage result;
 
-         if(_images.TryGetValue(image, out result))
+         if (_images.TryGetValue(image, out result))
          {
             return result;
          }
@@ -292,7 +312,8 @@ namespace LiteHtmlSharp
 
       protected override UIntPtr CreateFont(string faceName, int size, int weight, font_style italic, font_decoration decoration, ref font_metrics fm)
       {
-         FontInfo font = new FontInfo(faceName, italic == font_style.fontStyleItalic ? FontStyles.Italic : FontStyles.Normal, FontWeight.FromOpenTypeWeight(weight), size);
+         var fontweight = FontWeight.FromOpenTypeWeight(weight);
+         FontInfo font = new FontInfo(faceName, italic == font_style.fontStyleItalic ? FontStyles.Italic : FontStyles.Normal, fontweight, size);
          if ((decoration & font_decoration.font_decoration_underline) != 0)
          {
             font.Decorations.Add(TextDecorations.Underline);
@@ -360,6 +381,21 @@ namespace LiteHtmlSharp
          {
             return 0;
          }
+      }
+
+      protected override void SetCursor(string cursor)
+      {
+         _visualControl.SetCursor(cursor);
+      }
+
+      protected override void DrawListMarker(string image, string baseURL, list_style_type marker_type, ref web_color color, ref position pos)
+      {
+         DrawRect(pos.x, pos.y, pos.width, pos.height, GetBrush(ref color));
+      }
+
+      protected override string TransformText(string text, text_transform tt)
+      {
+         return text;
       }
    }
 

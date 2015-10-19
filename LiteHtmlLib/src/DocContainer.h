@@ -45,6 +45,9 @@ public:
    virtual void get_media_features(litehtml::media_features & media) const override;
    virtual void get_language(litehtml::tstring & language, litehtml::tstring & culture) const override;
 
+   void SetDocumentCalls(DocumentCalls& docCalls);
+   Callbacks& GetCallbacks() { return _callbacks; }
+
    void RenderHTML(const litehtml::tchar_t* html, int maxWidth);
    void Render(int maxWidth);
    void SetMasterCSS(const litehtml::tchar_t* css);
@@ -53,33 +56,16 @@ public:
    bool OnLeftButtonDown(int x, int y);
    bool OnLeftButtonUp(int x, int y);
    void Draw(int x, int y, litehtml::position clip);
-   ElementInfo& GetTagElementInfo(int ID);
+   ElementInfo GetElementInfo(int ID);
    bool OnMediaChanged();
-
-
-   std::shared_ptr<litehtml::document> _document;
-
-   DrawBorders_function DrawBorders = 0;
-   DrawBackground_function DrawBackground = 0;
-   GetImageSize_function GetImageSize = 0;
-   Test_function TestCallback = 0;
-   ImportCss_function ImportCss = 0;
-
-   DrawText_function DrawText = 0;
-   GetTextWidth_function GetTextWidth = 0;
-   CreateFont_function CreateFont = 0;
-
-   GetClientRect_function GetClientRect = 0;
-   GetMediaFeatures_function GetMediaFeatures = 0;
-
-   OnAnchorClick_function OnAnchorClick = 0;
-   SetBaseURL_function SetBaseURL = 0;
-   PTtoPX_function PTtoPX = 0;
-   CreateElement_function CreateElement = 0;
+   int GetWidth();
+   int GetHeight();
 
 private:
    litehtml::context _context;
    litehtml::position _drawPos;
 
+   Callbacks _callbacks;
    std::map<int, std::shared_ptr<TagElement>> _elements;
+   std::shared_ptr<litehtml::document> _document;
 };

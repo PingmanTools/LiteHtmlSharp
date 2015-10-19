@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace LiteHtmlSharp
 {
@@ -30,6 +31,40 @@ namespace LiteHtmlSharp
          this.AddVisualChild(_visual);
          this.AddLogicalChild(_visual);
          parent.Children.Add(this);
+
+         _canvas.SizeChanged += CanvasSizeChanged;
+         _canvas.MouseLeave += OnMouseLeave;
+         _canvas.MouseMove += OnMouseMove;
+         _canvas.MouseLeftButtonDown += OnMouseLeftButtonDown;
+         _canvas.MouseLeftButtonUp += OnMouseLeftButtonUp;
+      }
+
+      private void CanvasSizeChanged(object sender, SizeChangedEventArgs e)
+      {
+         OnSizeChanged();
+      }
+
+      private void OnMouseLeave(object sender, MouseEventArgs e)
+      {
+         _container.OnMouseLeave();
+      }
+
+      private void OnMouseMove(object sender, MouseEventArgs e)
+      {
+         var pos = e.GetPosition(_canvas);
+         _container.OnMouseMove(pos.X, pos.Y);
+      }
+
+      private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+      {
+         var pos = e.GetPosition(_canvas);
+         _container.OnLeftButtonDown(pos.X, pos.Y);
+      }
+
+      private void OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+      {
+         var pos = e.GetPosition(_canvas);
+         _container.OnLeftButtonUp(pos.X, pos.Y);
       }
 
       public DrawingVisual GetDrawingVisual()
@@ -72,26 +107,23 @@ namespace LiteHtmlSharp
          _container.Clear();
       }
 
-      public void OnMouseMove(double x, double y)
-      {
-         _container.OnMouseMove(x, y);
-      }
-
-      public void OnLeftButtonDown(double x, double y)
-      {
-         _container.OnLeftButtonDown(x, y);
-      }
-
-      public void OnLeftButtonUp(double x, double y)
-      {
-         _container.OnLeftButtonUp(x, y);
-      }
-
       public void OnSizeChanged()
       {
          FrameworkElement parent = Parent as FrameworkElement;
          UpdateLayout();
          _container.OnSizeChanged(parent.ActualWidth, parent.ActualHeight);
+      }
+
+      public void SetCursor(string cursor)
+      {
+         if (cursor.Equals("pointer", StringComparison.CurrentCultureIgnoreCase))
+         {
+            Mouse.OverrideCursor = Cursors.Hand;
+         }
+         else
+         {
+            Mouse.OverrideCursor = null;
+         }
       }
    }
 }

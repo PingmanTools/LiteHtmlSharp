@@ -1,18 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MacTest", "MacTest.csproj", "{88DC2F6C-0092-428D-B62A-33F7AF0F2AD8}"
+Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "LiteHtml.dylib", "LiteHtmlLib\LiteHtml.dylib.mdproj", "{6CB85C0B-8486-44E3-825D-A7E49F958943}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "LiteHtmlSharp", "..\LiteHtmlSharp\LiteHtmlSharp.shproj", "{6BC47FA3-8312-436A-A609-F87D59DBE874}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "LiteHtmlSharp", "LiteHtmlSharp\LiteHtmlSharp.shproj", "{6BC47FA3-8312-436A-A609-F87D59DBE874}"
 EndProject
-Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "LiteHtml.dylib", "..\LiteHtmlLib\LiteHtml.dylib.mdproj", "{6CB85C0B-8486-44E3-825D-A7E49F958943}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "LiteHtmlSharp.CoreGraphics", "LiteHtmlSharp.CoreGraphics\LiteHtmlSharp.CoreGraphics.shproj", "{6C22A040-3735-43FE-BB3B-EDACDBCC0DBC}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F8F9269E-029B-4BCB-947C-060D937336B8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiteHtmlSharp.MacBrowser", "LiteHtmlSharp.MacBrowser\LiteHtmlSharp.MacBrowser.csproj", "{88DC2F6C-0092-428D-B62A-33F7AF0F2AD8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiteHtmlSharp.Mac", "LiteHtmlSharp.Mac\LiteHtmlSharp.Mac.csproj", "{81EC8297-3616-428D-89D1-06B7AC68574B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D84732A5-2D01-4917-9C4A-7E5618DCB55B}"
 	ProjectSection(SolutionItems) = preProject
-		..\README = ..\README
+		README.md = README.md
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiteHtmlCGContainer", "LiteHtmlCGContainer\LiteHtmlCGContainer.csproj", "{42A6F515-348F-4C6B-84F5-E1BA6F9A5E8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,18 +23,18 @@ Global
 		Default|Any CPU = Default|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{42A6F515-348F-4C6B-84F5-E1BA6F9A5E8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{42A6F515-348F-4C6B-84F5-E1BA6F9A5E8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{42A6F515-348F-4C6B-84F5-E1BA6F9A5E8F}.Default|Any CPU.ActiveCfg = Debug|Any CPU
-		{42A6F515-348F-4C6B-84F5-E1BA6F9A5E8F}.Default|Any CPU.Build.0 = Debug|Any CPU
-		{42A6F515-348F-4C6B-84F5-E1BA6F9A5E8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{42A6F515-348F-4C6B-84F5-E1BA6F9A5E8F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6CB85C0B-8486-44E3-825D-A7E49F958943}.Debug|Any CPU.ActiveCfg = Default|Any CPU
 		{6CB85C0B-8486-44E3-825D-A7E49F958943}.Debug|Any CPU.Build.0 = Default|Any CPU
 		{6CB85C0B-8486-44E3-825D-A7E49F958943}.Default|Any CPU.ActiveCfg = Default|Any CPU
 		{6CB85C0B-8486-44E3-825D-A7E49F958943}.Default|Any CPU.Build.0 = Default|Any CPU
 		{6CB85C0B-8486-44E3-825D-A7E49F958943}.Release|Any CPU.ActiveCfg = Default|Any CPU
 		{6CB85C0B-8486-44E3-825D-A7E49F958943}.Release|Any CPU.Build.0 = Default|Any CPU
+		{81EC8297-3616-428D-89D1-06B7AC68574B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81EC8297-3616-428D-89D1-06B7AC68574B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81EC8297-3616-428D-89D1-06B7AC68574B}.Default|Any CPU.ActiveCfg = Debug|Any CPU
+		{81EC8297-3616-428D-89D1-06B7AC68574B}.Default|Any CPU.Build.0 = Debug|Any CPU
+		{81EC8297-3616-428D-89D1-06B7AC68574B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81EC8297-3616-428D-89D1-06B7AC68574B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{88DC2F6C-0092-428D-B62A-33F7AF0F2AD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{88DC2F6C-0092-428D-B62A-33F7AF0F2AD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88DC2F6C-0092-428D-B62A-33F7AF0F2AD8}.Default|Any CPU.ActiveCfg = Debug|Any CPU

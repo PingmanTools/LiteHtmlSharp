@@ -127,3 +127,8 @@ about{
     font-size:75%;
 }
 
+.inputclass
+{
+  width: 150px;
+  height: 20px;
+}

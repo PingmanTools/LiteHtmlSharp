@@ -73,32 +73,9 @@ namespace Browser
          lbTime.Content = "Render Time(ms): " + _watch.ElapsedMilliseconds;
       }
 
-      private void canvas_SizeChanged(object sender, SizeChangedEventArgs e)
-      {
-         _htmlVisual.OnSizeChanged();
-      }
-
       private void Window_Loaded(object sender, RoutedEventArgs e)
       {
          _htmlVisual.OnSizeChanged();
-      }
-
-      private void canvas_MouseMove(object sender, MouseEventArgs e)
-      {
-         var pos = e.GetPosition(canvas);
-         _htmlVisual.OnMouseMove(pos.X, pos.Y);
-      }
-
-      private void canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-      {
-         var pos = e.GetPosition(canvas);
-         _htmlVisual.OnLeftButtonDown(pos.X, pos.Y);
-      }
-
-      private void canvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-      {
-         var pos = e.GetPosition(canvas);
-         _htmlVisual.OnLeftButtonUp(pos.X, pos.Y);
       }
 
       public byte[] GetResourceBytes(string resource)

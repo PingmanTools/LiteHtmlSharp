@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Container.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Document.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PInvokes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Structs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Delegates.cs" />

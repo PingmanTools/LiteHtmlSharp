@@ -3,9 +3,9 @@ using LiteHtmlSharp;
 using CoreGraphics;
 using AppKit;
 
-namespace MacTest
+namespace LiteHtmlSharp.CoreGraphics
 {
-   public static class LiteHtmlMacExtensions
+   public static class CGExtensions
    {
       public static CGRect ToRect(this position pos)
       {

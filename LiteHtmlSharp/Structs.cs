@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 
 namespace LiteHtmlSharp
@@ -21,6 +17,11 @@ namespace LiteHtmlSharp
          y *= scaleFactor;
          width *= scaleFactor;
          height *= scaleFactor;
+      }
+
+      public override string ToString()
+      {
+         return string.Format("x: {0}, y: {1}, w: {2}, h: {3}", x, y, width, height);
       }
    }
 
@@ -49,6 +50,14 @@ namespace LiteHtmlSharp
          bottom_right_y *= scaleFactor;
          bottom_left_x *= scaleFactor;
          bottom_left_y *= scaleFactor;
+      }
+
+      public override string ToString()
+      {
+         return string.Format(
+            "tlx: {0}, tly: {1}, trx: {2}, try: {3}, brx: {4}, bry: {5}, blx: {6}, bly: {7}", 
+            top_left_x, top_left_y, top_right_x, top_right_y, bottom_right_x, bottom_right_x, bottom_left_x, bottom_left_y
+         );
       }
    }
 
@@ -138,6 +147,15 @@ namespace LiteHtmlSharp
       // The resolution of the output device (in DPI)
    };
 
+   [Flags]
+   public enum text_transform
+   {
+      text_transform_none,
+      text_transform_capitalize,
+      text_transform_uppercase,
+      text_transform_lowercase
+   }
+
    public enum media_type
    {
       media_type_none,
@@ -203,5 +221,90 @@ namespace LiteHtmlSharp
       public int PosY;
       public int Width;
       public int Height;
+   }
+
+   public enum list_style_type
+   {
+      list_style_type_none,
+      list_style_type_circle,
+      list_style_type_disc,
+      list_style_type_square,
+      list_style_type_armenian,
+      list_style_type_cjk_ideographic,
+      list_style_type_decimal,
+      list_style_type_decimal_leading_zero,
+      list_style_type_georgian,
+      list_style_type_hebrew,
+      list_style_type_hiragana,
+      list_style_type_hiragana_iroha,
+      list_style_type_katakana,
+      list_style_type_katakana_iroha,
+      list_style_type_lower_alpha,
+      list_style_type_lower_greek,
+      list_style_type_lower_latin,
+      list_style_type_lower_roman,
+      list_style_type_upper_alpha,
+      list_style_type_upper_latin,
+      list_style_type_upper_roman,
+   }
+
+   [StructLayout(LayoutKind.Sequential)]
+   public struct Callbacks
+   {
+      // Test Methods
+      public TestCallbackFunc TestCallback;
+
+      // Callbacks
+      public SetCaptionFunc SetCaption;
+      public GetDefaultFontNameFunc GetDefaultFontName;
+      public GetDefaultFontSizeFunc GetDefaultFontSize;
+
+      public DrawBordersFunc DrawBorders;
+      public DrawBackgroundFunc DrawBackground;
+      public GetImageSizeFunc GetImageSize;
+      public ImportCssFunc ImportCss;
+
+      public DrawTextFunc DrawText;
+      public GetTextWidthFunc GetTextWidth;
+      public CreateFontFunc CreateFont;
+
+      public GetClientRectFunc GetClientRect;
+      public GetMediaFeaturesFunc GetMediaFeatures;
+
+      public OnAnchorClickFunc OnAnchorClick;
+      public SetBaseURLFunc SetBaseURL;
+      public PTtoPXFunc PTtoPX;
+      public CreateElementFunc CreateElement;
+
+      public DrawListMarkerFunc DrawListMarker;
+      public SetCursorFunc SetCursor;
+
+      public TransformTextFunc TransformText;
+   }
+
+   [StructLayout(LayoutKind.Sequential)]
+   public struct DocumentCalls
+   {
+      public IntPtr ID;
+
+      public TriggerTestCallbackFunc TriggerTestCallback;
+
+      // Invoke Methods
+      public DeleteFunc Delete;
+
+      public OnMouseMoveFunc OnMouseMove;
+      public OnMouseLeaveFunc OnMouseLeave;
+      public OnLeftButtonUpFunc OnLeftButtonUp;
+      public OnLeftButtonDownFunc OnLeftButtonDown;
+
+      public RenderHTMLFunc RenderHTML;
+      public RenderFunc Render;
+      public DrawFunc Draw;
+      public SetMasterCSSFunc SetMasterCSS;
+      public GetElementInfoFunc GetElementInfo;
+      public OnMediaChangedFunc OnMediaChanged;
+
+      public GetWidthFunc GetWidth;
+      public GetHeightFunc GetHeight;
    }
 }

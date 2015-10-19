@@ -5,86 +5,96 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using System.Globalization;
 
 namespace LiteHtmlSharp
 {
    public abstract class Container
    {
-      protected IntPtr CPPContainer;
-      private static List<Delegate> _delegates = new List<Delegate>();
+      int _testNumber = 0;
+      string _testText = null;
+
+      Callbacks _callbacks;
+      public Document Document;
 
       public int ScaleFactor = 1;
+      public CreateElementFunc CreateElementCallback;
 
       public Container(string masterCssData)
       {
-         #if DEBUG
-         //TestFramework();
-         #endif
+         Document = new Document();
 
-         CPPContainer = PInvokes.Init();
+         PInvokes.Init(ref Document.Calls, InitCallbacks);
 
-         PInvokes.SetMasterCSS(CPPContainer, masterCssData);
+#if DEBUG
+         TestFramework();
+#endif
 
-         PInvokes.SetDrawBorders(CPPContainer, CreateDelegate(new DrawBordersFunc(DrawBordersScaled)));
-         PInvokes.SetDrawBackground(CPPContainer, CreateDelegate(new DrawBackgroundFunc(DrawBackgroundScaled)));
-         PInvokes.SetGetImageSize(CPPContainer, CreateDelegate(new GetImageSizeFunc(GetImageSize)));
-
-         PInvokes.SetDrawText(CPPContainer, CreateDelegate(new DrawTextFunc(DrawTextScaled)));
-         PInvokes.SetGetTextWidth(CPPContainer, CreateDelegate(new GetTextWidthFunc(GetTextWidth)));
-         PInvokes.SetCreateFont(CPPContainer, CreateDelegate(new CreateFontFunc(CreateFontWrapper)));
-
-         PInvokes.SetImportCss(CPPContainer, CreateDelegate(new ImportCssFunc(ImportCss)));
-
-         PInvokes.SetGetClientRect(CPPContainer, CreateDelegate(new GetClientRectFunc(GetClientRect)));
-         PInvokes.SetGetMediaFeatures(CPPContainer, CreateDelegate(new GetMediaFeaturesFunc(GetMediaFeatures)));
-
-         PInvokes.SetSetBaseURL(CPPContainer, CreateDelegate(new SetBaseURLFunc(SetBaseURL)));
-         PInvokes.SetOnAnchorClick(CPPContainer, CreateDelegate(new OnAnchorClickFunc(OnAnchorClick)));
-
-         PInvokes.SetPTtoPX(CPPContainer, CreateDelegate(new PTtoPXFunct(PTtoPX)));
-         PInvokes.SetCreateElement(CPPContainer, CreateDelegate(new CreateElementFunc(CreateElement)));
+         Document.SetMasterCSS(masterCssData);
       }
 
-      public Container()
+      private void InitCallbacks(ref Callbacks callbacks)
       {
+         callbacks.DrawBorders = DrawBordersScaled;
+         callbacks.DrawBackground = DrawBackgroundScaled;
+         callbacks.GetImageSize = GetImageSize;
+
+         callbacks.DrawText = DrawTextScaled;
+         callbacks.GetTextWidth = GetTextWidth;
+         callbacks.CreateFont = CreateFontWrapper;
+
+         callbacks.ImportCss = ImportCss;
+
+         callbacks.GetClientRect = GetClientRect;
+         callbacks.GetMediaFeatures = GetMediaFeatures;
+
+         callbacks.SetBaseURL = SetBaseURL;
+         callbacks.OnAnchorClick = OnAnchorClick;
+
+         callbacks.PTtoPX = PTtoPX;
+         callbacks.CreateElement = CreateElementWrapper;
+
+         callbacks.SetCursor = SetCursor;
+         callbacks.DrawListMarker = DrawListMarker;
+
+         callbacks.TransformText = TransformText;
+         callbacks.TestCallback = TestCallback;
+
+         callbacks.SetCaption = SetCaption;
+         callbacks.GetDefaultFontName = GetDefaultFontName;
+         callbacks.GetDefaultFontSize = GetDefaultFontSize;
+
+         _callbacks = callbacks;
       }
 
-      static void TestFramework()
+      void TestCallback(int number, string text)
       {
-         string testStaticCallback = null;
-         PInvokes.SetTestFunction(result => testStaticCallback = result);
-         if (string.IsNullOrEmpty(testStaticCallback))
-         {
-            throw new Exception("Container instance callback test failed. Something is really broken!");
-         }
+         _testText = text;
+         _testNumber = number;
+      }
 
-         var CPPContainer = PInvokes.Init();
-
-         string testInstanceCallback = null;
+      void TestFramework()
+      {
          string testInstanceCallbackResult = "Test 1234 .... ₤ · ₥ · ₦ · ₮ · ₯ · ₹";
-         PInvokes.SetTestCallback(CPPContainer, result => testInstanceCallback = result);
-         PInvokes.TriggerTestCallback(CPPContainer, testInstanceCallbackResult);
-         if (testInstanceCallback != testInstanceCallbackResult)
-         {
-            throw new Exception("Container instance callback test failed. Something is broken!");
-         }
-      }
 
-      private T CreateDelegate<T>(T someDelegate)
-      {
-         _delegates.Add(someDelegate as Delegate);
-         return someDelegate;
+         Document.TriggerTestCallback(50, testInstanceCallbackResult);
+         //if (testStaticCallback != testInstanceCallbackResult || someNumber != 50)
+         //{
+         //   throw new Exception("Container instance callback test failed. Something is broken!");
+         //}
       }
 
       // -----
 
-      private void DrawBackgroundScaled(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos)
+      private void DrawBackgroundScaled(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos, ref border_radiuses borderRadiuses, ref position borderBox)
       {
          pos.Scale(ScaleFactor);
-         DrawBackground(hdc, image, repeat, ref color, ref pos);
+         borderRadiuses.Scale(ScaleFactor);
+         borderBox.Scale(ScaleFactor);
+         DrawBackground(hdc, image, repeat, ref color, ref pos, ref borderRadiuses, ref borderBox);
       }
 
-      protected abstract void DrawBackground(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos);
+      protected abstract void DrawBackground(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos, ref border_radiuses borderRadiuses, ref position borderBox);
 
       // -----
 
@@ -115,6 +125,12 @@ namespace LiteHtmlSharp
 
       protected abstract void GetClientRect(ref position client);
 
+      protected abstract void SetCaption(string caption);
+
+      protected abstract int GetDefaultFontSize();
+
+      protected abstract string GetDefaultFontName();
+
       protected UIntPtr CreateFontWrapper(string faceName, int size, int weight, font_style italic, uint decoration, ref font_metrics fm)
       {
          return CreateFont(faceName, size, weight, italic, (font_decoration)decoration, ref fm);
@@ -141,42 +157,40 @@ namespace LiteHtmlSharp
 
       protected abstract int PTtoPX(int pt);
 
-      protected abstract int CreateElement(string tag, string attributes);
-
-      public virtual void RenderHtml(string html, int maxWidth)
+      protected int CreateElementWrapper(string tag, string attributes)
       {
-         PInvokes.RenderHTML(CPPContainer, html, maxWidth);
+         if (CreateElementCallback != null)
+         {
+            return CreateElementCallback(tag, attributes);
+         }
+         else
+         {
+            return CreateElement(tag, attributes);
+         }
       }
 
-      public virtual void Draw(int x, int y, position clip)
+      protected virtual int CreateElement(string tag, string attributes)
       {
-         PInvokes.Draw(CPPContainer, x, y, clip);
+         return 0;
       }
 
-      public virtual bool OnMouseMove(int x, int y)
-      {
-         return PInvokes.OnMouseMove(CPPContainer, x, y);
-      }
+      protected abstract void SetCursor(string cursor);
 
-      public void Render(int maxWidth)
-      {
-         PInvokes.Render(CPPContainer, maxWidth);
-      }
+      protected abstract void DrawListMarker(string image, string baseURL, list_style_type marker_type, ref web_color color, ref position pos);
 
-      public void OnMediaChanged()
+      protected virtual string TransformText(string text, text_transform t)
       {
-         PInvokes.OnMediaChanged(CPPContainer);
+         switch (t)
+         {
+            case text_transform.text_transform_capitalize:
+               return CultureInfo.InvariantCulture.TextInfo.ToTitleCase(text);
+            case text_transform.text_transform_lowercase:
+               return text.ToLower();
+            case text_transform.text_transform_uppercase:
+               return text.ToUpper();
+            default:
+               return text;
+         }
       }
-
-      public void OnLeftButtonDown(int x, int y)
-      {
-         PInvokes.OnLeftButtonDown(CPPContainer, x, y);
-      }
-
-      public void OnLeftButtonUp(int x, int y)
-      {
-         PInvokes.OnLeftButtonUp(CPPContainer, x, y);
-      }
-
    }
 }
