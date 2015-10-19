@@ -18,9 +18,9 @@ namespace LiteHtmlSharp
          Calls.SetMasterCSS(Calls.ID, css);
       }
 
-      public void RenderHtml(string html, int maxWidth)
+      public void CreateFromString(string html)
       {
-         Calls.RenderHTML(Calls.ID, html, maxWidth);
+         Calls.CreateFromString(Calls.ID, html);
       }
 
       public virtual void Draw(int x, int y, position clip)

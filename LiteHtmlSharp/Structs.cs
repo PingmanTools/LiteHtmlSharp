@@ -297,7 +297,7 @@ namespace LiteHtmlSharp
       public OnLeftButtonUpFunc OnLeftButtonUp;
       public OnLeftButtonDownFunc OnLeftButtonDown;
 
-      public RenderHTMLFunc RenderHTML;
+      public CreateFromStringFunc CreateFromString;
       public RenderFunc Render;
       public DrawFunc Draw;
       public SetMasterCSSFunc SetMasterCSS;

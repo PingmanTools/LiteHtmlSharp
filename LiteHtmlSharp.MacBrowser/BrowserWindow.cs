@@ -6,6 +6,8 @@ using System.Text;
 using System.IO;
 using System.Threading.Tasks;
 using System.Net.Http;
+using Foundation;
+using ObjCRuntime;
 
 namespace LiteHtmlSharp.MacBrowser
 {
@@ -18,6 +20,13 @@ namespace LiteHtmlSharp.MacBrowser
          public override bool IsFlipped { get { return true; } }
       }
 
+      class ScrollDocument : NSView
+      {
+         public override bool IsFlipped { get { return true; } }
+
+      }
+
+      ScrollDocument scrollDocument;
       NSScrollView scrollView;
       NSTextField urlInput;
       LiteHtmlNSView LiteHtmlView;
@@ -36,13 +45,16 @@ namespace LiteHtmlSharp.MacBrowser
          LiteHtmlView.LiteHtmlContainer.ImportCssCallback = (url, baseUrl) => Encoding.UTF8.GetString(DownloadResource(url, baseUrl));
          LiteHtmlView.LiteHtmlContainer.LoadImageCallback = (url) => DownloadResource(url);
          LiteHtmlView.LiteHtmlContainer.AnchorClicked += LiteHtmlView_LiteHtmlContainer_AnchorClicked;
-         LiteHtmlView.DocumentSizeKnown += LiteHtmlView_DocumentSizeKnown;
+         LiteHtmlView.LiteHtmlContainer.DocumentSizeKnown += LiteHtmlView_DocumentSizeKnown;
+
+         scrollDocument = new ScrollDocument();
+         scrollDocument.AddSubview(LiteHtmlView);
 
          scrollView = new NSScrollView();
          scrollView.AutohidesScrollers = true;
          scrollView.HasHorizontalScroller = true;
          scrollView.HasVerticalScroller = true;
-         scrollView.DocumentView = LiteHtmlView;
+         scrollView.DocumentView = scrollDocument;
 
          urlInput = new NSTextField();
          urlInput.Activated += TextField_Activated;
@@ -51,8 +63,37 @@ namespace LiteHtmlSharp.MacBrowser
          ContentView.AddSubview(scrollView);
          ContentView.AddSubview(urlInput);
 
+         scrollView.ContentView.PostsBoundsChangedNotifications = true;
+         NSNotificationCenter.DefaultCenter.AddObserver(NSView.BoundsChangedNotification, scrollViewScrolled, scrollView.ContentView);
+
          LayoutViews();
       }
+
+      void scrollViewScrolled(NSNotification ns)
+      {
+         LiteHtmlView.Scroll(scrollView.ContentView.Bounds.Location);
+         LiteHtmlView.Frame = new CGRect(scrollView.ContentView.Bounds.Location, scrollView.Bounds.Size);
+      }
+
+      void LiteHtmlView_DocumentSizeKnown(CGSize size)
+      {
+         scrollDocument.Frame = new CGRect(0, 0, scrollView.Bounds.Width, size.Height);
+      }
+
+      void LayoutViews()
+      {
+         urlInput.Frame = new CGRect(0, 0, ContentView.Frame.Width, 25);
+         scrollView.Frame = new CGRect(0, urlInput.Frame.Bottom, ContentView.Frame.Width, ContentView.Frame.Height - urlInput.Frame.Height);
+         LiteHtmlView.Frame = new CGRect(scrollView.ContentView.Bounds.Location, scrollView.Bounds.Size);
+      }
+
+      void TestWindow_DidResize(object sender, EventArgs e)
+      {
+         LayoutViews();
+      }
+
+
+
 
       byte[] DownloadResource(Uri url)
       {
@@ -130,22 +171,6 @@ namespace LiteHtmlSharp.MacBrowser
          Title = caption;
       }
 
-      void LiteHtmlView_DocumentSizeKnown(CGSize size)
-      {
-         LiteHtmlView.Frame = new CGRect(0, 0, scrollView.Bounds.Width, size.Height);
-      }
-
-      void LayoutViews()
-      {
-         urlInput.Frame = new CGRect(0, 0, ContentView.Frame.Width, 25);
-         scrollView.Frame = new CGRect(0, urlInput.Frame.Bottom, ContentView.Frame.Width, ContentView.Frame.Height - urlInput.Frame.Height);
-         LiteHtmlView.Frame = new CGRect(0, 0, scrollView.Bounds.Width, LiteHtmlView.Bounds.Height);
-      }
-
-      void TestWindow_DidResize(object sender, EventArgs e)
-      {
-         LayoutViews();
-      }
    }
 }
 

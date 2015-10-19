@@ -1,9 +1,29 @@
-﻿LiteHtmlSharp is a C# wrapper for the fantastic [litehtml](https://github.com/litehtml/litehtml) C++ library. 
+﻿## Background and "features"
+
+LiteHtmlSharp is a C# cross-platform library for HTML/CSS(2/3) visualization - self contained, fast and small.  
+The HTML parser/renderer is based on the fantastic [litehtml](https://github.com/litehtml/litehtml) C++ library, 
+and the drawing is done with platform-native controls (currently WPF and Cocoa).
 
 > litehtml is the lightweight HTML rendering engine with CSS2/CSS3 support. Note, litehtml itself does
 > not draw any text, pictures or other graphics and litehtml does not depend of any image/draw/font library. 
 > You are free to use any library to draw images, fonts and any other graphics. litehtml just parses
-> HTML/CSS and places the HTML elements into right position (renders HTML). 
+> HTML/CSS and places the HTML elements into right position (renders HTML).
+
+
+### HTML Visualization?  What does that mean?
+
+We wanted to use HTML/css to do splash screen, about-box design, new version availability messaging, new 
+user "greeting", getting started documentation, etc.  We wanted to have this tightly integrated, completely
+in our control (no platform right-click menus, no Windows Internet Explorer compatibility problems) and 
+appropriately sized (no 50mb distributions that require a chrome browser process running).
+
+We couldn't find anything for .NET / C# that met our needs, but [litehtml](https://github.com/litehtml/litehtml)
+sparked our imagination, and it's a stable, awesome library that knows how to do layout (but not draw) for
+just about everything we needed.
+
+So we wrapped [litehtml](https://github.com/litehtml/litehtml) to make it work for C#, then built a drawing
+abstraction layer and OSX and WPF implementations.  Cool.  It /could/ work for Android, iOS, Linx, too - we've
+just not done the visualization part for that yet.  Several other parts are not yet fully flushed out, too.
 
 
 ## LiteHtmlLib (C++)

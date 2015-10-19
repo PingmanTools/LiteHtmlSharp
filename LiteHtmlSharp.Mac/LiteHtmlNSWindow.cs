@@ -29,7 +29,7 @@ namespace LiteHtmlSharp.Mac
       {
          LiteHtmlView = new LiteHtmlNSView(new CGRect(0, 0, rect.Width, rect.Height), masterCssData);
          LiteHtmlView.LiteHtmlContainer.CaptionDefined += LiteHtmlView_LiteHtmlContainer_CaptionDefined;
-         LiteHtmlView.DocumentSizeKnown += LiteHtmlView_DocumentSizeKnown;
+         LiteHtmlView.LiteHtmlContainer.DocumentSizeKnown += LiteHtmlView_DocumentSizeKnown;
 
          ContentView = new NSScrollView();
          ContentView.AutohidesScrollers = true;

@@ -20,11 +20,12 @@ namespace LiteHtmlSharp.Mac
 
       public event Action Drawn;
 
-      public event Action<CGSize> DocumentSizeKnown;
+
 
       int lastViewElementId = 0;
       List<int> elementIDs = new List<int>();
       Dictionary<int, NSView> viewElements = new Dictionary<int, NSView>();
+      CGPoint scrollOffset;
 
       public LiteHtmlNSView(CGRect rect, string masterCssData)
          : base(rect)
@@ -50,7 +51,7 @@ namespace LiteHtmlSharp.Mac
                   AddSubview(view);
                   viewElements.Add(id, view);
                }
-               var newRect = new CGRect(elementInfo.PosX, elementInfo.PosY, elementInfo.Width, elementInfo.Height);
+               var newRect = new CGRect(elementInfo.PosX - scrollOffset.X, elementInfo.PosY - scrollOffset.Y, elementInfo.Width, elementInfo.Height);
                if (newRect != view.Frame)
                {
                   view.Frame = newRect;
@@ -85,12 +86,10 @@ namespace LiteHtmlSharp.Mac
 
       public void LoadHtml(string html)
       {
-         //InvokeOnMainThread(() =>
-         //   {
          RemoveAllViewElements();
-         LiteHtmlContainer.RenderHtml(html);
-         ResetContainerContext();
-         //   });
+         LiteHtmlContainer.Document.CreateFromString(html);
+         CreateBitmapContext();
+         LiteHtmlContainer.Draw();
       }
 
       void LiteHtmlContainer_ContextDrawn()
@@ -109,7 +108,15 @@ namespace LiteHtmlSharp.Mac
          AddTrackingArea(trackingArea);
       }
 
-      CGContext CreateBitmapContext()
+      public void Scroll(CGPoint scrollOffset)
+      {
+         this.scrollOffset = scrollOffset;
+         SetNeedsDisplayInRect(Bounds);
+      }
+
+      CGBitmapContext lastBitmapContext = null;
+
+      void CreateBitmapContext()
       {
          var width = (int)(Bounds.Width * Layer.ContentsScale);
          var height = (int)(Bounds.Height * Layer.ContentsScale);
@@ -120,29 +127,46 @@ namespace LiteHtmlSharp.Mac
          int bytesPerRow = bytesPerPixel * width;
          const int bitsPerComponent = 8;
          var bitmapFlags = CGBitmapFlags.PremultipliedLast | CGBitmapFlags.ByteOrder32Big;
-         var bitmapContext = new CGBitmapContext(bytes, width, height, bitsPerComponent, bytesPerRow, colorSpace, bitmapFlags);
-         return bitmapContext;
+         var context = new CGBitmapContext(bytes, width, height, bitsPerComponent, bytesPerRow, colorSpace, bitmapFlags);
+
+         if (lastBitmapContext != null)
+         {
+            lastBitmapContext.Dispose();
+         }
+         lastBitmapContext = context;
+
+         LiteHtmlContainer.ScaleFactor = (int)Layer.ContentsScale;
+         LiteHtmlContainer.ContextSize = Bounds.Size;
+         LiteHtmlContainer.Context = context;
+         LiteHtmlContainer.Document.OnMediaChanged();
+         LiteHtmlContainer.Render();
       }
 
-      void ResetContainerContext()
+      bool CheckContextSizeChange()
       {
-         LiteHtmlContainer.SetContext(CreateBitmapContext(), Bounds.Size, (int)Layer.ContentsScale);
-         if (DocumentSizeKnown != null)
+         if (LiteHtmlContainer.ScaleFactor != (int)Layer.ContentsScale || LiteHtmlContainer.ContextSize != Bounds.Size)
          {
-            DocumentSizeKnown(new CGSize(LiteHtmlContainer.Document.Width(), LiteHtmlContainer.Document.Height()));
+            CreateBitmapContext();
+            return true;
          }
+         return false;
+      }
+
+      bool CheckScrollOffsetChange()
+      {
+         if (LiteHtmlContainer.ScrollOffset != scrollOffset)
+         {
+            LiteHtmlContainer.ScrollOffset = scrollOffset;
+            return true;
+         }
+         return false;
       }
 
       public override void DrawRect(CGRect dirtyRect)
       {
-         if (!LiteHtmlContainer.Document.HasRendered)
+         if (CheckContextSizeChange() || CheckScrollOffsetChange())
          {
-            return;
-         }
-
-         if (LiteHtmlContainer.ScaleFactor != (int)Layer.ContentsScale || LiteHtmlContainer.ContextSize != Bounds.Size)
-         {
-            ResetContainerContext();
+            LiteHtmlContainer.Draw();
          }
 
          var gfxc = NSGraphicsContext.CurrentContext.GraphicsPort;
@@ -160,7 +184,7 @@ namespace LiteHtmlSharp.Mac
          if (LiteHtmlContainer.Document.HasRendered)
          {
             var point = ConvertPointFromView(theEvent.LocationInWindow, null);
-            LiteHtmlContainer.OnMouseMove((int)point.X, (int)point.Y);
+            LiteHtmlContainer.OnMouseMove((int)(point.X + scrollOffset.X), (int)(point.Y + scrollOffset.Y));
          }
          base.MouseMoved(theEvent);
       }

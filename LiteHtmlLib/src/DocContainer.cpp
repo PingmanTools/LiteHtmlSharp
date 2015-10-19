@@ -168,7 +168,7 @@ void DocContainer::SetMasterCSS(const tchar_t* css)
    _context.load_master_stylesheet(css);
 }
 
-void DocContainer::RenderHTML(const tchar_t* html, int maxWidth)
+void DocContainer::CreateFromString(const tchar_t* html)
 {
    if (_document != nullptr)
    {
@@ -176,7 +176,6 @@ void DocContainer::RenderHTML(const tchar_t* html, int maxWidth)
    }
 
    _document = document::createFromString(html, this, &_context);
-   _document->render(maxWidth);
 }
 
 void DocContainer::Render(int maxWidth)
@@ -234,9 +233,9 @@ void SetMasterCSS(DocContainer* container, const tchar_t* css)
    container->SetMasterCSS(css);
 }
 
-void RenderHTML(DocContainer* container, const tchar_t* html, int maxWidth)
+void CreateFromString(DocContainer* container, const tchar_t* html)
 {
-   container->RenderHTML(html, maxWidth);
+   container->CreateFromString(html);
 }
 
 void Render(DocContainer* container, int maxWidth)
@@ -296,7 +295,7 @@ void DocContainer::SetDocumentCalls(DocumentCalls& docCalls)
    docCalls.OnLeftButtonUp = ::OnLeftButtonUp;
    docCalls.OnLeftButtonDown = ::OnLeftButtonDown;
 
-   docCalls.RenderHTML = ::RenderHTML;
+   docCalls.CreateFromString = ::CreateFromString;
    docCalls.Render = ::Render;
    docCalls.Draw = ::Draw;
    docCalls.SetMasterCSS = ::SetMasterCSS;
