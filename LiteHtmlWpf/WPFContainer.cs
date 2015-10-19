@@ -122,6 +122,8 @@ namespace LiteHtmlSharp
          _dc.Close();
          _dc = null;
          ProcessInputs();
+
+         _visualControl.SetHeight(Document.Height());
       }
 
       public void OnMouseMove(double x, double y)
