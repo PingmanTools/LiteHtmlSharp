@@ -188,7 +188,7 @@ namespace LiteHtmlSharp
          DrawRect(0, 0, 50, 50, GetBrush(ref color));
       }
 
-      protected override void DrawBackground(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos, ref border_radiuses borderRadiuses, ref position borderBox)
+      protected override void DrawBackground(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos, ref border_radiuses br, ref position borderBox)
       {
          if (pos.width > 0 && pos.height > 0)
          {
@@ -198,7 +198,26 @@ namespace LiteHtmlSharp
             }
             else
             {
-               DrawRect(pos.x, pos.y, pos.width, pos.height, GetBrush(ref color));
+               Rect rect = new Rect(pos.x, pos.y, pos.width, pos.height);
+
+               var geometry = new PathGeometry();
+               PathSegmentCollection path = new PathSegmentCollection();
+
+               path.Add(new LineSegment(new Point(rect.Right - br.top_right_x, rect.Top), false));
+               path.Add(new QuadraticBezierSegment(new Point(rect.Right, rect.Top), new Point(rect.Right, rect.Top + br.top_right_y), false));
+
+               path.Add(new LineSegment(new Point(rect.Right, rect.Bottom - br.bottom_right_y), false));
+               path.Add(new QuadraticBezierSegment(new Point(rect.Right, rect.Bottom), new Point(rect.Right - br.bottom_right_x, rect.Bottom), false));
+
+               path.Add(new LineSegment(new Point(rect.Left + br.bottom_left_x, rect.Bottom), false));
+               path.Add(new QuadraticBezierSegment(new Point(rect.Left, rect.Bottom), new Point(rect.Left, rect.Bottom - br.bottom_left_y), false));
+
+               path.Add(new LineSegment(new Point(rect.Left, rect.Top + br.top_left_y), false));
+               path.Add(new QuadraticBezierSegment(new Point(rect.Left, rect.Top), new Point(rect.Left + br.top_left_x, rect.Top), false));
+
+               geometry.Figures.Add(new PathFigure(new Point(rect.Left + br.top_left_x, rect.Top), path, true));
+
+               _dc.DrawGeometry(GetBrush(ref color), null, geometry);
             }
          }
       }
