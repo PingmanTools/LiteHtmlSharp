@@ -8,7 +8,10 @@ namespace LiteHtmlSharp
    {
       public DocumentCalls Calls = new DocumentCalls();
       public IntPtr Container;
+
       public event Action ViewElementsNeedLayout;
+
+      public bool HasRendered { get; private set; }
 
       public void SetMasterCSS(string css)
       {
@@ -42,6 +45,7 @@ namespace LiteHtmlSharp
 
       public void Render(int maxWidth)
       {
+         HasRendered = true;
          Calls.Render(Calls.ID, maxWidth);
       }
 

@@ -33,7 +33,7 @@ namespace LiteHtmlSharp.Mac
          LiteHtmlContainer = new CGContainer(masterCssData);
          LiteHtmlContainer.ContextDrawn += LiteHtmlContainer_ContextDrawn;
          LiteHtmlContainer.CreateElementCallback = CreateElement;
-         LiteHtmlContainer.ViewElementsNeedLayout += LiteHtmlContainer_ViewElementsNeedLayout;
+         LiteHtmlContainer.Document.ViewElementsNeedLayout += LiteHtmlContainer_ViewElementsNeedLayout;
       }
 
       void LiteHtmlContainer_ViewElementsNeedLayout()
@@ -42,7 +42,7 @@ namespace LiteHtmlSharp.Mac
          {
             foreach (var id in elementIDs)
             {
-               var elementInfo = LiteHtmlContainer.GetElementInfo(id);
+               var elementInfo = LiteHtmlContainer.Document.GetElementInfo(id);
                NSView view;
                if (!viewElements.TryGetValue(id, out view))
                {
@@ -111,7 +111,6 @@ namespace LiteHtmlSharp.Mac
 
       CGContext CreateBitmapContext()
       {
-         Console.WriteLine("creating bmc");
          var width = (int)(Bounds.Width * Layer.ContentsScale);
          var height = (int)(Bounds.Height * Layer.ContentsScale);
 
@@ -130,13 +129,13 @@ namespace LiteHtmlSharp.Mac
          LiteHtmlContainer.SetContext(CreateBitmapContext(), Bounds.Size, (int)Layer.ContentsScale);
          if (DocumentSizeKnown != null)
          {
-            DocumentSizeKnown(new CGSize(LiteHtmlContainer.Width(), LiteHtmlContainer.Height()));
+            DocumentSizeKnown(new CGSize(LiteHtmlContainer.Document.Width(), LiteHtmlContainer.Document.Height()));
          }
       }
 
       public override void DrawRect(CGRect dirtyRect)
       {
-         if (!LiteHtmlContainer.HasRendered)
+         if (!LiteHtmlContainer.Document.HasRendered)
          {
             return;
          }
@@ -158,7 +157,7 @@ namespace LiteHtmlSharp.Mac
 
       public override void MouseMoved(NSEvent theEvent)
       {
-         if (LiteHtmlContainer.HasRendered)
+         if (LiteHtmlContainer.Document.HasRendered)
          {
             var point = ConvertPointFromView(theEvent.LocationInWindow, null);
             LiteHtmlContainer.OnMouseMove((int)point.X, (int)point.Y);
@@ -168,7 +167,7 @@ namespace LiteHtmlSharp.Mac
 
       public override void MouseExited(NSEvent theEvent)
       {
-         if (LiteHtmlContainer.HasRendered)
+         if (LiteHtmlContainer.Document.HasRendered)
          {
             LiteHtmlContainer.OnMouseLeave();
          }
@@ -177,20 +176,20 @@ namespace LiteHtmlSharp.Mac
 
       public override void MouseDown(NSEvent theEvent)
       {
-         if (LiteHtmlContainer.HasRendered)
+         if (LiteHtmlContainer.Document.HasRendered)
          {
             var point = ConvertPointFromView(theEvent.LocationInWindow, null);
-            LiteHtmlContainer.OnLeftButtonDown((int)point.X, (int)point.Y);
+            LiteHtmlContainer.Document.OnLeftButtonDown((int)point.X, (int)point.Y);
          }
          base.MouseDown(theEvent);
       }
 
       public override void MouseUp(NSEvent theEvent)
       {         
-         if (LiteHtmlContainer.HasRendered)
+         if (LiteHtmlContainer.Document.HasRendered)
          {
             var point = ConvertPointFromView(theEvent.LocationInWindow, null);
-            LiteHtmlContainer.OnLeftButtonUp((int)point.X, (int)point.Y);
+            LiteHtmlContainer.Document.OnLeftButtonUp((int)point.X, (int)point.Y);
          }
          base.MouseUp(theEvent);
       }

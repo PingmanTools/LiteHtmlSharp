@@ -52,7 +52,7 @@ namespace LiteHtmlSharp
          callbacks.OnAnchorClick = OnAnchorClick;
 
          callbacks.PTtoPX = PTtoPX;
-         callbacks.CreateElement = CreateElement;
+         callbacks.CreateElement = CreateElementWrapper;
 
          callbacks.SetCursor = SetCursor;
          callbacks.DrawListMarker = DrawListMarker;
