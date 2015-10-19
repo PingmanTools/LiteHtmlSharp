@@ -8,6 +8,7 @@ namespace LiteHtmlSharp
    {
       public DocumentCalls Calls = new DocumentCalls();
       public IntPtr Container;
+      public event Action ViewElementsNeedLayout;
 
       public void SetMasterCSS(string css)
       {
@@ -19,9 +20,14 @@ namespace LiteHtmlSharp
          Calls.RenderHTML(Calls.ID, html, maxWidth);
       }
 
-      public void Draw(int x, int y, position clip)
+      public virtual void Draw(int x, int y, position clip)
       {
          Calls.Draw(Calls.ID, x, y, clip);
+
+         if (ViewElementsNeedLayout != null)
+         {
+            ViewElementsNeedLayout();
+         }
       }
 
       public bool OnMouseMove(int x, int y)
@@ -62,6 +68,16 @@ namespace LiteHtmlSharp
       public void TriggerTestCallback(int number, string text)
       {
          Calls.TriggerTestCallback(Calls.ID, number, text);
+      }
+
+      public int Height()
+      {
+         return Calls.GetHeight(Calls.ID);
+      }
+
+      public int Width()
+      {
+         return Calls.GetWidth(Calls.ID);
       }
 
    }

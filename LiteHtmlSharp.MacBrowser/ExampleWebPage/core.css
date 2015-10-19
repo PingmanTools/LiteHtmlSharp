@@ -1,0 +1,188 @@
+body {
+    color: white;
+    font-family: "Arial";
+    font-size: 14px;
+    line-height: 125%;
+    margin:0;
+    cursor:default;
+    overflow:hidden;
+    /* prevents text highlight */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    height: 400px;
+}
+
+html {
+	height: 400px;
+}
+
+.btn {
+    text-align: center;
+    padding: 10px 36px;
+    border-radius: 5px;
+}
+
+.pro .btn, .standard .btn, .free .btn{
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    color: #ffffff;
+}
+
+.pro .btn {
+    background-color: #27aae1;
+}
+
+.pro .btn:hover {
+    background-color: #1994BA;
+}
+
+.standard .btn {
+    background-color: #FF9B1F;
+}
+
+.standard .btn:hover {
+    background-color: #E88A23;
+}
+
+.free .btn {
+    background-color: #999999;
+}
+
+.free .btn:hover {
+    background-color: #666666;
+}
+
+
+a {
+    font-weight: bold;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.free a, a:visited {
+    color: #eeeeee;
+}
+
+.standard a, a:visited {
+    color:#FFDE17;
+}
+
+.pro a, a:visited {
+    color: #27aaE1;
+}
+
+
+ul {
+    line-height: 150%;
+}
+
+img {
+    border-style: none;
+}
+
+.splash-bg {
+    height: 350px;
+    width: 540px;
+    float: left;
+}
+
+.pro .splash-bg {
+    background-image: url('bundle://core/pro-bg.png');
+    background-repeat: no-repeat;
+    background-position: center;
+
+}
+
+.standard .splash-bg {
+    background-image: url('bundle://core/std-bg.png');
+    background-repeat: no-repeat;
+    background-position: center;
+
+}
+
+.welcome_header {
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.header {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.free .splash-bg {
+    background-image: url('bundle://core/free-bg.png');
+}
+
+.pro .ping {
+    color: #27aae1;
+}
+
+.standard .ping {
+    color: #FFDE17;
+}
+
+.free .ping {
+    color: #878787;
+}
+
+.free .version_letter {
+    color: #878787;
+    font-style: italic;
+    font-size: 75%;
+}
+
+.logo {
+    width: 64px;
+    height: 64px;
+    float: left;
+    padding-right: 14px;
+}
+
+.logo-img {
+    width: 64px;
+    margin-top: 5px;
+}
+
+.innerMain {
+    padding: 20px 30px;
+}
+
+.half {
+    width: 50%;
+    float: left;
+}
+
+.third {
+    width: 33%;
+    float: left;
+}
+
+.value_list_header {
+    font-weight: bold;
+    padding: 14px 0px 0px 0px 0px;
+}
+
+.value_list {
+    padding: 0px 0px 0px 30px;
+    margin: 0px;
+}
+
+.expired-maint {
+    color: red;
+    font-weight: bold;
+}
+
+.standard .expired-maint {
+    color: #000000;
+}
+
+

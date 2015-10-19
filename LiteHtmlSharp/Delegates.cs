@@ -15,11 +15,20 @@ namespace LiteHtmlSharp
    public delegate void TriggerTestCallbackFunc(IntPtr container, int x, string testString);
 
    // callbacks
+   [UnmanagedFunctionPointer(PInvokes.cc, CharSet = PInvokes.cs)]
+   public delegate void SetCaptionFunc(string caption);
+
+   [UnmanagedFunctionPointer(PInvokes.cc, CharSet = PInvokes.cs)]
+   public delegate int GetDefaultFontSizeFunc();
+
+   [UnmanagedFunctionPointer(PInvokes.cc, CharSet = PInvokes.cs)]
+   public delegate string GetDefaultFontNameFunc();
+
    [UnmanagedFunctionPointer(PInvokes.cc)]
    public delegate void DrawBordersFunc(UIntPtr hdc,ref borders borders,ref position draw_pos,bool root);
 
    [UnmanagedFunctionPointer(PInvokes.cc, CharSet = PInvokes.cs)]
-   public delegate void DrawBackgroundFunc(UIntPtr hdc,string image,background_repeat repeat,ref web_color color,ref position pos);
+   public delegate void DrawBackgroundFunc(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos, ref border_radiuses borderRadiuses, ref position borderBox);
 
    [UnmanagedFunctionPointer(PInvokes.cc, CharSet = PInvokes.cs)]
    public delegate void GetImageSizeFunc(string image,ref size size);
@@ -100,4 +109,10 @@ namespace LiteHtmlSharp
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
    public delegate void DeleteFunc(IntPtr container);
+
+   [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
+   public delegate int GetWidthFunc(IntPtr container);
+
+   [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
+   public delegate int GetHeightFunc(IntPtr container);
 }

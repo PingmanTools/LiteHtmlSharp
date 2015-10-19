@@ -18,6 +18,11 @@ namespace LiteHtmlSharp
          width *= scaleFactor;
          height *= scaleFactor;
       }
+
+      public override string ToString()
+      {
+         return string.Format("x: {0}, y: {1}, w: {2}, h: {3}", x, y, width, height);
+      }
    }
 
    [StructLayout(LayoutKind.Sequential)]
@@ -45,6 +50,14 @@ namespace LiteHtmlSharp
          bottom_right_y *= scaleFactor;
          bottom_left_x *= scaleFactor;
          bottom_left_y *= scaleFactor;
+      }
+
+      public override string ToString()
+      {
+         return string.Format(
+            "tlx: {0}, tly: {1}, trx: {2}, try: {3}, brx: {4}, bry: {5}, blx: {6}, bly: {7}", 
+            top_left_x, top_left_y, top_right_x, top_right_y, bottom_right_x, bottom_right_x, bottom_left_x, bottom_left_y
+         );
       }
    }
 
@@ -133,6 +146,15 @@ namespace LiteHtmlSharp
       public int resolution;
       // The resolution of the output device (in DPI)
    };
+
+   [Flags]
+   public enum text_transform
+   {
+      text_transform_none,
+      text_transform_capitalize,
+      text_transform_uppercase,
+      text_transform_lowercase
+   }
 
    public enum media_type
    {
@@ -226,14 +248,6 @@ namespace LiteHtmlSharp
       list_style_type_upper_roman,
    }
 
-   public enum text_transform
-   {
-      text_transform_none,
-      text_transform_capitalize,
-      text_transform_uppercase,
-      text_transform_lowercase
-   }
-
    [StructLayout(LayoutKind.Sequential)]
    public struct Callbacks
    {
@@ -241,6 +255,10 @@ namespace LiteHtmlSharp
       public TestCallbackFunc TestCallback;
 
       // Callbacks
+      public SetCaptionFunc SetCaption;
+      public GetDefaultFontNameFunc GetDefaultFontName;
+      public GetDefaultFontSizeFunc GetDefaultFontSize;
+
       public DrawBordersFunc DrawBorders;
       public DrawBackgroundFunc DrawBackground;
       public GetImageSizeFunc GetImageSize;
@@ -285,5 +303,8 @@ namespace LiteHtmlSharp
       public SetMasterCSSFunc SetMasterCSS;
       public GetElementInfoFunc GetElementInfo;
       public OnMediaChangedFunc OnMediaChanged;
+
+      public GetWidthFunc GetWidth;
+      public GetHeightFunc GetHeight;
    }
 }

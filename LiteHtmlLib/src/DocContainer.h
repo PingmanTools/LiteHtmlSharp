@@ -58,6 +58,8 @@ public:
    void Draw(int x, int y, litehtml::position clip);
    ElementInfo GetElementInfo(int ID);
    bool OnMediaChanged();
+   int GetWidth();
+   int GetHeight();
 
 private:
    litehtml::context _context;

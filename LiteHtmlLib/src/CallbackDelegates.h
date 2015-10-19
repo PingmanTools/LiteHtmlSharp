@@ -12,12 +12,14 @@ typedef void(*TriggerTestCallbackFunc)(DocContainer* container, int x, const lit
 
 // callbacks
 typedef void(*DrawBordersFunc)(litehtml::uint_ptr hdc, const litehtml::borders & borders, const litehtml::position & draw_pos, bool root);
-typedef void(*DrawBackgroundFunc)(litehtml::uint_ptr hdc, const litehtml::tchar_t* image, litehtml::background_repeat repeat, const litehtml::web_color& color, const litehtml::position& pos);
+typedef void(*DrawBackgroundFunc)(litehtml::uint_ptr hdc, const litehtml::tchar_t* image, litehtml::background_repeat repeat, const litehtml::web_color& color, const litehtml::position& pos, const litehtml::border_radiuses& borderRadiuses, const litehtml::position& borderBox);
 typedef void(*GetImageSizeFunc)(const litehtml::tchar_t* image, litehtml::size& size);
 
 typedef void(*DrawTextFunc)(const litehtml::tchar_t* text, litehtml::uint_ptr font, litehtml::web_color& color, const litehtml::position& pos);
 typedef int(*GetTextWidthFunc)(const litehtml::tchar_t* text, litehtml::uint_ptr font);
 typedef litehtml::uint_ptr(*CreateFontFunc)(const litehtml::tchar_t* faceName, int size, int weight, litehtml::font_style italic, unsigned int decoration, litehtml::font_metrics& fm);
+typedef int(*GetDefaultFontSizeFunc)();
+typedef litehtml::tchar_t*(*GetDefaultFontNameFunc)();
 
 typedef litehtml::tchar_t*(*ImportCssFunc)(const litehtml::tchar_t* url, const litehtml::tchar_t* baseurl);
 
@@ -25,6 +27,7 @@ typedef void(*GetClientRectFunc)(litehtml::position & client);
 typedef void(*GetMediaFeaturesFunc)(litehtml::media_features & media);
 
 typedef void(*SetBaseURLFunc)(const litehtml::tchar_t * base_url);
+typedef void(*SetCaptionFunc)(const litehtml::tchar_t * caption);
 typedef void(*OnAnchorClickFunc)(const litehtml::tchar_t * url);
 
 typedef int(*PTtoPXFunc)(int pt);
@@ -55,6 +58,9 @@ typedef void(*SetMasterCSSFunc)(DocContainer* container, const litehtml::tchar_t
 typedef ElementInfo(*GetElementInfoFunc)(DocContainer* container, int ID);
 typedef bool(*OnMediaChangedFunc)(DocContainer* container);
 
+typedef int(*GetWidthFunc)(DocContainer* container);
+typedef int(*GetHeightFunc)(DocContainer* container);
+
 struct DocumentCalls
 {
 public:
@@ -77,6 +83,9 @@ public:
    SetMasterCSSFunc SetMasterCSS = 0;
    GetElementInfoFunc GetElementInfo = 0;
    OnMediaChangedFunc OnMediaChanged = 0;
+
+   GetWidthFunc GetWidth = 0;
+   GetHeightFunc GetHeight = 0;
 };
 
 struct Callbacks
@@ -86,6 +95,10 @@ public:
    TestCallbackFunc TestCallback = 0;
 
    // Callbacks
+   SetCaptionFunc SetCaption = 0;
+   GetDefaultFontNameFunc GetDefaultFontName = 0;
+   GetDefaultFontSizeFunc GetDefaultFontSize = 0;
+
    DrawBordersFunc DrawBorders = 0;
    DrawBackgroundFunc DrawBackground = 0;
    GetImageSizeFunc GetImageSize = 0;

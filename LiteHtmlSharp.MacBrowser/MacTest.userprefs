@@ -1,0 +1,26 @@
+﻿<Properties StartupItem="LiteHtmlSharp.Mac.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="LiteHtmlCGContainer/MyClass.cs">
+    <Files>
+      <File FileName="AppDelegate.cs" Line="15" Column="8" />
+      <File FileName="../LiteHtmlSharp/Container.cs" Line="166" Column="35" />
+      <File FileName="TestWindow.cs" Line="53" Column="54" />
+      <File FileName="../LiteHtmlLib/src/DocContainer.cpp" Line="1" Column="1" />
+      <File FileName="../LiteHtmlLib/src/DocContainer.h" Line="1" Column="1" />
+      <File FileName="../LiteHtmlLib/src/Globals.cpp" Line="1" Column="1" />
+      <File FileName="../LiteHtmlLib/src/Globals.h" Line="1" Column="1" />
+      <File FileName="../LiteHtmlLib/CMakeLists.txt" Line="18" Column="51" />
+      <File FileName="LiteHtmlCGContainer.cs" Line="12" Column="36" />
+      <File FileName="LiteHtmlView.cs" Line="17" Column="7" />
+      <File FileName="LiteHtmlMacExtensions.cs" Line="1" Column="1" />
+      <File FileName="LiteHtmlCGContainer/MyClass.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/mattlittle/Projects/LiteHtmlSharp/MacTest/ConsoleTest/Program.cs" line="21" column="1" />
+      <Breakpoint file="/Users/mattlittle/Projects/LiteHtmlSharp/MacTest/ConsoleTest/Program.cs" line="19" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

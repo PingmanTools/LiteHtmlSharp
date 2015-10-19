@@ -5,14 +5,20 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using System.Globalization;
 
 namespace LiteHtmlSharp
 {
    public abstract class Container
    {
+      int _testNumber = 0;
+      string _testText = null;
+
+      Callbacks _callbacks;
       public Document Document;
 
       public int ScaleFactor = 1;
+      public CreateElementFunc CreateElementCallback;
 
       public Container(string masterCssData)
       {
@@ -27,7 +33,6 @@ namespace LiteHtmlSharp
          Document.SetMasterCSS(masterCssData);
       }
 
-      Callbacks cbs;
       private void InitCallbacks(ref Callbacks callbacks)
       {
          callbacks.DrawBorders = DrawBordersScaled;
@@ -55,16 +60,17 @@ namespace LiteHtmlSharp
          callbacks.TransformText = TransformText;
          callbacks.TestCallback = TestCallback;
 
-         cbs = callbacks;
-      }
+         callbacks.SetCaption = SetCaption;
+         callbacks.GetDefaultFontName = GetDefaultFontName;
+         callbacks.GetDefaultFontSize = GetDefaultFontSize;
 
-      int someNumber = 0;
-      string testStaticCallback = null;
+         _callbacks = callbacks;
+      }
 
       void TestCallback(int number, string text)
       {
-         testStaticCallback = text;
-         someNumber = number;
+         _testText = text;
+         _testNumber = number;
       }
 
       void TestFramework()
@@ -80,13 +86,15 @@ namespace LiteHtmlSharp
 
       // -----
 
-      private void DrawBackgroundScaled(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos)
+      private void DrawBackgroundScaled(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos, ref border_radiuses borderRadiuses, ref position borderBox)
       {
          pos.Scale(ScaleFactor);
-         DrawBackground(hdc, image, repeat, ref color, ref pos);
+         borderRadiuses.Scale(ScaleFactor);
+         borderBox.Scale(ScaleFactor);
+         DrawBackground(hdc, image, repeat, ref color, ref pos, ref borderRadiuses, ref borderBox);
       }
 
-      protected abstract void DrawBackground(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos);
+      protected abstract void DrawBackground(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos, ref border_radiuses borderRadiuses, ref position borderBox);
 
       // -----
 
@@ -117,6 +125,12 @@ namespace LiteHtmlSharp
 
       protected abstract void GetClientRect(ref position client);
 
+      protected abstract void SetCaption(string caption);
+
+      protected abstract int GetDefaultFontSize();
+
+      protected abstract string GetDefaultFontName();
+
       protected UIntPtr CreateFontWrapper(string faceName, int size, int weight, font_style italic, uint decoration, ref font_metrics fm)
       {
          return CreateFont(faceName, size, weight, italic, (font_decoration)decoration, ref fm);
@@ -143,12 +157,40 @@ namespace LiteHtmlSharp
 
       protected abstract int PTtoPX(int pt);
 
-      protected abstract int CreateElement(string tag, string attributes);
+      protected int CreateElementWrapper(string tag, string attributes)
+      {
+         if (CreateElementCallback != null)
+         {
+            return CreateElementCallback(tag, attributes);
+         }
+         else
+         {
+            return CreateElement(tag, attributes);
+         }
+      }
+
+      protected virtual int CreateElement(string tag, string attributes)
+      {
+         return 0;
+      }
 
       protected abstract void SetCursor(string cursor);
 
       protected abstract void DrawListMarker(string image, string baseURL, list_style_type marker_type, ref web_color color, ref position pos);
 
-      protected abstract string TransformText(string text, text_transform tt);
+      protected virtual string TransformText(string text, text_transform t)
+      {
+         switch (t)
+         {
+            case text_transform.text_transform_capitalize:
+               return CultureInfo.InvariantCulture.TextInfo.ToTitleCase(text);
+            case text_transform.text_transform_lowercase:
+               return text.ToLower();
+            case text_transform.text_transform_uppercase:
+               return text.ToUpper();
+            default:
+               return text;
+         }
+      }
    }
 }

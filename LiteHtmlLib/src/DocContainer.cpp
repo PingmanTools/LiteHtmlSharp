@@ -39,12 +39,12 @@ int DocContainer::pt_to_px(int pt)
 
 int DocContainer::get_default_font_size() const
 {
-   return 12;
+   return _callbacks.GetDefaultFontSize();
 }
 
 const litehtml::tchar_t * DocContainer::get_default_font_name() const
 {
-   return _T("Arial");
+   return _callbacks.GetDefaultFontName();
 }
 
 void DocContainer::draw_list_marker(litehtml::uint_ptr hdc, const litehtml::list_marker & marker)
@@ -64,7 +64,7 @@ void DocContainer::get_image_size(const litehtml::tchar_t * src, const litehtml:
 
 void DocContainer::draw_background(litehtml::uint_ptr hdc, const litehtml::background_paint & bg)
 {
-   _callbacks.DrawBackground(hdc, bg.image.c_str(), bg.repeat, bg.color, bg.origin_box);
+   _callbacks.DrawBackground(hdc, bg.image.c_str(), bg.repeat, bg.color, bg.origin_box, bg.border_radius, bg.border_box);
 }
 
 void DocContainer::draw_borders(litehtml::uint_ptr hdc, const litehtml::borders & borders, const litehtml::position & draw_pos, bool root)
@@ -74,7 +74,7 @@ void DocContainer::draw_borders(litehtml::uint_ptr hdc, const litehtml::borders 
 
 void DocContainer::set_caption(const litehtml::tchar_t * caption)
 {
-   int i = 0;
+   _callbacks.SetCaption(caption);
 }
 
 void DocContainer::set_base_url(const litehtml::tchar_t * base_url)
@@ -218,6 +218,16 @@ bool DocContainer::OnMediaChanged()
    return _document->media_changed();
 }
 
+int DocContainer::GetWidth()
+{
+   return _document->width();
+}
+
+int DocContainer::GetHeight()
+{
+   return _document->height();
+}
+
 // -------------static wrapper functions ----------
 void SetMasterCSS(DocContainer* container, const tchar_t* css)
 {
@@ -264,6 +274,16 @@ bool OnMediaChanged(DocContainer* container)
    return container->OnMediaChanged();
 }
 
+int GetHeight(DocContainer* container)
+{
+   return container->GetHeight();
+}
+
+int GetWidth(DocContainer* container)
+{
+   return container->GetWidth();
+}
+
 ElementInfo GetElementInfo(DocContainer* container, int ID)
 {
    return container->GetElementInfo(ID);
@@ -282,6 +302,9 @@ void DocContainer::SetDocumentCalls(DocumentCalls& docCalls)
    docCalls.SetMasterCSS = ::SetMasterCSS;
    docCalls.GetElementInfo = ::GetElementInfo;
    docCalls.OnMediaChanged = ::OnMediaChanged;
+
+   docCalls.GetWidth = ::GetWidth;
+   docCalls.GetHeight = ::GetHeight;
 
    docCalls.Container = this;
 }

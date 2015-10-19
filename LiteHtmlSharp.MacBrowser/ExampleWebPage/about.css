@@ -1,0 +1,134 @@
+/* about screen */
+
+about{
+   width:400px;
+   height:300px;
+}
+
+.about-message {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    z-index: 1;
+}
+
+.bg_about {
+    float:left;
+    overflow:hidden; /* this is important */
+    position:relative; /* this is important too */
+    width:400px;
+    height: 400px;
+}
+
+.about-bg-img {
+    height: 400px;
+    width: 400px;
+}
+
+.about-logo {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    z-index: 1;
+}
+
+.wordmark {
+    position: absolute;
+    top: 36px;
+    left:171px;
+    z-index: 2;
+}
+.expired-maint {
+    color: red;
+    font-weight: bold;
+}
+
+.standard .expired-maint {
+    color: #000000;
+}
+
+.version-info {
+    position: absolute;
+    top: 106px;
+    left:171px;
+    z-index: 2;
+    font-size: 16px;
+    font-weight: 950;
+	font-style: italic;
+}
+
+.license-info {
+    position: absolute;
+    top: 190px;
+    left:24px;
+    z-index: 2;
+}
+.user-name {
+    font-size: 138%;
+    font-weight: bold;
+}
+
+.copyright-info {
+    position: absolute;
+    top: 276px;
+    left:24px;
+    z-index: 2;
+}
+
+.special-thanks {
+    position: absolute;
+    top: 340px;
+    left:24px;
+    z-index: 2;
+}
+
+.cont-btn {
+    position: absolute;
+    top: 348px;
+    left:234px;
+    z-index: 2;
+}
+
+.license-info div, .copyright-info div{
+    margin-bottom: 8px;
+}
+
+.special-thanks div {
+    margin-bottom: 2px;
+}
+
+.closebutton {
+    width:150px;
+    height:45px;
+    left:210px;
+    top:62px;
+    font-size:160%;
+    line-height:1.6em;
+    text-align: center;
+    vertical-align:bottom;
+    position:absolute;
+}
+
+.hiddenclick {
+   display:block;
+   position: fixed;
+   top: 0px;
+   left: 0px;
+   z-index: 100;
+   width: 20px;
+   height: 20px;
+
+}
+
+.hiddenclick A {
+    text-decoration: none;
+}
+.trialexpires {
+    font-size:75%;
+}
+
+.inputclass
+{
+  width: 150px;
+  height: 20px;
+}
