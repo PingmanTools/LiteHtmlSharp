@@ -64,29 +64,34 @@ namespace LiteHtmlSharp.CoreGraphics
          ContextSize = contextSize;
          ScaleFactor = scaleFactor;
 
-         OnMediaChanged();
+         Document.OnMediaChanged();
          Render();
          Draw();
       }
 
       public void RenderHtml(string html)
       {
-         base.RenderHtml(html, (int)ContextSize.Width);
+         Document.RenderHtml(html, (int)ContextSize.Width);
+      }
+
+      protected override void DrawListMarker(string image, string baseURL, list_style_type marker_type, ref web_color color, ref position pos)
+      {
+         
       }
 
       void Render()
       {
-         Render((int)ContextSize.Width);
+         Document.Render((int)ContextSize.Width);
       }
 
       void Draw()
       {
-         Draw(0, 0, new position{ x = 0, y = 0, width = (int)ContextSize.Width, height = (int)ContextSize.Height });
+         Document.Draw(0, 0, new position{ x = 0, y = 0, width = (int)ContextSize.Width, height = (int)ContextSize.Height });
       }
 
-      public override bool OnMouseMove(int x, int y)
+      public bool OnMouseMove(int x, int y)
       {
-         var needsRedraw = base.OnMouseMove(x, y);
+         var needsRedraw = Document.OnMouseMove(x, y);
          if (needsRedraw)
          {
             Draw();
@@ -94,9 +99,9 @@ namespace LiteHtmlSharp.CoreGraphics
          return needsRedraw;
       }
 
-      public override bool OnMouseLeave()
+      public bool OnMouseLeave()
       {
-         var needsRedraw = base.OnMouseLeave();
+         var needsRedraw = Document.OnMouseLeave();
          if (needsRedraw)
          {
             Draw();
