@@ -401,7 +401,7 @@ namespace LiteHtmlSharp
 
       protected override void OnAnchorClick(string url)
       {
-         MessageBox.Show("Link URL: " + url);
+         _visualControl.FireLink(url);
       }
 
       protected override int PTtoPX(int pt)
