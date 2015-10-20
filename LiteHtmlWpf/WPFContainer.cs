@@ -73,7 +73,8 @@ namespace LiteHtmlSharp
          _inputs.Clear();
          _rendering = true;
 
-         Document.RenderHtml(html, _size.Width);
+         Document.CreateFromString(html);
+         Document.Render(_size.Width);
 
          int newHeight = Document.Height();
          if (newHeight != _size.Height && newHeight > 0)
