@@ -24,6 +24,8 @@ namespace LiteHtmlSharp.Mac
       List<int> elementIDs = new List<int>();
       Dictionary<int, NSView> viewElements = new Dictionary<int, NSView>();
 
+      public IEnumerable<NSView> ViewElements { get { return viewElements.Values; } }
+
       bool hasCustomViewport = false;
       CGRect customViewport;
 
