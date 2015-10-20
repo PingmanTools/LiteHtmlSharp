@@ -24,11 +24,15 @@ namespace LiteHtmlSharp.CoreGraphics
 
       public LoadImageDelegate LoadImageCallback;
 
-      public CGContext Context { get; private set; }
+      public CGContext Context { get; set; }
 
-      public CGSize ContextSize { get; private set; }
+      public CGSize ContextSize { get; set; }
+
+      public CGPoint ScrollOffset { get; set; }
 
       public event Action<string> AnchorClicked;
+
+      public event Action<CGSize> DocumentSizeKnown;
 
       Dictionary<string, ImageHolder> imageCache;
       Dictionary<UIntPtr, FontHolder> fontCache;
@@ -51,42 +55,29 @@ namespace LiteHtmlSharp.CoreGraphics
          }
       }
 
-      /*T InvokeOnMainThreadFunc<T>(Func<T> func)
-      {
-         T result = default(T);
-         InvokeOnMainThread(() => result = func());
-         return result;
-      }*/
-
-      public void SetContext(CGContext context, CGSize contextSize, int scaleFactor)
-      {
-         Context = context;
-         ContextSize = contextSize;
-         ScaleFactor = scaleFactor;
-
-         Document.OnMediaChanged();
-         Render();
-         Draw();
-      }
-
-      public void RenderHtml(string html)
-      {
-         Document.RenderHtml(html, (int)ContextSize.Width);
-      }
-
       protected override void DrawListMarker(string image, string baseURL, list_style_type marker_type, ref web_color color, ref position pos)
       {
          
       }
 
-      void Render()
+      public void Render()
       {
          Document.Render((int)ContextSize.Width);
+         if (DocumentSizeKnown != null)
+         {
+            DocumentSizeKnown(new CGSize(Document.Width(), Document.Height()));
+         }
       }
 
-      void Draw()
+      public void Draw()
       {
-         Document.Draw(0, 0, new position{ x = 0, y = 0, width = (int)ContextSize.Width, height = (int)ContextSize.Height });
+         Document.Draw((int)-ScrollOffset.X, (int)-ScrollOffset.Y, new position
+            { 
+               x = 0, 
+               y = 0, 
+               width = (int)ContextSize.Width,
+               height = (int)ContextSize.Height 
+            });
       }
 
       public bool OnMouseMove(int x, int y)

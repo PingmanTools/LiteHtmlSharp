@@ -51,7 +51,7 @@ typedef bool(*OnMouseLeaveFunc)(DocContainer* container);
 typedef bool(*OnLeftButtonUpFunc)(DocContainer* container, int x, int y);
 typedef bool(*OnLeftButtonDownFunc)(DocContainer* container, int x, int y);
 
-typedef void(*RenderHTMLFunc)(DocContainer* container, const litehtml::tchar_t* html, int maxWidth);
+typedef void(*CreateFromStringFunc)(DocContainer* container, const litehtml::tchar_t* html);
 typedef void(*RenderFunc)(DocContainer* container, int maxWidth);
 typedef void(*DrawFunc)(DocContainer* container, int x, int y, litehtml::position clip);
 typedef void(*SetMasterCSSFunc)(DocContainer* container, const litehtml::tchar_t* css);
@@ -77,7 +77,7 @@ public:
    OnLeftButtonUpFunc OnLeftButtonUp = 0;
    OnLeftButtonDownFunc OnLeftButtonDown = 0;
 
-   RenderHTMLFunc RenderHTML = 0;
+   CreateFromStringFunc CreateFromString = 0;
    RenderFunc Render = 0;
    DrawFunc Draw = 0;
    SetMasterCSSFunc SetMasterCSS = 0;

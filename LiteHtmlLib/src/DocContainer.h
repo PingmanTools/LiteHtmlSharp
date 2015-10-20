@@ -48,7 +48,7 @@ public:
    void SetDocumentCalls(DocumentCalls& docCalls);
    Callbacks& GetCallbacks() { return _callbacks; }
 
-   void RenderHTML(const litehtml::tchar_t* html, int maxWidth);
+   void CreateFromString(const litehtml::tchar_t* html);
    void Render(int maxWidth);
    void SetMasterCSS(const litehtml::tchar_t* css);
    bool OnMouseMove(int x, int y);
