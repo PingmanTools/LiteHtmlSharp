@@ -14,6 +14,18 @@ namespace LiteHtmlSharp
       string GetResourceString(string resource);
    }
 
+   public struct IntPoint
+   {
+      public int Width;
+      public int Height;
+
+      public IntPoint(int width, int height)
+      {
+         Width = width;
+         Height = height;
+      }
+   }
+
    public class WPFContainer : Container
    {
       IResourceLoader _loader;
@@ -28,7 +40,7 @@ namespace LiteHtmlSharp
       private bool _rendering = false;
       public static string BaseURL;
       static uint _nextFontID;
-      public Point _size;
+      public IntPoint _size;
 
       public WPFContainer(HTMLVisual visual, string css, IResourceLoader loader) : base(css)
       {
@@ -61,7 +73,14 @@ namespace LiteHtmlSharp
          _inputs.Clear();
          _rendering = true;
 
-         Document.RenderHtml(html, (int)_size.X);
+         Document.RenderHtml(html, _size.Width);
+
+         int newHeight = Document.Height();
+         if (newHeight != _size.Height && newHeight > 0)
+         {
+            _visualControl.SetHeight(Document.Height());
+         }
+
          Draw();
 
          _rendering = false;
@@ -115,15 +134,13 @@ namespace LiteHtmlSharp
          _dc = _visual.RenderOpen();
          var clip = new position()
          {
-            width = (int)_size.X,
-            height = (int)_size.Y
+            width = _size.Width,
+            height = _size.Height
          };
          Document.Draw(0, 0, clip);
          _dc.Close();
          _dc = null;
          ProcessInputs();
-
-         _visualControl.SetHeight(Document.Height());
       }
 
       public void OnMouseMove(double x, double y)
@@ -170,15 +187,18 @@ namespace LiteHtmlSharp
          }
       }
 
-      public void OnSizeChanged(double x, double y)
+      public void OnSizeChanged(double width, double height)
       {
-         _size = new Point(x, y);
-
-         if (Loaded)
+         if (_size.Width != (int)width || _size.Height != (int)height)
          {
-            Document.OnMediaChanged();
-            Document.Render((int)_size.X);
-            Draw();
+            _size = new IntPoint((int)width, (int)height);
+
+            if (Loaded)
+            {
+               Document.OnMediaChanged();
+               Document.Render((int)_size.Width);
+               Draw();
+            }
          }
       }
 
@@ -224,11 +244,6 @@ namespace LiteHtmlSharp
 
       protected override void DrawBorders(UIntPtr hdc, ref borders borders, ref position draw_pos, bool root)
       {
-         if(borders.radius.top_left_x != 0)
-         {
-            int i = 0;
-         }
-
          if (borders.top.width > 0)
          {
             DrawRect(draw_pos.x, draw_pos.y, draw_pos.width, borders.top.width, GetBrush(ref borders.top.color));
@@ -273,8 +288,11 @@ namespace LiteHtmlSharp
       protected override void GetImageSize(string image, ref size size)
       {
          var bmp = LoadImage(image);
-         size.width = bmp.PixelWidth;
-         size.height = bmp.PixelHeight;
+         if (bmp != null)
+         {
+            size.width = bmp.PixelWidth;
+            size.height = bmp.PixelHeight;
+         }
       }
 
       private FontInfo GetFont(UIntPtr fontID)
@@ -296,10 +314,11 @@ namespace LiteHtmlSharp
             return result;
          }
 
-         result = new BitmapImage();
          var bytes = _loader.GetResourceBytes(image);
-         if (bytes != null)
+         if (bytes != null && bytes.Length > 0)
          {
+            result = new BitmapImage();
+
             using (var stream = new MemoryStream(bytes))
             {
                result.BeginInit();
@@ -359,14 +378,14 @@ namespace LiteHtmlSharp
 
       protected override void GetClientRect(ref position client)
       {
-         client.width = (int)_size.X;
-         client.height = (int)_size.Y;
+         client.width = _size.Width;
+         client.height = _size.Height;
       }
 
       protected override void GetMediaFeatures(ref media_features media)
       {
-         media.width = (int)_size.X;
-         media.height = (int)_size.Y;
+         media.width = _size.Width;
+         media.height = _size.Height;
          media.device_width = media.width;
          media.device_height = media.height;
          media.resolution = 96;

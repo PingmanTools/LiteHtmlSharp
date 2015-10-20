@@ -44,6 +44,7 @@ namespace LiteHtmlSharp
       public void SetHeight(double height)
       {
          _canvas.Height = height;
+         OnSizeChanged();
       }
 
       private void CanvasSizeChanged(object sender, SizeChangedEventArgs e)
