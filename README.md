@@ -1,4 +1,6 @@
-﻿## Background and "features"
+﻿
+
+# Background and "features"
 
 LiteHtmlSharp is a C# cross-platform library for HTML/CSS(2/3) visualization - self contained, fast and small.  
 The HTML parser/renderer is based on the fantastic [litehtml](https://github.com/litehtml/litehtml) C++ library, 
