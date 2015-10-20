@@ -18,8 +18,6 @@ namespace LiteHtmlSharp.CoreGraphics
    {
       public delegate NSImage LoadImageDelegate(string imageUrl);
 
-      public event Action ContextDrawn;
-
       public event Action<string> CaptionDefined;
 
       public LoadImageDelegate LoadImageCallback;
@@ -50,10 +48,6 @@ namespace LiteHtmlSharp.CoreGraphics
       {
          Context.SetFillColor(color);
          Context.FillRect(new CGRect(x, y, width, height));
-         if (ContextDrawn != null)
-         {
-            ContextDrawn();
-         }
       }
 
       protected override void DrawListMarker(string image, string baseURL, list_style_type marker_type, ref web_color color, ref position pos)
@@ -195,10 +189,6 @@ namespace LiteHtmlSharp.CoreGraphics
          }
 
          Context.RestoreState();
-         if (ContextDrawn != null)
-         {
-            ContextDrawn();
-         }
       }
 
       #endregion
@@ -285,10 +275,6 @@ namespace LiteHtmlSharp.CoreGraphics
          {
             DrawImage(image, rect);
          }
-         if (ContextDrawn != null)
-         {
-            ContextDrawn();
-         }
       }
 
       protected override void DrawBorders(UIntPtr hdc, ref borders borders, ref position draw_pos, bool root)
@@ -308,10 +294,6 @@ namespace LiteHtmlSharp.CoreGraphics
          if (borders.bottom.width > 0)
          {
             DrawRect(draw_pos.x, draw_pos.y, draw_pos.width, borders.bottom.width, borders.bottom.color.ToCGColor());
-         }
-         if (ContextDrawn != null)
-         {
-            ContextDrawn();
          }
       }
 
