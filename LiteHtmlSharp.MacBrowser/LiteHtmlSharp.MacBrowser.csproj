@@ -9,6 +9,7 @@
     <RootNamespace>LiteHtmlSharp.MacBrowser</RootNamespace>
     <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
     <AssemblyName>LiteHtmlSharp.MacBrowser</AssemblyName>
+    <UseXamMacFullFramework>true</UseXamMacFullFramework>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -66,17 +67,17 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\LiteHtmlSharp.Mac\LiteHtmlSharp.Mac.csproj">
-      <Project>{81EC8297-3616-428D-89D1-06B7AC68574B}</Project>
-      <Name>LiteHtmlSharp.Mac</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BundleResource Include="ExampleWebPage\free-bg.png" />
     <BundleResource Include="ExampleWebPage\free-logo.png" />
     <BundleResource Include="ExampleWebPage\free-wordmark.png" />
     <BundleResource Include="ExampleWebPage\about.css" />
     <BundleResource Include="ExampleWebPage\core.css" />
     <BundleResource Include="ExampleWebPage\index.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LiteHtmlSharp.Mac\LiteHtmlSharp.Mac.csproj">
+      <Project>{81EC8297-3616-428D-89D1-06B7AC68574B}</Project>
+      <Name>LiteHtmlSharp.Mac</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>
