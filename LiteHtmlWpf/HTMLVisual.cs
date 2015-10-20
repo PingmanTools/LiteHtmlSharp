@@ -10,11 +10,15 @@ using System.Windows.Input;
 
 namespace LiteHtmlSharp
 {
+   public delegate void LinkClickedHandler(string url);
+
    public class HTMLVisual : FrameworkElement
    {
       DrawingVisual _visual;
       WPFContainer _container;
       Canvas _canvas;
+
+      public event LinkClickedHandler LinkClicked;
 
       public bool HTMLLoaded
       {
@@ -39,6 +43,14 @@ namespace LiteHtmlSharp
          _canvas.MouseMove += OnMouseMove;
          _canvas.MouseLeftButtonDown += OnMouseLeftButtonDown;
          _canvas.MouseLeftButtonUp += OnMouseLeftButtonUp;
+      }
+
+      public void FireLink(string url)
+      {
+         if(LinkClicked != null)
+         {
+            LinkClicked(url);
+         }
       }
 
       public void SetHeight(double height)
