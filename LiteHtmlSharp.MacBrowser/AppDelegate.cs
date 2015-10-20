@@ -48,7 +48,7 @@ namespace LiteHtmlSharp.MacBrowser
          testWindow.MakeKeyAndOrderFront(this);
 
          testWindow.LiteHtmlContainer.ImportCssCallback = (url, baseUrl) => File.ReadAllText(Path.Combine("ExampleWebPage", url), Encoding.UTF8);
-         testWindow.LiteHtmlContainer.LoadImageCallback = (url) => File.ReadAllBytes(Path.Combine("ExampleWebPage", url));
+         testWindow.LiteHtmlContainer.LoadImageCallback = (url) => new NSImage(NSData.FromArray(File.ReadAllBytes(Path.Combine("ExampleWebPage", url))));
 
 
          Stopwatch stop = new Stopwatch();

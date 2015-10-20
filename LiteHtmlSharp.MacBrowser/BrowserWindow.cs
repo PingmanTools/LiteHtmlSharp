@@ -37,7 +37,7 @@ namespace LiteHtmlSharp.MacBrowser
          LiteHtmlView = new LiteHtmlNSView(new CGRect(0, 0, rect.Width, rect.Height), masterCssData);
          LiteHtmlView.LiteHtmlContainer.CaptionDefined += LiteHtmlView_LiteHtmlContainer_CaptionDefined;
          LiteHtmlView.LiteHtmlContainer.ImportCssCallback = (url, baseUrl) => Encoding.UTF8.GetString(DownloadResource(url, baseUrl));
-         LiteHtmlView.LiteHtmlContainer.LoadImageCallback = (url) => DownloadResource(url);
+         LiteHtmlView.LiteHtmlContainer.LoadImageCallback = (url) => new NSImage(NSData.FromArray(DownloadResource(url)));
          LiteHtmlView.LiteHtmlContainer.AnchorClicked += LiteHtmlView_LiteHtmlContainer_AnchorClicked;
          LiteHtmlView.LiteHtmlContainer.DocumentSizeKnown += LiteHtmlView_DocumentSizeKnown;
 

@@ -16,7 +16,7 @@ namespace LiteHtmlSharp.CoreGraphics
 {
    public class CGContainer : Container
    {
-      public delegate byte[] LoadImageDelegate(string imageUrl);
+      public delegate NSImage LoadImageDelegate(string imageUrl);
 
       public event Action ContextDrawn;
 
@@ -218,13 +218,12 @@ namespace LiteHtmlSharp.CoreGraphics
          {
             throw new Exception(nameof(LoadImageCallback) + " must be set before an image is requested while rendering");
          }
-         var imgBytes = LoadImageCallback(imageUrl);
-         if (imgBytes == null)
+         var nsImage = LoadImageCallback(imageUrl);
+         if (nsImage == null)
          {
             imageCache.Add(imageUrl, null);
             return null;
          }
-         var nsImage = new NSImage(NSData.FromArray(imgBytes));
          var rect = new CGRect(new CGPoint(0, 0), nsImage.Size);
          var image = nsImage.AsCGImage(ref rect, null, null);
          imageHolder = new ImageHolder{ Image = image, Size = nsImage.Size };

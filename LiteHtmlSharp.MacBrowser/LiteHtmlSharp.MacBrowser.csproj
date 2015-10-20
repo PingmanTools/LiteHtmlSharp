@@ -66,12 +66,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <ItemGroup>
-    <Content Include="..\..\litehtml\include\master.css">
-      <Link>master.css</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\LiteHtmlSharp.Mac\LiteHtmlSharp.Mac.csproj">
       <Project>{81EC8297-3616-428D-89D1-06B7AC68574B}</Project>
       <Name>LiteHtmlSharp.Mac</Name>
