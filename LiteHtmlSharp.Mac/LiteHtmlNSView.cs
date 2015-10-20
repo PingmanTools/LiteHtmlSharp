@@ -90,7 +90,7 @@ namespace LiteHtmlSharp.Mac
       {
          RemoveAllViewElements();
          LiteHtmlContainer.Document.CreateFromString(html);
-         CheckContextSizeChange(forceRender: true);
+         CheckViewportChange(forceRender: true);
          SetNeedsDisplayInRect(Viewport);
       }
 
@@ -105,29 +105,41 @@ namespace LiteHtmlSharp.Mac
          AddTrackingArea(trackingArea);
       }
 
-      bool CheckContextSizeChange(bool forceRender = false)
+      // If true then a redraw is needed
+      bool CheckViewportChange(bool forceRender = false)
       {
          if (forceRender
              || (int)LiteHtmlContainer.ContextSize.Width != (int)Viewport.Size.Width
              || (int)LiteHtmlContainer.ContextSize.Height != (int)Viewport.Size.Height)
          {
             LiteHtmlContainer.ContextSize = Viewport.Size;
+            LiteHtmlContainer.ScrollOffset = Viewport.Location;
             LiteHtmlContainer.Document.OnMediaChanged();
             LiteHtmlContainer.Render();
+            return true;
          }
+
+         if ((int)LiteHtmlContainer.ScrollOffset.Y != (int)Viewport.Location.Y
+             || (int)LiteHtmlContainer.ScrollOffset.X != (int)Viewport.Location.X)
+         {
+            LiteHtmlContainer.ScrollOffset = Viewport.Location;
+            return true;
+         }
+
          return false;
       }
 
       // custom viewport is used for offsetting/scrolling the canvas on this view
       public void SetViewport(CGRect viewport)
       {
-         if ((int)this.customViewport.X != (int)viewport.X
-             || (int)this.customViewport.Y != (int)viewport.Y
-             || (int)this.customViewport.Width != (int)viewport.Width
-             || (int)this.customViewport.Height != (int)viewport.Height)
+         hasCustomViewport = true;
+         this.customViewport = viewport;
+         if (!LiteHtmlContainer.Document.HasLoadedHtml)
          {
-            hasCustomViewport = true;
-            this.customViewport = viewport;
+            return;
+         }
+         if (CheckViewportChange())
+         {
             SetNeedsDisplayInRect(Viewport);
          }
       }
@@ -144,11 +156,9 @@ namespace LiteHtmlSharp.Mac
          gfxc.SaveState();
          gfxc.TranslateCTM(Viewport.X, Viewport.Y);
 
+         CheckViewportChange();
+
          LiteHtmlContainer.Context = gfxc;
-         LiteHtmlContainer.ScrollOffset = Viewport.Location;
-
-         CheckContextSizeChange();
-
          LiteHtmlContainer.Draw();
          LiteHtmlContainer.Context = null;
 

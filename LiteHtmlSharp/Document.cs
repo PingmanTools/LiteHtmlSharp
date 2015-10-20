@@ -11,6 +11,9 @@ namespace LiteHtmlSharp
 
       public event Action ViewElementsNeedLayout;
 
+
+      public bool HasLoadedHtml { get; private set; }
+
       public bool HasRendered { get; private set; }
 
       public void SetMasterCSS(string css)
@@ -21,6 +24,7 @@ namespace LiteHtmlSharp
       public void CreateFromString(string html)
       {
          Calls.CreateFromString(Calls.ID, html);
+         HasLoadedHtml = true;
       }
 
       public virtual void Draw(int x, int y, position clip)

@@ -63,21 +63,21 @@ namespace LiteHtmlSharp.MacBrowser
 
       void scrollViewScrolled(NSNotification ns)
       {
-         LiteHtmlView.SetViewport(new CGRect(scrollView.ContentView.Bounds.Location, scrollView.Frame.Size));
+         LiteHtmlView.SetViewport(new CGRect(scrollView.ContentView.Bounds.Location, scrollView.ContentView.Frame.Size));
       }
 
       void LiteHtmlView_DocumentSizeKnown(CGSize size)
       {
-         LiteHtmlView.SetFrameSize(new CGSize(scrollView.Bounds.Width, size.Height));
+         LiteHtmlView.SetFrameSize(new CGSize(scrollView.ContentView.Bounds.Width, size.Height));
+         LiteHtmlView.SetViewport(new CGRect(scrollView.ContentView.Bounds.Location, scrollView.ContentView.Frame.Size));
       }
 
       void LayoutViews()
       {
          urlInput.Frame = new CGRect(0, 0, ContentView.Frame.Width, 25);
          scrollView.Frame = new CGRect(0, urlInput.Frame.Bottom, ContentView.Frame.Width, ContentView.Frame.Height - urlInput.Frame.Height);
-         LiteHtmlView.SetViewport(new CGRect(scrollView.ContentView.Bounds.Location, scrollView.Frame.Size));
+         LiteHtmlView.SetViewport(new CGRect(scrollView.ContentView.Bounds.Location, scrollView.ContentView.Frame.Size));
       }
-
 
       void Window_DidResize(object sender, EventArgs e)
       {

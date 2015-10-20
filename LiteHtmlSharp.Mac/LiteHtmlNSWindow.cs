@@ -42,17 +42,18 @@ namespace LiteHtmlSharp.Mac
 
       void scrollViewScrolled(NSNotification ns)
       {
-         LiteHtmlView.SetViewport(new CGRect(scrollView.ContentView.Bounds.Location, scrollView.Frame.Size));
-      }
-
-      void LiteHtmlNSWindow_DidResize(object sender, EventArgs e)
-      {
-         LiteHtmlView.SetViewport(new CGRect(scrollView.ContentView.Bounds.Location, scrollView.Frame.Size));
+         LiteHtmlView.SetViewport(new CGRect(scrollView.ContentView.Bounds.Location, scrollView.ContentView.Frame.Size));
       }
 
       void LiteHtmlView_DocumentSizeKnown(CGSize size)
       {
-         LiteHtmlView.SetFrameSize(new CGSize(scrollView.Bounds.Width, size.Height));
+         LiteHtmlView.SetFrameSize(new CGSize(scrollView.ContentView.Bounds.Width, size.Height));
+         LiteHtmlView.SetViewport(new CGRect(scrollView.ContentView.Bounds.Location, scrollView.ContentView.Frame.Size));
+      }
+
+      void LiteHtmlNSWindow_DidResize(object sender, EventArgs e)
+      {
+         LiteHtmlView.SetViewport(new CGRect(scrollView.ContentView.Bounds.Location, scrollView.ContentView.Frame.Size));
       }
 
       void LiteHtmlView_LiteHtmlContainer_CaptionDefined(string caption)
