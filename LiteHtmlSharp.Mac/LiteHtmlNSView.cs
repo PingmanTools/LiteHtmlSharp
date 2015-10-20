@@ -20,19 +20,21 @@ namespace LiteHtmlSharp.Mac
 
       public event Action Drawn;
 
-
-
       int lastViewElementId = 0;
       List<int> elementIDs = new List<int>();
       Dictionary<int, NSView> viewElements = new Dictionary<int, NSView>();
-      CGPoint scrollOffset;
+
+      bool hasCustomViewport = false;
+      CGRect customViewport;
+
+      CGRect Viewport { get { return hasCustomViewport ? customViewport : Bounds; } }
+
 
       public LiteHtmlNSView(CGRect rect, string masterCssData)
          : base(rect)
       {
          WantsLayer = true;
          LiteHtmlContainer = new CGContainer(masterCssData);
-         LiteHtmlContainer.ContextDrawn += LiteHtmlContainer_ContextDrawn;
          LiteHtmlContainer.CreateElementCallback = CreateElement;
          LiteHtmlContainer.Document.ViewElementsNeedLayout += LiteHtmlContainer_ViewElementsNeedLayout;
       }
@@ -51,7 +53,7 @@ namespace LiteHtmlSharp.Mac
                   AddSubview(view);
                   viewElements.Add(id, view);
                }
-               var newRect = new CGRect(elementInfo.PosX - scrollOffset.X, elementInfo.PosY - scrollOffset.Y, elementInfo.Width, elementInfo.Height);
+               var newRect = new CGRect(elementInfo.PosX, elementInfo.PosY, elementInfo.Width, elementInfo.Height);
                if (newRect != view.Frame)
                {
                   view.Frame = newRect;
@@ -88,13 +90,8 @@ namespace LiteHtmlSharp.Mac
       {
          RemoveAllViewElements();
          LiteHtmlContainer.Document.CreateFromString(html);
-         CreateBitmapContext();
-         LiteHtmlContainer.Draw();
-      }
-
-      void LiteHtmlContainer_ContextDrawn()
-      {
-         SetNeedsDisplayInRect(Bounds);
+         CheckContextSizeChange(forceRender: true);
+         SetNeedsDisplayInRect(Viewport);
       }
 
       public override void UpdateTrackingAreas()
@@ -108,71 +105,55 @@ namespace LiteHtmlSharp.Mac
          AddTrackingArea(trackingArea);
       }
 
-      public void Scroll(CGPoint scrollOffset)
+      bool CheckContextSizeChange(bool forceRender = false)
       {
-         this.scrollOffset = scrollOffset;
-         SetNeedsDisplayInRect(Bounds);
-      }
-
-      CGBitmapContext lastBitmapContext = null;
-
-      void CreateBitmapContext()
-      {
-         var width = (int)(Bounds.Width * Layer.ContentsScale);
-         var height = (int)(Bounds.Height * Layer.ContentsScale);
-
-         var colorSpace = CGColorSpace.CreateDeviceRGB();
-         const int bytesPerPixel = 4;
-         var bytes = new byte[width * height * bytesPerPixel];
-         int bytesPerRow = bytesPerPixel * width;
-         const int bitsPerComponent = 8;
-         var bitmapFlags = CGBitmapFlags.PremultipliedLast | CGBitmapFlags.ByteOrder32Big;
-         var context = new CGBitmapContext(bytes, width, height, bitsPerComponent, bytesPerRow, colorSpace, bitmapFlags);
-
-         if (lastBitmapContext != null)
+         if (forceRender
+             || (int)LiteHtmlContainer.ContextSize.Width != (int)Viewport.Size.Width
+             || (int)LiteHtmlContainer.ContextSize.Height != (int)Viewport.Size.Height)
          {
-            lastBitmapContext.Dispose();
-         }
-         lastBitmapContext = context;
-
-         LiteHtmlContainer.ScaleFactor = (int)Layer.ContentsScale;
-         LiteHtmlContainer.ContextSize = Bounds.Size;
-         LiteHtmlContainer.Context = context;
-         LiteHtmlContainer.Document.OnMediaChanged();
-         LiteHtmlContainer.Render();
-      }
-
-      bool CheckContextSizeChange()
-      {
-         if (LiteHtmlContainer.ScaleFactor != (int)Layer.ContentsScale || LiteHtmlContainer.ContextSize != Bounds.Size)
-         {
-            CreateBitmapContext();
-            return true;
+            LiteHtmlContainer.ContextSize = Viewport.Size;
+            LiteHtmlContainer.Document.OnMediaChanged();
+            LiteHtmlContainer.Render();
          }
          return false;
       }
 
-      bool CheckScrollOffsetChange()
+      // custom viewport is used for offsetting/scrolling the canvas on this view
+      public void SetViewport(CGRect viewport)
       {
-         if (LiteHtmlContainer.ScrollOffset != scrollOffset)
+         if ((int)this.customViewport.X != (int)viewport.X
+             || (int)this.customViewport.Y != (int)viewport.Y
+             || (int)this.customViewport.Width != (int)viewport.Width
+             || (int)this.customViewport.Height != (int)viewport.Height)
          {
-            LiteHtmlContainer.ScrollOffset = scrollOffset;
-            return true;
+            hasCustomViewport = true;
+            this.customViewport = viewport;
+            SetNeedsDisplayInRect(Viewport);
          }
-         return false;
       }
 
       public override void DrawRect(CGRect dirtyRect)
       {
-         if (CheckContextSizeChange() || CheckScrollOffsetChange())
+         if (!LiteHtmlContainer.Document.HasRendered)
          {
-            LiteHtmlContainer.Draw();
+            return;
          }
 
          var gfxc = NSGraphicsContext.CurrentContext.GraphicsPort;
+
          gfxc.SaveState();
-         gfxc.DrawImage(Bounds, ((CGBitmapContext)LiteHtmlContainer.Context).ToImage());
+         gfxc.TranslateCTM(Viewport.X, Viewport.Y);
+
+         LiteHtmlContainer.Context = gfxc;
+         LiteHtmlContainer.ScrollOffset = Viewport.Location;
+
+         CheckContextSizeChange();
+
+         LiteHtmlContainer.Draw();
+         LiteHtmlContainer.Context = null;
+
          gfxc.RestoreState();
+
          if (Drawn != null)
          {
             Drawn();
@@ -184,7 +165,10 @@ namespace LiteHtmlSharp.Mac
          if (LiteHtmlContainer.Document.HasRendered)
          {
             var point = ConvertPointFromView(theEvent.LocationInWindow, null);
-            LiteHtmlContainer.OnMouseMove((int)(point.X + scrollOffset.X), (int)(point.Y + scrollOffset.Y));
+            if (LiteHtmlContainer.Document.OnMouseMove((int)(point.X), (int)(point.Y)))
+            {
+               SetNeedsDisplayInRect(Viewport);
+            }
          }
          base.MouseMoved(theEvent);
       }
@@ -193,7 +177,10 @@ namespace LiteHtmlSharp.Mac
       {
          if (LiteHtmlContainer.Document.HasRendered)
          {
-            LiteHtmlContainer.OnMouseLeave();
+            if (LiteHtmlContainer.Document.OnMouseLeave())
+            {
+               SetNeedsDisplayInRect(Viewport);
+            }
          }
          base.MouseExited(theEvent);
       }

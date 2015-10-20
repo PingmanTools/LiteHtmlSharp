@@ -43,6 +43,7 @@ namespace LiteHtmlSharp.CoreGraphics
       {
          fontCache = new Dictionary<UIntPtr, FontHolder>();
          imageCache = new Dictionary<string, ImageHolder>();
+         ScrollOffset = new CGPoint(0, 0);
       }
 
       public void DrawRect(nfloat x, nfloat y, nfloat width, nfloat height, CGColor color)
@@ -78,26 +79,6 @@ namespace LiteHtmlSharp.CoreGraphics
                width = (int)ContextSize.Width,
                height = (int)ContextSize.Height 
             });
-      }
-
-      public bool OnMouseMove(int x, int y)
-      {
-         var needsRedraw = Document.OnMouseMove(x, y);
-         if (needsRedraw)
-         {
-            Draw();
-         }
-         return needsRedraw;
-      }
-
-      public bool OnMouseLeave()
-      {
-         var needsRedraw = Document.OnMouseLeave();
-         if (needsRedraw)
-         {
-            Draw();
-         }
-         return needsRedraw;
       }
 
       protected override void SetCursor(string cursor)

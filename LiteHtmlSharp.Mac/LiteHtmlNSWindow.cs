@@ -18,11 +18,7 @@ namespace LiteHtmlSharp.Mac
 
       public LiteHtmlNSView LiteHtmlView { get; private set; }
 
-      public new NSScrollView ContentView
-      { 
-         get { return (NSScrollView)base.ContentView; } 
-         set { base.ContentView = value; } 
-      }
+      NSScrollView scrollView;
 
       public LiteHtmlNSWindow(CGRect rect, NSWindowStyle windowStyle, string masterCssData)
          : base(rect, windowStyle, NSBackingStore.Buffered, false)
@@ -31,23 +27,32 @@ namespace LiteHtmlSharp.Mac
          LiteHtmlView.LiteHtmlContainer.CaptionDefined += LiteHtmlView_LiteHtmlContainer_CaptionDefined;
          LiteHtmlView.LiteHtmlContainer.DocumentSizeKnown += LiteHtmlView_DocumentSizeKnown;
 
-         ContentView = new NSScrollView();
-         ContentView.AutohidesScrollers = true;
-         ContentView.HasHorizontalScroller = true;
-         ContentView.HasVerticalScroller = true;
-         ContentView.DocumentView = LiteHtmlView;
+         scrollView = new NSScrollView();
+         scrollView.AutohidesScrollers = true;
+         scrollView.HasHorizontalScroller = true;
+         scrollView.HasVerticalScroller = true;
+         scrollView.DocumentView = LiteHtmlView;
+         scrollView.ContentView.PostsBoundsChangedNotifications = true;
+
+         ContentView = scrollView;
+         NSNotificationCenter.DefaultCenter.AddObserver(NSView.BoundsChangedNotification, scrollViewScrolled, scrollView.ContentView);
 
          DidResize += LiteHtmlNSWindow_DidResize;
       }
 
+      void scrollViewScrolled(NSNotification ns)
+      {
+         LiteHtmlView.SetViewport(new CGRect(scrollView.ContentView.Bounds.Location, scrollView.Frame.Size));
+      }
+
       void LiteHtmlNSWindow_DidResize(object sender, EventArgs e)
       {
-         LiteHtmlView.Frame = new CGRect(0, 0, ContentView.Bounds.Width, LiteHtmlView.Bounds.Height);
+         LiteHtmlView.SetViewport(new CGRect(scrollView.ContentView.Bounds.Location, scrollView.Frame.Size));
       }
 
       void LiteHtmlView_DocumentSizeKnown(CGSize size)
       {
-         LiteHtmlView.Frame = new CGRect(0, 0, ContentView.Bounds.Width, size.Height);
+         LiteHtmlView.SetFrameSize(new CGSize(scrollView.Bounds.Width, size.Height));
       }
 
       void LiteHtmlView_LiteHtmlContainer_CaptionDefined(string caption)
