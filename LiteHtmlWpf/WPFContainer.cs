@@ -257,12 +257,12 @@ namespace LiteHtmlSharp
 
          if (borders.right.width > 0)
          {
-            DrawRect(draw_pos.x, draw_pos.y, borders.right.width, draw_pos.width, GetBrush(ref borders.right.color));
+            DrawRect(draw_pos.x + draw_pos.width - borders.right.width, draw_pos.y, borders.right.width, draw_pos.height, GetBrush(ref borders.right.color));
          }
 
          if (borders.bottom.width > 0)
          {
-            DrawRect(draw_pos.x, draw_pos.y, draw_pos.width, borders.bottom.width, GetBrush(ref borders.bottom.color));
+            DrawRect(draw_pos.x, draw_pos.y + draw_pos.height - borders.bottom.width, draw_pos.width, borders.bottom.width, GetBrush(ref borders.bottom.color));
          }
       }
 
