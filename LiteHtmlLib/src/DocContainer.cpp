@@ -124,17 +124,7 @@ void DocContainer::get_client_rect(litehtml::position & client) const
 
 std::shared_ptr<litehtml::element> DocContainer::create_element(const litehtml::tchar_t * tag_name, const litehtml::string_map & attributes, const std::shared_ptr<litehtml::document>& doc)
 {
-   /*litehtml::tstring strToReturn; //This is no longer on the heap
-
-   for (auto attr : attributes)
-   {
-      strToReturn.append(attr.first);
-      strToReturn.append("=");
-      strToReturn.append(attr.second);
-      strToReturn.append("\n");
-   }*/
-
-   int elementID = _callbacks.CreateElement(tag_name, nullptr);
+   int elementID = _callbacks.CreateElement(tag_name);
    if (elementID > 0)
    {
       std::shared_ptr<TagElement> result(new TagElement(doc));

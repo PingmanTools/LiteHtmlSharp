@@ -48,6 +48,7 @@ namespace LiteHtmlSharp.Mac
             foreach (var id in elementIDs)
             {
                var elementInfo = LiteHtmlContainer.Document.GetElementInfo(id);
+               Console.WriteLine("attr: " + elementInfo.Attributes);
                NSView view;
                if (!viewElements.TryGetValue(id, out view))
                {
@@ -67,7 +68,7 @@ namespace LiteHtmlSharp.Mac
          }
       }
 
-      int CreateElement(string tag, string attributes)
+      int CreateElement(string tag)
       {
          if (string.Equals(tag, "input", StringComparison.InvariantCultureIgnoreCase))
          {

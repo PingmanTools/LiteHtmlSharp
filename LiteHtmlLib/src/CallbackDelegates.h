@@ -32,7 +32,7 @@ typedef void(*OnAnchorClickFunc)(const litehtml::tchar_t * url);
 
 typedef int(*PTtoPXFunc)(int pt);
 
-typedef int(*CreateElementFunc)(const litehtml::tchar_t * tag, const litehtml::tchar_t * attributes);
+typedef int(*CreateElementFunc)(const litehtml::tchar_t * tag);
 
 typedef void(*SetCursorFunc)(const litehtml::tchar_t * cursor);
 

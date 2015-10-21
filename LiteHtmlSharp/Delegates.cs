@@ -25,13 +25,13 @@ namespace LiteHtmlSharp
    public delegate string GetDefaultFontNameFunc();
 
    [UnmanagedFunctionPointer(PInvokes.cc)]
-   public delegate void DrawBordersFunc(UIntPtr hdc, ref borders borders, ref position draw_pos, [MarshalAs(UnmanagedType.I1)] bool root);
+   public delegate void DrawBordersFunc(UIntPtr hdc,ref borders borders,ref position draw_pos,[MarshalAs(UnmanagedType.I1)] bool root);
 
    [UnmanagedFunctionPointer(PInvokes.cc, CharSet = PInvokes.cs)]
    public delegate void DrawBackgroundFunc(UIntPtr hdc,string image,background_repeat repeat,ref web_color color,ref position pos,ref border_radiuses borderRadiuses,ref position borderBox);
 
    [UnmanagedFunctionPointer(PInvokes.cc, CharSet = PInvokes.cs)]
-   public delegate void GetImageSizeFunc(string image, ref size size);
+   public delegate void GetImageSizeFunc(string image,ref size size);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
    public delegate void DrawTextFunc(string text,UIntPtr font,ref web_color color,ref position pos);
@@ -61,7 +61,7 @@ namespace LiteHtmlSharp
    public delegate int PTtoPXFunc(int pt);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
-   public delegate int CreateElementFunc(string tag,string attributes);
+   public delegate int CreateElementFunc(string tag);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
    public delegate void SetCursorFunc(string cursor);

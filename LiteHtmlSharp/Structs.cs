@@ -221,7 +221,9 @@ namespace LiteHtmlSharp
       public int PosY;
       public int Width;
       public int Height;
-      public IntPtr Attributes;
+
+      [MarshalAs(UnmanagedType.LPStr)]
+      public string Attributes;
    }
 
    public enum list_style_type
