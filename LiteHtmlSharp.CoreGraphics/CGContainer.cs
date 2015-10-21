@@ -279,22 +279,50 @@ namespace LiteHtmlSharp.CoreGraphics
 
       protected override void DrawBorders(UIntPtr hdc, ref borders borders, ref position draw_pos, bool root)
       {
+         var rect = draw_pos.ToRect();
+         var br = borders.radius;
+
          if (borders.top.width > 0)
          {
-            DrawRect(draw_pos.x, draw_pos.y, draw_pos.width, borders.top.width, borders.top.color.ToCGColor());
-         }
-         if (borders.left.width > 0)
-         {
-            DrawRect(draw_pos.x, draw_pos.y, borders.left.width, draw_pos.width, borders.left.color.ToCGColor());
+            Context.MoveTo(rect.Left + br.top_left_x, rect.Top);
+            Context.AddLineToPoint(rect.Right - br.top_right_x, rect.Top);
+            Context.AddQuadCurveToPoint(rect.Right, rect.Top, rect.Right, rect.Top + br.top_right_y);
+
+            Context.SetLineWidth(borders.top.width);
+            Context.SetStrokeColor(borders.top.color.ToCGColor());
+            Context.StrokePath();
          }
          if (borders.right.width > 0)
          {
-            DrawRect(draw_pos.x, draw_pos.y, borders.right.width, draw_pos.width, borders.right.color.ToCGColor());
+            Context.MoveTo(rect.Right, rect.Top + br.top_right_y);
+            Context.AddLineToPoint(rect.Right, rect.Bottom - br.bottom_right_y);
+            Context.AddQuadCurveToPoint(rect.Right, rect.Bottom, rect.Right - br.bottom_right_x, rect.Bottom);
+
+            Context.SetLineWidth(borders.right.width);
+            Context.SetStrokeColor(borders.right.color.ToCGColor());
+            Context.StrokePath();
          }
          if (borders.bottom.width > 0)
          {
-            DrawRect(draw_pos.x, draw_pos.y, draw_pos.width, borders.bottom.width, borders.bottom.color.ToCGColor());
+            Context.MoveTo(rect.Right - br.bottom_right_x, rect.Bottom);
+            Context.AddLineToPoint(rect.Left + br.bottom_left_x, rect.Bottom);
+            Context.AddQuadCurveToPoint(rect.Left, rect.Bottom, rect.Left, rect.Bottom - br.bottom_left_y);
+
+            Context.SetLineWidth(borders.bottom.width);
+            Context.SetStrokeColor(borders.bottom.color.ToCGColor());
+            Context.StrokePath();
          }
+         if (borders.left.width > 0)
+         {
+            Context.MoveTo(rect.Left, rect.Bottom - br.bottom_left_y);
+            Context.AddLineToPoint(rect.Left, rect.Top + br.top_left_y);
+            Context.AddQuadCurveToPoint(rect.Left, rect.Top, rect.Left + br.top_left_x, rect.Top);
+
+            Context.SetLineWidth(borders.left.width);
+            Context.SetStrokeColor(borders.left.color.ToCGColor());
+            Context.StrokePath();
+         }
+
       }
 
       #endregion
