@@ -409,7 +409,7 @@ namespace LiteHtmlSharp
          return pt;
       }
 
-      protected override int CreateElement(string tag, string attributes)
+      protected override int CreateElement(string tag)
       {
          if (string.Equals(tag, "input", StringComparison.OrdinalIgnoreCase))
          {

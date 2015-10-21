@@ -55,7 +55,7 @@ typedef void(*CreateFromStringFunc)(DocContainer* container, const litehtml::tch
 typedef void(*RenderFunc)(DocContainer* container, int maxWidth);
 typedef void(*DrawFunc)(DocContainer* container, int x, int y, litehtml::position clip);
 typedef void(*SetMasterCSSFunc)(DocContainer* container, const litehtml::tchar_t* css);
-typedef ElementInfo(*GetElementInfoFunc)(DocContainer* container, int ID);
+typedef ElementInfo*(*GetElementInfoFunc)(DocContainer* container, int ID);
 typedef bool(*OnMediaChangedFunc)(DocContainer* container);
 
 typedef int(*GetWidthFunc)(DocContainer* container);

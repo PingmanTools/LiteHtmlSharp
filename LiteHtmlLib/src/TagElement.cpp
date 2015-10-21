@@ -1,5 +1,11 @@
 #include "TagElement.h"
 
+#if defined(LITEHTML_UTF8)
+#define _T(x) x
+#else
+#define _T(x) L ##x
+#endif
+
 TagElement::TagElement(std::shared_ptr<litehtml::document> doc) :litehtml::html_tag(doc)
 {
 }
@@ -16,9 +22,9 @@ ElementInfo& TagElement::GetManagedInfo()
    for (auto attr : this->m_attrs)
    {
       strToReturn.append(attr.first);
-      strToReturn.append("=");
+      strToReturn.append(_T("="));
       strToReturn.append(attr.second);
-      strToReturn.append("\n");
+      strToReturn.append(_T("\n"));
    }
 
    auto pos = this->get_placement();
@@ -27,7 +33,10 @@ ElementInfo& TagElement::GetManagedInfo()
    _managedInfo.PosY = pos.y;
    _managedInfo.Width = width();
    _managedInfo.Height = height();
-   _managedInfo.Attributes = strToReturn.c_str();
+
+
+   _attributes = std::string(strToReturn.begin(), strToReturn.end());
+   _managedInfo.Attributes = _attributes.c_str();
 
    return _managedInfo;
 }

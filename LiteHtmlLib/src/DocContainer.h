@@ -56,7 +56,7 @@ public:
    bool OnLeftButtonDown(int x, int y);
    bool OnLeftButtonUp(int x, int y);
    void Draw(int x, int y, litehtml::position clip);
-   ElementInfo GetElementInfo(int ID);
+   ElementInfo& GetElementInfo(int ID);
    bool OnMediaChanged();
    int GetWidth();
    int GetHeight();

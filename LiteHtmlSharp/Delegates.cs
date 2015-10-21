@@ -106,7 +106,7 @@ namespace LiteHtmlSharp
    public delegate bool OnLeftButtonDownFunc(IntPtr container,int x,int y);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
-   public delegate ElementInfo GetElementInfoFunc(IntPtr container,int ID);
+   public delegate IntPtr GetElementInfoFunc(IntPtr container,int ID);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
    [return: MarshalAs(UnmanagedType.I1)]

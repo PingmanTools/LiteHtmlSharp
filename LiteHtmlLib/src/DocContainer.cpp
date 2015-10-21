@@ -137,7 +137,7 @@ std::shared_ptr<litehtml::element> DocContainer::create_element(const litehtml::
    }
 }
 
-ElementInfo DocContainer::GetElementInfo(int ID)
+ElementInfo& DocContainer::GetElementInfo(int ID)
 {
    auto element = _elements[ID];
    return element->GetManagedInfo();
@@ -273,9 +273,9 @@ int GetWidth(DocContainer* container)
    return container->GetWidth();
 }
 
-ElementInfo GetElementInfo(DocContainer* container, int ID)
+ElementInfo* GetElementInfo(DocContainer* container, int ID)
 {
-   return container->GetElementInfo(ID);
+   return &container->GetElementInfo(ID);
 }
 
 void DocContainer::SetDocumentCalls(DocumentCalls& docCalls)

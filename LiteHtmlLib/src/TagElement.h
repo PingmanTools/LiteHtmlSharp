@@ -8,7 +8,7 @@ struct ElementInfo
    int PosY;
    int Width;
    int Height;
-   const litehtml::tchar_t* Attributes;
+   const char* Attributes;
 };
 
 class TagElement : public litehtml::html_tag
@@ -23,4 +23,5 @@ public:
 
 private:
    ElementInfo _managedInfo;
+   std::string _attributes;
 };

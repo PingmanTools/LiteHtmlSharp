@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Runtime.InteropServices;
 
 namespace LiteHtmlSharp
 {
@@ -70,7 +71,9 @@ namespace LiteHtmlSharp
 
       public ElementInfo GetElementInfo(int ID)
       {
-         return Calls.GetElementInfo(Calls.ID, ID);
+         IntPtr ptr = Calls.GetElementInfo(Calls.ID, ID);
+         ElementInfo info = Marshal.PtrToStructure<ElementInfo>(ptr);
+         return info;
       }
 
       public void TriggerTestCallback(int number, string text)
