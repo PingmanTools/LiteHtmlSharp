@@ -12,7 +12,7 @@ typedef void(*TriggerTestCallbackFunc)(DocContainer* container, int x, const lit
 
 // callbacks
 typedef void(*DrawBordersFunc)(litehtml::uint_ptr hdc, const litehtml::borders & borders, const litehtml::position & draw_pos, bool root);
-typedef void(*DrawBackgroundFunc)(litehtml::uint_ptr hdc, const litehtml::tchar_t* image, litehtml::background_repeat repeat, const litehtml::web_color& color, const litehtml::position& pos, const litehtml::border_radiuses& borderRadiuses, const litehtml::position& borderBox);
+typedef void(*DrawBackgroundFunc)(litehtml::uint_ptr hdc, const litehtml::tchar_t* image, litehtml::background_repeat repeat, const litehtml::web_color& color, const litehtml::position& pos, const litehtml::border_radiuses& borderRadiuses, const litehtml::position& borderBox, bool isRoot);
 typedef void(*GetImageSizeFunc)(const litehtml::tchar_t* image, litehtml::size& size);
 
 typedef void(*DrawTextFunc)(const litehtml::tchar_t* text, litehtml::uint_ptr font, litehtml::web_color& color, const litehtml::position& pos);

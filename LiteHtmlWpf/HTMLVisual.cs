@@ -53,9 +53,25 @@ namespace LiteHtmlSharp
          }
       }
 
+      public void SetBackground(Brush brush)
+      {
+         _canvas.Background = brush;
+      }
+
       public void SetHeight(double height)
       {
-         _canvas.Height = height;
+         double visibleHeight = ((FrameworkElement)_canvas.Parent).ActualHeight;
+
+         if (height > visibleHeight)
+         {
+            _canvas.Height = height;
+         }
+         else
+         {
+            _canvas.VerticalAlignment = VerticalAlignment.Stretch;
+            _canvas.Height = double.NaN;
+         }
+
          OnSizeChanged();
       }
 

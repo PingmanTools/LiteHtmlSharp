@@ -64,7 +64,7 @@ void DocContainer::get_image_size(const litehtml::tchar_t * src, const litehtml:
 
 void DocContainer::draw_background(litehtml::uint_ptr hdc, const litehtml::background_paint & bg)
 {
-   _callbacks.DrawBackground(hdc, bg.image.c_str(), bg.repeat, bg.color, bg.origin_box, bg.border_radius, bg.border_box);
+   _callbacks.DrawBackground(hdc, bg.image.c_str(), bg.repeat, bg.color, bg.origin_box, bg.border_radius, bg.border_box, bg.is_root);
 }
 
 void DocContainer::draw_borders(litehtml::uint_ptr hdc, const litehtml::borders & borders, const litehtml::position & draw_pos, bool root)
