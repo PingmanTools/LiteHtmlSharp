@@ -83,6 +83,7 @@ namespace LiteHtmlSharp
       private void OnMouseLeave(object sender, MouseEventArgs e)
       {
          _container.OnMouseLeave();
+         SetCursor(null);
       }
 
       private void OnMouseMove(object sender, MouseEventArgs e)
@@ -152,7 +153,7 @@ namespace LiteHtmlSharp
 
       public void SetCursor(string cursor)
       {
-         if (cursor.Equals("pointer", StringComparison.CurrentCultureIgnoreCase))
+         if (string.Equals(cursor, "pointer", StringComparison.CurrentCultureIgnoreCase))
          {
             Mouse.OverrideCursor = Cursors.Hand;
          }
