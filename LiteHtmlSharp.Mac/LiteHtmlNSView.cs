@@ -21,7 +21,6 @@ namespace LiteHtmlSharp.Mac
       public event Action Drawn;
 
       int lastViewElementId = 0;
-      List<int> elementIDs = new List<int>();
       Dictionary<int, NSView> viewElements = new Dictionary<int, NSView>();
 
       public IEnumerable<NSView> ViewElements { get { return viewElements.Values; } }
@@ -43,28 +42,14 @@ namespace LiteHtmlSharp.Mac
 
       void LiteHtmlContainer_ViewElementsNeedLayout()
       {
-         try
+         foreach (var el in viewElements)
          {
-            foreach (var id in elementIDs)
+            var elementInfo = LiteHtmlContainer.Document.GetElementInfo(el.Key);
+            var newRect = new CGRect(elementInfo.PosX, elementInfo.PosY, elementInfo.Width, elementInfo.Height);
+            if (newRect != el.Value.Frame)
             {
-               var elementInfo = LiteHtmlContainer.Document.GetElementInfo(id);
-               Console.WriteLine("attr: " + elementInfo.Attributes);
-               NSView view;
-               if (!viewElements.TryGetValue(id, out view))
-               {
-                  view = new LiteHtmlNSInput();
-                  AddSubview(view);
-                  viewElements.Add(id, view);
-               }
-               var newRect = new CGRect(elementInfo.PosX, elementInfo.PosY, elementInfo.Width, elementInfo.Height);
-               if (newRect != view.Frame)
-               {
-                  view.Frame = newRect;
-               }
+               el.Value.Frame = newRect;
             }
-         }
-         catch (Exception ex)
-         {
          }
       }
 
@@ -73,7 +58,10 @@ namespace LiteHtmlSharp.Mac
          if (string.Equals(tag, "input", StringComparison.InvariantCultureIgnoreCase))
          {
             var newID = ++lastViewElementId;
-            elementIDs.Add(newID);
+            var view = new LiteHtmlNSInput();
+            AddSubview(view);
+            viewElements.Add(newID, view);
+
             return newID;
          }
          return 0;
@@ -86,7 +74,6 @@ namespace LiteHtmlSharp.Mac
             el.Value.RemoveFromSuperview();
          }
          viewElements.Clear();
-         elementIDs.Clear();
       }
 
       public void LoadHtml(string html)

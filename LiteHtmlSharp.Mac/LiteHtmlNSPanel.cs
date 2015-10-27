@@ -1,18 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Foundation;
 using AppKit;
-using CoreGraphics;
-using System.IO;
-using System.Diagnostics;
-using LiteHtmlSharp;
 using LiteHtmlSharp.CoreGraphics;
-using System.Text;
+using CoreGraphics;
+using Foundation;
 
 namespace LiteHtmlSharp.Mac
 {
-   public class LiteHtmlNSWindow : NSWindow
+   public class LiteHtmlNSPanel : NSPanel
    {
       public CGContainer LiteHtmlContainer { get { return LiteHtmlView.LiteHtmlContainer; } }
 
@@ -20,10 +14,12 @@ namespace LiteHtmlSharp.Mac
 
       LiteHtmlWindowHelper windowHelper;
 
-      public LiteHtmlNSWindow(CGRect rect, NSWindowStyle windowStyle, string masterCssData)
-         : base(rect, windowStyle, NSBackingStore.Buffered, false)
+      public LiteHtmlNSPanel(CGRect rect, string masterCssData)
       {
          windowHelper = new LiteHtmlWindowHelper(this, rect, masterCssData);
       }
+
+
    }
 }
+
