@@ -33,6 +33,8 @@ namespace LiteHtmlSharp
       HTMLVisual _visualControl;
       DrawingVisual _visual;
       Dictionary<string, Brush> _brushes = new Dictionary<string, Brush>();
+      Dictionary<string, Pen> _pens = new Dictionary<string, Pen>();
+
       Dictionary<string, BitmapImage> _images = new Dictionary<string, BitmapImage>();
       Dictionary<UIntPtr, FontInfo> _fonts = new Dictionary<UIntPtr, FontInfo>();
       List<Input> _inputs = new List<Input>();
@@ -79,7 +81,7 @@ namespace LiteHtmlSharp
          int newHeight = Document.Height();
          if (newHeight != _size.Height && newHeight > 0)
          {
-            _visualControl.SetHeight(Document.Height());
+            _visualControl.SetHeight(newHeight);
          }
 
          Draw();
@@ -209,8 +211,13 @@ namespace LiteHtmlSharp
          DrawRect(0, 0, 50, 50, GetBrush(ref color));
       }
 
-      protected override void DrawBackground(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos, ref border_radiuses br, ref position borderBox)
+      protected override void DrawBackground(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos, ref border_radiuses br, ref position borderBox, bool isRoot)
       {
+         if(isRoot)
+         {
+            _visualControl.SetBackground(GetBrush(ref color));
+         }
+
          if (pos.width > 0 && pos.height > 0)
          {
             if (!String.IsNullOrEmpty(image))
@@ -243,26 +250,61 @@ namespace LiteHtmlSharp
          }
       }
 
+      private void DrawCurvedPath(Point p1, Point p2, Point p3, Point p4, ref web_color color, int thickness)
+      {
+         var geometry = new PathGeometry();
+         PathSegmentCollection path = new PathSegmentCollection();
+
+         path.Add(new LineSegment(p2, true));
+         path.Add(new QuadraticBezierSegment(p3, p4, true));
+         geometry.Figures.Add(new PathFigure(p1, path, false));
+
+         _dc.DrawGeometry(null, GetPen(ref color, thickness), geometry);
+      }
+
       protected override void DrawBorders(UIntPtr hdc, ref borders borders, ref position draw_pos, bool root)
       {
+         Rect rect = new Rect(draw_pos.x, draw_pos.y, draw_pos.width, draw_pos.height);
+         var br = borders.radius;
+
          if (borders.top.width > 0)
          {
-            DrawRect(draw_pos.x, draw_pos.y, draw_pos.width, borders.top.width, GetBrush(ref borders.top.color));
-         }
-
-         if (borders.left.width > 0)
-         {
-            DrawRect(draw_pos.x, draw_pos.y, borders.left.width, draw_pos.width, GetBrush(ref borders.left.color));
+            Point p1 = new Point(rect.Left + br.top_left_x, rect.Top);
+            Point p2 = new Point(rect.Right - br.top_right_x, rect.Top);
+            Point p3 = new Point(rect.Right, rect.Top);
+            Point p4 = new Point(rect.Right, rect.Top + br.top_right_y);
+            DrawCurvedPath(p1, p2, p3, p4, ref borders.top.color, borders.top.width);
+            //DrawRect(draw_pos.x, draw_pos.y, draw_pos.width, borders.top.width, GetBrush(ref borders.top.color));
          }
 
          if (borders.right.width > 0)
          {
-            DrawRect(draw_pos.x, draw_pos.y, borders.right.width, draw_pos.width, GetBrush(ref borders.right.color));
+            Point p1 = new Point(rect.Right, rect.Top + br.top_right_y);
+            Point p2 = new Point(rect.Right, rect.Bottom - br.bottom_right_y);
+            Point p3 = new Point(rect.Right, rect.Bottom);
+            Point p4 = new Point(rect.Right - br.bottom_right_x, rect.Bottom);
+            DrawCurvedPath(p1, p2, p3, p4, ref borders.right.color, borders.right.width);
+            //DrawRect(draw_pos.x, draw_pos.y, borders.left.width, draw_pos.width, GetBrush(ref borders.left.color));
          }
 
          if (borders.bottom.width > 0)
          {
-            DrawRect(draw_pos.x, draw_pos.y, draw_pos.width, borders.bottom.width, GetBrush(ref borders.bottom.color));
+            Point p1 = new Point(rect.Right - br.bottom_right_x, rect.Bottom);
+            Point p2 = new Point(rect.Left + br.bottom_left_x, rect.Bottom);
+            Point p3 = new Point(rect.Left, rect.Bottom);
+            Point p4 = new Point(rect.Left, rect.Bottom - br.bottom_left_y);
+            DrawCurvedPath(p1, p2, p3, p4, ref borders.bottom.color, borders.bottom.width);
+            //DrawRect(draw_pos.x + draw_pos.width - borders.right.width, draw_pos.y, borders.right.width, draw_pos.height, GetBrush(ref borders.right.color));
+         }
+
+         if (borders.left.width > 0)
+         {
+            Point p1 = new Point(rect.Left, rect.Bottom - br.bottom_left_y);
+            Point p2 = new Point(rect.Left, rect.Top + br.top_left_y);
+            Point p3 = new Point(rect.Left, rect.Top);
+            Point p4 = new Point(rect.Left + br.top_left_x, rect.Top);
+            DrawCurvedPath(p1, p2, p3, p4, ref borders.left.color, borders.left.width);
+            //DrawRect(draw_pos.x, draw_pos.y + draw_pos.height - borders.bottom.width, draw_pos.width, borders.bottom.width, GetBrush(ref borders.bottom.color));
          }
       }
 
@@ -270,6 +312,21 @@ namespace LiteHtmlSharp
       {
          Rect rect = new Rect(x, y, width, height);
          _dc.DrawRectangle(brush, null, rect);
+      }
+
+      private Pen GetPen(ref web_color color, int thickness)
+      {
+         string key = color.red.ToString() + color.green.ToString() + color.blue.ToString() + thickness;
+
+         Pen result = null;
+         if (!_pens.TryGetValue(key, out result))
+         {
+            Brush brush = GetBrush(ref color);
+            result = new Pen(brush, thickness);
+            _pens.Add(key, result);
+         }
+
+         return result;
       }
 
       private Brush GetBrush(ref web_color color)

@@ -28,7 +28,7 @@ namespace LiteHtmlSharp
    public delegate void DrawBordersFunc(UIntPtr hdc,ref borders borders,ref position draw_pos,[MarshalAs(UnmanagedType.I1)] bool root);
 
    [UnmanagedFunctionPointer(PInvokes.cc, CharSet = PInvokes.cs)]
-   public delegate void DrawBackgroundFunc(UIntPtr hdc,string image,background_repeat repeat,ref web_color color,ref position pos,ref border_radiuses borderRadiuses,ref position borderBox);
+   public delegate void DrawBackgroundFunc(UIntPtr hdc,string image,background_repeat repeat,ref web_color color,ref position pos,ref border_radiuses borderRadiuses,ref position borderBox, [MarshalAs(UnmanagedType.I1)] bool isRoot);
 
    [UnmanagedFunctionPointer(PInvokes.cc, CharSet = PInvokes.cs)]
    public delegate void GetImageSizeFunc(string image,ref size size);

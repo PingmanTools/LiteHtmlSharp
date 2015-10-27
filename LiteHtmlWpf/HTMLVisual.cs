@@ -53,9 +53,25 @@ namespace LiteHtmlSharp
          }
       }
 
+      public void SetBackground(Brush brush)
+      {
+         _canvas.Background = brush;
+      }
+
       public void SetHeight(double height)
       {
-         _canvas.Height = height;
+         double visibleHeight = ((FrameworkElement)_canvas.Parent).ActualHeight;
+
+         if (height > visibleHeight)
+         {
+            _canvas.Height = height;
+         }
+         else
+         {
+            _canvas.VerticalAlignment = VerticalAlignment.Stretch;
+            _canvas.Height = double.NaN;
+         }
+
          OnSizeChanged();
       }
 
@@ -67,6 +83,7 @@ namespace LiteHtmlSharp
       private void OnMouseLeave(object sender, MouseEventArgs e)
       {
          _container.OnMouseLeave();
+         SetCursor(null);
       }
 
       private void OnMouseMove(object sender, MouseEventArgs e)
@@ -136,7 +153,7 @@ namespace LiteHtmlSharp
 
       public void SetCursor(string cursor)
       {
-         if (cursor.Equals("pointer", StringComparison.CurrentCultureIgnoreCase))
+         if (string.Equals(cursor, "pointer", StringComparison.CurrentCultureIgnoreCase))
          {
             Mouse.OverrideCursor = Cursors.Hand;
          }

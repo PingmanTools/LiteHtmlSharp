@@ -86,15 +86,15 @@ namespace LiteHtmlSharp
 
       // -----
 
-      private void DrawBackgroundScaled(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos, ref border_radiuses borderRadiuses, ref position borderBox)
+      private void DrawBackgroundScaled(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos, ref border_radiuses borderRadiuses, ref position borderBox, bool isRoot)
       {
          pos.Scale(ScaleFactor);
          borderRadiuses.Scale(ScaleFactor);
          borderBox.Scale(ScaleFactor);
-         DrawBackground(hdc, image, repeat, ref color, ref pos, ref borderRadiuses, ref borderBox);
+         DrawBackground(hdc, image, repeat, ref color, ref pos, ref borderRadiuses, ref borderBox, isRoot);
       }
 
-      protected abstract void DrawBackground(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos, ref border_radiuses borderRadiuses, ref position borderBox);
+      protected abstract void DrawBackground(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos, ref border_radiuses borderRadiuses, ref position borderBox, bool isRoot);
 
       // -----
 
