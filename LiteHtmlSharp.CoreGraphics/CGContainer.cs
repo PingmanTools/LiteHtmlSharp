@@ -249,7 +249,7 @@ namespace LiteHtmlSharp.CoreGraphics
 
       #region Rect
 
-      protected override void DrawBackground(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos, ref border_radiuses br, ref position borderBox)
+      protected override void DrawBackground(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos, ref border_radiuses br, ref position borderBox, bool isRoot)
       {
          var cgColor = color.ToCGColor();
          var rect = pos.ToRect();
