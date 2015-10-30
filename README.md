@@ -24,7 +24,7 @@ sparked our imagination, and it's a stable, awesome library that knows how to do
 just about everything we needed.
 
 So we wrapped [litehtml](https://github.com/litehtml/litehtml) to make it work for C#, then built a drawing
-abstraction layer and OSX and WPF implementations.  Cool.  It /could/ work for Android, iOS, Linx, too - we've
+abstraction layer and OSX and WPF implementations.  Cool.  It *could* work for Android, iOS, Linx, too - we've
 just not done the visualization part for that yet.  Several other parts are not yet fully flushed out, too.
 
 
