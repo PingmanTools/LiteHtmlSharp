@@ -331,7 +331,7 @@ namespace LiteHtmlSharp
 
       private Brush GetBrush(ref web_color color)
       {
-         string key = color.red.ToString() + color.green.ToString() + color.blue.ToString();
+         string key = color.red.ToString() + color.green.ToString() + color.blue.ToString() + color.alpha.ToString();
 
          Brush result = null;
          if (!_brushes.TryGetValue(key, out result))
