@@ -269,42 +269,42 @@ namespace LiteHtmlSharp
 
          if (borders.top.width > 0)
          {
-            Point p1 = new Point(rect.Left + br.top_left_x, rect.Top);
-            Point p2 = new Point(rect.Right - br.top_right_x, rect.Top);
-            Point p3 = new Point(rect.Right, rect.Top);
-            Point p4 = new Point(rect.Right, rect.Top + br.top_right_y);
-            DrawCurvedPath(p1, p2, p3, p4, ref borders.top.color, borders.top.width);
-            //DrawRect(draw_pos.x, draw_pos.y, draw_pos.width, borders.top.width, GetBrush(ref borders.top.color));
+            //Point p1 = new Point(rect.Left + br.top_left_x, rect.Top);
+            //Point p2 = new Point(rect.Right - br.top_right_x, rect.Top);
+            //Point p3 = new Point(rect.Right, rect.Top);
+            //Point p4 = new Point(rect.Right, rect.Top + br.top_right_y);
+            //DrawCurvedPath(p1, p2, p3, p4, ref borders.top.color, borders.top.width);
+            DrawRect(draw_pos.x, draw_pos.y, draw_pos.width, borders.top.width, GetBrush(ref borders.top.color));
          }
 
          if (borders.right.width > 0)
          {
-            Point p1 = new Point(rect.Right, rect.Top + br.top_right_y);
-            Point p2 = new Point(rect.Right, rect.Bottom - br.bottom_right_y);
-            Point p3 = new Point(rect.Right, rect.Bottom);
-            Point p4 = new Point(rect.Right - br.bottom_right_x, rect.Bottom);
-            DrawCurvedPath(p1, p2, p3, p4, ref borders.right.color, borders.right.width);
-            //DrawRect(draw_pos.x, draw_pos.y, borders.left.width, draw_pos.width, GetBrush(ref borders.left.color));
+            //Point p1 = new Point(rect.Right, rect.Top + br.top_right_y);
+            //Point p2 = new Point(rect.Right, rect.Bottom - br.bottom_right_y);
+            //Point p3 = new Point(rect.Right, rect.Bottom);
+            //Point p4 = new Point(rect.Right - br.bottom_right_x, rect.Bottom);
+            //DrawCurvedPath(p1, p2, p3, p4, ref borders.right.color, borders.right.width);
+            DrawRect(draw_pos.x + draw_pos.width - borders.right.width, draw_pos.y, borders.right.width, draw_pos.height, GetBrush(ref borders.right.color));
          }
 
          if (borders.bottom.width > 0)
          {
-            Point p1 = new Point(rect.Right - br.bottom_right_x, rect.Bottom);
-            Point p2 = new Point(rect.Left + br.bottom_left_x, rect.Bottom);
-            Point p3 = new Point(rect.Left, rect.Bottom);
-            Point p4 = new Point(rect.Left, rect.Bottom - br.bottom_left_y);
-            DrawCurvedPath(p1, p2, p3, p4, ref borders.bottom.color, borders.bottom.width);
-            //DrawRect(draw_pos.x + draw_pos.width - borders.right.width, draw_pos.y, borders.right.width, draw_pos.height, GetBrush(ref borders.right.color));
+            //Point p1 = new Point(rect.Right - br.bottom_right_x, rect.Bottom);
+            //Point p2 = new Point(rect.Left + br.bottom_left_x, rect.Bottom);
+            //Point p3 = new Point(rect.Left, rect.Bottom);
+            //Point p4 = new Point(rect.Left, rect.Bottom - br.bottom_left_y);
+            //DrawCurvedPath(p1, p2, p3, p4, ref borders.bottom.color, borders.bottom.width);
+            DrawRect(draw_pos.x, draw_pos.y + draw_pos.height - borders.bottom.width, draw_pos.width, borders.bottom.width, GetBrush(ref borders.bottom.color));
          }
 
          if (borders.left.width > 0)
          {
-            Point p1 = new Point(rect.Left, rect.Bottom - br.bottom_left_y);
-            Point p2 = new Point(rect.Left, rect.Top + br.top_left_y);
-            Point p3 = new Point(rect.Left, rect.Top);
-            Point p4 = new Point(rect.Left + br.top_left_x, rect.Top);
-            DrawCurvedPath(p1, p2, p3, p4, ref borders.left.color, borders.left.width);
-            //DrawRect(draw_pos.x, draw_pos.y + draw_pos.height - borders.bottom.width, draw_pos.width, borders.bottom.width, GetBrush(ref borders.bottom.color));
+            //Point p1 = new Point(rect.Left, rect.Bottom - br.bottom_left_y);
+            //Point p2 = new Point(rect.Left, rect.Top + br.top_left_y);
+            //Point p3 = new Point(rect.Left, rect.Top);
+            //Point p4 = new Point(rect.Left + br.top_left_x, rect.Top);
+            //DrawCurvedPath(p1, p2, p3, p4, ref borders.left.color, borders.left.width);
+            DrawRect(draw_pos.x, draw_pos.y, borders.left.width, draw_pos.height, GetBrush(ref borders.left.color));
          }
       }
 
