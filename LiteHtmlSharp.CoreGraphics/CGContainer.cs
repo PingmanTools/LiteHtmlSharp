@@ -52,7 +52,18 @@ namespace LiteHtmlSharp.CoreGraphics
 
       protected override void DrawListMarker(string image, string baseURL, list_style_type marker_type, ref web_color color, ref position pos)
       {
-         
+         Context.SetFillColor(color.ToCGColor());
+
+         switch (marker_type)
+         {
+            case list_style_type.list_style_type_square:
+               Context.FillRect(pos.ToRect());
+               break;
+            case list_style_type.list_style_type_circle:
+            default:
+               Context.FillEllipseInRect(pos.ToRect());
+               break;
+         }
       }
 
       public void Render()
