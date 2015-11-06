@@ -81,7 +81,7 @@ namespace Browser
       public byte[] GetResourceBytes(string resource)
       {
          var file = GetAbsoluteFile(resource);
-         if (File.Exists(file.OriginalString))
+         if (file.IsFile && File.Exists(file.OriginalString))
          {
             return File.ReadAllBytes(file.OriginalString);
          }
