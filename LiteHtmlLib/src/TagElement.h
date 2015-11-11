@@ -9,6 +9,7 @@ struct ElementInfo
    int Width;
    int Height;
    const char* Attributes;
+   const char* Text;
 };
 
 class TagElement : public litehtml::html_tag
@@ -24,4 +25,5 @@ public:
 private:
    ElementInfo _managedInfo;
    std::string _attributes;
+   std::string _text;
 };
