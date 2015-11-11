@@ -56,6 +56,7 @@
     <Compile Include="LiteHtmlNSInput.cs" />
     <Compile Include="LiteHtmlNSPanel.cs" />
     <Compile Include="LiteHtmlWindowHelper.cs" />
+    <Compile Include="LiteHtmlNSButton.cs" />
   </ItemGroup>
   <Import Project="..\LiteHtmlSharp.CoreGraphics\LiteHtmlSharp.CoreGraphics.projitems" Label="Shared" Condition="Exists('..\LiteHtmlSharp.CoreGraphics\LiteHtmlSharp.CoreGraphics.projitems')" />
   <Import Project="..\LiteHtmlSharp\LiteHtmlSharp.projitems" Label="Shared" Condition="Exists('..\LiteHtmlSharp\LiteHtmlSharp.projitems')" />

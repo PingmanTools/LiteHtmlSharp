@@ -50,21 +50,49 @@ namespace LiteHtmlSharp.Mac
             {
                el.Value.Frame = newRect;
             }
+
+            if (el.Value is LiteHtmlNSButton)
+            {
+               var btn = el.Value as LiteHtmlNSButton;
+               if (!btn.HasAppliedAttributes)
+               {
+                  btn.ApplyAttributes(elementInfo.Attributes);
+                  btn.Activated += Btn_Activated;
+               }
+            }
          }
+      }
+
+      void Btn_Activated(object sender, EventArgs e)
+      {
+         var btn = (LiteHtmlNSButton)sender;
+         LiteHtmlContainer.TriggerAnchorClicked(btn.Href);
       }
 
       int CreateElement(string tag)
       {
-         if (string.Equals(tag, "input", StringComparison.InvariantCultureIgnoreCase))
+         switch (tag.ToLower())
          {
-            var newID = ++lastViewElementId;
-            var view = new LiteHtmlNSInput();
-            AddSubview(view);
-            viewElements.Add(newID, view);
-
-            return newID;
+            case "input":
+               {
+                  var newID = ++lastViewElementId;
+                  var view = new LiteHtmlNSInput();
+                  AddSubview(view);
+                  viewElements.Add(newID, view);
+                  return newID;
+               }
+            case "button":
+               {
+                  var newID = ++lastViewElementId;
+                  var view = new LiteHtmlNSButton();
+                  AddSubview(view);
+                  viewElements.Add(newID, view);
+                  return newID;
+               }
+            default:
+               return 0;
          }
-         return 0;
+
       }
 
       private void RemoveAllViewElements()

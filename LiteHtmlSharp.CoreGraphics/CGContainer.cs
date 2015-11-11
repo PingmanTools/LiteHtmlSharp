@@ -99,6 +99,12 @@ namespace LiteHtmlSharp.CoreGraphics
          }
       }
 
+      // Used when the parent has a custom tag (View) that works with an href attribute
+      public void TriggerAnchorClicked(string url)
+      {
+         OnAnchorClick(url);
+      }
+
       protected override void OnAnchorClick(string url)
       {
          if (AnchorClicked != null)

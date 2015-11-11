@@ -22,6 +22,8 @@ namespace LiteHtmlSharp.Mac
          LiteHtmlView.LiteHtmlContainer.DocumentSizeKnown += LiteHtmlView_DocumentSizeKnown;
 
          scrollView = new NSScrollView();
+         scrollView.VerticalScrollElasticity = NSScrollElasticity.None;
+
          scrollView.AutohidesScrollers = true;
          scrollView.HasHorizontalScroller = true;
          scrollView.HasVerticalScroller = true;
