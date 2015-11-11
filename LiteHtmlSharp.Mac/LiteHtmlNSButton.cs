@@ -8,6 +8,7 @@ namespace LiteHtmlSharp.Mac
       public bool HasAppliedAttributes { get; private set; }
       public string Href { get; private set; }
       public string ID { get; private set; }
+      public string Value { get; private set; }
 
       public LiteHtmlNSButton()
       {
@@ -30,7 +31,7 @@ namespace LiteHtmlSharp.Mac
                      ID = keyVal[1];
                      break;
                   case "value":
-                     Title = keyVal[1];
+                     Title = Value = keyVal[1];
                      break;
                   case "href":
                      Href = keyVal[1];

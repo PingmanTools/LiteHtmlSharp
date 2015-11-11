@@ -63,6 +63,11 @@ namespace LiteHtmlSharp.Mac
          }
       }
 
+      public void SetupCustomViews()
+      {
+         LiteHtmlContainer_ViewElementsNeedLayout();
+      }
+
       void Btn_Activated(object sender, EventArgs e)
       {
          var btn = (LiteHtmlNSButton)sender;
