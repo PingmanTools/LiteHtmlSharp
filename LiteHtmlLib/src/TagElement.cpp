@@ -34,9 +34,15 @@ ElementInfo& TagElement::GetManagedInfo()
    _managedInfo.Width = width();
    _managedInfo.Height = height();
 
-
    _attributes = std::string(strToReturn.begin(), strToReturn.end());
    _managedInfo.Attributes = _attributes.c_str();
+
+
+   litehtml::tstring text;
+   this->get_text(text);
+
+   _text = std::string(text.begin(), text.end());
+   _managedInfo.Text = _text.c_str();
 
    return _managedInfo;
 }

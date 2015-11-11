@@ -224,6 +224,9 @@ namespace LiteHtmlSharp
 
       [MarshalAs(UnmanagedType.LPStr)]
       public string Attributes;
+
+      [MarshalAs(UnmanagedType.LPStr)]
+      public string Text;
    }
 
    public enum list_style_type
