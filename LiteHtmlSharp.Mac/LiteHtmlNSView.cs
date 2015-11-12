@@ -21,14 +21,16 @@ namespace LiteHtmlSharp.Mac
       public event Action Drawn;
 
       int lastViewElementId = 0;
-      Dictionary<int, NSView> viewElements = new Dictionary<int, NSView>();
+      Dictionary<int, ICustomTagView> viewElements = new Dictionary<int, ICustomTagView>();
 
-      public IEnumerable<NSView> ViewElements { get { return viewElements.Values; } }
+      public IEnumerable<ICustomTagView> ViewElements { get { return viewElements.Values; } }
 
       bool hasCustomViewport = false;
       CGRect customViewport;
 
       CGRect Viewport { get { return hasCustomViewport ? customViewport : Bounds; } }
+
+      public event Action<ICustomTagView> CustomTabViewHasSetup;
 
 
       public LiteHtmlNSView(CGRect rect, string masterCssData)
@@ -46,26 +48,25 @@ namespace LiteHtmlSharp.Mac
          {
             var elementInfo = LiteHtmlContainer.Document.GetElementInfo(el.Key);
             var newRect = new CGRect(elementInfo.PosX, elementInfo.PosY, elementInfo.Width, elementInfo.Height);
-            if (newRect != el.Value.Frame)
+            if (newRect != el.Value.View.Frame)
             {
-               el.Value.Frame = newRect;
+               el.Value.View.Frame = newRect;
             }
 
-            if (el.Value is LiteHtmlNSButton)
+            if (!el.Value.HasSetup)
             {
-               var btn = el.Value as LiteHtmlNSButton;
-               if (!btn.HasAppliedAttributes)
+               el.Value.Setup(elementInfo);
+               if (el.Value is LiteHtmlNSButton)
                {
-                  btn.ApplyAttributes(elementInfo.Attributes);
-                  btn.Activated += Btn_Activated;
+                  (el.Value as LiteHtmlNSButton).Activated += Btn_Activated;
                }
+               if (CustomTabViewHasSetup != null)
+               {
+                  CustomTabViewHasSetup(el.Value);
+               }
+
             }
          }
-      }
-
-      public void SetupCustomViews()
-      {
-         LiteHtmlContainer_ViewElementsNeedLayout();
       }
 
       void Btn_Activated(object sender, EventArgs e)
@@ -104,7 +105,7 @@ namespace LiteHtmlSharp.Mac
       {
          foreach (var el in viewElements)
          {
-            el.Value.RemoveFromSuperview();
+            el.Value.View.RemoveFromSuperview();
          }
          viewElements.Clear();
       }

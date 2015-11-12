@@ -3,12 +3,14 @@ using AppKit;
 
 namespace LiteHtmlSharp.Mac
 {
-   public class LiteHtmlNSButton : NSButton
+   public class LiteHtmlNSButton : NSButton, ICustomTagView
    {
-      public bool HasAppliedAttributes { get; private set; }
+      public bool HasSetup { get; private set; }
       public string Href { get; private set; }
       public string ID { get; private set; }
       public string Value { get; private set; }
+
+      public NSView View { get { return this; } }
 
       public LiteHtmlNSButton()
       {
@@ -16,10 +18,12 @@ namespace LiteHtmlSharp.Mac
          BezelStyle = NSBezelStyle.RegularSquare;
       }
 
-      public void ApplyAttributes(string attrs)
+
+
+      public void Setup(ElementInfo elementInfo)
       {
-         HasAppliedAttributes = true;
-         var lines = attrs.Split('\n');
+         HasSetup = true;
+         var lines = elementInfo.Attributes.Split('\n');
          foreach (var line in lines)
          {
             var keyVal = line.Split('=');

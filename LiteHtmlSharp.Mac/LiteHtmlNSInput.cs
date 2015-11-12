@@ -3,25 +3,25 @@ using AppKit;
 
 namespace LiteHtmlSharp.Mac
 {
-   public class LiteHtmlNSInput : NSTextField
+   public class LiteHtmlNSInput : NSTextField, ICustomTagView
    {
+      public void Setup(ElementInfo elementInfo)
+      {
+         HasSetup = true;
+      }
+
+      public bool HasSetup { get; private set; }
+
+      public NSView View
+      {
+         get
+         {
+            return this;
+         }
+      }
+
       public LiteHtmlNSInput()
       {
-      }
-
-      public override void MouseEntered(NSEvent theEvent)
-      {
-        
-      }
-
-      public override void MouseExited(NSEvent theEvent)
-      {
-         
-      }
-
-      public override void MouseMoved(NSEvent theEvent)
-      {
-         
       }
 
    }
