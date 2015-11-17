@@ -80,4 +80,9 @@
       <Name>LiteHtmlSharp.Mac</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\LiteHtmlLib\build\liblitehtml.dylib">
+      <Link>liblitehtml.dylib</Link>
+    </Content>
+  </ItemGroup>
 </Project>

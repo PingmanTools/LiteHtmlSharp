@@ -10,7 +10,7 @@
     <OutputPath>.</OutputPath>
     <CustomCommands>
       <CustomCommands>
-        <Command type="Build" command="sh build.sh" workingdir="${ProjectDir}" externalConsole="True" />
+        <Command type="Build" command="sh build.sh" workingdir="${SolutionDir}/LiteHtmlSharp/LiteHtmlLib" />
       </CustomCommands>
     </CustomCommands>
   </PropertyGroup>
