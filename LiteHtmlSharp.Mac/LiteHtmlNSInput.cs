@@ -8,6 +8,8 @@ namespace LiteHtmlSharp.Mac
       public void Setup(ElementInfo elementInfo)
       {
          HasSetup = true;
+         Cell.UsesSingleLineMode = true;
+         Cell.Wraps = false;
       }
 
       public bool HasSetup { get; private set; }
