@@ -3,7 +3,7 @@ using CoreGraphics;
 
 namespace LiteHtmlSharp.CoreGraphics
 {
-   class ImageHolder
+   public class ImageHolder
    {
       public CGImage Image { get; set; }
 

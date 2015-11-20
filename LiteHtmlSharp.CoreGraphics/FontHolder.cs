@@ -2,7 +2,6 @@
 using Foundation;
 using CoreText;
 using CoreGraphics;
-using AppKit;
 
 namespace LiteHtmlSharp.CoreGraphics
 {
@@ -17,6 +16,8 @@ namespace LiteHtmlSharp.CoreGraphics
       public font_decoration Decoration { get; set; }
 
       public int Weight { get; set; }
+
+      public string FaceName { get; set; }
 
       public static FontHolder Create(string faceName, int size, int weight, font_style italic, font_decoration decoration, ref font_metrics fm)
       {
@@ -45,6 +46,7 @@ namespace LiteHtmlSharp.CoreGraphics
 
          var fontHolder = new FontHolder
          { 
+            FaceName = faceName,
             Size = size,
             Attributes = strAttrs,
             Decoration = decoration,
@@ -74,12 +76,12 @@ namespace LiteHtmlSharp.CoreGraphics
          // these styles can only be applied to the NSAttributedString
          if (Decoration.HasFlag(font_decoration.font_decoration_linethrough))
          {
-            attrString.AddAttribute(NSStringAttributeKey.StrikethroughStyle, new NSNumber(1), range);
+            attrString.AddAttribute((NSString)"NSStrikethrough", new NSNumber(1), range);
          }
          if (Decoration.HasFlag(font_decoration.font_decoration_underline))
          {
-            attrString.AddAttribute(NSStringAttributeKey.UnderlineStyle, new NSNumber(1), range);
-            attrString.AddAttribute(NSStringAttributeKey.UnderlineColor, new NSObject(color.ToCGColor().Handle), range);
+            attrString.AddAttribute((NSString)"NSUnderline", new NSNumber(1), range);
+            attrString.AddAttribute((NSString)"NSUnderlineColor", new NSObject(color.ToCGColor().Handle), range);
          }
 
          if (Decoration.HasFlag(font_decoration.font_decoration_overline))
@@ -89,7 +91,13 @@ namespace LiteHtmlSharp.CoreGraphics
 
          if (Weight > 400)
          {
+            #if __MOBILE__
+            var boldFontDescriptor = UIKit.UIFont.FromName(FaceName, Size).FontDescriptor.CreateWithTraits(UIKit.UIFontDescriptorSymbolicTraits.Bold);
+            var boldFont = UIKit.UIFont.FromDescriptor(boldFontDescriptor, 0);
+            attrString.AddAttribute(UIKit.UIStringAttributeKey.Font, boldFont, new NSRange(0, text.Length));
+            #else
             attrString.ApplyFontTraits(NSFontTraitMask.Bold, new NSRange(0, text.Length));
+            #endif
          }
 
          return attrString;

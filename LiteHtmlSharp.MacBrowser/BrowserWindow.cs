@@ -61,11 +61,14 @@ namespace LiteHtmlSharp.MacBrowser
          LayoutViews();
       }
 
-      NSImage LoadImage(string url)
+      LiteHtmlSharp.CoreGraphics.ImageHolder LoadImage(string url)
       {
          try
          {
-            return new NSImage(NSData.FromArray(DownloadResource(url)));
+            var nsImage = new NSImage(NSData.FromArray(DownloadResource(url)));
+            var rect = new CGRect(new CGPoint(0, 0), nsImage.Size);
+            var image = nsImage.AsCGImage(ref rect, null, null);
+            return new LiteHtmlSharp.CoreGraphics.ImageHolder{ Image = image, Size = nsImage.Size };
          }
          catch (Exception)
          {

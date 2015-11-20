@@ -1,7 +1,6 @@
 ﻿using System;
 using LiteHtmlSharp;
 using CoreGraphics;
-using AppKit;
 
 namespace LiteHtmlSharp.CoreGraphics
 {
@@ -28,11 +27,6 @@ namespace LiteHtmlSharp.CoreGraphics
       public static CGColor ToCGColor(this web_color wc)
       {
          return new CGColor(wc.red / MaxByteAsFloat, wc.green / MaxByteAsFloat, wc.blue / MaxByteAsFloat, wc.alpha / MaxByteAsFloat);
-      }
-
-      public static NSColor ToNSColor(this web_color wc)
-      {
-         return NSColor.FromRgba(wc.red / MaxByteAsFloat, wc.green / MaxByteAsFloat, wc.blue / MaxByteAsFloat, wc.alpha / MaxByteAsFloat);
       }
    }
 }
