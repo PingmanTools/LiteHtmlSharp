@@ -96,7 +96,7 @@ namespace LiteHtmlSharp.CoreGraphics
             var boldFont = UIKit.UIFont.FromDescriptor(boldFontDescriptor, 0);
             attrString.AddAttribute(UIKit.UIStringAttributeKey.Font, boldFont, new NSRange(0, text.Length));
             #else
-            attrString.ApplyFontTraits(NSFontTraitMask.Bold, new NSRange(0, text.Length));
+            AppKit.NSMutableAttributedStringAppKitAddons.ApplyFontTraits(attrString, AppKit.NSFontTraitMask.Bold, new NSRange(0, text.Length));
             #endif
          }
 
