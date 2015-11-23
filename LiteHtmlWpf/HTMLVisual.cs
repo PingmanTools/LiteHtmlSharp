@@ -20,6 +20,14 @@ namespace LiteHtmlSharp
 
       public event LinkClickedHandler LinkClicked;
 
+      public List<Input> Inputs
+      {
+         get
+         {
+            return _container.Inputs;
+         }
+      }
+
       public bool HTMLLoaded
       {
          get { return _container.Loaded; }

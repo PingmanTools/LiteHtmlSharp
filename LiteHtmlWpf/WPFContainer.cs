@@ -37,7 +37,7 @@ namespace LiteHtmlSharp
 
       Dictionary<string, BitmapImage> _images = new Dictionary<string, BitmapImage>();
       Dictionary<UIntPtr, FontInfo> _fonts = new Dictionary<UIntPtr, FontInfo>();
-      List<Input> _inputs = new List<Input>();
+      public List<Input> Inputs = new List<Input>();
       public bool Loaded = false;
       private bool _rendering = false;
       public static string BaseURL;
@@ -72,7 +72,7 @@ namespace LiteHtmlSharp
          if (_rendering) return;
 
          _images.Clear();
-         _inputs.Clear();
+         Inputs.Clear();
          _rendering = true;
 
          Document.CreateFromString(html);
@@ -92,20 +92,33 @@ namespace LiteHtmlSharp
 
       private void ProcessInputs()
       {
-         foreach (var input in _inputs)
+         foreach (var input in Inputs)
          {
-            if (input.TextBox == null)
+            if (input.Element == null)
             {
                ElementInfo info = Document.GetElementInfo(input.ID);
-               input.TextBox = new TextBox();
-               input.TextBox.HorizontalAlignment = HorizontalAlignment.Left;
-               input.TextBox.VerticalAlignment = VerticalAlignment.Top;
-               input.TextBox.Width = info.Width;
+
+               if (input.Type == InputType.Textbox)
+               {
+                  input.TextBox = new TextBox();
+               }
+               else if (input.Type == InputType.Button)
+               {
+                  input.Button = new Button();
+                  input.Button.Tag = info;
+                  input.Button.Click += Button_Click;
+               }
+
+               input.Setup(info);
+
+               input.Element.HorizontalAlignment = HorizontalAlignment.Left;
+               input.Element.VerticalAlignment = VerticalAlignment.Top;
+               input.Element.Width = info.Width;
                if (info.Height > 0)
                {
-                  input.TextBox.Height = info.Height;
+                  input.Element.Height = info.Height;
                }
-               input.TextBox.Margin = new Thickness(info.PosX, info.PosY, 0, 0);
+               input.Element.Margin = new Thickness(info.PosX, info.PosY, 0, 0);
             }
 
             if (!input.IsPlaced)
@@ -116,9 +129,15 @@ namespace LiteHtmlSharp
          }
       }
 
+      private void Button_Click(object sender, RoutedEventArgs e)
+      {
+         Input input = ((Button)sender).Tag as Input;
+         OnAnchorClick(input.Href);
+      }
+
       public void Clear()
       {
-         foreach (var input in _inputs)
+         foreach (var input in Inputs)
          {
             if (input.IsPlaced)
             {
@@ -470,9 +489,16 @@ namespace LiteHtmlSharp
       {
          if (string.Equals(tag, "input", StringComparison.OrdinalIgnoreCase))
          {
-            Input input = new Input();
-            input.ID = _inputs.Count + 1;
-            _inputs.Add(input);
+            Input input = new Input(InputType.Textbox);
+            input.ID = Inputs.Count + 1;
+            Inputs.Add(input);
+            return input.ID;
+         }
+         else if(string.Equals(tag, "button", StringComparison.OrdinalIgnoreCase))
+         {
+            Input input = new Input(InputType.Button);
+            input.ID = Inputs.Count + 1;
+            Inputs.Add(input);
             return input.ID;
          }
          else
@@ -497,10 +523,47 @@ namespace LiteHtmlSharp
       }
    }
 
-   class Input
+   public enum InputType
+   {
+      Button,
+      Textbox
+   }
+
+   public class Input
    {
       public int ID;
       public TextBox TextBox;
+      public Button Button;
+      public FrameworkElement Element;
       public bool IsPlaced;
+      public InputType Type;
+      public string Href;
+
+      public Input(InputType type)
+      {
+         Type = type;
+      }
+
+      public void Setup(ElementInfo elementInfo)
+      {
+         var lines = elementInfo.Attributes.Split('\n');
+         foreach (var line in lines)
+         {
+            var keyVal = line.Split('=');
+            if (keyVal.Length > 1)
+            {
+               switch (keyVal[0].ToLower())
+               {
+                  case "value":
+                     Element.ToolTip = keyVal[1];
+                     break;
+                  case "href":
+                     Href = keyVal[1];
+                     break;
+               }
+            }
+         }
+
+      }
    }
 }
