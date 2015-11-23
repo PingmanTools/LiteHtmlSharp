@@ -38,8 +38,34 @@ namespace LiteHtmlSharp.Mac
       {
          WantsLayer = true;
          LiteHtmlContainer = new CGContainer(masterCssData);
+         LiteHtmlContainer.SetCursorCallback = SetCusor;
+         LiteHtmlContainer.GetDefaultFontSizeCallback = GetDefaultFontSize;
+         LiteHtmlContainer.GetDefaultFontNameCallback = GetDefaultFontName;
          LiteHtmlContainer.CreateElementCallback = CreateElement;
          LiteHtmlContainer.Document.ViewElementsNeedLayout += LiteHtmlContainer_ViewElementsNeedLayout;
+      }
+
+      string GetDefaultFontName()
+      {
+         return NSFont.SystemFontOfSize(NSFont.SystemFontSize).FontName;
+      }
+
+      int GetDefaultFontSize()
+      {
+         return (int)Math.Round(NSFont.SystemFontSize);
+      }
+
+      void SetCusor(string cursor)
+      {
+         switch (cursor)
+         {
+            case "pointer":
+               NSCursor.PointingHandCursor.Set();
+               break;
+            default:
+               NSCursor.ArrowCursor.Set();
+               break;
+         }
       }
 
       void LiteHtmlContainer_ViewElementsNeedLayout()

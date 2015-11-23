@@ -3,8 +3,6 @@ using System.IO;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Diagnostics;
-
-using AppKit;
 using Foundation;
 using CoreGraphics;
 using CoreText;
@@ -16,11 +14,15 @@ namespace LiteHtmlSharp.CoreGraphics
 {
    public class CGContainer : Container
    {
-      public delegate NSImage LoadImageDelegate(string imageUrl);
-
-      public event Action<string> CaptionDefined;
+      public delegate ImageHolder LoadImageDelegate(string imageUrl);
 
       public LoadImageDelegate LoadImageCallback;
+
+      public delegate void SetCursorDelegate(string cursor);
+
+      public SetCursorDelegate SetCursorCallback { get; set; }
+
+      public event Action<string> CaptionDefined;
 
       public CGContext Context { get; set; }
 
@@ -88,14 +90,9 @@ namespace LiteHtmlSharp.CoreGraphics
 
       protected override void SetCursor(string cursor)
       {
-         switch (cursor)
+         if (SetCursorCallback != null)
          {
-            case "pointer":
-               NSCursor.PointingHandCursor.Set();
-               break;
-            default:
-               NSCursor.ArrowCursor.Set();
-               break;
+            SetCursorCallback(cursor);
          }
       }
 
@@ -166,14 +163,26 @@ namespace LiteHtmlSharp.CoreGraphics
          return fontHolder;
       }
 
+      public Func<int> GetDefaultFontSizeCallback { get; set; }
+
       protected override int GetDefaultFontSize()
       {
-         return (int)Math.Round(NSFont.SystemFontSize);
+         if (GetDefaultFontSizeCallback != null)
+         {
+            return GetDefaultFontSizeCallback();
+         }
+         return 12;
       }
+
+      public Func<string> GetDefaultFontNameCallback { get; set; }
 
       protected override string GetDefaultFontName()
       {
-         return NSFont.SystemFontOfSize(NSFont.SystemFontSize).FontName;
+         if (GetDefaultFontNameCallback != null)
+         {
+            return GetDefaultFontNameCallback();
+         }
+         return "sans-serif";
       }
 
       protected override int GetTextWidth(string text, UIntPtr fontId)
@@ -231,10 +240,8 @@ namespace LiteHtmlSharp.CoreGraphics
             imageCache.Add(imageUrl, null);
             return null;
          }
-         var rect = new CGRect(new CGPoint(0, 0), nsImage.Size);
-         var image = nsImage.AsCGImage(ref rect, null, null);
-         imageHolder = new ImageHolder{ Image = image, Size = nsImage.Size };
-         imageCache.Add(imageUrl, imageHolder);
+
+         imageCache.Add(imageUrl, nsImage);
          return imageHolder;
       }
 
