@@ -101,29 +101,33 @@ namespace LiteHtmlSharp
                if (input.Type == InputType.Textbox)
                {
                   input.TextBox = new TextBox();
+                  input.Element = input.TextBox;
                }
                else if (input.Type == InputType.Button)
                {
                   input.Button = new Button();
-                  input.Button.Tag = info;
                   input.Button.Click += Button_Click;
+                  input.Element = input.Button;
                }
 
                input.Setup(info);
 
-               input.Element.HorizontalAlignment = HorizontalAlignment.Left;
+               input.Element.Tag = input;
                input.Element.VerticalAlignment = VerticalAlignment.Top;
+               input.Element.HorizontalAlignment = HorizontalAlignment.Left;
+
                input.Element.Width = info.Width;
                if (info.Height > 0)
                {
                   input.Element.Height = info.Height;
                }
+
                input.Element.Margin = new Thickness(info.PosX, info.PosY, 0, 0);
             }
 
             if (!input.IsPlaced)
             {
-               _visualControl.AddChildControl(input.TextBox);
+               _visualControl.AddChildControl(input.Element);
                input.IsPlaced = true;
             }
          }
@@ -555,7 +559,10 @@ namespace LiteHtmlSharp
                switch (keyVal[0].ToLower())
                {
                   case "value":
-                     Element.ToolTip = keyVal[1];
+                     if (Button != null)
+                     {
+                        Button.Content = keyVal[1];
+                     }
                      break;
                   case "href":
                      Href = keyVal[1];

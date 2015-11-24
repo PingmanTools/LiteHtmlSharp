@@ -152,6 +152,11 @@ namespace LiteHtmlSharp
          _container.Clear();
       }
 
+      public void SetSize(double width, double height)
+      {
+         _container.OnSizeChanged(width, height);
+      }
+
       public void OnSizeChanged()
       {
          FrameworkElement parent = Parent as FrameworkElement;
