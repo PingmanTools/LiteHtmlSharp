@@ -574,7 +574,7 @@ namespace LiteHtmlSharp
                   case "value":
                      if (Button != null)
                      {
-                        Element.ToolTip = value;
+                        Button.Content = value;
                      }
                      break;
                   case "href":
