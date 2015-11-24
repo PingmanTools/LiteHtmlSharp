@@ -1,16 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Default</Configuration>
+    <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ItemType>GenericProject</ItemType>
     <ProjectGuid>{6CB85C0B-8486-44E3-825D-A7E49F958943}</ProjectGuid>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Default|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>.</OutputPath>
     <CustomCommands>
       <CustomCommands>
-        <Command type="Build" command="sh build.sh" workingdir="${SolutionDir}/LiteHtmlSharp/LiteHtmlLib" />
+        <Command type="Build" command="sh lib_dylib/build.sh" workingdir="${SolutionDir}/LiteHtmlSharp/LiteHtmlLib" />
+      </CustomCommands>
+    </CustomCommands>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
+    <OutputPath>.\</OutputPath>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="Build" command="sh lib_static/build.sh" workingdir="${SolutionDir}/LiteHtmlSharp/LiteHtmlLib" />
+      </CustomCommands>
+    </CustomCommands>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
+    <OutputPath>.\</OutputPath>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="Build" command="sh lib_static/build.sh" workingdir="${SolutionDir}/LiteHtmlSharp/LiteHtmlLib" />
       </CustomCommands>
     </CustomCommands>
   </PropertyGroup>
@@ -18,6 +34,7 @@
     <Folder Include="src\" />
     <Folder Include="litehtml_src\" />
     <Folder Include="litehtml_src\gumbo\" />
+    <Folder Include="lib_static\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\DocContainer.cpp" />
@@ -358,10 +375,12 @@
     <None Include="..\..\litehtml\src\gumbo\vector.h">
       <Link>litehtml_src\gumbo\vector.h</Link>
     </None>
-    <None Include="build.sh" />
-    <None Include="CMakeLists.txt" />
     <None Include="src\TagElement.cpp" />
     <None Include="src\TagElement.h" />
     <None Include="src\CallbackDelegates.h" />
+    <None Include="lib_dylib\CMakeLists.txt" />
+    <None Include="lib_static\CMakeLists.txt" />
+    <None Include="lib_dylib\build.sh" />
+    <None Include="lib_static\build.sh" />
   </ItemGroup>
 </Project>
