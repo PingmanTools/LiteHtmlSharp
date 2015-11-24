@@ -20,7 +20,7 @@ namespace LiteHtmlSharp
 
       public event LinkClickedHandler LinkClicked;
 
-      public List<Input> Inputs
+      public Inputs Inputs
       {
          get
          {

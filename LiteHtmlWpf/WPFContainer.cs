@@ -5,6 +5,7 @@ using System.Windows.Media;
 using System.Windows;
 using System.IO;
 using System.Windows.Media.Imaging;
+using System.Linq;
 
 namespace LiteHtmlSharp
 {
@@ -37,7 +38,7 @@ namespace LiteHtmlSharp
 
       Dictionary<string, BitmapImage> _images = new Dictionary<string, BitmapImage>();
       Dictionary<UIntPtr, FontInfo> _fonts = new Dictionary<UIntPtr, FontInfo>();
-      public List<Input> Inputs = new List<Input>();
+      public Inputs Inputs = new Inputs();
       public bool Loaded = false;
       private bool _rendering = false;
       public static string BaseURL;
@@ -529,6 +530,14 @@ namespace LiteHtmlSharp
       Textbox
    }
 
+   public class Inputs : List<Input>
+   {
+      public Input GetInputByTagID(string id)
+      {
+         return this.FirstOrDefault(i => i.TagID == id);
+      }
+   }
+
    public class Input
    {
       public int ID;
@@ -538,6 +547,7 @@ namespace LiteHtmlSharp
       public bool IsPlaced;
       public InputType Type;
       public string Href;
+      public string TagID;
 
       public Input(InputType type)
       {
@@ -552,13 +562,19 @@ namespace LiteHtmlSharp
             var keyVal = line.Split('=');
             if (keyVal.Length > 1)
             {
-               switch (keyVal[0].ToLower())
+               string key = keyVal[0].ToLower();
+               string value = keyVal[1];
+
+               switch (key)
                {
                   case "value":
-                     Element.ToolTip = keyVal[1];
+                     Element.ToolTip = value;
                      break;
                   case "href":
-                     Href = keyVal[1];
+                     Href = value;
+                     break;
+                  case "id":
+                     TagID = value;
                      break;
                }
             }
