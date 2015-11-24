@@ -102,29 +102,33 @@ namespace LiteHtmlSharp
                if (input.Type == InputType.Textbox)
                {
                   input.TextBox = new TextBox();
+                  input.Element = input.TextBox;
                }
                else if (input.Type == InputType.Button)
                {
                   input.Button = new Button();
-                  input.Button.Tag = info;
                   input.Button.Click += Button_Click;
+                  input.Element = input.Button;
                }
 
                input.Setup(info);
 
-               input.Element.HorizontalAlignment = HorizontalAlignment.Left;
+               input.Element.Tag = input;
                input.Element.VerticalAlignment = VerticalAlignment.Top;
+               input.Element.HorizontalAlignment = HorizontalAlignment.Left;
+
                input.Element.Width = info.Width;
                if (info.Height > 0)
                {
                   input.Element.Height = info.Height;
                }
+
                input.Element.Margin = new Thickness(info.PosX, info.PosY, 0, 0);
             }
 
             if (!input.IsPlaced)
             {
-               _visualControl.AddChildControl(input.TextBox);
+               _visualControl.AddChildControl(input.Element);
                input.IsPlaced = true;
             }
          }
@@ -233,7 +237,7 @@ namespace LiteHtmlSharp
 
       protected override void DrawBackground(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos, ref border_radiuses br, ref position borderBox, bool isRoot)
       {
-         if(isRoot)
+         if (isRoot)
          {
             _visualControl.SetBackground(GetBrush(ref color));
          }
@@ -495,7 +499,7 @@ namespace LiteHtmlSharp
             Inputs.Add(input);
             return input.ID;
          }
-         else if(string.Equals(tag, "button", StringComparison.OrdinalIgnoreCase))
+         else if (string.Equals(tag, "button", StringComparison.OrdinalIgnoreCase))
          {
             Input input = new Input(InputType.Button);
             input.ID = Inputs.Count + 1;
@@ -568,7 +572,10 @@ namespace LiteHtmlSharp
                switch (key)
                {
                   case "value":
-                     Element.ToolTip = value;
+                     if (Button != null)
+                     {
+                        Element.ToolTip = value;
+                     }
                      break;
                   case "href":
                      Href = value;
