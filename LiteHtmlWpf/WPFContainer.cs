@@ -146,7 +146,7 @@ namespace LiteHtmlSharp
          {
             if (input.IsPlaced)
             {
-               _visualControl.RemoveChildControl(input.TextBox);
+               _visualControl.RemoveChildControl(input.Element);
                input.IsPlaced = false;
             }
          }
