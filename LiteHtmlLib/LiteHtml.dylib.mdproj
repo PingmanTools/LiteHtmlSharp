@@ -15,7 +15,7 @@
     </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
-    <OutputPath>.\</OutputPath>
+    <OutputPath>.</OutputPath>
     <CustomCommands>
       <CustomCommands>
         <Command type="Build" command="sh lib_static/build.sh" workingdir="${SolutionDir}/LiteHtmlSharp/LiteHtmlLib" />
@@ -23,7 +23,7 @@
     </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
-    <OutputPath>.\</OutputPath>
+    <OutputPath>.</OutputPath>
     <CustomCommands>
       <CustomCommands>
         <Command type="Build" command="sh lib_static/build.sh" workingdir="${SolutionDir}/LiteHtmlSharp/LiteHtmlLib" />
