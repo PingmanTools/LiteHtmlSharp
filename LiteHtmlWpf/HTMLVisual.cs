@@ -155,6 +155,7 @@ namespace LiteHtmlSharp
       public void SetSize(double width, double height)
       {
          _container.OnSizeChanged(width, height);
+         _canvas.Height = height;
       }
 
       public void OnSizeChanged()
