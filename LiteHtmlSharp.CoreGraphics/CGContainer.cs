@@ -234,14 +234,14 @@ namespace LiteHtmlSharp.CoreGraphics
          {
             throw new Exception(nameof(LoadImageCallback) + " must be set before an image is requested while rendering");
          }
-         var nsImage = LoadImageCallback(imageUrl);
-         if (nsImage == null)
+         imageHolder = LoadImageCallback(imageUrl);
+         if (imageHolder == null)
          {
             imageCache.Add(imageUrl, null);
             return null;
          }
 
-         imageCache.Add(imageUrl, nsImage);
+         imageCache.Add(imageUrl, imageHolder);
          return imageHolder;
       }
 
