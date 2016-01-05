@@ -27,6 +27,9 @@ namespace LiteHtmlSharp
       }
    }
 
+   public delegate bool RegisterElementDelegate(string tag);
+   public delegate void ProcessElementDelegate(Input input, ElementInfo info);
+
    public class WPFContainer : Container
    {
       IResourceLoader _loader;
@@ -35,6 +38,9 @@ namespace LiteHtmlSharp
       DrawingVisual _visual;
       Dictionary<string, Brush> _brushes = new Dictionary<string, Brush>();
       Dictionary<string, Pen> _pens = new Dictionary<string, Pen>();
+
+      public RegisterElementDelegate RegisterElement;
+      public ProcessElementDelegate ProcessElement;
 
       Dictionary<string, BitmapImage> _images = new Dictionary<string, BitmapImage>();
       Dictionary<UIntPtr, FontInfo> _fonts = new Dictionary<UIntPtr, FontInfo>();
@@ -99,21 +105,28 @@ namespace LiteHtmlSharp
             {
                ElementInfo info = Document.GetElementInfo(input.ID);
 
-               if (input.Type == InputType.Textbox)
+               if (ProcessElement != null)
                {
-                  input.TextBox = new TextBox();
-                  input.Element = input.TextBox;
+                  ProcessElement(input, info);
                }
-               else if (input.Type == InputType.Button)
+               else
                {
-                  input.Button = new Button();
-                  input.Button.Click += Button_Click;
-                  input.Element = input.Button;
+                  if (input.Type == InputType.Textbox)
+                  {
+                     var tb = new TextBox();
+                     input.Element = tb;
+                  }
+                  else if (input.Type == InputType.Button)
+                  {
+                     var button = new Button();
+                     button.Click += Button_Click;
+                     input.Element = button;
+                  }
+
+                  input.Setup(info);
+                  input.Element.Tag = input;
                }
 
-               input.Setup(info);
-
-               input.Element.Tag = input;
                input.Element.VerticalAlignment = VerticalAlignment.Top;
                input.Element.HorizontalAlignment = HorizontalAlignment.Left;
 
@@ -492,6 +505,21 @@ namespace LiteHtmlSharp
 
       protected override int CreateElement(string tag)
       {
+         if (RegisterElement != null)
+         {
+            if (RegisterElement(tag))
+            {
+               Input input = new Input();
+               input.ID = Inputs.Count + 1;
+               Inputs.Add(input);
+               return input.ID;
+            }
+            else
+            {
+               return 0;
+            }
+         }
+
          if (string.Equals(tag, "input", StringComparison.OrdinalIgnoreCase))
          {
             Input input = new Input(InputType.Textbox);
@@ -530,6 +558,7 @@ namespace LiteHtmlSharp
 
    public enum InputType
    {
+      Unknown,
       Button,
       Textbox
    }
@@ -545,21 +574,42 @@ namespace LiteHtmlSharp
    public class Input
    {
       public int ID;
-      public TextBox TextBox;
-      public Button Button;
       public FrameworkElement Element;
       public bool IsPlaced;
       public InputType Type;
       public string Href;
       public string TagID;
+      public Dictionary<string, string> Attributes;
 
       public Input(InputType type)
       {
          Type = type;
       }
 
+      public Input()
+      {
+
+      }
+
+      public TextBox TextBox
+      {
+         get
+         {
+            return Element as TextBox;
+         }
+      }
+
+      public Button Button
+      {
+         get
+         {
+            return Element as Button;
+         }
+      }
+
       public void Setup(ElementInfo elementInfo)
       {
+         Attributes = new Dictionary<string, string>();
          var lines = elementInfo.Attributes.Split('\n');
          foreach (var line in lines)
          {
@@ -569,12 +619,14 @@ namespace LiteHtmlSharp
                string key = keyVal[0].ToLower();
                string value = keyVal[1];
 
+               Attributes.Add(key, value);
+
                switch (key)
                {
                   case "value":
-                     if (Button != null)
+                     if (Element is Button)
                      {
-                        Button.Content = value;
+                        ((Button)Element).Content = value;
                      }
                      break;
                   case "href":

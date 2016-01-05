@@ -18,6 +18,14 @@ namespace LiteHtmlSharp
       WPFContainer _container;
       Canvas _canvas;
 
+      public WPFContainer Container
+      {
+         get
+         {
+            return _container;
+         }
+      }
+
       public event LinkClickedHandler LinkClicked;
 
       public Inputs Inputs
