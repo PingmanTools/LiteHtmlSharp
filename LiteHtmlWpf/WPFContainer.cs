@@ -86,7 +86,7 @@ namespace LiteHtmlSharp
          Document.Render(_size.Width);
 
          int newHeight = Document.Height();
-         if (newHeight != _size.Height && newHeight > 0)
+         if (newHeight != _size.Height && newHeight > 0 && !(_size.Height < 0))
          {
             _visualControl.SetHeight(newHeight);
          }
@@ -101,10 +101,9 @@ namespace LiteHtmlSharp
       {
          foreach (var input in Inputs)
          {
+            ElementInfo info = Document.GetElementInfo(input.ID);
             if (input.Element == null)
             {
-               ElementInfo info = Document.GetElementInfo(input.ID);
-
                if (ProcessElement != null)
                {
                   ProcessElement(input, info);
@@ -135,7 +134,19 @@ namespace LiteHtmlSharp
                {
                   input.Element.Height = info.Height;
                }
-
+               input.Element.Margin = new Thickness(info.PosX, info.PosY, 0, 0);
+            } else
+            {
+               // Control exists - probably just need to move it.
+               input.Element.Width = info.Width;
+               if (info.Height > 0)
+               {
+                  input.Element.Height = info.Height;
+               }
+               if (info.PosX > 999999)
+               {
+                  info.PosX = 0;
+               }
                input.Element.Margin = new Thickness(info.PosX, info.PosY, 0, 0);
             }
 
@@ -301,6 +312,9 @@ namespace LiteHtmlSharp
 
       protected override void DrawBorders(UIntPtr hdc, ref borders borders, ref position draw_pos, bool root)
       {
+         // Skinny controls can push borders off, in which case we can't create a rect with a negative size.
+         if (draw_pos.width < 0) draw_pos.width = 0;
+         if (draw_pos.height < 0) draw_pos.height = 0;
          Rect rect = new Rect(draw_pos.x, draw_pos.y, draw_pos.width, draw_pos.height);
          var br = borders.radius;
 
