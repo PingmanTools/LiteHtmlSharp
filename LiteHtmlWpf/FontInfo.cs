@@ -22,7 +22,10 @@ namespace LiteHtmlSharp
 
       public FontInfo(string faceName, FontStyle style, FontWeight weight, int size)
       {
-         Family = new FontFamily(faceName);
+         // Using the pack URI means we can look inside resources in addition to system fonts.
+         // FontFamily will allow comma separated font names, but does not support quotes of any kind (so don't quote it in your HTML/CSS!).
+         Family = new FontFamily(new Uri("pack://application:,,,/"), faceName);
+
          TypeFace = new Typeface(Family, style, weight, new FontStretch());
          Size = size;
 
