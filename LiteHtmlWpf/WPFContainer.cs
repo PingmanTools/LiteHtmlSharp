@@ -86,7 +86,7 @@ namespace LiteHtmlSharp
          Document.Render(_size.Width);
 
          int newHeight = Document.Height();
-         if (newHeight != _size.Height && newHeight > 0 && !(_size.Height < 0))
+         if (newHeight != _size.Height && newHeight > 0) // && !(_size.Height < 0)
          {
             _visualControl.SetHeight(newHeight);
          }
