@@ -107,6 +107,7 @@
     <ProjectReference Include="..\LiteHtmlWpf\LiteHtmlWpf.csproj">
       <Project>{9b705354-9183-4d52-a788-7a113f3ec405}</Project>
       <Name>LiteHtmlWpf</Name>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

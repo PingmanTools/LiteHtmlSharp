@@ -81,9 +81,9 @@ namespace Browser
       public byte[] GetResourceBytes(string resource)
       {
          var file = GetAbsoluteFile(resource);
-         if (file.IsFile && File.Exists(file.OriginalString))
+         if (File.Exists(file))
          {
-            return File.ReadAllBytes(file.OriginalString);
+            return File.ReadAllBytes(file);
          }
 
          return new byte[0];
@@ -92,15 +92,15 @@ namespace Browser
       public string GetResourceString(string resource)
       {
          var file = GetAbsoluteFile(resource);
-         if (File.Exists(file.OriginalString))
+         if (File.Exists(file))
          {
-            return File.ReadAllText(file.OriginalString);
+            return File.ReadAllText(file);
          }
 
          return string.Empty;
       }
 
-      private Uri GetAbsoluteFile(string file)
+      private string GetAbsoluteFile(string file)
       {
          Uri uri;
          if (!Uri.TryCreate(file, UriKind.Absolute, out uri))
@@ -109,7 +109,7 @@ namespace Browser
             uri = new Uri(fullpath);
          }
 
-         return uri;
+         return uri.LocalPath;
       }
    }
 }

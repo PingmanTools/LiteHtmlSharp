@@ -9,10 +9,10 @@ namespace LiteHtmlSharp
 {
    // test methods
    [UnmanagedFunctionPointer(PInvokes.cc, CharSet = PInvokes.cs)]
-   public delegate void TestCallbackFunc(int x,string testString);
+   public delegate void TestCallbackFunc(int x, string testString);
 
    [UnmanagedFunctionPointer(PInvokes.cc, CharSet = PInvokes.cs)]
-   public delegate void TriggerTestCallbackFunc(IntPtr container,int x,string testString);
+   public delegate void TriggerTestCallbackFunc(IntPtr container, int x, string testString);
 
    // callbacks
    [UnmanagedFunctionPointer(PInvokes.cc, CharSet = PInvokes.cs)]
@@ -25,25 +25,25 @@ namespace LiteHtmlSharp
    public delegate string GetDefaultFontNameFunc();
 
    [UnmanagedFunctionPointer(PInvokes.cc)]
-   public delegate void DrawBordersFunc(UIntPtr hdc,ref borders borders,ref position draw_pos,[MarshalAs(UnmanagedType.I1)] bool root);
+   public delegate void DrawBordersFunc(UIntPtr hdc, ref borders borders, ref position draw_pos, [MarshalAs(UnmanagedType.I1)] bool root);
 
    [UnmanagedFunctionPointer(PInvokes.cc, CharSet = PInvokes.cs)]
-   public delegate void DrawBackgroundFunc(UIntPtr hdc,string image,background_repeat repeat,ref web_color color,ref position pos,ref border_radiuses borderRadiuses,ref position borderBox, [MarshalAs(UnmanagedType.I1)] bool isRoot);
+   public delegate void DrawBackgroundFunc(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos, ref border_radiuses borderRadiuses, ref position borderBox, [MarshalAs(UnmanagedType.I1)] bool isRoot);
 
    [UnmanagedFunctionPointer(PInvokes.cc, CharSet = PInvokes.cs)]
-   public delegate void GetImageSizeFunc(string image,ref size size);
+   public delegate void GetImageSizeFunc(string image, ref size size);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
-   public delegate void DrawTextFunc(string text,UIntPtr font,ref web_color color,ref position pos);
+   public delegate void DrawTextFunc(string text, UIntPtr font, ref web_color color, ref position pos);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
-   public delegate int GetTextWidthFunc(string text,UIntPtr font);
+   public delegate int GetTextWidthFunc(string text, UIntPtr font);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
-   public delegate UIntPtr CreateFontFunc(string faceName,int size,int weight,font_style italic,uint decoration,ref font_metrics fm);
+   public delegate UIntPtr CreateFontFunc(string faceName, int size, int weight, font_style italic, uint decoration, ref font_metrics fm);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
-   public delegate string ImportCssFunc(string url,string baseurl);
+   public delegate string ImportCssFunc(string url, string baseurl);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
    public delegate void GetClientRectFunc(ref position client);
@@ -67,10 +67,10 @@ namespace LiteHtmlSharp
    public delegate void SetCursorFunc(string cursor);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
-   public delegate void DrawListMarkerFunc(string image,string baseURL,list_style_type marker_type,ref web_color color,ref position pos);
+   public delegate void DrawListMarkerFunc(string image, string baseURL, list_style_type marker_type, ref web_color color, ref position pos);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
-   public delegate string TransformTextFunc(string text,text_transform tt);
+   public delegate string TransformTextFunc(string text, text_transform tt);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
    public delegate void InitCallbacksFunc(ref Callbacks callbacks);
@@ -78,20 +78,20 @@ namespace LiteHtmlSharp
    // Invoke methods
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
-   public delegate void CreateFromStringFunc(IntPtr container,string html);
+   public delegate void CreateFromStringFunc(IntPtr container, string html);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
-   public delegate void RenderFunc(IntPtr container,int maxWidth);
+   public delegate int RenderFunc(IntPtr container, int maxWidth);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
-   public delegate void DrawFunc(IntPtr container,int x,int y,position clip);
+   public delegate void DrawFunc(IntPtr container, int x, int y, position clip);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
-   public delegate void SetMasterCSSFunc(IntPtr container,string css);
+   public delegate void SetMasterCSSFunc(IntPtr container, string css);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
    [return: MarshalAs(UnmanagedType.I1)]
-   public delegate bool OnMouseMoveFunc(IntPtr container,int x,int y);
+   public delegate bool OnMouseMoveFunc(IntPtr container, int x, int y);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
    [return: MarshalAs(UnmanagedType.I1)]
@@ -99,14 +99,14 @@ namespace LiteHtmlSharp
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
    [return: MarshalAs(UnmanagedType.I1)]
-   public delegate bool OnLeftButtonUpFunc(IntPtr container,int x,int y);
+   public delegate bool OnLeftButtonUpFunc(IntPtr container, int x, int y);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
    [return: MarshalAs(UnmanagedType.I1)]
-   public delegate bool OnLeftButtonDownFunc(IntPtr container,int x,int y);
+   public delegate bool OnLeftButtonDownFunc(IntPtr container, int x, int y);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
-   public delegate IntPtr GetElementInfoFunc(IntPtr container,int ID);
+   public delegate IntPtr GetElementInfoFunc(IntPtr container, int ID);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
    [return: MarshalAs(UnmanagedType.I1)]

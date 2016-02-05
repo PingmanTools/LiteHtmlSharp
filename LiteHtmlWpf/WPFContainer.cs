@@ -83,7 +83,7 @@ namespace LiteHtmlSharp
          _rendering = true;
 
          Document.CreateFromString(html);
-         Document.Render(_size.Width);
+         var bestWidth = Document.Render(_size.Width);
 
          int newHeight = Document.Height();
          if (newHeight != _size.Height && newHeight > 0) // && !(_size.Height < 0)
@@ -135,7 +135,8 @@ namespace LiteHtmlSharp
                   input.Element.Height = info.Height;
                }
                input.Element.Margin = new Thickness(info.PosX, info.PosY, 0, 0);
-            } else
+            }
+            else
             {
                // Control exists - probably just need to move it.
                input.Element.Width = info.Width;
@@ -247,7 +248,12 @@ namespace LiteHtmlSharp
             if (Loaded)
             {
                Document.OnMediaChanged();
-               Document.Render((int)_size.Width);
+               width = Document.Render((int)_size.Width);
+               height = Document.Height();
+               if (height != _size.Height && height > 0) // && !(_size.Height < 0)
+               {
+                  _visualControl.SetHeight(height);
+               }
                Draw();
             }
          }

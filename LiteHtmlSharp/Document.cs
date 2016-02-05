@@ -48,10 +48,10 @@ namespace LiteHtmlSharp
          return Calls.OnMouseLeave(Calls.ID);
       }
 
-      public void Render(int maxWidth)
+      public int Render(int maxWidth)
       {
          HasRendered = true;
-         Calls.Render(Calls.ID, maxWidth);
+         return Calls.Render(Calls.ID, maxWidth);
       }
 
       public void OnMediaChanged()

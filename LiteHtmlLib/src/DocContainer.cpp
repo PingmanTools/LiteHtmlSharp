@@ -168,9 +168,9 @@ void DocContainer::CreateFromString(const tchar_t* html)
    _document = document::createFromString(html, this, &_context);
 }
 
-void DocContainer::Render(int maxWidth)
+int DocContainer::Render(int maxWidth)
 {
-   _document->render(maxWidth);
+   return _document->render(maxWidth);
 }
 
 void DocContainer::Draw(int x, int y, litehtml::position clip)

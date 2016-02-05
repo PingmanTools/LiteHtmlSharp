@@ -49,7 +49,7 @@ public:
    Callbacks& GetCallbacks() { return _callbacks; }
 
    void CreateFromString(const litehtml::tchar_t* html);
-   void Render(int maxWidth);
+   int Render(int maxWidth);
    void SetMasterCSS(const litehtml::tchar_t* css);
    bool OnMouseMove(int x, int y);
    bool OnMouseLeave();
