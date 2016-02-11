@@ -523,7 +523,7 @@ namespace LiteHtmlSharp
          return pt;
       }
 
-      protected override int CreateElement(string tag)
+      protected override int CreateElement(string tag, string attributes, ref ElementInfo elementInfo)
       {
          if (RegisterElement != null)
          {
@@ -532,6 +532,26 @@ namespace LiteHtmlSharp
                Input input = new Input();
                input.ID = Inputs.Count + 1;
                Inputs.Add(input);
+
+               ElementInfo newElementInfo = elementInfo; // Get a copy.
+               newElementInfo.Attributes = attributes;
+               if (ProcessElement != null)
+               {
+                  ProcessElement(input, newElementInfo);
+                  // Tell litehtml about the initial size of our control.
+                  if (input.Element != null)
+                  {
+                     _visualControl.AddChildControl(input.Element);
+                     input.IsPlaced = true;
+
+                     elementInfo.Height = (int)input.Element.ActualHeight;
+                     elementInfo.Width = (int)input.Element.ActualWidth;
+
+                  }
+               }
+
+
+
                return input.ID;
             }
             else

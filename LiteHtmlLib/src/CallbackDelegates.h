@@ -32,7 +32,7 @@ typedef void(*OnAnchorClickFunc)(const litehtml::tchar_t * url);
 
 typedef int(*PTtoPXFunc)(int pt);
 
-typedef int(*CreateElementFunc)(const litehtml::tchar_t * tag);
+typedef int(*CreateElementFunc)(const litehtml::tchar_t * tag, const char * attributes, ElementInfo& elementInfo);
 
 typedef void(*SetCursorFunc)(const litehtml::tchar_t * cursor);
 
@@ -44,7 +44,7 @@ typedef void(*SetCallbacksFunc)(Callbacks& callbacks);
 
 // invoke functions
 
-typedef void (*DeleteFunc)(DocContainer* container);
+typedef void(*DeleteFunc)(DocContainer* container);
 
 typedef bool(*OnMouseMoveFunc)(DocContainer* container, int x, int y);
 typedef bool(*OnMouseLeaveFunc)(DocContainer* container);

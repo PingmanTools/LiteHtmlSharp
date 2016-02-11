@@ -19,6 +19,7 @@ public:
    ~TagElement();
 
    ElementInfo& GetManagedInfo();
+   void SetManagedInfo(const ElementInfo managedInfo);
 
    int ID;
 

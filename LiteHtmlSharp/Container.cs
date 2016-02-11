@@ -157,19 +157,19 @@ namespace LiteHtmlSharp
 
       protected abstract int PTtoPX(int pt);
 
-      protected int CreateElementWrapper(string tag)
+      protected int CreateElementWrapper(string tag, string attributes, [Out, In] ref ElementInfo elementInfo)
       {
          if (CreateElementCallback != null)
          {
-            return CreateElementCallback(tag);
+            return CreateElementCallback(tag, attributes, ref elementInfo);
          }
          else
          {
-            return CreateElement(tag);
+            return CreateElement(tag, attributes, ref elementInfo);
          }
       }
 
-      protected virtual int CreateElement(string tag)
+      protected virtual int CreateElement(string tag, string attributes, ref ElementInfo elementInfo)
       {
          return 0;
       }

@@ -46,3 +46,11 @@ ElementInfo& TagElement::GetManagedInfo()
 
    return _managedInfo;
 }
+
+void TagElement::SetManagedInfo(const ElementInfo managedInfo)
+{
+   _managedInfo = managedInfo;
+
+   this->m_pos.height = managedInfo.Height;
+   this->m_pos.width = managedInfo.Width;
+}

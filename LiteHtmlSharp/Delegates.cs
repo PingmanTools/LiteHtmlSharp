@@ -61,7 +61,8 @@ namespace LiteHtmlSharp
    public delegate int PTtoPXFunc(int pt);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
-   public delegate int CreateElementFunc(string tag);
+   public delegate int CreateElementFunc(string tag,
+      [MarshalAs(UnmanagedType.LPStr)] string Text, [Out, In] ref ElementInfo elementInfo);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
    public delegate void SetCursorFunc(string cursor);
