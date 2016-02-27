@@ -20,6 +20,8 @@ namespace LiteHtmlSharp
       public int ScaleFactor = 1;
       public CreateElementFunc CreateElementCallback;
 
+      public event Action DocumentDrawn;
+
       public Container(string masterCssData)
       {
          Document = new Document();
@@ -32,6 +34,8 @@ namespace LiteHtmlSharp
 
          Document.SetMasterCSS(masterCssData);
       }
+
+      public abstract void Render(string html);
 
       private void InitCallbacks(ref Callbacks callbacks)
       {
@@ -65,6 +69,15 @@ namespace LiteHtmlSharp
          callbacks.GetDefaultFontSize = GetDefaultFontSize;
 
          _callbacks = callbacks;
+      }
+
+      public void Draw(int x, int y, position clip)
+      {
+         Document.Draw(x, y, clip);
+         if (DocumentDrawn != null)
+         {
+            DocumentDrawn();
+         }
       }
 
       void TestCallback(int number, string text)

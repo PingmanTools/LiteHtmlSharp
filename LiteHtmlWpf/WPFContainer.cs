@@ -73,7 +73,7 @@ namespace LiteHtmlSharp
          return 12;
       }
 
-      public void Render(string html)
+      public override void Render(string html)
       {
          Clear();
          if (_rendering) return;
@@ -120,9 +120,13 @@ namespace LiteHtmlSharp
                      var button = new Button();
                      button.Click += Button_Click;
                      input.Element = button;
+                     if (!string.IsNullOrEmpty(info.Text))
+                     {
+                        button.Content = info.Text;
+                     }
                   }
 
-                  input.Setup(info);
+                  //input.Setup(info);
                   input.Element.Tag = input;
                }
 
@@ -156,6 +160,7 @@ namespace LiteHtmlSharp
                _visualControl.AddChildControl(input.Element);
                input.IsPlaced = true;
             }
+
          }
       }
 
@@ -189,7 +194,7 @@ namespace LiteHtmlSharp
             width = _size.Width,
             height = _size.Height
          };
-         Document.Draw(0, 0, clip);
+         Draw(0, 0, clip);
          _dc.Close();
          _dc = null;
          ProcessInputs();
@@ -525,11 +530,17 @@ namespace LiteHtmlSharp
 
       protected override int CreateElement(string tag, string attributes, ref ElementInfo elementInfo)
       {
+         var input = CreateInput(tag, attributes, ref elementInfo);
+         return input?.ID ?? 0;
+      }
+
+      Input CreateInput(string tag, string attributes, ref ElementInfo elementInfo)
+      {
          if (RegisterElement != null)
          {
             if (RegisterElement(tag))
             {
-               Input input = new Input();
+               Input input = new Input(InputType.Unknown, attributes);
                input.ID = Inputs.Count + 1;
                Inputs.Add(input);
 
@@ -550,33 +561,31 @@ namespace LiteHtmlSharp
                   }
                }
 
-
-
-               return input.ID;
+               return input;
             }
             else
             {
-               return 0;
+               return null;
             }
          }
 
          if (string.Equals(tag, "input", StringComparison.OrdinalIgnoreCase))
          {
-            Input input = new Input(InputType.Textbox);
+            Input input = new Input(InputType.Textbox, attributes);
             input.ID = Inputs.Count + 1;
             Inputs.Add(input);
-            return input.ID;
+            return input;
          }
          else if (string.Equals(tag, "button", StringComparison.OrdinalIgnoreCase))
          {
-            Input input = new Input(InputType.Button);
+            Input input = new Input(InputType.Button, attributes);
             input.ID = Inputs.Count + 1;
             Inputs.Add(input);
-            return input.ID;
+            return input;
          }
          else
          {
-            return 0;
+            return null;
          }
       }
 
@@ -617,19 +626,17 @@ namespace LiteHtmlSharp
       public FrameworkElement Element;
       public bool IsPlaced;
       public InputType Type;
+      public string Onclick;
       public string Href;
       public string TagID;
       public Dictionary<string, string> Attributes;
 
-      public Input(InputType type)
+      public Input(InputType type, string attributes)
       {
          Type = type;
+         SetAttributes(attributes);
       }
 
-      public Input()
-      {
-
-      }
 
       public TextBox TextBox
       {
@@ -647,10 +654,15 @@ namespace LiteHtmlSharp
          }
       }
 
-      public void Setup(ElementInfo elementInfo)
+
+      public void SetAttributes(string attrString)
       {
+         if (string.IsNullOrEmpty(attrString))
+         {
+            return;
+         }
          Attributes = new Dictionary<string, string>();
-         var lines = elementInfo.Attributes.Split('\n');
+         var lines = attrString.Split('\n');
          foreach (var line in lines)
          {
             var keyVal = line.Split('=');
@@ -674,6 +686,9 @@ namespace LiteHtmlSharp
                      break;
                   case "id":
                      TagID = value;
+                     break;
+                  case "onclick":
+                     Onclick = value;
                      break;
                }
             }
