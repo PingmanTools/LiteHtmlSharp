@@ -22,6 +22,8 @@ namespace LiteHtmlSharp
 
       public event Action DocumentDrawn;
 
+      public event Action<string> AnchorClicked;
+
       public Container(string masterCssData)
       {
          Document = new Document();
@@ -53,7 +55,7 @@ namespace LiteHtmlSharp
          callbacks.GetMediaFeatures = GetMediaFeatures;
 
          callbacks.SetBaseURL = SetBaseURL;
-         callbacks.OnAnchorClick = OnAnchorClick;
+         callbacks.OnAnchorClick = OnAnchorClickHandler;
 
          callbacks.PTtoPX = PTtoPX;
          callbacks.CreateElement = CreateElementWrapper;
@@ -165,6 +167,15 @@ namespace LiteHtmlSharp
       protected abstract void GetMediaFeatures(ref media_features media);
 
       protected abstract void SetBaseURL(ref string base_url);
+
+      void OnAnchorClickHandler(string url)
+      {
+         if (AnchorClicked != null)
+         {
+            AnchorClicked(url);
+         }
+         OnAnchorClick(url);
+      }
 
       protected abstract void OnAnchorClick(string url);
 

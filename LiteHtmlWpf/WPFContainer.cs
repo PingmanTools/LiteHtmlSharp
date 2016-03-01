@@ -101,7 +101,7 @@ namespace LiteHtmlSharp
       {
          foreach (var input in Inputs)
          {
-            ElementInfo info = Document.GetElementInfo(input.ID);
+            ElementInfo info = Document.GetElementInfo(input.ID).Value;
             if (input.Element == null)
             {
                if (ProcessElement != null)
