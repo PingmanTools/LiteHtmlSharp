@@ -69,9 +69,13 @@ namespace LiteHtmlSharp
          return Calls.OnLeftButtonUp(Calls.ID, x, y);
       }
 
-      public ElementInfo GetElementInfo(int ID)
+      public ElementInfo? GetElementInfo(int ID)
       {
          IntPtr ptr = Calls.GetElementInfo(Calls.ID, ID);
+         if (ptr == IntPtr.Zero)
+         {
+            return null;
+         }
          ElementInfo info = Marshal.PtrToStructure<ElementInfo>(ptr);
          return info;
       }
