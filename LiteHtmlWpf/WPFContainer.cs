@@ -131,7 +131,7 @@ namespace LiteHtmlSharp
                      }
                   }
 
-                  //input.Setup(info);
+                  input.SetAttributes(info.Attributes);
                   input.Element.Tag = input;
                }
 
