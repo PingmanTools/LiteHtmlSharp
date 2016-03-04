@@ -75,7 +75,8 @@ namespace LiteHtmlSharp
 
       public override void Render(string html)
       {
-         _visualControl.Dispatcher.Invoke(() => RenderOnUI(html));
+         //_visualControl.Dispatcher.Invoke(() => RenderOnUI(html));
+         RenderOnUI(html);
       }
 
       void RenderOnUI(string html)
