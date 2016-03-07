@@ -81,33 +81,26 @@ namespace LiteHtmlSharp
 
       void RenderOnUI(string html)
       {
-         if (html == null)
+         Clear();
+         if (_rendering) return;
+
+         _images.Clear();
+         Inputs.Clear();
+         _rendering = true;
+
+         Document.CreateFromString(html);
+         var bestWidth = Document.Render(_size.Width);
+
+         int newHeight = Document.Height();
+         if (newHeight != _size.Height && newHeight > 0) // && !(_size.Height < 0)
          {
-            throw new Exception("litehtml cannot render a null string.");
+            _visualControl.SetHeight(newHeight);
          }
-         else
-         {
-            Clear();
-            if (_rendering) return;
 
-            _images.Clear();
-            Inputs.Clear();
-            _rendering = true;
+         Draw();
 
-            Document.CreateFromString(html);
-            var bestWidth = Document.Render(_size.Width);
-
-            int newHeight = Document.Height();
-            if (newHeight != _size.Height && newHeight > 0) // && !(_size.Height < 0)
-            {
-               _visualControl.SetHeight(newHeight);
-            }
-
-            Draw();
-
-            _rendering = false;
-            Loaded = true;
-         }
+         _rendering = false;
+         Loaded = true;
       }
 
       private void ProcessInputs()

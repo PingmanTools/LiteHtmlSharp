@@ -24,8 +24,15 @@ namespace LiteHtmlSharp
 
       public void CreateFromString(string html)
       {
-         Calls.CreateFromString(Calls.ID, html);
-         HasLoadedHtml = true;
+         if (html == null)
+         {
+            throw new Exception("Cannot render a null string.");
+         }
+         else
+         {
+            Calls.CreateFromString(Calls.ID, html);
+            HasLoadedHtml = true;
+         }
       }
 
       public virtual void Draw(int x, int y, position clip)
