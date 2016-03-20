@@ -16,7 +16,7 @@ namespace LiteHtmlSharp
    {
       DrawingVisual _visual;
       WPFContainer _container;
-      Canvas _canvas;
+      Panel _canvas;
 
       public WPFContainer Container
       {
@@ -41,7 +41,7 @@ namespace LiteHtmlSharp
          get { return _container.Loaded; }
       }
 
-      public HTMLVisual(Canvas parent, string masterCSS, IResourceLoader loader)
+      public HTMLVisual(Panel parent, string masterCSS, IResourceLoader loader)
       {
          _canvas = parent;
          _canvas.ClipToBounds = true;
@@ -63,7 +63,7 @@ namespace LiteHtmlSharp
 
       public void FireLink(string url)
       {
-         if(LinkClicked != null)
+         if (LinkClicked != null)
          {
             LinkClicked(url);
          }
