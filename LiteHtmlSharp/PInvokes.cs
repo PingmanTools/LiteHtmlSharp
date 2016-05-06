@@ -8,8 +8,11 @@ namespace LiteHtmlSharp
 #if __MonoCS__
       const string LiteHtmlLibFile = "litehtml";
       public const CharSet cs = CharSet.Ansi;
+#elif WIN64
+      const string LiteHtmlLibFile = "x64\\LiteHtmlLib.dll";
+      public const CharSet cs = CharSet.Unicode;
 #else
-      const string LiteHtmlLibFile = "LiteHtmlLib.dll";
+      const string LiteHtmlLibFile = "x86\\LiteHtmlLib.dll";
       public const CharSet cs = CharSet.Unicode;
 #endif
 
