@@ -37,7 +37,7 @@ namespace LiteHtmlSharp
          Document.SetMasterCSS(masterCssData);
       }
 
-      public abstract void Render(string html);
+      public virtual void Render(string html) { }
 
       private void InitCallbacks(ref Callbacks callbacks)
       {
@@ -168,7 +168,7 @@ namespace LiteHtmlSharp
 
       protected abstract void SetBaseURL(ref string base_url);
 
-      void OnAnchorClickHandler(string url)
+      protected void OnAnchorClickHandler(string url)
       {
          if (AnchorClicked != null)
          {
@@ -206,14 +206,14 @@ namespace LiteHtmlSharp
       {
          switch (t)
          {
-            case text_transform.text_transform_capitalize:
-               return CultureInfo.InvariantCulture.TextInfo.ToTitleCase(text);
-            case text_transform.text_transform_lowercase:
-               return text.ToLower();
-            case text_transform.text_transform_uppercase:
-               return text.ToUpper();
-            default:
-               return text;
+         case text_transform.text_transform_capitalize:
+            return CultureInfo.InvariantCulture.TextInfo.ToTitleCase(text);
+         case text_transform.text_transform_lowercase:
+            return text.ToLower();
+         case text_transform.text_transform_uppercase:
+            return text.ToUpper();
+         default:
+            return text;
          }
       }
    }

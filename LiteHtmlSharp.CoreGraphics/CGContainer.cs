@@ -30,8 +30,6 @@ namespace LiteHtmlSharp.CoreGraphics
 
       public CGPoint ScrollOffset { get; set; }
 
-      public event Action<string> AnchorClicked;
-
       public event Action<CGSize> DocumentSizeKnown;
 
       Dictionary<string, ImageHolder> imageCache;
@@ -58,13 +56,13 @@ namespace LiteHtmlSharp.CoreGraphics
 
          switch (marker_type)
          {
-            case list_style_type.list_style_type_square:
-               Context.FillRect(pos.ToRect());
-               break;
-            case list_style_type.list_style_type_circle:
-            default:
-               Context.FillEllipseInRect(pos.ToRect());
-               break;
+         case list_style_type.list_style_type_square:
+            Context.FillRect(pos.ToRect());
+            break;
+         case list_style_type.list_style_type_circle:
+         default:
+            Context.FillEllipseInRect(pos.ToRect());
+            break;
          }
       }
 
@@ -79,13 +77,12 @@ namespace LiteHtmlSharp.CoreGraphics
 
       public void Draw()
       {
-         Document.Draw((int)-ScrollOffset.X, (int)-ScrollOffset.Y, new position
-            { 
-               x = 0, 
-               y = 0, 
-               width = (int)ContextSize.Width,
-               height = (int)ContextSize.Height 
-            });
+         Document.Draw((int)-ScrollOffset.X, (int)-ScrollOffset.Y, new position {
+            x = 0,
+            y = 0,
+            width = (int)ContextSize.Width,
+            height = (int)ContextSize.Height
+         });
       }
 
       protected override void SetCursor(string cursor)
@@ -99,15 +96,12 @@ namespace LiteHtmlSharp.CoreGraphics
       // Used when the parent has a custom tag (View) that works with an href attribute
       public void TriggerAnchorClicked(string url)
       {
-         OnAnchorClick(url);
+         OnAnchorClickHandler(url);
       }
 
       protected override void OnAnchorClick(string url)
       {
-         if (AnchorClicked != null)
-         {
-            AnchorClicked(url);
-         }
+
       }
 
       protected override int PTtoPX(int pt)
@@ -129,7 +123,7 @@ namespace LiteHtmlSharp.CoreGraphics
 
       protected override void SetBaseURL(ref string base_url)
       {
-         
+
       }
 
       protected override void SetCaption(string caption)
@@ -153,7 +147,7 @@ namespace LiteHtmlSharp.CoreGraphics
 
       FontHolder GetFont(UIntPtr fontId)
       {
-         var fontHolder = fontCache[fontId];
+         var fontHolder = fontCache [fontId];
          // if different scale then recreate the font with new size
          if (fontHolder.Scale != ScaleFactor)
          {
@@ -295,8 +289,7 @@ namespace LiteHtmlSharp.CoreGraphics
             Context.AddPath(path);
             Context.FillPath();
          }
-         else
-         {
+         else {
             DrawImage(image, rect);
          }
       }
