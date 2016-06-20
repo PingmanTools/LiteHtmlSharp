@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 2.8)
 
 project(litehtml)
 
-set(CMAKE_CXX_FLAGS "-arch i386 -arch x86_64 -std=c++11 -stdlib=libc++ -O3")
-set(CMAKE_C_FLAGS "-arch i386 -arch x86_64 -std=c99 -O3")
+set(CMAKE_CXX_FLAGS "-arch i386 -arch x86_64 -std=c++11 -stdlib=libc++ -O3 -fms-extensions")
+set(CMAKE_C_FLAGS "-arch i386 -arch x86_64 -std=c99 -O3 -fms-extensions")
 
 set(SOURCE_LITEHTMLLIB 
                     ../../src/dllmain.cpp
