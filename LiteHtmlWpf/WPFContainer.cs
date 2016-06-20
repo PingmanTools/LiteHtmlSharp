@@ -51,6 +51,9 @@ namespace LiteHtmlSharp
       static uint _nextFontID;
       public IntPoint _size;
 
+      public string DefaultFontName { get; set; } = "Arial";
+      public int DefaultFontSize { get; set; } = 12;
+
       public WPFContainer(HTMLVisual visual, string css, IResourceLoader loader) : base(css)
       {
          _loader = loader;
@@ -65,12 +68,12 @@ namespace LiteHtmlSharp
 
       protected override string GetDefaultFontName()
       {
-         return "Arial";
+         return DefaultFontName;
       }
 
       protected override int GetDefaultFontSize()
       {
-         return 12;
+         return DefaultFontSize;
       }
 
       public override void Render(string html)
@@ -315,7 +318,7 @@ namespace LiteHtmlSharp
          }
       }
 
-      private void DrawCurvedPath(Point p1, Point p2, Point p3, Point p4, ref web_color color, int thickness)
+      private void DrawCurvedPath(Point p1, Point p2, Point p3, Point p4, ref web_color color, double thickness)
       {
          var geometry = new PathGeometry();
          PathSegmentCollection path = new PathSegmentCollection();
@@ -337,52 +340,52 @@ namespace LiteHtmlSharp
 
          if (borders.top.width > 0)
          {
-            //Point p1 = new Point(rect.Left + br.top_left_x, rect.Top);
-            //Point p2 = new Point(rect.Right - br.top_right_x, rect.Top);
-            //Point p3 = new Point(rect.Right, rect.Top);
-            //Point p4 = new Point(rect.Right, rect.Top + br.top_right_y);
-            //DrawCurvedPath(p1, p2, p3, p4, ref borders.top.color, borders.top.width);
-            DrawRect(draw_pos.x, draw_pos.y, draw_pos.width, borders.top.width, GetBrush(ref borders.top.color));
+            Point p1 = new Point(rect.Left + br.top_left_x, rect.Top);
+            Point p2 = new Point(rect.Right - br.top_right_x, rect.Top);
+            Point p3 = new Point(rect.Right, rect.Top);
+            Point p4 = new Point(rect.Right, rect.Top + br.top_right_y);
+            DrawCurvedPath(p1, p2, p3, p4, ref borders.top.color, borders.top.width);
+            //            DrawRect(rect.Left + br.top_left_x, rect.Top, rect.Width - br.top_left_x - br.top_right, GetBrush(ref borders.top.color));
          }
 
          if (borders.right.width > 0)
          {
-            //Point p1 = new Point(rect.Right, rect.Top + br.top_right_y);
-            //Point p2 = new Point(rect.Right, rect.Bottom - br.bottom_right_y);
-            //Point p3 = new Point(rect.Right, rect.Bottom);
-            //Point p4 = new Point(rect.Right - br.bottom_right_x, rect.Bottom);
-            //DrawCurvedPath(p1, p2, p3, p4, ref borders.right.color, borders.right.width);
-            DrawRect(draw_pos.x + draw_pos.width - borders.right.width, draw_pos.y, borders.right.width, draw_pos.height, GetBrush(ref borders.right.color));
+            Point p1 = new Point(rect.Right, rect.Top + br.top_right_y);
+            Point p2 = new Point(rect.Right, rect.Bottom - br.bottom_right_y);
+            Point p3 = new Point(rect.Right, rect.Bottom);
+            Point p4 = new Point(rect.Right - br.bottom_right_x, rect.Bottom);
+            DrawCurvedPath(p1, p2, p3, p4, ref borders.right.color, borders.right.width);
+            //            DrawRect(p4.x,  draw_pos.x + draw_pos.width - borders.right.width, draw_pos.y, borders.right.width, draw_pos.height, GetBrush(ref borders.right.color));
          }
 
          if (borders.bottom.width > 0)
          {
-            //Point p1 = new Point(rect.Right - br.bottom_right_x, rect.Bottom);
-            //Point p2 = new Point(rect.Left + br.bottom_left_x, rect.Bottom);
-            //Point p3 = new Point(rect.Left, rect.Bottom);
-            //Point p4 = new Point(rect.Left, rect.Bottom - br.bottom_left_y);
-            //DrawCurvedPath(p1, p2, p3, p4, ref borders.bottom.color, borders.bottom.width);
-            DrawRect(draw_pos.x, draw_pos.y + draw_pos.height - borders.bottom.width, draw_pos.width, borders.bottom.width, GetBrush(ref borders.bottom.color));
+            Point p1 = new Point(rect.Right - br.bottom_right_x, rect.Bottom);
+            Point p2 = new Point(rect.Left + br.bottom_left_x, rect.Bottom);
+            Point p3 = new Point(rect.Left, rect.Bottom);
+            Point p4 = new Point(rect.Left, rect.Bottom - br.bottom_left_y);
+            DrawCurvedPath(p1, p2, p3, p4, ref borders.bottom.color, borders.bottom.width);
+            //           DrawRect(draw_pos.x, draw_pos.y + draw_pos.height - borders.bottom.width, draw_pos.width, borders.bottom.width, GetBrush(ref borders.bottom.color));
          }
 
          if (borders.left.width > 0)
          {
-            //Point p1 = new Point(rect.Left, rect.Bottom - br.bottom_left_y);
-            //Point p2 = new Point(rect.Left, rect.Top + br.top_left_y);
-            //Point p3 = new Point(rect.Left, rect.Top);
-            //Point p4 = new Point(rect.Left + br.top_left_x, rect.Top);
-            //DrawCurvedPath(p1, p2, p3, p4, ref borders.left.color, borders.left.width);
-            DrawRect(draw_pos.x, draw_pos.y, borders.left.width, draw_pos.height, GetBrush(ref borders.left.color));
+            Point p1 = new Point(rect.Left, rect.Bottom - br.bottom_left_y);
+            Point p2 = new Point(rect.Left, rect.Top + br.top_left_y);
+            Point p3 = new Point(rect.Left, rect.Top);
+            Point p4 = new Point(rect.Left + br.top_left_x, rect.Top);
+            DrawCurvedPath(p1, p2, p3, p4, ref borders.left.color, borders.left.width);
+            //            DrawRect(draw_pos.x, draw_pos.y, borders.left.width, draw_pos.height, GetBrush(ref borders.left.color));
          }
       }
 
-      private void DrawRect(int x, int y, int width, int height, Brush brush)
+      private void DrawRect(double x, double y, double width, double height, Brush brush)
       {
          Rect rect = new Rect(x, y, width, height);
          _dc.DrawRectangle(brush, null, rect);
       }
 
-      private Pen GetPen(ref web_color color, int thickness)
+      private Pen GetPen(ref web_color color, double thickness)
       {
          string key = color.red.ToString() + color.green.ToString() + color.blue.ToString() + thickness;
 
@@ -464,7 +467,7 @@ namespace LiteHtmlSharp
          var fontInfo = GetFont(font);
          var formattedText = fontInfo.GetFormattedText(text);
          formattedText.SetTextDecorations(fontInfo.Decorations);
-         return (int)formattedText.WidthIncludingTrailingWhitespace;
+         return (int)Math.Round(formattedText.WidthIncludingTrailingWhitespace + 0.25f);
       }
 
       protected override void DrawText(string text, UIntPtr font, ref web_color color, ref position pos)

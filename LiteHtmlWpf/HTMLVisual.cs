@@ -76,9 +76,10 @@ namespace LiteHtmlSharp
 
       public void SetHeight(double height)
       {
-         double visibleHeight = ((FrameworkElement)_canvas.Parent).ActualHeight;
+         var parent = ((FrameworkElement)_canvas.Parent);
+         if (parent == null) return;
 
-         if (height > visibleHeight)
+         if (height > parent.ActualHeight)
          {
             _canvas.Height = height;
          }
