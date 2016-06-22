@@ -32,6 +32,8 @@ namespace LiteHtmlSharp.CoreGraphics
 
       public event Action<CGSize> DocumentSizeKnown;
 
+      public event Action<string> RenderHtmlRequested;
+
       Dictionary<string, ImageHolder> imageCache;
       Dictionary<UIntPtr, FontHolder> fontCache;
       uint lastFontId = 0;
@@ -64,6 +66,11 @@ namespace LiteHtmlSharp.CoreGraphics
             Context.FillEllipseInRect(pos.ToRect());
             break;
          }
+      }
+
+      public override void Render(string html)
+      {
+         RenderHtmlRequested?.Invoke(html);
       }
 
       public void Render()
