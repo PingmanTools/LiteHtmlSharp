@@ -37,10 +37,11 @@ namespace LiteHtmlSharp.Mac
          : base (rect)
       {
          WantsLayer = true;
-         LiteHtmlContainer = new CGContainer (masterCssData);
+         LiteHtmlContainer = new CGContainer (InjectDefaultFontColorCss(masterCssData));
          LiteHtmlContainer.SetCursorCallback = SetCusor;
-         LiteHtmlContainer.GetDefaultFontSizeCallback = GetDefaultFontSize;
-         LiteHtmlContainer.GetDefaultFontNameCallback = GetDefaultFontName;
+         LiteHtmlContainer.DefaultFontSize = GetDefaultFontSize();
+         LiteHtmlContainer.DefaultFontName = GetDefaultFontName();
+         LiteHtmlContainer.DefaultFontColor = GetDefaultFontColor();
          LiteHtmlContainer.CreateElementCallback = CreateElement;
          LiteHtmlContainer.Document.ViewElementsNeedLayout += LiteHtmlContainer_ViewElementsNeedLayout;
       }
@@ -53,6 +54,42 @@ namespace LiteHtmlSharp.Mac
       int GetDefaultFontSize ()
       {
          return (int)Math.Round (NSFont.SystemFontSize);
+      }
+
+      web_color GetDefaultFontColor()
+      {
+         var defaultColor = NSColor.LabelColor;
+         // Use components for color values because AppKit.NSColor.LabelColor (and others) 
+         // do not work with NSColor.GetRgba or NSColor.GetComponents
+         var components = defaultColor.CGColor.Components;
+         var retVal = new web_color();
+         if (components.Length == 2)
+         {
+            retVal.red = retVal.green = retVal.blue = (byte)(byte.MaxValue * components[0]);
+            retVal.alpha = (byte)(byte.MaxValue * components[1]);
+         }
+         else if (components.Length == 4)
+         {
+            retVal.red = (byte)(byte.MaxValue * components[0]);
+            retVal.green = (byte)(byte.MaxValue * components[1]);
+            retVal.blue = (byte)(byte.MaxValue * components[2]);
+            retVal.alpha = (byte)(byte.MaxValue * components[3]);
+         }
+         else
+         {
+            // Default to Black
+            retVal.red = retVal.green = retVal.blue = 0;
+            retVal.alpha = byte.MaxValue;
+         }
+            
+         return retVal;
+      }
+
+      string InjectDefaultFontColorCss(string cssData)
+      {
+         var color = GetDefaultFontColor();
+         var rgbColor = String.Format("rgba({0:D0},{1:D0},{2:D0},{3})", color.red, color.green, color.blue, color.alpha / (float)byte.MaxValue);
+         return "body { color: " + rgbColor + "; }" + cssData;
       }
 
       void SetCusor (string cursor)

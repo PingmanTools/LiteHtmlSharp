@@ -164,26 +164,18 @@ namespace LiteHtmlSharp.CoreGraphics
          return fontHolder;
       }
 
-      public Func<int> GetDefaultFontSizeCallback { get; set; }
+      public string DefaultFontName { get; set; }
+      public int DefaultFontSize { get; set; }
+      public web_color DefaultFontColor { get; set; }
 
       protected override int GetDefaultFontSize()
       {
-         if (GetDefaultFontSizeCallback != null)
-         {
-            return GetDefaultFontSizeCallback();
-         }
-         return 12;
+         return DefaultFontSize;
       }
-
-      public Func<string> GetDefaultFontNameCallback { get; set; }
 
       protected override string GetDefaultFontName()
       {
-         if (GetDefaultFontNameCallback != null)
-         {
-            return GetDefaultFontNameCallback();
-         }
-         return "sans-serif";
+         return DefaultFontName;
       }
 
       protected override int GetTextWidth(string text, UIntPtr fontId)
