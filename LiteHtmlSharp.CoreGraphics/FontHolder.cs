@@ -2,6 +2,7 @@
 using Foundation;
 using CoreText;
 using CoreGraphics;
+using AppKit;
 
 namespace LiteHtmlSharp.CoreGraphics
 {
@@ -21,7 +22,8 @@ namespace LiteHtmlSharp.CoreGraphics
 
       public static FontHolder Create(string faceName, int size, int weight, font_style italic, font_decoration decoration, ref font_metrics fm)
       {
-         var font = new CTFont(faceName, size);
+         var convertedFaceName = faceName.Replace(@"./#", string.Empty);
+         var font = new CTFont(convertedFaceName, size);
          var strAttrs = new CTStringAttributes { Font = font };
 
          // Bold & italic are properties of the CTFont
