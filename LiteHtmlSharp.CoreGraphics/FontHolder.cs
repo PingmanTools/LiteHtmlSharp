@@ -2,7 +2,7 @@
 using Foundation;
 using CoreText;
 using CoreGraphics;
-using AppKit;
+using System.Linq;
 
 namespace LiteHtmlSharp.CoreGraphics
 {
@@ -22,21 +22,28 @@ namespace LiteHtmlSharp.CoreGraphics
 
       public static FontHolder Create(string faceName, int size, int weight, font_style italic, font_decoration decoration, ref font_metrics fm)
       {
-         var convertedFaceName = faceName.Replace(@"./#", string.Empty);
-         var font = new CTFont(convertedFaceName, size);
-         var strAttrs = new CTStringAttributes { Font = font };
+         var possibleFonts = faceName.Split (',').ToList ();
+         possibleFonts.Add("Helvetica"); // Make sure there's a font in the list.
+         CTFont font = null;
+         foreach (var fontName in possibleFonts) {
+            // faceName = faceName; // normalize between WPF and Mac for ways to reference custom fonts.
+            font = new CTFont (fontName.TrimEnd().Replace ("./#", ""), size);
 
-         // Bold & italic are properties of the CTFont
-         var traits = CTFontSymbolicTraits.None;
-         if (italic == font_style.fontStyleItalic)
-         {
-            traits |= CTFontSymbolicTraits.Italic;
+            // Bold & italic are properties of the CTFont
+            var traits = CTFontSymbolicTraits.None;
+            if (italic == font_style.fontStyleItalic) {
+               traits |= CTFontSymbolicTraits.Italic;
+            }
+            if (weight > 400) {
+               traits |= CTFontSymbolicTraits.Bold;
+            }
+            font = font.WithSymbolicTraits (font.Size, traits, traits);
+            if (font != null) {
+               break; 
+            }
          }
-         if (weight > 400)
-         {
-            traits |= CTFontSymbolicTraits.Bold;
-         }
-         font = font.WithSymbolicTraits(font.Size, traits, traits);
+
+         var strAttrs = new CTStringAttributes { Font = font };
 
          // initial size must be unscaled when getting these metrics
          fm.ascent = (int)Math.Round(font.AscentMetric);
