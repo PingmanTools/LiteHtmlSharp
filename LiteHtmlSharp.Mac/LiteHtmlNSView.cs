@@ -37,7 +37,8 @@ namespace LiteHtmlSharp.Mac
          : base (rect)
       {
          WantsLayer = true;
-         LiteHtmlContainer = new CGContainer (InjectDefaultFontColorCss(masterCssData));
+         //LiteHtmlContainer = new CGContainer (InjectDefaultFontColorCss(masterCssData));
+         LiteHtmlContainer = new CGContainer(masterCssData);
          LiteHtmlContainer.SetCursorCallback = SetCusor;
          LiteHtmlContainer.DefaultFontSize = GetDefaultFontSize();
          LiteHtmlContainer.DefaultFontName = GetDefaultFontName();
@@ -85,12 +86,12 @@ namespace LiteHtmlSharp.Mac
          return retVal;
       }
 
-      string InjectDefaultFontColorCss(string cssData)
+      /*string InjectDefaultFontColorCss(string cssData)
       {
          var color = GetDefaultFontColor();
          var rgbColor = String.Format("rgba({0:D0},{1:D0},{2:D0},{3})", color.red, color.green, color.blue, color.alpha / (float)byte.MaxValue);
          return "body { color: " + rgbColor + "; }" + cssData;
-      }
+      }*/
 
       void SetCusor (string cursor)
       {
