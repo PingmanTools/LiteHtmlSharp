@@ -43,6 +43,7 @@ namespace LiteHtmlSharp.Mac
          LiteHtmlContainer.DefaultFontSize = GetDefaultFontSize();
          LiteHtmlContainer.DefaultFontName = GetDefaultFontName();
          LiteHtmlContainer.DefaultFontColor = GetDefaultFontColor();
+         LiteHtmlContainer.ShouldCreateElementCallback = ShouldCreateElement;
          LiteHtmlContainer.CreateElementCallback = CreateElement;
          LiteHtmlContainer.Document.ViewElementsNeedLayout += LiteHtmlContainer_ViewElementsNeedLayout;
       }
@@ -109,20 +110,26 @@ namespace LiteHtmlSharp.Mac
       {
          foreach (var el in viewElements) {
             var elementInfo = LiteHtmlContainer.Document.GetElementInfo (el.Key);
-            var newRect = new CGRect (elementInfo.Value.PosX, elementInfo.Value.PosY, elementInfo.Value.Width, elementInfo.Value.Height);
-            if (newRect != el.Value.View.Frame) {
-               el.Value.View.Frame = newRect;
-            }
-
-            if (!el.Value.HasSetup) {
-               el.Value.Setup (elementInfo.Value);
-               if (el.Value is LiteHtmlNSButton) {
-                  (el.Value as LiteHtmlNSButton).Activated += Btn_Activated;
-               }
-               if (CustomTabViewHasSetup != null) {
-                  CustomTabViewHasSetup (el.Value);
+            if (elementInfo != null)
+            {
+               var newRect = new CGRect(elementInfo.PosX, elementInfo.PosY, elementInfo.Width, elementInfo.Height);
+               if (newRect != el.Value.View.Frame)
+               {
+                  el.Value.View.Frame = newRect;
                }
 
+               if (!el.Value.HasSetup)
+               {
+                  el.Value.Setup(elementInfo);
+                  if (el.Value is LiteHtmlNSButton)
+                  {
+                     (el.Value as LiteHtmlNSButton).Activated += Btn_Activated;
+                  }
+                  if (CustomTabViewHasSetup != null)
+                  {
+                     CustomTabViewHasSetup(el.Value);
+                  }
+               }
             }
          }
       }
@@ -133,9 +140,21 @@ namespace LiteHtmlSharp.Mac
          LiteHtmlContainer.TriggerAnchorClicked (btn.Href);
       }
 
-      int CreateElement (string tag, string attributes, ref ElementInfo elementInfo)
+      bool ShouldCreateElement(string tag)
       {
-         switch (tag.ToLower ()) {
+         switch (tag.ToLowerInvariant())
+         {
+            case "input":
+            case "button":
+               return true;
+            default:
+               return false;
+         }
+      }
+
+      int CreateElement (string tag, string attributes, ElementInfo elementInfo)
+      {
+         switch (tag.ToLowerInvariant ()) {
          case "input": {
                var newID = ++lastViewElementId;
                var view = new LiteHtmlNSInput ();

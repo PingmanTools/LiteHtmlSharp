@@ -10,3 +10,6 @@ Release
 /.vs/LiteHtml/v14/.suo
 /.vs/config/applicationhost.config
 litehtml.build
+LiteHtmlLib/Build
+!LiteHtmlLib/Release/x64/LiteHtmlLib.dll
+!LiteHtmlLib/Release/x86/LiteHtmlLib.dll

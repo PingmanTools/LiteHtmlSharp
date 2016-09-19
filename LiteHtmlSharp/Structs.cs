@@ -215,19 +215,38 @@ namespace LiteHtmlSharp
    }
 
    [StructLayout(LayoutKind.Sequential)]
-   public struct ElementInfo
+   public struct ElementInfoStruct
    {
       public int PosX;
       public int PosY;
       public int Width;
       public int Height;
-
-      [MarshalAs(UnmanagedType.LPStr)]
-      public string Attributes;
-
-      [MarshalAs(UnmanagedType.LPStr)]
-      public string Text;
+      public IntPtr Attributes;
+      public IntPtr Text;
    }
+
+   public class ElementInfo
+   {
+      public int PosX;
+      public int PosY;
+      public int Width;
+      public int Height;
+      public string Attributes;
+      public string Text;
+
+      public ElementInfo() { }
+
+      public ElementInfo(ElementInfoStruct raw)
+      {
+         PosX = raw.PosX;
+         PosY = raw.PosY;
+         Width = raw.Width;
+         Height = raw.Height;
+         Attributes = PInvokes.PtrToStringUTF8(raw.Attributes);
+         Text = PInvokes.PtrToStringUTF8(raw.Text);
+      }
+   }
+
 
    public enum list_style_type
    {
@@ -280,6 +299,7 @@ namespace LiteHtmlSharp
       public OnAnchorClickFunc OnAnchorClick;
       public SetBaseURLFunc SetBaseURL;
       public PTtoPXFunc PTtoPX;
+      public ShouldCreateElementFunc ShouldCreateElement;
       public CreateElementFunc CreateElement;
 
       public DrawListMarkerFunc DrawListMarker;

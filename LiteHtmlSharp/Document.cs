@@ -19,7 +19,7 @@ namespace LiteHtmlSharp
 
       public void SetMasterCSS(string css)
       {
-         Calls.SetMasterCSS(Calls.ID, css);
+         Calls.SetMasterCSS(Calls.ID, PInvokes.StringToHGlobalUTF8(css));
       }
 
       public void CreateFromString(string html)
@@ -30,7 +30,7 @@ namespace LiteHtmlSharp
          }
          else
          {
-            Calls.CreateFromString(Calls.ID, html);
+            Calls.CreateFromString(Calls.ID, PInvokes.StringToHGlobalUTF8(html));
             HasLoadedHtml = true;
          }
       }
@@ -76,20 +76,20 @@ namespace LiteHtmlSharp
          return Calls.OnLeftButtonUp(Calls.ID, x, y);
       }
 
-      public ElementInfo? GetElementInfo(int ID)
+      public ElementInfo GetElementInfo(int ID)
       {
          IntPtr ptr = Calls.GetElementInfo(Calls.ID, ID);
          if (ptr == IntPtr.Zero)
          {
             return null;
          }
-         ElementInfo info = Marshal.PtrToStructure<ElementInfo>(ptr);
-         return info;
+         ElementInfoStruct info = Marshal.PtrToStructure<ElementInfoStruct>(ptr);
+         return new ElementInfo(info);
       }
 
       public void TriggerTestCallback(int number, string text)
       {
-         Calls.TriggerTestCallback(Calls.ID, number, text);
+         Calls.TriggerTestCallback(Calls.ID, number, PInvokes.StringToHGlobalUTF8(text));
       }
 
       public int Height()

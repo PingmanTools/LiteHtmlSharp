@@ -103,7 +103,7 @@ namespace LiteHtmlSharp.CoreGraphics
       // Used when the parent has a custom tag (View) that works with an href attribute
       public void TriggerAnchorClicked(string url)
       {
-         OnAnchorClickHandler(url);
+         OnAnchorClickHandler(PInvokes.StringToHGlobalUTF8(url));
       }
 
       protected override void OnAnchorClick(string url)
@@ -128,7 +128,7 @@ namespace LiteHtmlSharp.CoreGraphics
          media.height = media.device_height = (int)ContextSize.Height;
       }
 
-      protected override void SetBaseURL(ref string base_url)
+      protected override void SetBaseURL(string base_url)
       {
 
       }

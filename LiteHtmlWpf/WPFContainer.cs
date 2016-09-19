@@ -39,9 +39,6 @@ namespace LiteHtmlSharp
       Dictionary<string, Brush> _brushes = new Dictionary<string, Brush>();
       Dictionary<string, Pen> _pens = new Dictionary<string, Pen>();
 
-      public RegisterElementDelegate RegisterElement;
-      public ProcessElementDelegate ProcessElement;
-
       Dictionary<string, BitmapImage> _images = new Dictionary<string, BitmapImage>();
       Dictionary<UIntPtr, FontInfo> _fonts = new Dictionary<UIntPtr, FontInfo>();
       public Inputs Inputs = new Inputs();
@@ -59,6 +56,8 @@ namespace LiteHtmlSharp
          _loader = loader;
          _visualControl = visual;
          _visual = _visualControl.GetDrawingVisual();
+         ShouldCreateElementCallback = ShouldCreateElement;
+         CreateElementCallback = CreateElement;
       }
 
       protected override void SetCaption(string caption)
@@ -110,35 +109,28 @@ namespace LiteHtmlSharp
       {
          foreach (var input in Inputs)
          {
-            ElementInfo info = Document.GetElementInfo(input.ID).Value;
+            ElementInfo info = Document.GetElementInfo(input.ID);
             if (input.Element == null)
             {
-               if (ProcessElement != null)
+               if (input.Type == InputType.Textbox)
                {
-                  ProcessElement(input, info);
+                  var tb = new TextBox();
+                  input.Element = tb;
                }
-               else
+               else if (input.Type == InputType.Button)
                {
-                  if (input.Type == InputType.Textbox)
+                  var button = new Button();
+                  button.Click += Button_Click;
+                  input.Element = button;
+                  if (!string.IsNullOrEmpty(info.Text))
                   {
-                     var tb = new TextBox();
-                     input.Element = tb;
+                     button.Content = info.Text;
                   }
-                  else if (input.Type == InputType.Button)
-                  {
-                     var button = new Button();
-                     button.Click += Button_Click;
-                     input.Element = button;
-                     if (!string.IsNullOrEmpty(info.Text))
-                     {
-                        button.Content = info.Text;
-                     }
-                  }
-
-                  input.SetAttributes(info.Attributes);
-                  input.Element.Tag = input;
                }
 
+               input.SetAttributes(info.Attributes);
+               input.Element.Tag = input;
+               
                input.Element.VerticalAlignment = VerticalAlignment.Top;
                input.Element.HorizontalAlignment = HorizontalAlignment.Left;
 
@@ -522,7 +514,7 @@ namespace LiteHtmlSharp
          media.type = media_type.media_type_all;
       }
 
-      protected override void SetBaseURL(ref string base_url)
+      protected override void SetBaseURL(string base_url)
       {
          base_url = BaseURL;
       }
@@ -537,47 +529,26 @@ namespace LiteHtmlSharp
          return pt;
       }
 
-      protected override int CreateElement(string tag, string attributes, ref ElementInfo elementInfo)
+      int CreateElement(string tag, string attributes, ElementInfo elementInfo)
       {
-         var input = CreateInput(tag, attributes, ref elementInfo);
+         var input = CreateInput(tag, attributes, elementInfo);
          return input?.ID ?? 0;
       }
 
-      Input CreateInput(string tag, string attributes, ref ElementInfo elementInfo)
+      bool ShouldCreateElement(string tag)
       {
-         if (RegisterElement != null)
+         switch (tag.ToLowerInvariant())
          {
-            if (RegisterElement(tag))
-            {
-               Input input = new Input(InputType.Unknown, attributes);
-               input.ID = Inputs.Count + 1;
-               Inputs.Add(input);
-
-               ElementInfo newElementInfo = elementInfo; // Get a copy.
-               newElementInfo.Attributes = attributes;
-               if (ProcessElement != null)
-               {
-                  ProcessElement(input, newElementInfo);
-                  // Tell litehtml about the initial size of our control.
-                  if (input.Element != null)
-                  {
-                     _visualControl.AddChildControl(input.Element);
-                     input.IsPlaced = true;
-
-                     elementInfo.Height = (int)input.Element.ActualHeight;
-                     elementInfo.Width = (int)input.Element.ActualWidth;
-
-                  }
-               }
-
-               return input;
-            }
-            else
-            {
-               return null;
-            }
+            case "input":
+            case "button":
+               return true;
+            default:
+               return false;
          }
+      }
 
+      Input CreateInput(string tag, string attributes, ElementInfo elementInfo)
+      {
          if (string.Equals(tag, "input", StringComparison.OrdinalIgnoreCase))
          {
             Input input = new Input(InputType.Textbox, attributes);

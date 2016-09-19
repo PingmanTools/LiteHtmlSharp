@@ -124,6 +124,11 @@ void DocContainer::get_client_rect(litehtml::position & client) const
 
 std::shared_ptr<litehtml::element> DocContainer::create_element(const litehtml::tchar_t * tag_name, const litehtml::string_map & attributes, const std::shared_ptr<litehtml::document>& doc)
 {
+   if (!_callbacks.ShouldCreateElement(tag_name))
+   {
+      return 0;
+   }
+
 	// Pass all attributes to c#
 	litehtml::tstring attributeStr;
 	for (auto attr : attributes)
@@ -134,7 +139,7 @@ std::shared_ptr<litehtml::element> DocContainer::create_element(const litehtml::
 		attributeStr.append(_T("\n"));
 	}
 	std::string _attributes = std::string(attributeStr.begin(), attributeStr.end());
-
+  
 	// Create the ElementInfo that c# will use to set things it needs to.  This is marshalled, so be careful on types.
 	ElementInfo elementInfo = {};
 	int elementID = _callbacks.CreateElement(tag_name, _attributes.c_str(), elementInfo);

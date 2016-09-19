@@ -32,6 +32,8 @@ typedef void(*OnAnchorClickFunc)(const litehtml::tchar_t * url);
 
 typedef int(*PTtoPXFunc)(int pt);
 
+typedef bool(*ShouldCreateElementFunc)(const litehtml::tchar_t * tag);
+
 typedef int(*CreateElementFunc)(const litehtml::tchar_t * tag, const char * attributes, ElementInfo& elementInfo);
 
 typedef void(*SetCursorFunc)(const litehtml::tchar_t * cursor);
@@ -114,6 +116,7 @@ public:
    OnAnchorClickFunc OnAnchorClick = 0;
    SetBaseURLFunc SetBaseURL = 0;
    PTtoPXFunc PTtoPX = 0;
+   ShouldCreateElementFunc ShouldCreateElement = 0;
    CreateElementFunc CreateElement = 0;
 
    DrawListMarkerFunc DrawListMarker = 0;
