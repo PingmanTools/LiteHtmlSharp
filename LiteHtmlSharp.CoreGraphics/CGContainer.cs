@@ -8,7 +8,7 @@ using CoreGraphics;
 using CoreText;
 
 using LiteHtmlSharp;
-
+using System.Runtime.InteropServices;
 
 namespace LiteHtmlSharp.CoreGraphics
 {
@@ -103,7 +103,15 @@ namespace LiteHtmlSharp.CoreGraphics
       // Used when the parent has a custom tag (View) that works with an href attribute
       public void TriggerAnchorClicked(string url)
       {
-         OnAnchorClickHandler(PInvokes.StringToHGlobalUTF8(url));
+         var urlStr = PInvokes.StringToHGlobalUTF8(url);
+         try
+         {
+            OnAnchorClickHandler(urlStr);
+         }
+         finally
+         {
+            Marshal.FreeHGlobal(urlStr);
+         }
       }
 
       protected override void OnAnchorClick(string url)

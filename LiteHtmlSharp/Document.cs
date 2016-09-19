@@ -19,7 +19,15 @@ namespace LiteHtmlSharp
 
       public void SetMasterCSS(string css)
       {
-         Calls.SetMasterCSS(Calls.ID, PInvokes.StringToHGlobalUTF8(css));
+         var cssStr = PInvokes.StringToHGlobalUTF8(css);
+         try
+         {
+            Calls.SetMasterCSS(Calls.ID, cssStr);
+         }
+         finally
+         {
+            Marshal.FreeHGlobal(cssStr);
+         }
       }
 
       public void CreateFromString(string html)
@@ -30,7 +38,15 @@ namespace LiteHtmlSharp
          }
          else
          {
-            Calls.CreateFromString(Calls.ID, PInvokes.StringToHGlobalUTF8(html));
+            var htmlStr = PInvokes.StringToHGlobalUTF8(html);
+            try
+            {
+               Calls.CreateFromString(Calls.ID, htmlStr);
+            }
+            finally
+            {
+               Marshal.FreeHGlobal(htmlStr);
+            }
             HasLoadedHtml = true;
          }
       }

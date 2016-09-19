@@ -31,7 +31,7 @@ namespace LiteHtmlSharp
       [DllImport(LiteHtmlLibFile, CallingConvention = cc, SetLastError = true)]
       public static extern IntPtr EchoTest(IntPtr testStr);
 
-      public static IntPtr StringToHGlobalUTF8(string s, out int length)
+      private static IntPtr StringToHGlobalUTF8(string s, out int length)
       {
          if (s == null)
          {
