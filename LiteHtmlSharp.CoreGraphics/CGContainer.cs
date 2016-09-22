@@ -12,7 +12,7 @@ using System.Runtime.InteropServices;
 
 namespace LiteHtmlSharp.CoreGraphics
 {
-   public class CGContainer : Container
+   public class CGContainer : ViewportContainer
    {
       public delegate ImageHolder LoadImageDelegate(string imageUrl);
 
@@ -26,11 +26,6 @@ namespace LiteHtmlSharp.CoreGraphics
 
       public CGContext Context { get; set; }
 
-      public CGSize ContextSize { get; set; }
-
-      public CGPoint ScrollOffset { get; set; }
-
-      public event Action<CGSize> DocumentSizeKnown;
 
       public event Action<string> RenderHtmlRequested;
 
@@ -43,7 +38,6 @@ namespace LiteHtmlSharp.CoreGraphics
       {
          fontCache = new Dictionary<UIntPtr, FontHolder>();
          imageCache = new Dictionary<string, ImageHolder>();
-         ScrollOffset = new CGPoint(0, 0);
       }
 
       public void DrawRect(nfloat x, nfloat y, nfloat width, nfloat height, CGColor color)
@@ -73,25 +67,6 @@ namespace LiteHtmlSharp.CoreGraphics
          RenderHtmlRequested?.Invoke(html);
       }
 
-      public void Render()
-      {
-         Document.Render((int)ContextSize.Width);
-         if (DocumentSizeKnown != null)
-         {
-            DocumentSizeKnown(new CGSize(Document.Width(), Document.Height()));
-         }
-      }
-
-      public void Draw()
-      {
-         Document.Draw((int)-ScrollOffset.X, (int)-ScrollOffset.Y, new position {
-            x = 0,
-            y = 0,
-            width = (int)ContextSize.Width,
-            height = (int)ContextSize.Height
-         });
-      }
-
       protected override void SetCursor(string cursor)
       {
          if (SetCursorCallback != null)
@@ -100,40 +75,9 @@ namespace LiteHtmlSharp.CoreGraphics
          }
       }
 
-      // Used when the parent has a custom tag (View) that works with an href attribute
-      public void TriggerAnchorClicked(string url)
-      {
-         var urlStr = PInvokes.StringToHGlobalUTF8(url);
-         try
-         {
-            OnAnchorClickHandler(urlStr);
-         }
-         finally
-         {
-            Marshal.FreeHGlobal(urlStr);
-         }
-      }
-
-      protected override void OnAnchorClick(string url)
-      {
-
-      }
-
       protected override int PTtoPX(int pt)
       {
          return 1;
-      }
-
-      protected override void GetClientRect(ref position client)
-      {
-         client.width = (int)ContextSize.Width;
-         client.height = (int)ContextSize.Height;
-      }
-
-      protected override void GetMediaFeatures(ref media_features media)
-      {
-         media.width = media.device_width = (int)ContextSize.Width;
-         media.height = media.device_height = (int)ContextSize.Height;
       }
 
       protected override void SetBaseURL(string base_url)

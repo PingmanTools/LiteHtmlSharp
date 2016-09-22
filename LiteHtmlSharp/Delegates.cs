@@ -5,45 +5,51 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 
+#if __MonoCS__
+using Utf8Str = System.String;
+#else
+using Utf8Str = System.IntPtr;
+#endif
+
 namespace LiteHtmlSharp
 {
    // test methods
    [UnmanagedFunctionPointer(PInvokes.cc, CharSet = PInvokes.cs)]
-   public delegate void TestCallbackFunc(int x, IntPtr testString);
+   public delegate void TestCallbackFunc(int x, Utf8Str testString);
 
    [UnmanagedFunctionPointer(PInvokes.cc, CharSet = PInvokes.cs)]
-   public delegate void TriggerTestCallbackFunc(IntPtr container, int x, IntPtr testString);
+   public delegate void TriggerTestCallbackFunc(IntPtr container, int x, Utf8Str testString);
 
    // callbacks
    [UnmanagedFunctionPointer(PInvokes.cc, CharSet = PInvokes.cs)]
-   public delegate void SetCaptionFunc(IntPtr caption);
+   public delegate void SetCaptionFunc(Utf8Str caption);
 
    [UnmanagedFunctionPointer(PInvokes.cc, CharSet = PInvokes.cs)]
    public delegate int GetDefaultFontSizeFunc();
 
    [UnmanagedFunctionPointer(PInvokes.cc, CharSet = PInvokes.cs)]
-   public delegate IntPtr GetDefaultFontNameFunc();
+   public delegate Utf8Str GetDefaultFontNameFunc();
 
    [UnmanagedFunctionPointer(PInvokes.cc)]
    public delegate void DrawBordersFunc(UIntPtr hdc, ref borders borders, ref position draw_pos, [MarshalAs(UnmanagedType.I1)] bool root);
 
    [UnmanagedFunctionPointer(PInvokes.cc, CharSet = PInvokes.cs)]
-   public delegate void DrawBackgroundFunc(UIntPtr hdc, IntPtr image, background_repeat repeat, ref web_color color, ref position pos, ref border_radiuses borderRadiuses, ref position borderBox, [MarshalAs(UnmanagedType.I1)] bool isRoot);
+   public delegate void DrawBackgroundFunc(UIntPtr hdc, Utf8Str image, background_repeat repeat, ref web_color color, ref position pos, ref border_radiuses borderRadiuses, ref position borderBox, [MarshalAs(UnmanagedType.I1)] bool isRoot);
 
    [UnmanagedFunctionPointer(PInvokes.cc, CharSet = PInvokes.cs)]
-   public delegate void GetImageSizeFunc(IntPtr image, ref size size);
+   public delegate void GetImageSizeFunc(Utf8Str image, ref size size);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
-   public delegate void DrawTextFunc(IntPtr text, UIntPtr font, ref web_color color, ref position pos);
+   public delegate void DrawTextFunc(Utf8Str text, UIntPtr font, ref web_color color, ref position pos);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
-   public delegate int GetTextWidthFunc(IntPtr text, UIntPtr font);
+   public delegate int GetTextWidthFunc(Utf8Str text, UIntPtr font);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
-   public delegate UIntPtr CreateFontFunc(IntPtr faceName, int size, int weight, font_style italic, uint decoration, ref font_metrics fm);
+   public delegate UIntPtr CreateFontFunc(Utf8Str faceName, int size, int weight, font_style italic, uint decoration, ref font_metrics fm);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
-   public delegate IntPtr ImportCssFunc(IntPtr url, IntPtr baseurl);
+   public delegate Utf8Str ImportCssFunc(Utf8Str url, Utf8Str baseurl);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
    public delegate void GetClientRectFunc(ref position client);
@@ -52,28 +58,28 @@ namespace LiteHtmlSharp
    public delegate void GetMediaFeaturesFunc(ref media_features media);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
-   public delegate void SetBaseURLFunc(IntPtr base_url);
+   public delegate void SetBaseURLFunc(Utf8Str base_url);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
-   public delegate void OnAnchorClickFunc(IntPtr url);
+   public delegate void OnAnchorClickFunc(Utf8Str url);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
    public delegate int PTtoPXFunc(int pt);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
-   public delegate bool ShouldCreateElementFunc(IntPtr tag);
+   public delegate bool ShouldCreateElementFunc(Utf8Str tag);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
-   public delegate int CreateElementFunc(IntPtr tag, IntPtr attributes, [Out, In] ref ElementInfoStruct elementInfo);
+   public delegate int CreateElementFunc(Utf8Str tag, Utf8Str attributes, [Out, In] ref ElementInfoStruct elementInfo);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
-   public delegate void SetCursorFunc(IntPtr cursor);
+   public delegate void SetCursorFunc(Utf8Str cursor);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
-   public delegate void DrawListMarkerFunc(IntPtr image, IntPtr baseURL, list_style_type marker_type, ref web_color color, ref position pos);
+   public delegate void DrawListMarkerFunc(Utf8Str image, Utf8Str baseURL, list_style_type marker_type, ref web_color color, ref position pos);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
-   public delegate IntPtr TransformTextFunc(IntPtr text, text_transform tt);
+   public delegate Utf8Str TransformTextFunc(Utf8Str text, text_transform tt);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
    public delegate void InitCallbacksFunc(ref Callbacks callbacks);
@@ -81,7 +87,7 @@ namespace LiteHtmlSharp
    // Invoke methods
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
-   public delegate void CreateFromStringFunc(IntPtr container, IntPtr html);
+   public delegate void CreateFromStringFunc(IntPtr container, Utf8Str html);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
    public delegate int RenderFunc(IntPtr container, int maxWidth);
@@ -90,7 +96,7 @@ namespace LiteHtmlSharp
    public delegate void DrawFunc(IntPtr container, int x, int y, position clip);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
-   public delegate void SetMasterCSSFunc(IntPtr container, IntPtr css);
+   public delegate void SetMasterCSSFunc(IntPtr container, Utf8Str css);
 
    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvokes.cs)]
    [return: MarshalAs(UnmanagedType.I1)]

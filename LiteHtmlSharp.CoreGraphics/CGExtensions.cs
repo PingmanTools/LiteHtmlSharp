@@ -28,6 +28,26 @@ namespace LiteHtmlSharp.CoreGraphics
       {
          return new CGColor(wc.red / MaxByteAsFloat, wc.green / MaxByteAsFloat, wc.blue / MaxByteAsFloat, wc.alpha / MaxByteAsFloat);
       }
+
+      public static CGSize ToCGSize(this LiteHtmlSize viewportSize)
+      {
+         return new CGSize(viewportSize.Width, viewportSize.Height);
+      }
+
+      public static CGPoint ToCGPoint(this LiteHtmlPoint viewportPoint)
+      {
+         return new CGPoint(viewportPoint.X, viewportPoint.Y);
+      }
+
+      public static LiteHtmlSize ToLiteHtmlSize(this CGSize size)
+      {
+         return new LiteHtmlSize(size.Width, size.Height);
+      }
+
+      public static LiteHtmlPoint ToLiteHtmlPoint(this CGPoint point)
+      {
+         return new LiteHtmlPoint(point.X, point.Y);
+      }
    }
 }
 

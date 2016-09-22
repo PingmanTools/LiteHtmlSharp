@@ -2,6 +2,12 @@
 using System.Runtime.InteropServices;
 using System.Text;
 
+#if __MonoCS__
+using Utf8Str = System.String;
+#else
+using Utf8Str = System.IntPtr;
+#endif
+
 namespace LiteHtmlSharp
 {
    public static class PInvokes
@@ -23,55 +29,15 @@ namespace LiteHtmlSharp
       public static extern void Init(ref DocumentCalls document, InitCallbacksFunc initFunc);
 
       [DllImport(LiteHtmlLibFile, CallingConvention = cc, SetLastError = true)]
-      public static extern int GetWidthTest(IntPtr docContainer);
+      public static extern int GetWidthTest(Utf8Str docContainer);
 
       [DllImport(LiteHtmlLibFile, CallingConvention = cc, SetLastError = true)]
-      public static extern IntPtr CreateDocContainer();
+      public static extern Utf8Str CreateDocContainer();
 
       [DllImport(LiteHtmlLibFile, CallingConvention = cc, SetLastError = true)]
-      public static extern IntPtr EchoTest(IntPtr testStr);
+      public static extern Utf8Str EchoTest(Utf8Str testStr);
 
-      private static IntPtr StringToHGlobalUTF8(string s, out int length)
-      {
-         if (s == null)
-         {
-            length = 0;
-            return IntPtr.Zero;
-         }
 
-         var bytes = Encoding.UTF8.GetBytes(s);
-         var ptr = Marshal.AllocHGlobal(bytes.Length + 1);
-         Marshal.Copy(bytes, 0, ptr, bytes.Length);
-         Marshal.WriteByte(ptr, bytes.Length, 0);
-         length = bytes.Length;
-
-         return ptr;
-      }
-
-      public static IntPtr StringToHGlobalUTF8(string s)
-      {
-         int temp;
-         return StringToHGlobalUTF8(s, out temp);
-      }
-
-      public static string PtrToStringUTF8(IntPtr ptr)
-      {
-         if (ptr == IntPtr.Zero)
-         {
-            return null;
-         }
-
-         var i = 0;
-         while (Marshal.ReadByte(ptr, i) != 0)
-         {
-            i++;
-         }
-
-         var bytes = new byte[i];
-         Marshal.Copy(ptr, bytes, 0, i);
-
-         return Encoding.UTF8.GetString(bytes, 0, i);
-      }
    }
 }
 

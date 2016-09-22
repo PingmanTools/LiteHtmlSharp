@@ -10,7 +10,11 @@
     <OutputPath>.</OutputPath>
     <CustomCommands>
       <CustomCommands>
-        <Command type="Build" command="sh lib_dylib/build.sh" workingdir="${SolutionDir}/../LiteHtmlSharp/LiteHtmlLib" />
+        <Command>
+          <type>Build</type>
+          <command>sh lib_dylib/build.sh</command>
+          <workingdir>${SolutionDir}/../LiteHtmlSharp/LiteHtmlLib</workingdir>
+        </Command>
       </CustomCommands>
     </CustomCommands>
   </PropertyGroup>
@@ -18,7 +22,11 @@
     <OutputPath>.</OutputPath>
     <CustomCommands>
       <CustomCommands>
-        <Command type="Build" command="sh lib_static/build.sh" workingdir="${SolutionDir}/LiteHtmlSharp/LiteHtmlLib" />
+        <Command>
+          <type>Build</type>
+          <command>sh lib_static/build.sh</command>
+          <workingdir>${SolutionDir}/LiteHtmlSharp/LiteHtmlLib</workingdir>
+        </Command>
       </CustomCommands>
     </CustomCommands>
   </PropertyGroup>
@@ -26,7 +34,11 @@
     <OutputPath>.</OutputPath>
     <CustomCommands>
       <CustomCommands>
-        <Command type="Build" command="sh lib_static/build.sh" workingdir="${SolutionDir}/LiteHtmlSharp/LiteHtmlLib" />
+        <Command>
+          <type>Build</type>
+          <command>sh lib_static/build.sh</command>
+          <workingdir>${SolutionDir}/LiteHtmlSharp/LiteHtmlLib</workingdir>
+        </Command>
       </CustomCommands>
     </CustomCommands>
   </PropertyGroup>

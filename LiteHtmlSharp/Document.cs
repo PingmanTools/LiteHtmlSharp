@@ -13,20 +13,22 @@ namespace LiteHtmlSharp
       public event Action ViewElementsNeedLayout;
 
 
-      public bool HasLoadedHtml { get; private set; }
+      public bool HasLoadedHtml { get; set; }
 
-      public bool HasRendered { get; private set; }
+      public bool HasRendered { get; set; }
 
       public void SetMasterCSS(string css)
       {
-         var cssStr = PInvokes.StringToHGlobalUTF8(css);
+         var cssStr = Utf8Util.StringToHGlobalUTF8(css);
          try
          {
             Calls.SetMasterCSS(Calls.ID, cssStr);
          }
          finally
          {
+#if !__MonoCS__
             Marshal.FreeHGlobal(cssStr);
+#endif
          }
       }
 
@@ -38,14 +40,16 @@ namespace LiteHtmlSharp
          }
          else
          {
-            var htmlStr = PInvokes.StringToHGlobalUTF8(html);
+            var htmlStr = Utf8Util.StringToHGlobalUTF8(html);
             try
             {
                Calls.CreateFromString(Calls.ID, htmlStr);
             }
             finally
             {
+#if !__MonoCS__
                Marshal.FreeHGlobal(htmlStr);
+#endif
             }
             HasLoadedHtml = true;
          }
@@ -100,12 +104,13 @@ namespace LiteHtmlSharp
             return null;
          }
          ElementInfoStruct info = Marshal.PtrToStructure<ElementInfoStruct>(ptr);
-         return new ElementInfo(info);
+         var el = new ElementInfo(info);
+         return el;
       }
 
       public void TriggerTestCallback(int number, string text)
       {
-         Calls.TriggerTestCallback(Calls.ID, number, PInvokes.StringToHGlobalUTF8(text));
+         Calls.TriggerTestCallback(Calls.ID, number, Utf8Util.StringToHGlobalUTF8(text));
       }
 
       public int Height()

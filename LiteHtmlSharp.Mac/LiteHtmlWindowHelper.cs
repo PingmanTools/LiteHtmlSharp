@@ -41,7 +41,7 @@ namespace LiteHtmlSharp.Mac
          LiteHtmlView.SetViewport(new CGRect(scrollView.ContentView.Bounds.Location, scrollView.ContentView.Frame.Size));
       }
 
-      void LiteHtmlView_DocumentSizeKnown(CGSize size)
+      void LiteHtmlView_DocumentSizeKnown(LiteHtmlSize size)
       {
          LiteHtmlView.SetFrameSize(new CGSize(scrollView.ContentView.Bounds.Width, size.Height));
          LiteHtmlView.SetViewport(new CGRect(scrollView.ContentView.Bounds.Location, scrollView.ContentView.Frame.Size));

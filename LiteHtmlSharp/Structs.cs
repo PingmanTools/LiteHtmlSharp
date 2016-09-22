@@ -1,6 +1,12 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
+#if __MonoCS__
+using Utf8Str = System.String;
+#else
+using Utf8Str = System.IntPtr;
+#endif
+
 namespace LiteHtmlSharp
 {
    [StructLayout(LayoutKind.Sequential)]
@@ -221,8 +227,8 @@ namespace LiteHtmlSharp
       public int PosY;
       public int Width;
       public int Height;
-      public IntPtr Attributes;
-      public IntPtr Text;
+      public Utf8Str Attributes;
+      public Utf8Str Text;
    }
 
    public class ElementInfo
@@ -242,8 +248,8 @@ namespace LiteHtmlSharp
          PosY = raw.PosY;
          Width = raw.Width;
          Height = raw.Height;
-         Attributes = PInvokes.PtrToStringUTF8(raw.Attributes);
-         Text = PInvokes.PtrToStringUTF8(raw.Text);
+         Attributes = Utf8Util.Utf8PtrToString(raw.Attributes);
+         Text = Utf8Util.Utf8PtrToString(raw.Text);
       }
    }
 

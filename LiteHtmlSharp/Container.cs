@@ -7,6 +7,12 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Globalization;
 
+#if __MonoCS__
+using Utf8Str = System.String;
+#else
+using Utf8Str = System.IntPtr;
+#endif
+
 namespace LiteHtmlSharp
 {
 
@@ -27,7 +33,7 @@ namespace LiteHtmlSharp
       public ShouldCreateElementDelegate ShouldCreateElementCallback;
       public CreateElementDelegate CreateElementCallback;
 
-      public event Action DocumentDrawn;
+      public ImportCssDelegate ImportCssRequest;
 
       public event Action<string> AnchorClicked;
 
@@ -38,7 +44,7 @@ namespace LiteHtmlSharp
          PInvokes.Init(ref Document.Calls, InitCallbacks);
          Document.SetMasterCSS(masterCssData);
 
-#if DEBUG
+#if !FDEBUG
          TestFramework();
 #endif
       }
@@ -49,61 +55,57 @@ namespace LiteHtmlSharp
       {
          callbacks.DrawBorders = DrawBordersScaled;
          callbacks.DrawBackground = DrawBackgroundScaled;
-         callbacks.GetImageSize = GetImageSize;
+         callbacks.GetImageSize = GetImageSizeCallback;
 
          callbacks.DrawText = DrawTextScaled;
-         callbacks.GetTextWidth = GetTextWidth;
+         callbacks.GetTextWidth = GetTextWidthCallback;
          callbacks.CreateFont = CreateFontWrapper;
 
-         callbacks.ImportCss = ImportCss;
+         callbacks.ImportCss = ImportCssCallback;
 
          callbacks.GetClientRect = GetClientRect;
          callbacks.GetMediaFeatures = GetMediaFeatures;
 
-         callbacks.SetBaseURL = SetBaseURL;
+         callbacks.SetBaseURL = SetBaseURLCallback;
          callbacks.OnAnchorClick = OnAnchorClickHandler;
 
          callbacks.PTtoPX = PTtoPX;
          callbacks.ShouldCreateElement = ShouldCreateElement;
          callbacks.CreateElement = CreateElementWrapper;
 
-         callbacks.SetCursor = SetCursor;
-         callbacks.DrawListMarker = DrawListMarker;
+         callbacks.SetCursor = SetCursorCallback;
+         callbacks.DrawListMarker = DrawListMarkerCallback;
 
-         callbacks.TransformText = TransformText;
+         callbacks.TransformText = TransformTextCallback;
          callbacks.TestCallback = TestCallback;
 
-         callbacks.SetCaption = SetCaption;
+         callbacks.SetCaption = SetCaptionCallback;
          callbacks.GetDefaultFontName = GetDefaultFontNameWrapper;
          callbacks.GetDefaultFontSize = GetDefaultFontSize;
 
          _callbacks = callbacks;
       }
 
-      public void Draw(int x, int y, position clip)
+      void TestCallback(int number, Utf8Str text)
       {
-         Document.Draw(x, y, clip);
-         if (DocumentDrawn != null)
-         {
-            DocumentDrawn();
-         }
-      }
-
-      void TestCallback(int number, IntPtr text)
-      {
-         _testText = PInvokes.PtrToStringUTF8(text);
+         _testText = Utf8Util.Utf8PtrToString(text);
          _testNumber = number;
       }
 
       void TestFramework()
       {
          string testStringResult = "Test 1234 ....  \U0001D11E 𝄞 𩸽, ₤ · ₥ · ₦ · ₮ · ₯ · ₹";
-         var input = PInvokes.StringToHGlobalUTF8(testStringResult);
+         var input = Utf8Util.StringToHGlobalUTF8(testStringResult);
 
          var echoTest = PInvokes.EchoTest(input);
-         var echoResult = PInvokes.PtrToStringUTF8(echoTest);
 
-         var worked = testStringResult == echoResult;
+         var echoResult = Utf8Util.Utf8PtrToString(echoTest);
+
+
+         if (testStringResult != echoResult)
+         {
+            throw new Exception("Utf8 string corrupted through boundary!");
+         }
 
          Document.TriggerTestCallback(50, testStringResult);
          if (_testText != testStringResult || _testNumber != 50)
@@ -114,12 +116,12 @@ namespace LiteHtmlSharp
 
       // -----
 
-      private void DrawBackgroundScaled(UIntPtr hdc, IntPtr image, background_repeat repeat, ref web_color color, ref position pos, ref border_radiuses borderRadiuses, ref position borderBox, bool isRoot)
+      private void DrawBackgroundScaled(UIntPtr hdc, Utf8Str image, background_repeat repeat, ref web_color color, ref position pos, ref border_radiuses borderRadiuses, ref position borderBox, bool isRoot)
       {
          pos.Scale(ScaleFactor);
          borderRadiuses.Scale(ScaleFactor);
          borderBox.Scale(ScaleFactor);
-         DrawBackground(hdc, PInvokes.PtrToStringUTF8(image), repeat, ref color, ref pos, ref borderRadiuses, ref borderBox, isRoot);
+         DrawBackground(hdc, Utf8Util.Utf8PtrToString(image), repeat, ref color, ref pos, ref borderRadiuses, ref borderBox, isRoot);
       }
 
       protected abstract void DrawBackground(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos, ref border_radiuses borderRadiuses, ref position borderBox, bool isRoot);
@@ -137,107 +139,108 @@ namespace LiteHtmlSharp
 
       // -----
 
-      private void DrawTextScaled(IntPtr text, UIntPtr font, ref web_color color, ref position pos)
+      private void DrawTextScaled(Utf8Str text, UIntPtr font, ref web_color color, ref position pos)
       {
          pos.Scale(ScaleFactor);
-         DrawText(PInvokes.PtrToStringUTF8(text), font, ref color, ref pos);
+         DrawText(Utf8Util.Utf8PtrToString(text), font, ref color, ref pos);
       }
 
       protected abstract void DrawText(string text, UIntPtr font, ref web_color color, ref position pos);
 
       // -----
 
-      private void GetImageSize(IntPtr image, ref size size)
+      private void GetImageSizeCallback(Utf8Str image, ref size size)
       {
-         GetImageSize(PInvokes.PtrToStringUTF8(image), ref size);
+         GetImageSize(Utf8Util.Utf8PtrToString(image), ref size);
       }
 
       protected abstract void GetImageSize(string image, ref size size);
 
-      private int GetTextWidth(IntPtr text, UIntPtr font)
+      private int GetTextWidthCallback(Utf8Str text, UIntPtr font)
       {
-         return GetTextWidth(PInvokes.PtrToStringUTF8(text), font);
+         return GetTextWidth(Utf8Util.Utf8PtrToString(text), font);
       }
 
       protected abstract int GetTextWidth(string text, UIntPtr font);
 
       protected abstract void GetClientRect(ref position client);
 
-      private void SetCaption(IntPtr caption)
+      private void SetCaptionCallback(Utf8Str caption)
       {
-         SetCaption(PInvokes.PtrToStringUTF8(caption));
+         SetCaption(Utf8Util.Utf8PtrToString(caption));
       }
 
       protected abstract void SetCaption(string caption);
 
       protected abstract int GetDefaultFontSize();
 
-      private IntPtr GetDefaultFontNameWrapper()
+      private Utf8Str GetDefaultFontNameWrapper()
       {
-         return PInvokes.StringToHGlobalUTF8(GetDefaultFontName());
+         return Utf8Util.StringToHGlobalUTF8(GetDefaultFontName());
       }
 
       protected abstract string GetDefaultFontName();
 
-      protected UIntPtr CreateFontWrapper(IntPtr faceName, int size, int weight, font_style italic, uint decoration, ref font_metrics fm)
+      protected UIntPtr CreateFontWrapper(Utf8Str faceName, int size, int weight, font_style italic, uint decoration, ref font_metrics fm)
       {
-         return CreateFont(PInvokes.PtrToStringUTF8(faceName), size, weight, italic, (font_decoration)decoration, ref fm);
+         return CreateFont(Utf8Util.Utf8PtrToString(faceName), size, weight, italic, (font_decoration)decoration, ref fm);
       }
 
       protected abstract UIntPtr CreateFont(string faceName, int size, int weight, font_style italic, font_decoration decoration, ref font_metrics fm);
 
-      public ImportCssDelegate ImportCssCallback;
-
-      private IntPtr ImportCss(IntPtr url, IntPtr baseurl)
+      private Utf8Str ImportCssCallback(Utf8Str url, Utf8Str baseurl)
       {
-         return PInvokes.StringToHGlobalUTF8(ImportCss(PInvokes.PtrToStringUTF8(url), PInvokes.PtrToStringUTF8(baseurl)));
+         return Utf8Util.StringToHGlobalUTF8(ImportCss(Utf8Util.Utf8PtrToString(url), Utf8Util.Utf8PtrToString(baseurl)));
       }
 
       protected virtual string ImportCss(string url, string baseurl)
       {
-         if (ImportCssCallback == null)
+         if (ImportCssRequest == null)
          {
-            throw new Exception("ImportCss must be overridden or the callback delegate set");
+            throw new Exception("ImportCss must be overridden or the ImportCssRequest delegate set");
          }
-         return ImportCssCallback(url, baseurl);
+         return ImportCssRequest(url, baseurl);
       }
 
       protected abstract void GetMediaFeatures(ref media_features media);
 
-      void SetBaseURL(IntPtr base_url)
+      void SetBaseURLCallback(Utf8Str base_url)
       {
-         SetBaseURL(PInvokes.PtrToStringUTF8(base_url));
+         SetBaseURL(Utf8Util.Utf8PtrToString(base_url));
       }
 
       protected abstract void SetBaseURL(string base_url);
 
-      protected void OnAnchorClickHandler(IntPtr url)
+      protected void OnAnchorClickHandler(Utf8Str url)
       {
          if (AnchorClicked != null)
          {
-            AnchorClicked(PInvokes.PtrToStringUTF8(url));
+            AnchorClicked(Utf8Util.Utf8PtrToString(url));
          }
-         OnAnchorClick(PInvokes.PtrToStringUTF8(url));
       }
 
-      protected abstract void OnAnchorClick(string url);
+      // Used when the parent has a custom tag (View) that works with an href attribute
+      public void TriggerAnchorClicked(string url)
+      {
+         AnchorClicked?.Invoke(url);
+      }
 
       protected abstract int PTtoPX(int pt);
 
-      private bool ShouldCreateElement(IntPtr tag)
+      private bool ShouldCreateElement(Utf8Str tag)
       {
          if (ShouldCreateElementCallback != null)
          {
-            return ShouldCreateElementCallback(PInvokes.PtrToStringUTF8(tag));
+            return ShouldCreateElementCallback(Utf8Util.Utf8PtrToString(tag));
          }
          return false;
       }
 
-      private int CreateElementWrapper(IntPtr tag, IntPtr attributes, [Out, In] ref ElementInfoStruct elementInfo)
+      private int CreateElementWrapper(Utf8Str tag, Utf8Str attributes, [Out, In] ref ElementInfoStruct elementInfo)
       {
          if (CreateElementCallback != null)
          {
-            return CreateElementCallback(PInvokes.PtrToStringUTF8(tag), PInvokes.PtrToStringUTF8(attributes), new ElementInfo(elementInfo));
+            return CreateElementCallback(Utf8Util.Utf8PtrToString(tag), Utf8Util.Utf8PtrToString(attributes), new ElementInfo(elementInfo));
          }
          else
          {
@@ -245,23 +248,23 @@ namespace LiteHtmlSharp
          }
       }
 
-      private void SetCursor(IntPtr cursor)
+      private void SetCursorCallback(Utf8Str cursor)
       {
-         SetCursor(PInvokes.PtrToStringUTF8(cursor));
+         SetCursor(Utf8Util.Utf8PtrToString(cursor));
       }
 
       protected abstract void SetCursor(string cursor);
 
-      private void DrawListMarker(IntPtr image, IntPtr baseURL, list_style_type marker_type, ref web_color color, ref position pos)
+      private void DrawListMarkerCallback(Utf8Str image, Utf8Str baseURL, list_style_type marker_type, ref web_color color, ref position pos)
       {
-         DrawListMarker(PInvokes.PtrToStringUTF8(image), PInvokes.PtrToStringUTF8(baseURL), marker_type, ref color, ref pos);
+         DrawListMarker(Utf8Util.Utf8PtrToString(image), Utf8Util.Utf8PtrToString(baseURL), marker_type, ref color, ref pos);
       }
 
       protected abstract void DrawListMarker(string image, string baseURL, list_style_type marker_type, ref web_color color, ref position pos);
 
-      private IntPtr TransformText(IntPtr text, text_transform t)
+      private Utf8Str TransformTextCallback(Utf8Str text, text_transform t)
       {
-         return PInvokes.StringToHGlobalUTF8(TransformText(PInvokes.PtrToStringUTF8(text), t));
+         return Utf8Util.StringToHGlobalUTF8(TransformText(Utf8Util.Utf8PtrToString(text), t));
       }
 
       protected virtual string TransformText(string text, text_transform t)

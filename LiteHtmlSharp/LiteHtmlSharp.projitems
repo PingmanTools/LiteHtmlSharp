@@ -14,5 +14,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)PInvokes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Structs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Delegates.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utf8Util.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewportContainer.cs" />
   </ItemGroup>
 </Project>

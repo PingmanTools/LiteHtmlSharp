@@ -25,12 +25,8 @@ namespace LiteHtmlSharp.Mac
 
       public IEnumerable<ICustomTagView> ViewElements { get { return viewElements.Values; } }
 
-      bool hasCustomViewport = false;
-      CGRect customViewport;
 
-      CGRect Viewport { get { return hasCustomViewport ? customViewport : Bounds; } }
-
-      public event Action<ICustomTagView> CustomTabViewHasSetup;
+      public event Action<ICustomTagView> CustomTagViewHasSetup;
 
 
       public LiteHtmlNSView (CGRect rect, string masterCssData)
@@ -94,15 +90,16 @@ namespace LiteHtmlSharp.Mac
          return "body { color: " + rgbColor + "; }" + cssData;
       }*/
 
-      void SetCusor (string cursor)
+      void SetCusor(string cursor)
       {
-         switch (cursor) {
-         case "pointer":
-            NSCursor.PointingHandCursor.Set ();
-            break;
-         default:
-            NSCursor.ArrowCursor.Set ();
-            break;
+         switch (cursor)
+         {
+            case "pointer":
+               NSCursor.PointingHandCursor.Set();
+               break;
+            default:
+               NSCursor.ArrowCursor.Set();
+               break;
          }
       }
 
@@ -125,9 +122,9 @@ namespace LiteHtmlSharp.Mac
                   {
                      (el.Value as LiteHtmlNSButton).Activated += Btn_Activated;
                   }
-                  if (CustomTabViewHasSetup != null)
+                  if (CustomTagViewHasSetup != null)
                   {
-                     CustomTabViewHasSetup(el.Value);
+                     CustomTagViewHasSetup(el.Value);
                   }
                }
             }
@@ -152,25 +149,28 @@ namespace LiteHtmlSharp.Mac
          }
       }
 
-      int CreateElement (string tag, string attributes, ElementInfo elementInfo)
+      int CreateElement(string tag, string attributes, ElementInfo elementInfo)
       {
-         switch (tag.ToLowerInvariant ()) {
-         case "input": {
-               var newID = ++lastViewElementId;
-               var view = new LiteHtmlNSInput ();
-               AddSubview (view);
-               viewElements.Add (newID, view);
-               return newID;
-            }
-         case "button": {
-               var newID = ++lastViewElementId;
-               var view = new LiteHtmlNSButton ();
-               AddSubview (view);
-               viewElements.Add (newID, view);
-               return newID;
-            }
-         default:
-            return 0;
+         switch (tag.ToLowerInvariant())
+         {
+            case "input":
+               {
+                  var newID = ++lastViewElementId;
+                  var view = new LiteHtmlNSInput();
+                  AddSubview(view);
+                  viewElements.Add(newID, view);
+                  return newID;
+               }
+            case "button":
+               {
+                  var newID = ++lastViewElementId;
+                  var view = new LiteHtmlNSButton();
+                  AddSubview(view);
+                  viewElements.Add(newID, view);
+                  return newID;
+               }
+            default:
+               return 0;
          }
 
       }
@@ -183,12 +183,50 @@ namespace LiteHtmlSharp.Mac
          viewElements.Clear ();
       }
 
+      public void SetViewport(CGRect viewport)
+      {
+         if (LiteHtmlContainer.SetViewport(viewport.Location.ToLiteHtmlPoint(), viewport.Size.ToLiteHtmlSize()))
+         {
+            SetNeedsDisplayInRect(ViewportRect);
+         }
+      }
+
+      CGRect ViewportRect
+      {
+         get
+         {
+            if (LiteHtmlContainer.HasCustomViewport)
+            {
+               return new CGRect(LiteHtmlContainer.ScrollOffset.X, LiteHtmlContainer.ScrollOffset.Y, LiteHtmlContainer.Size.Width, LiteHtmlContainer.Size.Height);;
+            }
+            else
+            {
+               return Bounds;
+            }
+         }
+      }
+
+      CGPoint ViewportPoint 
+      {
+         get
+         {
+            if (LiteHtmlContainer.HasCustomViewport)
+            {
+               return new CGPoint(LiteHtmlContainer.ScrollOffset.X, LiteHtmlContainer.ScrollOffset.Y);
+            }
+            else
+            {
+               return Bounds.Location;
+            }
+         }
+      }
+
       public void LoadHtml (string html)
       {
          RemoveAllViewElements ();
          LiteHtmlContainer.Document.CreateFromString (html);
-         CheckViewportChange (forceRender: true);
-         SetNeedsDisplayInRect (Viewport);
+         LiteHtmlContainer.CheckViewportChange (forceRender: true);
+         SetNeedsDisplayInRect (ViewportRect);
       }
 
       public override void UpdateTrackingAreas ()
@@ -201,40 +239,6 @@ namespace LiteHtmlSharp.Mac
          AddTrackingArea (trackingArea);
       }
 
-      // If true then a redraw is needed
-      bool CheckViewportChange (bool forceRender = false)
-      {
-         if (forceRender
-             || (int)LiteHtmlContainer.ContextSize.Width != (int)Viewport.Size.Width
-             || (int)LiteHtmlContainer.ContextSize.Height != (int)Viewport.Size.Height) {
-            LiteHtmlContainer.ContextSize = Viewport.Size;
-            LiteHtmlContainer.ScrollOffset = Viewport.Location;
-            LiteHtmlContainer.Document.OnMediaChanged ();
-            LiteHtmlContainer.Render ();
-            return true;
-         }
-
-         if ((int)LiteHtmlContainer.ScrollOffset.Y != (int)Viewport.Location.Y
-             || (int)LiteHtmlContainer.ScrollOffset.X != (int)Viewport.Location.X) {
-            LiteHtmlContainer.ScrollOffset = Viewport.Location;
-            return true;
-         }
-
-         return false;
-      }
-
-      // custom viewport is used for offsetting/scrolling the canvas on this view
-      public void SetViewport (CGRect viewport)
-      {
-         hasCustomViewport = true;
-         this.customViewport = viewport;
-         if (!LiteHtmlContainer.Document.HasLoadedHtml) {
-            return;
-         }
-         if (CheckViewportChange ()) {
-            SetNeedsDisplayInRect (Viewport);
-         }
-      }
 
       public override void DrawRect (CGRect dirtyRect)
       {
@@ -245,9 +249,10 @@ namespace LiteHtmlSharp.Mac
          var gfxc = NSGraphicsContext.CurrentContext.GraphicsPort;
 
          gfxc.SaveState ();
-         gfxc.TranslateCTM (Viewport.X, Viewport.Y);
+         var point = ViewportPoint;
+         gfxc.TranslateCTM (point.X, point.Y);
 
-         CheckViewportChange ();
+         LiteHtmlContainer.CheckViewportChange ();
 
          LiteHtmlContainer.Context = gfxc;
          LiteHtmlContainer.Draw ();
@@ -265,7 +270,7 @@ namespace LiteHtmlSharp.Mac
          if (LiteHtmlContainer.Document.HasRendered) {
             var point = ConvertPointFromView (theEvent.LocationInWindow, null);
             if (LiteHtmlContainer.Document.OnMouseMove ((int)(point.X), (int)(point.Y))) {
-               SetNeedsDisplayInRect (Viewport);
+               SetNeedsDisplayInRect (ViewportRect);
             }
          }
          base.MouseMoved (theEvent);
@@ -275,7 +280,7 @@ namespace LiteHtmlSharp.Mac
       {
          if (LiteHtmlContainer.Document.HasRendered) {
             if (LiteHtmlContainer.Document.OnMouseLeave ()) {
-               SetNeedsDisplayInRect (Viewport);
+               SetNeedsDisplayInRect (ViewportRect);
             }
          }
          base.MouseExited (theEvent);

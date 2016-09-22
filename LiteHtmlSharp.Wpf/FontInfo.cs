@@ -6,7 +6,7 @@ using System.Linq;
 using System.Windows;
 using System.Globalization;
 
-namespace LiteHtmlSharp
+namespace LiteHtmlSharp.Wpf
 {
    public class FontInfo
    {

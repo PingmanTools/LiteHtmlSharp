@@ -7,7 +7,7 @@ using System.IO;
 using System.Windows.Media.Imaging;
 using System.Linq;
 
-namespace LiteHtmlSharp
+namespace LiteHtmlSharp.Wpf
 {
    public interface IResourceLoader
    {
@@ -15,49 +15,52 @@ namespace LiteHtmlSharp
       string GetResourceString(string resource);
    }
 
-   public struct IntPoint
+   public struct IntSize
    {
       public int Width;
       public int Height;
 
-      public IntPoint(int width, int height)
+      public IntSize(int width, int height)
       {
          Width = width;
          Height = height;
       }
    }
 
-   public delegate bool RegisterElementDelegate(string tag);
-   public delegate void ProcessElementDelegate(Input input, ElementInfo info);
+   public struct IntPoint
+   {
+      public int X;
+      public int Y;
 
-   public class WPFContainer : Container
+      public IntPoint(int x, int y)
+      {
+         X = x;
+         Y = y;
+      }
+   }
+
+   public class WpfContainer : ViewportContainer
    {
       IResourceLoader _loader;
-      DrawingContext _dc;
-      HTMLVisual _visualControl;
-      DrawingVisual _visual;
-      Dictionary<string, Brush> _brushes = new Dictionary<string, Brush>();
-      Dictionary<string, Pen> _pens = new Dictionary<string, Pen>();
 
-      Dictionary<string, BitmapImage> _images = new Dictionary<string, BitmapImage>();
-      Dictionary<UIntPtr, FontInfo> _fonts = new Dictionary<UIntPtr, FontInfo>();
-      public Inputs Inputs = new Inputs();
+      static Dictionary<string, BitmapImage> _images = new Dictionary<string, BitmapImage>();
+      static Dictionary<UIntPtr, FontInfo> _fonts = new Dictionary<UIntPtr, FontInfo>();
+
       public bool Loaded = false;
-      private bool _rendering = false;
       public static string BaseURL;
       static uint _nextFontID;
-      public IntPoint _size;
 
       public string DefaultFontName { get; set; } = "Arial";
       public int DefaultFontSize { get; set; } = 12;
 
-      public WPFContainer(HTMLVisual visual, string css, IResourceLoader loader) : base(css)
+      public event Action<string> RenderHtmlRequested;
+      public Action<string> SetCursorCallback;
+
+      public DrawingContext DrawingContext;
+
+      public WpfContainer(string css, IResourceLoader loader) : base(css)
       {
          _loader = loader;
-         _visualControl = visual;
-         _visual = _visualControl.GetDrawingVisual();
-         ShouldCreateElementCallback = ShouldCreateElement;
-         CreateElementCallback = CreateElement;
       }
 
       protected override void SetCaption(string caption)
@@ -77,206 +80,11 @@ namespace LiteHtmlSharp
 
       public override void Render(string html)
       {
-         //_visualControl.Dispatcher.Invoke(() => RenderOnUI(html));
-         RenderOnUI(html);
-      }
-
-      void RenderOnUI(string html)
-      {
-         Clear();
-         if (_rendering) return;
-
-         _images.Clear();
-         Inputs.Clear();
-         _rendering = true;
-
-         Document.CreateFromString(html);
-         var bestWidth = Document.Render(_size.Width);
-
-         int newHeight = Document.Height();
-         if (newHeight != _size.Height && newHeight > 0) // && !(_size.Height < 0)
-         {
-            _visualControl.SetHeight(newHeight);
-         }
-
-         Draw();
-
-         _rendering = false;
-         Loaded = true;
-      }
-
-      private void ProcessInputs()
-      {
-         foreach (var input in Inputs)
-         {
-            ElementInfo info = Document.GetElementInfo(input.ID);
-            if (input.Element == null)
-            {
-               if (input.Type == InputType.Textbox)
-               {
-                  var tb = new TextBox();
-                  input.Element = tb;
-               }
-               else if (input.Type == InputType.Button)
-               {
-                  var button = new Button();
-                  button.Click += Button_Click;
-                  input.Element = button;
-                  if (!string.IsNullOrEmpty(info.Text))
-                  {
-                     button.Content = info.Text;
-                  }
-               }
-
-               input.SetAttributes(info.Attributes);
-               input.Element.Tag = input;
-               
-               input.Element.VerticalAlignment = VerticalAlignment.Top;
-               input.Element.HorizontalAlignment = HorizontalAlignment.Left;
-
-               input.Element.Width = info.Width;
-               if (info.Height > 0)
-               {
-                  input.Element.Height = info.Height;
-               }
-               input.Element.Margin = new Thickness(info.PosX, info.PosY, 0, 0);
-            }
-            else
-            {
-               // Control exists - probably just need to move it.
-               input.Element.Width = info.Width;
-               if (info.Height > 0)
-               {
-                  input.Element.Height = info.Height;
-               }
-               if (info.PosX > 999999)
-               {
-                  info.PosX = 0;
-               }
-               input.Element.Margin = new Thickness(info.PosX, info.PosY, 0, 0);
-            }
-
-            if (!input.IsPlaced)
-            {
-               _visualControl.AddChildControl(input.Element);
-               input.IsPlaced = true;
-            }
-
-         }
-      }
-
-      private void Button_Click(object sender, RoutedEventArgs e)
-      {
-         Input input = ((Button)sender).Tag as Input;
-         OnAnchorClick(input.Href);
-      }
-
-      public void Clear()
-      {
-         foreach (var input in Inputs)
-         {
-            if (input.IsPlaced)
-            {
-               _visualControl.RemoveChildControl(input.Element);
-               input.IsPlaced = false;
-            }
-         }
-
-         _dc = _visual.RenderOpen();
-         _dc.Close();
-         _dc = null;
-      }
-
-      public void Draw()
-      {
-         _dc = _visual.RenderOpen();
-         var clip = new position()
-         {
-            width = _size.Width,
-            height = _size.Height
-         };
-         Draw(0, 0, clip);
-         _dc.Close();
-         _dc = null;
-         ProcessInputs();
-      }
-
-      public void OnMouseMove(double x, double y)
-      {
-         if (Loaded)
-         {
-            if (Document.OnMouseMove((int)x, (int)y))
-            {
-               Draw();
-            }
-         }
-      }
-
-      public void OnMouseLeave()
-      {
-         if (Loaded)
-         {
-            if (Document.OnMouseLeave())
-            {
-               Draw();
-            }
-         }
-      }
-
-      public void OnLeftButtonDown(double x, double y)
-      {
-         if (Loaded)
-         {
-            if (Document.OnLeftButtonDown((int)x, (int)y))
-            {
-               Draw();
-            }
-         }
-      }
-
-      public void OnLeftButtonUp(double x, double y)
-      {
-         if (Loaded)
-         {
-            if (Document.OnLeftButtonUp((int)x, (int)y))
-            {
-               Draw();
-            }
-         }
-      }
-
-      public void OnSizeChanged(double width, double height)
-      {
-         if (_size.Width != (int)width || _size.Height != (int)height)
-         {
-            _size = new IntPoint((int)width, (int)height);
-
-            if (Loaded)
-            {
-               Document.OnMediaChanged();
-               width = Document.Render((int)_size.Width);
-               height = Document.Height();
-               if (height != _size.Height && height > 0) // && !(_size.Height < 0)
-               {
-                  _visualControl.SetHeight(height);
-               }
-               Draw();
-            }
-         }
-      }
-
-      private void TestDrawing()
-      {
-         var color = new web_color() { alpha = 255, green = 255 };
-         DrawRect(0, 0, 50, 50, GetBrush(ref color));
+         RenderHtmlRequested?.Invoke(html);
       }
 
       protected override void DrawBackground(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos, ref border_radiuses br, ref position borderBox, bool isRoot)
       {
-         if (isRoot)
-         {
-            _visualControl.SetBackground(GetBrush(ref color));
-         }
 
          if (pos.width > 0 && pos.height > 0)
          {
@@ -305,7 +113,7 @@ namespace LiteHtmlSharp
 
                geometry.Figures.Add(new PathFigure(new Point(rect.Left + br.top_left_x, rect.Top), path, true));
 
-               _dc.DrawGeometry(GetBrush(ref color), null, geometry);
+               DrawingContext.DrawGeometry(color.GetBrush(), null, geometry);
             }
          }
       }
@@ -319,7 +127,7 @@ namespace LiteHtmlSharp
          path.Add(new QuadraticBezierSegment(p3, p4, true));
          geometry.Figures.Add(new PathFigure(p1, path, false));
 
-         _dc.DrawGeometry(null, GetPen(ref color, thickness), geometry);
+         DrawingContext.DrawGeometry(null, color.GetPen(thickness), geometry);
       }
 
       protected override void DrawBorders(UIntPtr hdc, ref borders borders, ref position draw_pos, bool root)
@@ -374,36 +182,7 @@ namespace LiteHtmlSharp
       private void DrawRect(double x, double y, double width, double height, Brush brush)
       {
          Rect rect = new Rect(x, y, width, height);
-         _dc.DrawRectangle(brush, null, rect);
-      }
-
-      private Pen GetPen(ref web_color color, double thickness)
-      {
-         string key = color.red.ToString() + color.green.ToString() + color.blue.ToString() + thickness;
-
-         Pen result = null;
-         if (!_pens.TryGetValue(key, out result))
-         {
-            Brush brush = GetBrush(ref color);
-            result = new Pen(brush, thickness);
-            _pens.Add(key, result);
-         }
-
-         return result;
-      }
-
-      private Brush GetBrush(ref web_color color)
-      {
-         string key = color.red.ToString() + color.green.ToString() + color.blue.ToString() + color.alpha.ToString();
-
-         Brush result = null;
-         if (!_brushes.TryGetValue(key, out result))
-         {
-            result = new SolidColorBrush(Color.FromArgb(color.alpha, color.red, color.green, color.blue));
-            _brushes.Add(key, result);
-         }
-
-         return result;
+         DrawingContext.DrawRectangle(brush, null, rect);
       }
 
       protected override void GetImageSize(string image, ref size size)
@@ -423,7 +202,7 @@ namespace LiteHtmlSharp
 
       private void DrawImage(BitmapImage image, Rect rect)
       {
-         _dc.DrawImage(image, rect);
+         DrawingContext.DrawImage(image, rect);
       }
 
       private BitmapImage LoadImage(string image)
@@ -467,8 +246,8 @@ namespace LiteHtmlSharp
          text = text.Replace(' ', (char)160);
          var fontInfo = GetFont(font);
          var formattedText = fontInfo.GetFormattedText(text);
-         formattedText.SetForegroundBrush(GetBrush(ref color));
-         _dc.DrawText(formattedText, new Point(pos.x, pos.y));
+         formattedText.SetForegroundBrush(color.GetBrush());
+         DrawingContext.DrawText(formattedText, new Point(pos.x, pos.y));
       }
 
       protected override UIntPtr CreateFont(string faceName, int size, int weight, font_style italic, font_decoration decoration, ref font_metrics fm)
@@ -497,16 +276,9 @@ namespace LiteHtmlSharp
          return _loader.GetResourceString(url);
       }
 
-      protected override void GetClientRect(ref position client)
-      {
-         client.width = _size.Width;
-         client.height = _size.Height;
-      }
-
       protected override void GetMediaFeatures(ref media_features media)
       {
-         media.width = _size.Width;
-         media.height = _size.Height;
+         base.GetMediaFeatures(ref media);
          media.device_width = media.width;
          media.device_height = media.height;
          media.resolution = 96;
@@ -518,65 +290,19 @@ namespace LiteHtmlSharp
       {
          base_url = BaseURL;
       }
-
-      protected override void OnAnchorClick(string url)
-      {
-         _visualControl.FireLink(url);
-      }
-
       protected override int PTtoPX(int pt)
       {
          return pt;
       }
 
-      int CreateElement(string tag, string attributes, ElementInfo elementInfo)
-      {
-         var input = CreateInput(tag, attributes, elementInfo);
-         return input?.ID ?? 0;
-      }
-
-      bool ShouldCreateElement(string tag)
-      {
-         switch (tag.ToLowerInvariant())
-         {
-            case "input":
-            case "button":
-               return true;
-            default:
-               return false;
-         }
-      }
-
-      Input CreateInput(string tag, string attributes, ElementInfo elementInfo)
-      {
-         if (string.Equals(tag, "input", StringComparison.OrdinalIgnoreCase))
-         {
-            Input input = new Input(InputType.Textbox, attributes);
-            input.ID = Inputs.Count + 1;
-            Inputs.Add(input);
-            return input;
-         }
-         else if (string.Equals(tag, "button", StringComparison.OrdinalIgnoreCase))
-         {
-            Input input = new Input(InputType.Button, attributes);
-            input.ID = Inputs.Count + 1;
-            Inputs.Add(input);
-            return input;
-         }
-         else
-         {
-            return null;
-         }
-      }
-
       protected override void SetCursor(string cursor)
       {
-         _visualControl.SetCursor(cursor);
+         SetCursorCallback?.Invoke(cursor);
       }
 
       protected override void DrawListMarker(string image, string baseURL, list_style_type marker_type, ref web_color color, ref position pos)
       {
-         DrawRect(pos.x, pos.y, pos.width, pos.height, GetBrush(ref color));
+         DrawRect(pos.x, pos.y, pos.width, pos.height, color.GetBrush());
       }
 
       protected override string TransformText(string text, text_transform tt)
@@ -609,12 +335,12 @@ namespace LiteHtmlSharp
       public string Onclick;
       public string Href;
       public string TagID;
-      public Dictionary<string, string> Attributes;
 
-      public Input(InputType type, string attributes)
+      public bool AttributesSetup { get; set; }
+
+      public Input(InputType type)
       {
          Type = type;
-         SetAttributes(attributes);
       }
 
 
@@ -635,13 +361,12 @@ namespace LiteHtmlSharp
       }
 
 
-      public void SetAttributes(string attrString)
+      public void SetupAttributes(string attrString)
       {
          if (string.IsNullOrEmpty(attrString))
          {
             return;
          }
-         Attributes = new Dictionary<string, string>();
          var lines = attrString.Split('\n');
          foreach (var line in lines)
          {
@@ -650,8 +375,6 @@ namespace LiteHtmlSharp
             {
                string key = keyVal[0].ToLower();
                string value = keyVal[1];
-
-               Attributes.Add(key, value);
 
                switch (key)
                {
