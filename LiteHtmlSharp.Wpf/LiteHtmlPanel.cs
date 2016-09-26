@@ -80,7 +80,6 @@ namespace LiteHtmlSharp.Wpf
 
       private void Container_DocumentSizeKnown(LiteHtmlSize size)
       {
-         Console.WriteLine("doc size known - setting viewport");
          Width = size.Width;
          Height = size.Height;
          SetViewport();
@@ -329,7 +328,6 @@ namespace LiteHtmlSharp.Wpf
             return;
          }
 
-         Console.WriteLine($"OnRender called, children: {Children.Count}");
          var point = ViewportPoint;
          dc.PushTransform(new TranslateTransform(point.X, point.Y));
 
