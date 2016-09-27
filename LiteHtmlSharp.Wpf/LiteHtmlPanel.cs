@@ -16,6 +16,8 @@ namespace LiteHtmlSharp.Wpf
    {
       ScrollViewer _scrollParent;
 
+      public ScrollViewer ScrollViewerParent => _scrollParent;
+
       public Inputs Inputs { get; private set; } = new Inputs();
 
       public WpfContainer Container { get; private set; }
