@@ -155,13 +155,9 @@ namespace LiteHtmlSharp.Wpf
                info.PosX = 0;
             }
             var elementRect = new Rect(info.PosX, info.PosY, info.Width, info.Height);
-            //input.Element.Arrange(elementRect);
-            //input.Element.Margin = new Thickness(info.PosX, info.PosY, 0, 0);
             input.Element.Width = info.Width;
             input.Element.Height = info.Height;
             input.Element.RenderTransform = new TranslateTransform(info.PosX, info.PosY);
-            //SetLeft(this, info.PosX);
-            //SetTop(this, info.PosY);
             if (!input.AttributesSetup)
             {
                input.AttributesSetup = true;
@@ -174,13 +170,11 @@ namespace LiteHtmlSharp.Wpf
       {
          Children.Add(control);
          UpdateLayout();
-         //InternalChildren.Add(control);
       }
 
       public void RemoveChildControl(FrameworkElement control)
       {
          Children.Remove(control);
-         //InternalChildren.Remove(control);
       }
 
       private void Container_RenderHtmlRequested(string html)
@@ -287,21 +281,17 @@ namespace LiteHtmlSharp.Wpf
       public void LoadHtml(string html)
       {
          ClearInputs();
-         Container.ResetViewport();
+         //Container.ResetViewport();
          Container.Document.CreateFromString(html);
-         /*if (ScrollParentIsLayedOut)
-         {
-            Container.Size = new LiteHtmlSize(_scrollParent.ViewportWidth, _scrollParent.ViewportHeight);
-         }*/
          Container.CheckViewportChange(forceRender: true);
          TriggerRedraw();
       }
 
       bool ScrollParentIsLayedOut => _scrollParent.ViewportWidth != 0 && _scrollParent.ViewportHeight != 0;
 
-      public void SetViewport()
+      public void SetViewport(bool forceRedraw = false)
       {
-         if (Container.SetViewport(new LiteHtmlPoint(_scrollParent.HorizontalOffset, _scrollParent.VerticalOffset), new LiteHtmlSize(_scrollParent.ViewportWidth, _scrollParent.ViewportHeight)))
+         if (Container.SetViewport(new LiteHtmlPoint(_scrollParent.HorizontalOffset, _scrollParent.VerticalOffset), new LiteHtmlSize(_scrollParent.ViewportWidth, _scrollParent.ViewportHeight)) || forceRedraw)
          {
             TriggerRedraw();
          }
@@ -333,7 +323,6 @@ namespace LiteHtmlSharp.Wpf
          var point = ViewportPoint;
          dc.PushTransform(new TranslateTransform(point.X, point.Y));
 
-         //Container.CheckViewportChange();
          Container.DrawingContext = dc;
          Container.Draw();
          Container.DrawingContext = null;
@@ -350,15 +339,6 @@ namespace LiteHtmlSharp.Wpf
          Container.DocumentSizeKnown -= Container_DocumentSizeKnown;
          Container.Document.ViewElementsNeedLayout -= Document_ViewElementsNeedLayout;
       }
-
-      /*protected override Size ArrangeOverride(Size finalSize)
-      {
-         Console.WriteLine("arrange called for " + InternalChildren.Count + " children");
-         var size = base.ArrangeOverride(finalSize);
-         ArrangeChildrenCallback?.Invoke();
-         return size;
-      }*/
-
 
    }
 }
