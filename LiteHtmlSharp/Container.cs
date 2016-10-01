@@ -272,7 +272,7 @@ namespace LiteHtmlSharp
          switch (t)
          {
          case text_transform.text_transform_capitalize:
-            return CultureInfo.InvariantCulture.TextInfo.ToTitleCase(text);
+            return System.Text.RegularExpressions.Regex.Replace(text, @"(^\w)|(\s\w)", m => m.Value.ToUpper());
          case text_transform.text_transform_lowercase:
             return text.ToLower();
          case text_transform.text_transform_uppercase:
