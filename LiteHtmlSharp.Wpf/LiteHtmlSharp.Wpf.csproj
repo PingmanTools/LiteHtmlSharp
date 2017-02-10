@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FontInfo.cs" />
+    <Compile Include="IncludedMasterCss.cs" />
     <Compile Include="LiteHtmlExtensions.cs" />
     <Compile Include="LiteHtmlPanel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -80,6 +81,9 @@
       <Link>x86\LiteHtmlLib.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="..\litehtml\include\master.css">
+      <Link>master.css</Link>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="..\LiteHtmlSharp\LiteHtmlSharp.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
