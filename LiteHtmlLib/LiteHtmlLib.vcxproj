@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -80,14 +80,16 @@
     <IntDir>.\Build\x64\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
-    <OutDir>.\Release\x86\</OutDir>
-    <IntDir>.\Build\x86\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>.\bin\Release\win-x86\</OutDir>
+    <IntDir>.\obj\win-x86\</IntDir>
+    <EnableManagedIncrementalBuild>true</EnableManagedIncrementalBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>false</LinkIncremental>
-    <OutDir>.\Release\x64\</OutDir>
-    <IntDir>.\Build\x64\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>.\bin\Release\win-x64\</OutDir>
+    <IntDir>.\obj\win-x64\</IntDir>
+    <EnableManagedIncrementalBuild>true</EnableManagedIncrementalBuild>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -124,7 +126,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>_UNICODE;UNICODE;LITEHTML_UTF8;WIN32;NDEBUG;_WINDOWS;_USRDLL;LITEHTMLLIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -132,6 +134,7 @@
       <AdditionalIncludeDirectories>..\litehtml\src;..\litehtml\src\gumbo;..\LiteHtmlLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -144,7 +147,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>_UNICODE;UNICODE;LITEHTML_UTF8;WIN32;NDEBUG;_WINDOWS;_USRDLL;LITEHTMLLIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -152,6 +155,7 @@
       <AdditionalIncludeDirectories>..\litehtml\src;..\litehtml\src\gumbo;..\LiteHtmlLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <OmitFramePointers>false</OmitFramePointers>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

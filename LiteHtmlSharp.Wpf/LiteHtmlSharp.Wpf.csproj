@@ -37,7 +37,7 @@
     <OutputPath>bin\x64\Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG;WIN64</DefineConstants>
     <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -72,13 +72,13 @@
     <Compile Include="WpfContainer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\LiteHtmlLib\Release\x64\LiteHtmlLib.dll">
+    <Content Include="..\LiteHtmlLib\bin\Release\win-x64\LiteHtmlLib.dll">
       <Link>x64\LiteHtmlLib.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\LiteHtmlLib\Release\x86\LiteHtmlLib.dll">
+    <Content Include="..\LiteHtmlLib\bin\Release\win-x86\LiteHtmlLib.dll">
       <Link>x86\LiteHtmlLib.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <Import Project="..\LiteHtmlSharp\LiteHtmlSharp.projitems" Label="Shared" />
