@@ -1,16 +1,16 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E9CDB9F0-4A8A-4C12-9D43-AEC594D81522}</ProjectGuid>
     <ProjectTypeGuids>{A3F8F2AB-B479-4A4A-A458-A89E7DC349F1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <ProjectGuid>{88DC2F6C-0092-428D-B62A-33F7AF0F2AD8}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>LiteHtmlSharp.MacBrowser</RootNamespace>
-    <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
-    <AssemblyName>LiteHtmlSharp.MacBrowser</AssemblyName>
+    <RootNamespace>Example.Mac</RootNamespace>
+    <AssemblyName>Example.Mac</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <TargetFrameworkIdentifier>Xamarin.Mac</TargetFrameworkIdentifier>
+    <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,62 +20,52 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
-    <UseRefCounting>true</UseRefCounting>
-    <UseSGen>true</UseSGen>
-    <IncludeMonoRuntime>false</IncludeMonoRuntime>
-    <EnablePackageSigning>false</EnablePackageSigning>
-    <CodeSigningKey>Mac Developer</CodeSigningKey>
     <EnableCodeSigning>false</EnableCodeSigning>
+    <CodeSigningKey>Mac Developer</CodeSigningKey>
     <CreatePackage>false</CreatePackage>
-    <PackageSigningKey>Developer ID Installer</PackageSigningKey>
-    <XamMacArch>x86_64</XamMacArch>
-    <Profiling>false</Profiling>
+    <EnablePackageSigning>false</EnablePackageSigning>
+    <IncludeMonoRuntime>false</IncludeMonoRuntime>
+    <UseSGen>true</UseSGen>
+    <UseRefCounting>true</UseRefCounting>
+    <HttpClientHandler></HttpClientHandler>
+    <TlsProvider></TlsProvider>
+    <LinkMode></LinkMode>
+    <XamMacArch></XamMacArch>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>full</DebugType>
+    <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
+    <DefineConstants></DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
-    <UseRefCounting>true</UseRefCounting>
-    <UseSGen>true</UseSGen>
-    <IncludeMonoRuntime>true</IncludeMonoRuntime>
-    <CreatePackage>false</CreatePackage>
+    <EnableCodeSigning>true</EnableCodeSigning>
     <CodeSigningKey>Developer ID Application</CodeSigningKey>
-    <EnableCodeSigning>false</EnableCodeSigning>
+    <CreatePackage>true</CreatePackage>
     <EnablePackageSigning>false</EnablePackageSigning>
-    <PackageSigningKey>Developer ID Installer</PackageSigningKey>
-    <XamMacArch>x86_64</XamMacArch>
-    <Profiling>false</Profiling>
+    <IncludeMonoRuntime>true</IncludeMonoRuntime>
+    <UseSGen>true</UseSGen>
+    <UseRefCounting>true</UseRefCounting>
+    <LinkMode>SdkOnly</LinkMode>
+    <HttpClientHandler></HttpClientHandler>
+    <TlsProvider></TlsProvider>
+    <XamMacArch></XamMacArch>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.Mac" />
-    <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
-    <Folder Include="ExampleWebPage\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
+    <None Include="Entitlements.plist" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
-    <Compile Include="BrowserWindow.cs" />
-  </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
-  <ItemGroup>
-    <BundleResource Include="ExampleWebPage\free-bg.png" />
-    <BundleResource Include="ExampleWebPage\free-logo.png" />
-    <BundleResource Include="ExampleWebPage\free-wordmark.png" />
-    <BundleResource Include="ExampleWebPage\about.css" />
-    <BundleResource Include="ExampleWebPage\core.css" />
-    <BundleResource Include="ExampleWebPage\index.html" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LiteHtmlSharp.Mac\LiteHtmlSharp.Mac.csproj">
@@ -83,4 +73,5 @@
       <Name>LiteHtmlSharp.Mac</Name>
     </ProjectReference>
   </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
 </Project>

@@ -63,6 +63,17 @@
     <Compile Include="LiteHtmlNSButton.cs" />
     <Compile Include="ICustomTagView.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\litehtml\include\master.css">
+      <Link>master.css</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\LiteHtmlLib\lib_dylib\build\liblitehtml.dylib">
+      <Link>liblitehtml.dylib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="..\LiteHtmlSharp.CoreGraphics\LiteHtmlSharp.CoreGraphics.projitems" Label="Shared" Condition="Exists('..\LiteHtmlSharp.CoreGraphics\LiteHtmlSharp.CoreGraphics.projitems')" />
   <Import Project="..\LiteHtmlSharp\LiteHtmlSharp.projitems" Label="Shared" Condition="Exists('..\LiteHtmlSharp\LiteHtmlSharp.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />

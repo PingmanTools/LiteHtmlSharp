@@ -17,7 +17,8 @@ namespace LiteHtmlSharp
       static string GetMasterCssResource()
       {
          var assembly = Assembly.GetExecutingAssembly();
-         var masterCssResourceName = assembly.GetManifes‌​tResourceNames().FirstOrDefault(s => s.EndsWith(".master.css"));
+         //var masterCssResourceName = assembly.GetManifes‌​tResourceNames().FirstOrDefault(s => s.EndsWith(".master.css"));
+         var masterCssResourceName = assembly.GetName().Name + ".master.css";
          using (var reader = new StreamReader(assembly.GetManifestResourceStream(masterCssResourceName), Encoding.UTF8))
          {
             return reader.ReadToEnd();
