@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>LiteHtmlSharp.Mac</id>
+    <version>$version$</version>
+    <title>LiteHtmlSharp.Mac</title>
+    <authors>Matthew Little</authors>
+    <owners>Pingman Tools</owners>
+    <licenseUrl>https://github.com/PingmanTools/LiteHtmlSharp/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/PingmanTools/LiteHtmlSharp</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>LiteHtmlSharp is a C# cross-platform library for HTML/CSS(2/3) visualization - self contained, fast and small</description>
+  </metadata>
+  <files>
+    <file src="LiteHtmlSharp.Mac/bin/Release/liblitehtml.dylib"           target="Content/liblitehtml.dylib" />
+    <!-- .NET -->
+    <file src="LiteHtmlSharp.Mac/bin/Release/LiteHtmlSharp.Mac.dll"       target="lib/net45/LiteHtmlSharp.Mac.dll" />
+    <!-- Xamarin.Mac -->
+    <file src="LiteHtmlSharp.Mac/bin/Release/LiteHtmlSharp.Mac.dll"       target="lib/Xamarin.Mac20/LiteHtmlSharp.Mac.dll" />
+  </files>
+</package>
