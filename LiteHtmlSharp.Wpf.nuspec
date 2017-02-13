@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>LiteHtmlSharp.Wpf</id>
+    <version>$version$</version>
+    <title>LiteHtmlSharp.Wpf</title>
+    <authors>Matthew Little</authors>
+    <owners>Pingman Tools</owners>
+    <licenseUrl>https://github.com/PingmanTools/LiteHtmlSharp/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/PingmanTools/LiteHtmlSharp</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>LiteHtmlSharp is a C# cross-platform library for HTML/CSS(2/3) visualization - self contained, fast and small</description>
+  </metadata>
+  <files>
+    <file src="LiteHtmlSharp.Wpf\bin\Release\x64\LiteHtmlLib.dll"           target="Content\x64\LiteHtmlLib.dll" />
+    <file src="LiteHtmlSharp.Wpf\bin\Release\x86\LiteHtmlLib.dll"           target="Content\x86\LiteHtmlLib.dll" />
+    <!-- .NET -->
+    <file src="LiteHtmlSharp.Wpf\bin\Release\LiteHtmlSharp.Wpf.dll"       target="lib/net45/LiteHtmlSharp.Wpf.dll" />
+  </files>
+</package>
