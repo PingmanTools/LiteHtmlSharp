@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -73,7 +73,7 @@ namespace LiteHtmlSharp.Wpf
 
       public DrawingContext DrawingContext;
 
-      public WpfContainer(string css, IResourceLoader loader) : base(css)
+      public WpfContainer(string css, IResourceLoader loader) : base(css, LibInterop.Instance)
       {
          _loader = loader;
       }
