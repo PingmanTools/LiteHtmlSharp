@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>net45;netstandard2.0</TargetFrameworks>
     <DefineConstants>$(DefineConstants);MAC</DefineConstants>
     <Authors>Matthew Little</Authors>
     <Company>Pingman Tools</Company>
@@ -20,6 +20,10 @@
     <Content Include="..\LiteHtmlLib\lib_dylib\build\liblitehtml.dylib" Link="liblitehtml.dylib">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
