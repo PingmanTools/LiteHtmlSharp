@@ -31,10 +31,9 @@ namespace LiteHtmlSharp
 
         LibInterop()
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
             {
-                var is64Bit = RuntimeInformation.OSArchitecture == Architecture.X64;
-                LoadLibrary(is64Bit ? LiteHtmlLibFile_x64 : LiteHtmlLibFile_x86);
+                LoadLibrary(Environment.Is64BitProcess ? LiteHtmlLibFile_x64 : LiteHtmlLibFile_x86);
             }
         }
 
