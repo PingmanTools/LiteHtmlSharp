@@ -15,6 +15,11 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="x64\LiteHtmlLib.dll" />
+    <None Remove="x86\LiteHtmlLib.dll" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <ProjectReference Include="..\LiteHtmlSharp\LiteHtmlSharp.csproj" />
@@ -30,22 +35,16 @@
   <Import Project="..\LiteHtmlSharp.Shared\LiteHtmlSharp.Shared.projitems" Label="Shared" />
 
   <ItemGroup>
-    <Content Include="..\LiteHtmlLib\bin\Release\win-x64\LiteHtmlLib.dll">
-      <Link>x64\LiteHtmlLib.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="x64\LiteHtmlLib.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\LiteHtmlLib\bin\Release\win-x86\LiteHtmlLib.dll">
-      <Link>x86\LiteHtmlLib.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="x86\LiteHtmlLib.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Properties\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
   </ItemGroup>
 
 </Project>
