@@ -287,7 +287,7 @@ namespace LiteHtmlSharp.Wpf
       protected override UIntPtr CreateFont(string faceName, int size, int weight, font_style italic, font_decoration decoration, ref font_metrics fm)
       {
          var fontweight = FontWeight.FromOpenTypeWeight(weight);    
-         FontInfo font = new FontInfo(family, italic == font_style.fontStyleItalic ? FontStyles.Italic : FontStyles.Normal, fontweight, size, FontAbsolutePathDelegate?.Invoke(family));
+         FontInfo font = new FontInfo(faceName, italic == font_style.fontStyleItalic ? FontStyles.Italic : FontStyles.Normal, fontweight, size, FontAbsolutePathDelegate?.Invoke(faceName));
 
          if ((decoration & font_decoration.font_decoration_underline) != 0)
          {
