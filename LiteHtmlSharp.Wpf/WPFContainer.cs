@@ -236,29 +236,43 @@ namespace LiteHtmlSharp.Wpf
       {
          try
          {
-            BitmapImage result;
-
-            if (_images.TryGetValue(image, out result))
+            if (_images.TryGetValue(image, out var result))
             {
                return result;
             }
-
-            var bytes = _loader.GetResourceBytes(image);
-            if (bytes != null && bytes.Length > 0)
+            else
             {
-               result = new BitmapImage();
+               bool base64Encoded = false;
+               byte[] bytes;
 
-               using (var stream = new MemoryStream(bytes))
+               if (image.StartsWith("data:"))
                {
-                  result.BeginInit();
-                  result.CacheOption = BitmapCacheOption.OnLoad;
-                  result.StreamSource = stream;
-                  result.EndInit();
+                   var base64ImageString = image.Substring(image.IndexOf("base64,") + 6, image.Length);
+                   bytes = Convert.FromBase64String(base64ImageString);
+                   base64Encoded = true;
+               }
+               else
+               {
+                   bytes = _loader.GetResourceBytes(image);
+               }
 
-                  _images.Add(image, result);
+               if (bytes != null && bytes.Length > 0)
+               {
+                  result = new BitmapImage();
+
+                  using (var stream = new MemoryStream(bytes))
+                  {
+                      result.BeginInit();
+                      result.CacheOption = BitmapCacheOption.OnLoad;
+                      result.StreamSource = stream;
+                      result.EndInit();
+                      if (!base64Encoded)
+                      {
+                         _images.Add(image, result);
+                      }
+                  }
                }
             }
-
             return result;
          }
          catch
