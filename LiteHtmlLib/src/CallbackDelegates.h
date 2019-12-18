@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../litehtml/src/html.h"
+#include "html.h"
 #include "TagElement.h"
 
 struct Callbacks;

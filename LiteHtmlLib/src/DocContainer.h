@@ -1,9 +1,9 @@
 #pragma once
 
 #include "CallbackDelegates.h"
-#include "../../litehtml/src/html.h"
-#include "../../litehtml/src/context.h"
-#include "../../litehtml/src/document.h"
+#include "html.h"
+#include "context.h"
+#include "document.h"
 #include "TagElement.h"
 
 #if defined(LITEHTML_UTF8)
