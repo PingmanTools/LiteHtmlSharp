@@ -35,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="LiteHtmlSharp.WPF">
+      <HintPath>..\LiteHtmlSharp.Wpf\bin\Debug\net45\LiteHtmlSharp.WPF.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -94,12 +97,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\LiteHtmlSharp.Wpf\LiteHtmlSharp.Wpf.csproj">
-      <Project>{e1b78fe5-a0b8-4250-bfb5-f604f22550e2}</Project>
-      <Name>LiteHtmlSharp.Wpf</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

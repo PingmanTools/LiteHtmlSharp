@@ -1,6 +1,7 @@
-﻿using LiteHtmlSharp.Wpf;
+using LiteHtmlSharp.Wpf;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -38,7 +39,7 @@ namespace Example.Wpf
             _litehtmlContainer = new WpfContainer(masterCss, GetResourceString, GetResourceBytes);
             _liteHtmlPanel = new LiteHtmlPanel(ScrollViewer, _litehtmlContainer);
             _liteHtmlPanel.LinkClicked += LiteHtmlPanel_LinkClicked;
-            using (var reader = new StreamReader(@"C:\Users\ckindel\source\winprint\tests\Program.cs.html", Encoding.UTF8))
+            using (var reader = new StreamReader(@"C:\Users\ckindel\source\winprint\tests\Home.html", Encoding.UTF8))
             {
                 _liteHtmlPanel.LoadHtml(reader.ReadToEnd());
             }
@@ -123,10 +124,12 @@ namespace Example.Wpf
             try
             {
                 var url = GetUrlForRequest(resource);
-                return _httpClient.GetStringAsync(url).Result;
+                string data = _httpClient.GetStringAsync(url).Result;
+                return data;
             }
-            catch
+            catch (Exception e)
             {
+                Debug.WriteLine($"GetResourceString({resource} - {e.Message}");
                 return null;
             }
         }
