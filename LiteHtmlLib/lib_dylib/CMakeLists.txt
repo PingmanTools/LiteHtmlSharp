@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 2.8)
 
 project(litehtml)
 
-set(CMAKE_CXX_FLAGS "-arch i386 -arch x86_64 -std=c++11 -stdlib=libc++ -O3 -fms-extensions")
-set(CMAKE_C_FLAGS "-arch i386 -arch x86_64 -std=c99 -O3 -fms-extensions")
+set(CMAKE_CXX_FLAGS "-std=c++11 -O3 -fms-extensions")
+set(CMAKE_C_FLAGS "-std=c99 -O3 -fms-extensions")
 
 set(SOURCE_LITEHTMLLIB 
                     ../../src/dllmain.cpp
@@ -12,7 +12,8 @@ set(SOURCE_LITEHTMLLIB
                     ../../src/TagElement.cpp
 )
 
-set(SOURCE_LITEHTML ../../../litehtml/src/background.cpp
+set(SOURCE_LITEHTML 
+                    ../../../litehtml/src/background.cpp
                     ../../../litehtml/src/box.cpp
                     ../../../litehtml/src/context.cpp
                     ../../../litehtml/src/css_length.cpp
@@ -64,3 +65,4 @@ set(SOURCE_GUMBO    ../../../litehtml/src/gumbo/attribute.c
 )
 
 add_library(litehtml SHARED ${SOURCE_LITEHTMLLIB} ${SOURCE_LITEHTML} ${SOURCE_GUMBO})
+include_directories("../../../litehtml/include/litehtml")
