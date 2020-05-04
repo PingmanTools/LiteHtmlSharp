@@ -70,20 +70,20 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>.\Release\x86\</OutDir>
+    <OutDir>.\bin\Debug\win-x86\</OutDir>
     <IntDir>.\Build\x86\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>.\Release\x64\</OutDir>
+    <OutDir>.\bin\Debug\win-x64\</OutDir>
     <IntDir>.\Build\x64\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>.\bin\Release\win-x86\</OutDir>
-    <IntDir>.\obj\win-x86\</IntDir>
+    <IntDir>.\Build\x86\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>.\bin\Release\win-x64\</OutDir>
-    <IntDir>.\obj\win-x64\</IntDir>
+    <IntDir>.\Build\x64\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
