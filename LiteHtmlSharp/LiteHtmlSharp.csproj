@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net45;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net48;net6.0</TargetFrameworks>
     <RootNamespace>LiteHtmlSharp</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>LiteHtmlSharp is a C# cross-platform library for HTML/CSS(2/3) visualization - self contained, fast and small</Description>
@@ -13,7 +13,8 @@
     <Company>Pingman Tools</Company>
     <Product />
     <PackageId>LiteHtmlSharp</PackageId>
-    <Version>1.2.0</Version>
+    <Version>1.2.1</Version>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>

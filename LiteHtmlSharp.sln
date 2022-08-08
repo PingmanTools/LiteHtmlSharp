@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30001.183
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32728.150
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiteHtmlSharp", "LiteHtmlSharp\LiteHtmlSharp.csproj", "{ACE4E835-8519-4EC0-8B26-38445133F169}"
 EndProject
@@ -19,13 +19,6 @@ EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "LiteHtmlSharp.CoreGraphics", "LiteHtmlSharp.CoreGraphics\LiteHtmlSharp.CoreGraphics.shproj", "{6C22A040-3735-43FE-BB3B-EDACDBCC0DBC}"
 EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		LiteHtmlSharp.Shared\LiteHtmlSharp.Shared.projitems*{46fd2d0e-a935-4e1c-bfc8-9b213b6c4ebf}*SharedItemsImports = 13
-		LiteHtmlSharp.CoreGraphics\LiteHtmlSharp.CoreGraphics.projitems*{6c22a040-3735-43fe-bb3b-edacdbcc0dbc}*SharedItemsImports = 13
-		LiteHtmlSharp.CoreGraphics\LiteHtmlSharp.CoreGraphics.projitems*{b3de251c-a7b8-42a2-a8c9-e525dfd7d387}*SharedItemsImports = 5
-		LiteHtmlSharp.Shared\LiteHtmlSharp.Shared.projitems*{b3de251c-a7b8-42a2-a8c9-e525dfd7d387}*SharedItemsImports = 5
-		LiteHtmlSharp.Shared\LiteHtmlSharp.Shared.projitems*{d92a9f4f-edb6-4d93-a2f7-353d322b47d6}*SharedItemsImports = 5
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
@@ -37,8 +30,8 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{ACE4E835-8519-4EC0-8B26-38445133F169}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ACE4E835-8519-4EC0-8B26-38445133F169}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ACE4E835-8519-4EC0-8B26-38445133F169}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{ACE4E835-8519-4EC0-8B26-38445133F169}.Debug|x64.Build.0 = Debug|Any CPU
+		{ACE4E835-8519-4EC0-8B26-38445133F169}.Debug|x64.ActiveCfg = Debug|x64
+		{ACE4E835-8519-4EC0-8B26-38445133F169}.Debug|x64.Build.0 = Debug|x64
 		{ACE4E835-8519-4EC0-8B26-38445133F169}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{ACE4E835-8519-4EC0-8B26-38445133F169}.Debug|x86.Build.0 = Debug|Any CPU
 		{ACE4E835-8519-4EC0-8B26-38445133F169}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -50,7 +43,6 @@ Global
 		{D92A9F4F-EDB6-4D93-A2F7-353D322B47D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D92A9F4F-EDB6-4D93-A2F7-353D322B47D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D92A9F4F-EDB6-4D93-A2F7-353D322B47D6}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{D92A9F4F-EDB6-4D93-A2F7-353D322B47D6}.Debug|x64.Build.0 = Debug|Any CPU
 		{D92A9F4F-EDB6-4D93-A2F7-353D322B47D6}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{D92A9F4F-EDB6-4D93-A2F7-353D322B47D6}.Debug|x86.Build.0 = Debug|Any CPU
 		{D92A9F4F-EDB6-4D93-A2F7-353D322B47D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -62,7 +54,6 @@ Global
 		{B3DE251C-A7B8-42A2-A8C9-E525DFD7D387}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B3DE251C-A7B8-42A2-A8C9-E525DFD7D387}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3DE251C-A7B8-42A2-A8C9-E525DFD7D387}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{B3DE251C-A7B8-42A2-A8C9-E525DFD7D387}.Debug|x64.Build.0 = Debug|Any CPU
 		{B3DE251C-A7B8-42A2-A8C9-E525DFD7D387}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{B3DE251C-A7B8-42A2-A8C9-E525DFD7D387}.Debug|x86.Build.0 = Debug|Any CPU
 		{B3DE251C-A7B8-42A2-A8C9-E525DFD7D387}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -77,5 +68,12 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {11DDFC82-7700-4CC7-9632-B78829C52DD7}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		LiteHtmlSharp.Shared\LiteHtmlSharp.Shared.projitems*{46fd2d0e-a935-4e1c-bfc8-9b213b6c4ebf}*SharedItemsImports = 13
+		LiteHtmlSharp.CoreGraphics\LiteHtmlSharp.CoreGraphics.projitems*{6c22a040-3735-43fe-bb3b-edacdbcc0dbc}*SharedItemsImports = 13
+		LiteHtmlSharp.CoreGraphics\LiteHtmlSharp.CoreGraphics.projitems*{b3de251c-a7b8-42a2-a8c9-e525dfd7d387}*SharedItemsImports = 5
+		LiteHtmlSharp.Shared\LiteHtmlSharp.Shared.projitems*{b3de251c-a7b8-42a2-a8c9-e525dfd7d387}*SharedItemsImports = 5
+		LiteHtmlSharp.Shared\LiteHtmlSharp.Shared.projitems*{d92a9f4f-edb6-4d93-a2f7-353d322b47d6}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal
