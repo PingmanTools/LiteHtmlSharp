@@ -226,13 +226,7 @@
     <ClInclude Include="src\TagElement.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\litehtml\include\master.css" />
     <None Include="..\litehtml\src\gumbo\char_ref.rl" />
-    <None Include="..\litehtml\src\gumbo\LICENSE" />
-    <None Include="..\litehtml\src\gumbo\tag.in" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\litehtml\src\gumbo\CMakeLists.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -211,22 +211,8 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\litehtml\include\master.css">
-      <Filter>litehtml_src</Filter>
-    </None>
     <None Include="..\litehtml\src\gumbo\char_ref.rl">
       <Filter>litehtml_src</Filter>
     </None>
-    <None Include="..\litehtml\src\gumbo\LICENSE">
-      <Filter>litehtml_src</Filter>
-    </None>
-    <None Include="..\litehtml\src\gumbo\tag.in">
-      <Filter>litehtml_src</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\litehtml\src\gumbo\CMakeLists.txt">
-      <Filter>litehtml_src</Filter>
-    </Text>
   </ItemGroup>
 </Project>
