@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net45;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net48;net6.0</TargetFrameworks>
     <DefineConstants>$(DefineConstants);MAC</DefineConstants>
     <Authors>Matthew Little</Authors>
     <Company>Pingman Tools</Company>

@@ -1,9 +1,9 @@
 #pragma once
 
 #include "CallbackDelegates.h"
-#include "../../litehtml/src/html.h"
-#include "../../litehtml/src/context.h"
-#include "../../litehtml/src/document.h"
+#include "html.h"
+#include "context.h"
+#include "document.h"
 #include "TagElement.h"
 
 #if defined(LITEHTML_UTF8)
@@ -23,7 +23,7 @@ public:
 	virtual void delete_font(litehtml::uint_ptr hFont) override;
 	virtual int text_width(const litehtml::tchar_t * text, litehtml::uint_ptr hFont) override;
 	virtual void draw_text(litehtml::uint_ptr hdc, const litehtml::tchar_t * text, litehtml::uint_ptr hFont, litehtml::web_color color, const litehtml::position & pos) override;
-	virtual int pt_to_px(int pt) override;
+	virtual int pt_to_px(int pt) const override;
 	virtual int get_default_font_size() const override;
 	virtual const litehtml::tchar_t * get_default_font_name() const override;
 	virtual void draw_list_marker(litehtml::uint_ptr hdc, const litehtml::list_marker & marker) override;

@@ -32,7 +32,7 @@ void DocContainer::draw_text(litehtml::uint_ptr hdc, const litehtml::tchar_t * t
 	_callbacks.DrawText(text, hFont, color, pos);
 }
 
-int DocContainer::pt_to_px(int pt)
+int DocContainer::pt_to_px(int pt) const
 {
 	return _callbacks.PTtoPX(pt);
 }

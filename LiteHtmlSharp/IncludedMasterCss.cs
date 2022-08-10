@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -17,7 +17,7 @@ namespace LiteHtmlSharp
         static string GetMasterCssResource()
         {
             var assembly = typeof(IncludedMasterCss).GetTypeInfo().Assembly;
-            var masterCssResourceName = assembly.GetName().Name + ".master.css";
+            var masterCssResourceName = assembly.GetName().Name + ".winprint.css";
             using (var reader = new StreamReader(assembly.GetManifestResourceStream(masterCssResourceName), Encoding.UTF8))
             {
                 return reader.ReadToEnd();

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net45</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <DefineConstants>$(DefineConstants);WINDOWS</DefineConstants>
     <Version>1.1.0</Version>
     <Authors>Matthew Little</Authors>
@@ -16,6 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="master.css" />
     <None Remove="x64\LiteHtmlLib.dll" />
     <None Remove="x86\LiteHtmlLib.dll" />
   </ItemGroup>
@@ -41,6 +42,10 @@
     <Content Include="x86\LiteHtmlLib.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="master.css" />
   </ItemGroup>
 
   <ItemGroup>

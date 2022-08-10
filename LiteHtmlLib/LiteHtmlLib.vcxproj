@@ -22,32 +22,32 @@
     <ProjectGuid>{2E1F5B1E-430B-4FFF-963C-92229154F261}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>LiteHtmlLib</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>false</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -70,20 +70,20 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>.\Release\x86\</OutDir>
+    <OutDir>.\bin\Debug\win-x86\</OutDir>
     <IntDir>.\Build\x86\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>.\Release\x64\</OutDir>
+    <OutDir>.\bin\Debug\win-x64\</OutDir>
     <IntDir>.\Build\x64\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>.\bin\Release\win-x86\</OutDir>
-    <IntDir>.\obj\win-x86\</IntDir>
+    <IntDir>.\Build\x86\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>.\bin\Release\win-x64\</OutDir>
-    <IntDir>.\obj\win-x64\</IntDir>
+    <IntDir>.\Build\x64\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -92,7 +92,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_UNICODE;UNICODE;LITEHTML_UTF8;WIN32;_DEBUG;_WINDOWS;_USRDLL;LITEHTMLLIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\litehtml\src;..\litehtml\src\gumbo;..\LiteHtmlLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\litehtml\include\litehtml;..\litehtml\src;..\litehtml\src\gumbo\include;..\litehtml\src\gumbo\include\gumbo;..\litehtml\src\gumbo\visualc\include;..\LiteHtmlLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -108,7 +108,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_UNICODE;UNICODE;LITEHTML_UTF8;_DEBUG;WIN32;_WINDOWS;_USRDLL;LITEHTMLLIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\litehtml\src;..\litehtml\src\gumbo;..\LiteHtmlLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\litehtml\include\litehtml;..\litehtml\src;..\litehtml\src\gumbo\include;..\litehtml\src\gumbo\include\gumbo;..\litehtml\src\gumbo\visualc\include;..\LiteHtmlLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -125,7 +125,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>_UNICODE;UNICODE;LITEHTML_UTF8;WIN32;NDEBUG;_WINDOWS;_USRDLL;LITEHTMLLIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\litehtml\src;..\litehtml\src\gumbo;..\LiteHtmlLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\litehtml\include\litehtml;..\litehtml\src;..\litehtml\src\gumbo\include;..\litehtml\src\gumbo\include\gumbo;..\litehtml\src\gumbo\visualc\include;..\LiteHtmlLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -146,7 +146,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>_UNICODE;UNICODE;LITEHTML_UTF8;WIN32;NDEBUG;_WINDOWS;_USRDLL;LITEHTMLLIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\litehtml\src;..\litehtml\src\gumbo;..\LiteHtmlLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\litehtml\include\litehtml;..\litehtml\src;..\litehtml\src\gumbo\include;..\litehtml\src\gumbo\include\gumbo;..\litehtml\src\gumbo\visualc\include;..\LiteHtmlLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <OmitFramePointers>false</OmitFramePointers>
@@ -159,79 +159,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\litehtml\src\attributes.h" />
-    <ClInclude Include="..\litehtml\src\background.h" />
-    <ClInclude Include="..\litehtml\src\borders.h" />
-    <ClInclude Include="..\litehtml\src\box.h" />
-    <ClInclude Include="..\litehtml\src\context.h" />
-    <ClInclude Include="..\litehtml\src\css_length.h" />
-    <ClInclude Include="..\litehtml\src\css_margins.h" />
-    <ClInclude Include="..\litehtml\src\css_offsets.h" />
-    <ClInclude Include="..\litehtml\src\css_position.h" />
-    <ClInclude Include="..\litehtml\src\css_selector.h" />
-    <ClInclude Include="..\litehtml\src\document.h" />
-    <ClInclude Include="..\litehtml\src\element.h" />
-    <ClInclude Include="..\litehtml\src\el_anchor.h" />
-    <ClInclude Include="..\litehtml\src\el_base.h" />
-    <ClInclude Include="..\litehtml\src\el_before_after.h" />
-    <ClInclude Include="..\litehtml\src\el_body.h" />
-    <ClInclude Include="..\litehtml\src\el_break.h" />
-    <ClInclude Include="..\litehtml\src\el_cdata.h" />
-    <ClInclude Include="..\litehtml\src\el_comment.h" />
-    <ClInclude Include="..\litehtml\src\el_div.h" />
-    <ClInclude Include="..\litehtml\src\el_font.h" />
-    <ClInclude Include="..\litehtml\src\el_image.h" />
-    <ClInclude Include="..\litehtml\src\el_link.h" />
-    <ClInclude Include="..\litehtml\src\el_para.h" />
-    <ClInclude Include="..\litehtml\src\el_script.h" />
-    <ClInclude Include="..\litehtml\src\el_space.h" />
-    <ClInclude Include="..\litehtml\src\el_style.h" />
-    <ClInclude Include="..\litehtml\src\el_table.h" />
-    <ClInclude Include="..\litehtml\src\el_td.h" />
-    <ClInclude Include="..\litehtml\src\el_text.h" />
-    <ClInclude Include="..\litehtml\src\el_title.h" />
-    <ClInclude Include="..\litehtml\src\el_tr.h" />
-    <ClInclude Include="..\litehtml\src\gumbo\attribute.h" />
-    <ClInclude Include="..\litehtml\src\gumbo\char_ref.h" />
-    <ClInclude Include="..\litehtml\src\gumbo\error.h" />
-    <ClInclude Include="..\litehtml\src\gumbo\gumbo.h" />
-    <ClInclude Include="..\litehtml\src\gumbo\insertion_mode.h" />
-    <ClInclude Include="..\litehtml\src\gumbo\parser.h" />
-    <ClInclude Include="..\litehtml\src\gumbo\strings.h" />
-    <ClInclude Include="..\litehtml\src\gumbo\string_buffer.h" />
-    <ClInclude Include="..\litehtml\src\gumbo\string_piece.h" />
-    <ClInclude Include="..\litehtml\src\gumbo\tag_enum.h" />
-    <ClInclude Include="..\litehtml\src\gumbo\tag_gperf.h" />
-    <ClInclude Include="..\litehtml\src\gumbo\tag_sizes.h" />
-    <ClInclude Include="..\litehtml\src\gumbo\tag_strings.h" />
-    <ClInclude Include="..\litehtml\src\gumbo\tokenizer.h" />
-    <ClInclude Include="..\litehtml\src\gumbo\tokenizer_states.h" />
-    <ClInclude Include="..\litehtml\src\gumbo\token_type.h" />
-    <ClInclude Include="..\litehtml\src\gumbo\utf8.h" />
-    <ClInclude Include="..\litehtml\src\gumbo\util.h" />
-    <ClInclude Include="..\litehtml\src\gumbo\vector.h" />
-    <ClInclude Include="..\litehtml\src\html.h" />
-    <ClInclude Include="..\litehtml\src\html_tag.h" />
-    <ClInclude Include="..\litehtml\src\iterators.h" />
-    <ClInclude Include="..\litehtml\src\media_query.h" />
-    <ClInclude Include="..\litehtml\src\os_types.h" />
-    <ClInclude Include="..\litehtml\src\style.h" />
-    <ClInclude Include="..\litehtml\src\stylesheet.h" />
-    <ClInclude Include="..\litehtml\src\table.h" />
-    <ClInclude Include="..\litehtml\src\types.h" />
-    <ClInclude Include="..\litehtml\src\utf8_strings.h" />
-    <ClInclude Include="..\litehtml\src\web_color.h" />
-    <ClInclude Include="src\CallbackDelegates.h" />
-    <ClInclude Include="src\DocContainer.h" />
-    <ClInclude Include="src\Globals.h" />
-    <ClInclude Include="src\TagElement.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="..\litehtml\src\background.cpp" />
     <ClCompile Include="..\litehtml\src\box.cpp" />
+    <ClCompile Include="..\litehtml\src\codepoint.cpp" />
     <ClCompile Include="..\litehtml\src\context.cpp" />
     <ClCompile Include="..\litehtml\src\css_length.cpp" />
     <ClCompile Include="..\litehtml\src\css_selector.cpp" />
@@ -247,6 +177,7 @@
     <ClCompile Include="..\litehtml\src\el_div.cpp" />
     <ClCompile Include="..\litehtml\src\el_font.cpp" />
     <ClCompile Include="..\litehtml\src\el_image.cpp" />
+    <ClCompile Include="..\litehtml\src\el_li.cpp" />
     <ClCompile Include="..\litehtml\src\el_link.cpp" />
     <ClCompile Include="..\litehtml\src\el_para.cpp" />
     <ClCompile Include="..\litehtml\src\el_script.cpp" />
@@ -272,9 +203,14 @@
     <ClCompile Include="..\litehtml\src\html_tag.cpp" />
     <ClCompile Include="..\litehtml\src\iterators.cpp" />
     <ClCompile Include="..\litehtml\src\media_query.cpp" />
+    <ClCompile Include="..\litehtml\src\num_cvt.cpp" />
+    <ClCompile Include="..\litehtml\src\strtod.cpp" />
     <ClCompile Include="..\litehtml\src\style.cpp" />
     <ClCompile Include="..\litehtml\src\stylesheet.cpp" />
     <ClCompile Include="..\litehtml\src\table.cpp" />
+    <ClCompile Include="..\litehtml\src\tstring_view.cpp" />
+    <ClCompile Include="..\litehtml\src\url.cpp" />
+    <ClCompile Include="..\litehtml\src\url_path.cpp" />
     <ClCompile Include="..\litehtml\src\utf8_strings.cpp" />
     <ClCompile Include="..\litehtml\src\web_color.cpp" />
     <ClCompile Include="src\dllmain.cpp" />
@@ -283,8 +219,14 @@
     <ClCompile Include="src\TagElement.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\litehtml\include\litehtml.h" />
+    <ClInclude Include="src\CallbackDelegates.h" />
+    <ClInclude Include="src\DocContainer.h" />
+    <ClInclude Include="src\Globals.h" />
+    <ClInclude Include="src\TagElement.h" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="..\litehtml\src\gumbo\char_ref.rl" />
-    <None Include="..\litehtml\src\gumbo\tag.in" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
