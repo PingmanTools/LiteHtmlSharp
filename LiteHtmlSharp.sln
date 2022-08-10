@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2006
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30001.183
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiteHtmlSharp", "LiteHtmlSharp\LiteHtmlSharp.csproj", "{ACE4E835-8519-4EC0-8B26-38445133F169}"
 EndProject
@@ -22,6 +22,9 @@ Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		LiteHtmlSharp.Shared\LiteHtmlSharp.Shared.projitems*{46fd2d0e-a935-4e1c-bfc8-9b213b6c4ebf}*SharedItemsImports = 13
 		LiteHtmlSharp.CoreGraphics\LiteHtmlSharp.CoreGraphics.projitems*{6c22a040-3735-43fe-bb3b-edacdbcc0dbc}*SharedItemsImports = 13
+		LiteHtmlSharp.CoreGraphics\LiteHtmlSharp.CoreGraphics.projitems*{b3de251c-a7b8-42a2-a8c9-e525dfd7d387}*SharedItemsImports = 5
+		LiteHtmlSharp.Shared\LiteHtmlSharp.Shared.projitems*{b3de251c-a7b8-42a2-a8c9-e525dfd7d387}*SharedItemsImports = 5
+		LiteHtmlSharp.Shared\LiteHtmlSharp.Shared.projitems*{d92a9f4f-edb6-4d93-a2f7-353d322b47d6}*SharedItemsImports = 5
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
