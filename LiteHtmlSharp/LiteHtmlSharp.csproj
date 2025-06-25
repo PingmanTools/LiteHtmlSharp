@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net45;netstandard1.1</TargetFrameworks>
+    <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>LiteHtmlSharp</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>LiteHtmlSharp is a C# cross-platform library for HTML/CSS(2/3) visualization - self contained, fast and small</Description>
     <PackageTags>litehtml litehtmlsharp html render</PackageTags>
-    <PackageLicenseUrl>https://github.com/PingmanTools/LiteHtmlSharp/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/PingmanTools/LiteHtmlSharp/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/PingmanTools/LiteHtmlSharp/</RepositoryUrl>
     <Authors>Matthew Little</Authors>

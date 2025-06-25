@@ -56,8 +56,8 @@ namespace LiteHtmlSharp.Mac
 
         web_color GetDefaultFontColor()
         {
-            var defaultColor = NSColor.LabelColor;
-            // Use components for color values because AppKit.NSColor.LabelColor (and others) 
+            var defaultColor = NSColor.Label;
+            // Use components for color values because AppKit.NSColor.LabelColor (and others)
             // do not work with NSColor.GetRgba or NSColor.GetComponents
             var components = defaultColor.CGColor.Components;
             var retVal = new web_color();

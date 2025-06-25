@@ -61,7 +61,7 @@ namespace LiteHtmlSharp.iOS
 
         web_color GetDefaultFontColor()
         {
-            var defaultColor = UIColor.DarkTextColor;
+            var defaultColor = UIColor.Label;
             // Use components for color values because AppKit.NSColor.LabelColor (and others) 
             // do not work with NSColor.GetRgba or NSColor.GetComponents
             var components = defaultColor.CGColor.Components;
@@ -99,10 +99,10 @@ namespace LiteHtmlSharp.iOS
         bool CheckViewportChange(bool forceRender = false)
         {
             if (forceRender
-                || (int)LiteHtmlContainer.ContextSize.Width != (int)Viewport.Size.Width
-                || (int)LiteHtmlContainer.ContextSize.Height != (int)Viewport.Size.Height)
+                || (int)LiteHtmlContainer.Size.Width != (int)Viewport.Size.Width
+                || (int)LiteHtmlContainer.Size.Height != (int)Viewport.Size.Height)
             {
-                LiteHtmlContainer.ContextSize = Viewport.Size;
+                LiteHtmlContainer.Size = Viewport.Size.ToLiteHtmlSize();
                 LiteHtmlContainer.ScrollOffset = Viewport.Location.ToLiteHtmlPoint();
                 LiteHtmlContainer.Document.OnMediaChanged();
                 LiteHtmlContainer.Render();

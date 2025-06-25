@@ -1,13 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net45</TargetFramework>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <DefineConstants>$(DefineConstants);WINDOWS</DefineConstants>
     <Version>1.1.0</Version>
     <Authors>Matthew Little</Authors>
     <Company>Pingman Tools</Company>
     <Description>WPF drawing backend for LiteHtmlSharp</Description>
-    <PackageLicenseUrl>https://github.com/PingmanTools/LiteHtmlSharp/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/PingmanTools/LiteHtmlSharp/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/PingmanTools/LiteHtmlSharp/</RepositoryUrl>
     <PackageTags>litehtml litehtmlsharp html render coregraphics windows wpf</PackageTags>
@@ -25,12 +27,6 @@
     <ProjectReference Include="..\LiteHtmlSharp\LiteHtmlSharp.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="WindowsBase" />
-  </ItemGroup>
 
   <Import Project="..\LiteHtmlSharp.Shared\LiteHtmlSharp.Shared.projitems" Label="Shared" />
 

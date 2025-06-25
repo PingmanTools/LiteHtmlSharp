@@ -45,7 +45,7 @@ namespace LiteHtmlSharp.Wpf
 
       public FormattedText GetFormattedText(string text, TextAlignment alignment = TextAlignment.Left)
       {
-         var formattedText = new FormattedText(text, CultureInfo.InvariantCulture, System.Windows.FlowDirection.LeftToRight, TypeFace, Size, null);
+         var formattedText = new FormattedText(text, CultureInfo.InvariantCulture, System.Windows.FlowDirection.LeftToRight, TypeFace, Size, null, 1.0);
          formattedText.SetTextDecorations(Decorations);
          return formattedText;
       }
