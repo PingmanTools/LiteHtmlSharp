@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net9.0-ios</TargetFramework>
     <DefineConstants>$(DefineConstants);IOS;__MOBILE__</DefineConstants>
-    <Version>1.1.0</Version>
+    <Version>2.0.0</Version>
     <Authors>Matthew Little</Authors>
     <Company>Pingman Tools</Company>
     <Description>Xamarin.iOS CoreGraphics drawing backend for LiteHtmlSharp</Description>

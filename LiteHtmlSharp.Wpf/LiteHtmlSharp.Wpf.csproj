@@ -5,7 +5,7 @@
     <UseWPF>true</UseWPF>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <DefineConstants>$(DefineConstants);WINDOWS</DefineConstants>
-    <Version>1.1.0</Version>
+    <Version>2.0.0</Version>
     <Authors>Matthew Little</Authors>
     <Company>Pingman Tools</Company>
     <Description>WPF drawing backend for LiteHtmlSharp</Description>
