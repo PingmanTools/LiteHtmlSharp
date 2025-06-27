@@ -5,7 +5,7 @@
     <UseWPF>true</UseWPF>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <DefineConstants>$(DefineConstants);WINDOWS</DefineConstants>
-    <Version>2.0.0-preview1</Version>
+    <Version>2.0.0-preview2</Version>
     <Authors>Matthew Little</Authors>
     <Company>Pingman Tools</Company>
     <Description>WPF drawing backend for LiteHtmlSharp</Description>
@@ -18,25 +18,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="x64\LiteHtmlLib.dll" />
-    <None Remove="x86\LiteHtmlLib.dll" />
-  </ItemGroup>
-
-
-  <ItemGroup>
     <ProjectReference Include="..\LiteHtmlSharp\LiteHtmlSharp.csproj" />
   </ItemGroup>
-
 
   <Import Project="..\LiteHtmlSharp.Shared\LiteHtmlSharp.Shared.projitems" Label="Shared" />
 
   <ItemGroup>
-    <Content Include="x64\LiteHtmlLib.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="x86\LiteHtmlLib.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <None Include="..\runtimes\win-x64\native\*" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\runtimes\win-x86\native\*" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>

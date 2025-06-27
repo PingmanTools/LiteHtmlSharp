@@ -2,11 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>net9.0-macos</TargetFramework>
+    <RuntimeIdentifiers>osx-x64;osx-arm64</RuntimeIdentifiers>
     <DefineConstants>$(DefineConstants);MAC</DefineConstants>
     <Authors>Matthew Little</Authors>
     <Company>Pingman Tools</Company>
     <Product>LiteHtmlSharp.Mac</Product>
-    <Version>2.0.0-preview1</Version>
+    <Version>2.0.0-preview2</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Xamarin.Mac CoreGraphics drawing backend for LiteHtmlSharp</Description>
     <PackageId>LiteHtmlSharp.Mac</PackageId>
@@ -17,9 +18,24 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="..\LiteHtmlLib\lib_dylib\build\liblitehtml.dylib" Link="liblitehtml.dylib">
+    <!-- Copy native library to output directory -->
+    <Content Include="..\LiteHtmlLib\lib_dylib\build\liblitehtml.dylib">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>liblitehtml.dylib</Link>
     </Content>
+
+    <!-- Pack for NuGet with architecture-specific paths -->
+    <None Include="..\LiteHtmlLib\lib_dylib\build\liblitehtml.dylib"
+          Pack="true"
+          PackagePath="runtimes/osx-x64/native/;runtimes/osx-arm64/native/"
+          Visible="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <NativeFileReference Include="..\LiteHtmlLib\lib_dylib\build\liblitehtml.dylib">
+      <Kind>Dynamic</Kind>
+      <ForceLoad>true</ForceLoad>
+    </NativeFileReference>
   </ItemGroup>
 
   <ItemGroup>
@@ -27,7 +43,6 @@
   </ItemGroup>
 
   <Import Project="..\LiteHtmlSharp.Shared\LiteHtmlSharp.Shared.projitems" Label="Shared" />
-
   <Import Project="..\LiteHtmlSharp.CoreGraphics\LiteHtmlSharp.CoreGraphics.projitems" Label="Shared" />
 
 </Project>
