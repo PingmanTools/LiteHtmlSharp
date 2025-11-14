@@ -243,7 +243,16 @@ namespace LiteHtmlSharp
         {
             if (CreateElementCallback != null)
             {
-                return CreateElementCallback(Utf8Util.Utf8PtrToString(tag), Utf8Util.Utf8PtrToString(attributes), new ElementInfo(elementInfo));
+                var elementInfoWrapper = new ElementInfo(elementInfo);
+                var result = CreateElementCallback(Utf8Util.Utf8PtrToString(tag), Utf8Util.Utf8PtrToString(attributes), elementInfoWrapper);
+                
+                // Copy modified values back to the original struct so HTML engine sees our changes
+                elementInfo.PosX = elementInfoWrapper.PosX;
+                elementInfo.PosY = elementInfoWrapper.PosY;
+                elementInfo.Width = elementInfoWrapper.Width;
+                elementInfo.Height = elementInfoWrapper.Height;
+                
+                return result;
             }
             else
             {
