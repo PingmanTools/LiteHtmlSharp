@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net9.0</TargetFrameworks>
     <Nullable>disable</Nullable>
     <Version>2.0.0-preview2</Version>
     <Authors>Matthew Little</Authors>
@@ -13,6 +12,7 @@
     <PackageTags>litehtml litehtmlsharp html render avalonia crossplatform</PackageTags>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <TargetFramework>net9.0-windows</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,12 +27,6 @@
 
   <ItemGroup Condition="$([MSBuild]::IsOsPlatform('Windows'))">
     <None Include="..\runtimes\win-x64\native\*" CopyToOutputDirectory="PreserveNewest" />
-    <None Include="..\runtimes\win-x86\native\*" CopyToOutputDirectory="PreserveNewest" />
-  </ItemGroup>
-
-  <ItemGroup Condition="$([MSBuild]::IsOsPlatform('OSX'))">
-    <None Include="..\runtimes\osx-x64\native\*" CopyToOutputDirectory="PreserveNewest" />
-    <None Include="..\runtimes\osx-arm64\native\*" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

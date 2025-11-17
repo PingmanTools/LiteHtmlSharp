@@ -13,7 +13,7 @@ namespace LiteHtmlSharp
 {
     public class LibInterop : ILibInterop
     {
-        const string LiteHtmlLibFile = "liblitehtml";
+        const string LiteHtmlLibFile = "LiteHtmlLib";
         public const CharSet cs = CharSet.Unicode;
         public const CallingConvention cc = CallingConvention.Cdecl;
 

@@ -51,7 +51,7 @@ namespace LiteHtmlSharp.Avalonia
                 double.IsFinite(availableSize.Width) && availableSize.Width > 0 ? availableSize.Width : 1024,
                 double.IsFinite(availableSize.Height) && availableSize.Height > 0 ? availableSize.Height : 768
             );
-            
+
             _childCanvas.Measure(safeSize);
             return _childCanvas.DesiredSize;
         }
@@ -65,13 +65,15 @@ namespace LiteHtmlSharp.Avalonia
 
         public override void Render(DrawingContext context)
         {
+            base.Render(context);
             // First render HTML background if available
             if (Container != null && Container.Document.HasRendered && HtmlControl != null)
             {
-                HtmlControl.RenderHtmlBackground(context);
+                using (context.PushTransform(Matrix.Identity))
+                {
+                    HtmlControl.RenderHtmlBackground(context);
+                }
             }
-            
-            base.Render(context);
         }
 
         public void NotifyContentSizeChanged()
@@ -148,17 +150,17 @@ namespace LiteHtmlSharp.Avalonia
                 IsVisible = true,
                 ClipToBounds = false
             };
-            
+
             _controlPanel = htmlRenderPanel;
             this.Content = _controlPanel;
-            
+
             // Make sure this control is visible and fills available space
             this.Background = Brushes.Transparent; // Let HTML background show through
             this.HorizontalAlignment = HorizontalAlignment.Stretch;
             this.VerticalAlignment = VerticalAlignment.Stretch;
-            
+
             // Let it size naturally - no artificial minimums
-            
+
             System.Diagnostics.Debug.WriteLine($"LiteHtmlAvaloniaControl initialized");
         }
 
@@ -225,14 +227,14 @@ namespace LiteHtmlSharp.Avalonia
             // Use the document's natural size, but ensure we have reasonable viewport width
             var viewportWidth = _scrollParent?.Viewport.Width ?? size.Width;
             if (viewportWidth <= 0) viewportWidth = size.Width; // Use document width as fallback
-            
+
             // Set the control size to the actual content dimensions
             this.Width = Math.Max(viewportWidth, size.Width);
             this.Height = size.Height;
-            
+
             // Update viewport to match what we're actually rendering
             Container.SetViewport(new LiteHtmlPoint(0, 0), new LiteHtmlSize(this.Width, this.Height));
-            
+
             System.Diagnostics.Debug.WriteLine($"Document size known: {size.Width}x{size.Height}, control size set to: {this.Width}x{this.Height}");
         }
 
@@ -290,7 +292,7 @@ namespace LiteHtmlSharp.Avalonia
                     TriggerRedraw();
                 }
             }
-            
+
             base.OnPointerPressed(e);
         }
 
@@ -324,27 +326,27 @@ namespace LiteHtmlSharp.Avalonia
             System.Diagnostics.Debug.WriteLine("LoadHtml called");
             ClearInputs();
             Container.Document.CreateFromString(html);
-            
+
             // Set up HtmlRenderPanel references for HTML rendering
             if (_controlPanel is HtmlRenderPanel htmlRenderPanel)
             {
                 htmlRenderPanel.Container = Container;
                 htmlRenderPanel.HtmlControl = this;
             }
-            
+
             // Set viewport size to match ScrollViewer dimensions for proper layout
             var viewportWidth = _scrollParent?.Viewport.Width ?? 0;
             if (viewportWidth <= 0) viewportWidth = 1024; // Reasonable default for initial layout
             var size = new LiteHtmlSize(viewportWidth, 1); // Use minimal height, let HTML calculate natural size
-            
+
             Container.SetViewport(new LiteHtmlPoint(0, 0), size);
             Container.CheckViewportChange(forceRender: true);
-            
+
             System.Diagnostics.Debug.WriteLine($"HTML loaded, document has rendered: {Container.Document.HasRendered}");
-            
+
             // Process inputs immediately after HTML is loaded and rendered
             Dispatcher.UIThread.Post(() => ProcessInputs(), DispatcherPriority.Background);
-            
+
             TriggerRedraw();
         }
 
@@ -367,7 +369,7 @@ namespace LiteHtmlSharp.Avalonia
             // Fill the entire control area with white background
             var renderBounds = new Rect(0, 0, Bounds.Width, Bounds.Height);
             context.FillRectangle(Brushes.White, renderBounds);
-            
+
             if (!Container.Document.HasRendered)
             {
                 // Show loading message
@@ -417,6 +419,7 @@ namespace LiteHtmlSharp.Avalonia
             System.Diagnostics.Debug.WriteLine($"ShouldCreateElement called for tag: {tag}");
             switch (tag.ToLowerInvariant())
             {
+                case "a":
                 case "input":
                 case "button":
                     System.Diagnostics.Debug.WriteLine($"Creating element for tag: {tag}");
@@ -433,6 +436,14 @@ namespace LiteHtmlSharp.Avalonia
 
             switch (tag.ToLowerInvariant())
             {
+                case "a":
+                {
+                    input = new AvaloniaInput(InputType.Button);
+                    var button = new HyperlinkButton();
+                    button.Click += Button_Click;
+                    input.Element = button;
+                    break;
+                }
                 case "input":
                     {
                         input = new AvaloniaInput(InputType.Textbox);
@@ -458,10 +469,10 @@ namespace LiteHtmlSharp.Avalonia
             input.SetupAttributes(attributes); // This sets the button content
             input.AttributesSetup = true;
             input.IsPlaced = true;
-            
+
             // Add to visual tree - let HTML engine determine sizing
             AddChildControl(input.Element);
-            
+
             Inputs.Add(input);
             return input.ID;
         }
@@ -481,30 +492,30 @@ namespace LiteHtmlSharp.Avalonia
         private void ProcessInputs()
         {
             System.Diagnostics.Debug.WriteLine($"ProcessInputs called, {Inputs.Count} inputs to process");
-            
+
             foreach (var input in Inputs)
             {
                 ElementInfo info = Container.Document.GetElementInfo(input.ID);
-                
+
                 System.Diagnostics.Debug.WriteLine($"ElementInfo for {input.ID}: PosX={info.PosX}, PosY={info.PosY}, Width={info.Width}, Height={info.Height}");
-                
+
                 // Use exact HTML dimensions - they should now include our measured sizes
                 input.Element.Width = info.Width;
                 input.Element.Height = info.Height > 0 ? info.Height : (input.Type == InputType.Button ? 25.0 : 22.0);
-                
+
                 // Clear margins for pixel-perfect positioning
                 input.Element.Margin = new Thickness(0);
-                
+
                 // Handle edge case from WPF implementation
                 if (info.PosX > 999999)
                 {
                     info.PosX = 0;
                 }
-                
+
                 // Use exact positioning from HTML layout - no adjustments
                 Canvas.SetLeft(input.Element, info.PosX);
                 Canvas.SetTop(input.Element, info.PosY);
-                
+
                 System.Diagnostics.Debug.WriteLine($"Set Canvas position for {input.Element.GetType().Name}: Left={Canvas.GetLeft(input.Element)}, Top={Canvas.GetTop(input.Element)}");
             }
         }
@@ -512,17 +523,17 @@ namespace LiteHtmlSharp.Avalonia
         private void AddChildControl(Control control)
         {
             System.Diagnostics.Debug.WriteLine($"AddChildControl called for {control.GetType().Name}");
-            
+
             // Add control to the HtmlRenderPanel
             if (_controlPanel is HtmlRenderPanel htmlRenderPanel)
             {
                 htmlRenderPanel.AddChild(control);
                 control.ZIndex = 1000; // Ensure controls appear on top
-                
+
                 // Make sure control is visible and has proper styling
                 control.IsVisible = true;
                 control.Opacity = 1.0;
-                
+
                 // Add some basic styling to make controls more visible
                 if (control is TextBox textBox)
                 {
@@ -530,13 +541,18 @@ namespace LiteHtmlSharp.Avalonia
                     textBox.BorderBrush = Brushes.Black;
                     textBox.BorderThickness = new Thickness(1);
                 }
+                else if (control is HyperlinkButton hyperlinkButton)
+                {
+                    hyperlinkButton.Background = Brushes.Transparent;
+                    hyperlinkButton.BorderBrush = Brushes.Transparent;
+                }
                 else if (control is Button button)
                 {
                     button.Background = Brushes.LightGray;
                     button.BorderBrush = Brushes.Black;
                     button.BorderThickness = new Thickness(1);
                 }
-                
+
                 System.Diagnostics.Debug.WriteLine($"Added control to panel, total children: {htmlRenderPanel.ChildCount}");
                 System.Diagnostics.Debug.WriteLine($"Control bounds: {control.Bounds}, IsVisible: {control.IsVisible}");
             }
@@ -560,13 +576,13 @@ namespace LiteHtmlSharp.Avalonia
             Container.AnchorClicked -= Container_AnchorClicked;
             Container.DocumentSizeKnown -= Container_DocumentSizeKnown;
             Container.Document.ViewElementsNeedLayout -= Document_ViewElementsNeedLayout;
-            
+
             if (_scrollParent != null)
             {
                 _scrollParent.ScrollChanged -= ScrollParent_ScrollChanged;
                 _scrollParent.SizeChanged -= ScrollParent_SizeChanged;
             }
-            
+
             ClearInputs();
         }
     }
