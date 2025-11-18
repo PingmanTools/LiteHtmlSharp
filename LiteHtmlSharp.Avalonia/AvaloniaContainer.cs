@@ -6,7 +6,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
-using Avalonia.Platform;
 
 namespace LiteHtmlSharp.Avalonia
 {
@@ -14,30 +13,6 @@ namespace LiteHtmlSharp.Avalonia
     {
         byte[] GetResourceBytes(string resource);
         string GetResourceString(string resource);
-    }
-
-    public struct IntSize
-    {
-        public int Width;
-        public int Height;
-
-        public IntSize(int width, int height)
-        {
-            Width = width;
-            Height = height;
-        }
-    }
-
-    public struct IntPoint
-    {
-        public int X;
-        public int Y;
-
-        public IntPoint(int x, int y)
-        {
-            X = x;
-            Y = y;
-        }
     }
 
     public delegate FontFamily FontAbsolutePathDelegate(string fontName);
@@ -48,10 +23,10 @@ namespace LiteHtmlSharp.Avalonia
 
         public FontAbsolutePathDelegate FontAbsolutePathDelegate;
 
-        class ResourceLoader : IResourceLoader
+        private class ResourceLoader : IResourceLoader
         {
-            Func<string, string> _getStringResource;
-            Func<string, byte[]> _getBytesResource;
+            private readonly Func<string, string> _getStringResource;
+            private readonly Func<string, byte[]> _getBytesResource;
 
             public ResourceLoader(Func<string, string> getStringResource, Func<string, byte[]> getBytesResource)
             {
@@ -63,12 +38,12 @@ namespace LiteHtmlSharp.Avalonia
             public string GetResourceString(string resource) => _getStringResource(resource);
         }
 
-        static Dictionary<string, Bitmap> _images = new Dictionary<string, Bitmap>();
-        static Dictionary<UIntPtr, FontInfo> _fonts = new Dictionary<UIntPtr, FontInfo>();
+        private static readonly Dictionary<string, Bitmap> Images = new();
+        private static readonly Dictionary<UIntPtr, FontInfo> Fonts = new();
 
         public bool Loaded = false;
-        public static string BaseURL;
-        static uint _nextFontID;
+        public static string BaseUrl;
+        private static uint nextFontId;
 
         public string DefaultFontName { get; set; } = "Arial";
         public int DefaultFontSize { get; set; } = 12;
@@ -83,13 +58,13 @@ namespace LiteHtmlSharp.Avalonia
             _loader = loader;
         }
 
-        public AvaloniaContainer(string css, Func<string, string> getStringResource, Func<string, byte[]> getBytesResource) : this(css, new ResourceLoader(getStringResource, getBytesResource))
+        public AvaloniaContainer(string css, Func<string, string> getStringResource,
+            Func<string, byte[]> getBytesResource) : this(css, new ResourceLoader(getStringResource, getBytesResource))
         {
         }
 
         protected override void SetCaption(string caption)
         {
-
         }
 
         protected override string GetDefaultFontName()
@@ -107,154 +82,248 @@ namespace LiteHtmlSharp.Avalonia
             RenderHtmlRequested?.Invoke(html);
         }
 
-        protected override void DrawBackground(UIntPtr hdc, string image, background_repeat repeat, ref web_color color, ref position pos, ref border_radiuses br, ref position borderBox, bool isRoot)
+        private static void ClampCornerRadii(ref border_radiuses br, double width, double height)
         {
-            if (pos.width > 0 && pos.height > 0)
+            // Sum pairs; if they exceed side length scale them down proportionally (CSS spec)
+            double topSum = br.top_left_x + br.top_right_x;
+            if (topSum > width && topSum > 0)
             {
-                if (!String.IsNullOrEmpty(image))
-                {
-                    var bitmap = LoadImage(image);
-                    if (bitmap != null)
-                    {
-                        DrawImage(bitmap, new Rect(pos.x, pos.y, pos.width, pos.height));
-                    }
-                }
-                else
-                {
-                    Rect rect = new Rect(pos.x, pos.y, pos.width, pos.height);
+                var scale = width / topSum;
+                br.top_left_x = (int)(br.top_left_x * scale);
+                br.top_right_x = (int)(br.top_right_x * scale);
+            }
 
-                    var geometry = new PathGeometry();
-                    var figure = new PathFigure();
-                    figure.StartPoint = new Point(rect.Left + br.top_left_x, rect.Top);
-                    figure.IsClosed = true;
+            double bottomSum = br.bottom_left_x + br.bottom_right_x;
+            if (bottomSum > width && bottomSum > 0)
+            {
+                var scale = width / bottomSum;
+                br.bottom_left_x = (int)(br.bottom_left_x * scale);
+                br.bottom_right_x = (int)(br.bottom_right_x * scale);
+            }
 
-                    // Top edge with top-right radius
-                    figure.Segments.Add(new LineSegment { Point = new Point(rect.Right - br.top_right_x, rect.Top) });
-                    if (br.top_right_x > 0 || br.top_right_y > 0)
-                    {
-                        figure.Segments.Add(new QuadraticBezierSegment
-                        {
-                            Point1 = new Point(rect.Right, rect.Top),
-                            Point2 = new Point(rect.Right, rect.Top + br.top_right_y)
-                        });
-                    }
+            double leftSum = br.top_left_y + br.bottom_left_y;
+            if (leftSum > height && leftSum > 0)
+            {
+                var scale = height / leftSum;
+                br.top_left_y = (int)(br.top_left_y * scale);
+                br.bottom_left_y = (int)(br.bottom_left_y * scale);
+            }
 
-                    // Right edge with bottom-right radius
-                    figure.Segments.Add(new LineSegment { Point = new Point(rect.Right, rect.Bottom - br.bottom_right_y) });
-                    if (br.bottom_right_x > 0 || br.bottom_right_y > 0)
-                    {
-                        figure.Segments.Add(new QuadraticBezierSegment
-                        {
-                            Point1 = new Point(rect.Right, rect.Bottom),
-                            Point2 = new Point(rect.Right - br.bottom_right_x, rect.Bottom)
-                        });
-                    }
-
-                    // Bottom edge with bottom-left radius
-                    figure.Segments.Add(new LineSegment { Point = new Point(rect.Left + br.bottom_left_x, rect.Bottom) });
-                    if (br.bottom_left_x > 0 || br.bottom_left_y > 0)
-                    {
-                        figure.Segments.Add(new QuadraticBezierSegment
-                        {
-                            Point1 = new Point(rect.Left, rect.Bottom),
-                            Point2 = new Point(rect.Left, rect.Bottom - br.bottom_left_y)
-                        });
-                    }
-
-                    // Left edge with top-left radius
-                    figure.Segments.Add(new LineSegment { Point = new Point(rect.Left, rect.Top + br.top_left_y) });
-                    if (br.top_left_x > 0 || br.top_left_y > 0)
-                    {
-                        figure.Segments.Add(new QuadraticBezierSegment
-                        {
-                            Point1 = new Point(rect.Left, rect.Top),
-                            Point2 = new Point(rect.Left + br.top_left_x, rect.Top)
-                        });
-                    }
-
-                    geometry.Figures.Add(figure);
-                    DrawingContext.DrawGeometry(color.GetBrush(), null, geometry);
-                }
+            double rightSum = br.top_right_y + br.bottom_right_y;
+            if (rightSum > height && rightSum > 0)
+            {
+                var scale = height / rightSum;
+                br.top_right_y = (int)(br.top_right_y * scale);
+                br.bottom_right_y = (int)(br.bottom_right_y * scale);
             }
         }
 
-        private void DrawCurvedPath(Point p1, Point p2, Point p3, Point p4, ref web_color color, double thickness)
+        private static Geometry BuildRoundedRectGeometry(Rect rect, border_radiuses br)
         {
-            var geometry = new PathGeometry();
-            var figure = new PathFigure();
-            figure.StartPoint = p1;
-            
-            figure.Segments.Add(new LineSegment { Point = p2 });
-            figure.Segments.Add(new QuadraticBezierSegment { Point1 = p3, Point2 = p4 });
-            
-            geometry.Figures.Add(figure);
-            DrawingContext.DrawGeometry(null, color.GetPen(thickness), geometry);
+            var geo = new StreamGeometry();
+            using var ctx = geo.Open();
+            var tlr = br is { top_left_x: > 0, top_left_y: > 0 };
+            var trr = br is { top_right_x: > 0, top_right_y: > 0 };
+            var brr = br is { bottom_right_x: > 0, bottom_right_y: > 0 };
+            var blr = br is { bottom_left_x: > 0, bottom_left_y: > 0 };
+
+            // Start after top-left corner (or at raw corner if no radius)
+            ctx.BeginFigure(new Point(rect.Left + (tlr ? br.top_left_x : 0), rect.Top), true);
+
+            // Top edge + top-right corner
+            ctx.LineTo(new Point(rect.Right - (trr ? br.top_right_x : 0), rect.Top));
+            if (trr)
+            {
+                ctx.ArcTo(new Point(rect.Right, rect.Top + br.top_right_y),
+                    new Size(br.top_right_x, br.top_right_y),
+                    0, false, SweepDirection.Clockwise);
+            }
+
+            // Right edge + bottom-right corner
+            ctx.LineTo(new Point(rect.Right, rect.Bottom - (brr ? br.bottom_right_y : 0)));
+            if (brr)
+            {
+                ctx.ArcTo(new Point(rect.Right - br.bottom_right_x, rect.Bottom),
+                    new Size(br.bottom_right_x, br.bottom_right_y),
+                    0, false, SweepDirection.Clockwise);
+            }
+
+            // Bottom edge + bottom-left corner
+            ctx.LineTo(new Point(rect.Left + (blr ? br.bottom_left_x : 0), rect.Bottom));
+            if (blr)
+            {
+                ctx.ArcTo(new Point(rect.Left, rect.Bottom - br.bottom_left_y),
+                    new Size(br.bottom_left_x, br.bottom_left_y),
+                    0, false, SweepDirection.Clockwise);
+            }
+
+            // Left edge + top-left corner
+            ctx.LineTo(new Point(rect.Left, rect.Top + (tlr ? br.top_left_y : 0)));
+            if (tlr)
+            {
+                ctx.ArcTo(new Point(rect.Left + br.top_left_x, rect.Top),
+                    new Size(br.top_left_x, br.top_left_y),
+                    0, false, SweepDirection.Clockwise);
+            }
+
+            ctx.EndFigure(true);
+
+            return geo;
+        }
+
+        protected override void DrawBackground(UIntPtr hdc, string image, background_repeat repeat,
+            ref web_color color, ref position pos, ref border_radiuses br, ref position borderBox, bool isRoot)
+        {
+            if (pos.width <= 0 || pos.height <= 0) return;
+
+            if (!string.IsNullOrEmpty(image))
+            {
+                var bitmap = LoadImage(image);
+                if (bitmap != null)
+                    DrawImage(bitmap, new Rect(pos.x, pos.y, pos.width, pos.height));
+                return;
+            }
+
+            var rect = new Rect(pos.x, pos.y, pos.width, pos.height);
+            var hasRadii =
+                (br.top_left_x | br.top_left_y | br.top_right_x | br.top_right_y |
+                 br.bottom_right_x | br.bottom_right_y | br.bottom_left_x | br.bottom_left_y) != 0;
+
+            if (!hasRadii)
+            {
+                DrawingContext.DrawRectangle(color.GetBrush(), null, rect);
+                return;
+            }
+
+            ClampCornerRadii(ref br, rect.Width, rect.Height);
+            var geometry = BuildRoundedRectGeometry(rect, br);
+            DrawingContext.DrawGeometry(color.GetBrush(), null, geometry);
         }
 
         protected override void DrawBorders(UIntPtr hdc, ref borders borders, ref position draw_pos, bool root)
         {
-            // Skinny controls can push borders off, in which case we can't create a rect with a negative size.
             if (draw_pos.width < 0) draw_pos.width = 0;
             if (draw_pos.height < 0) draw_pos.height = 0;
-            Rect rect = new Rect(draw_pos.x, draw_pos.y, draw_pos.width, draw_pos.height);
+
+            var rect = new Rect(draw_pos.x, draw_pos.y, draw_pos.width, draw_pos.height);
             var br = borders.radius;
 
+            var hasRadii =
+                (br.top_left_x | br.top_left_y | br.top_right_x | br.top_right_y |
+                 br.bottom_right_x | br.bottom_right_y | br.bottom_left_x | br.bottom_left_y) != 0;
+
+            var uniform =
+                borders.top.width > 0 &&
+                borders.top.width == borders.right.width &&
+                borders.top.width == borders.bottom.width &&
+                borders.top.width == borders.left.width &&
+                borders.top.color.Equals(borders.right.color) &&
+                borders.top.color.Equals(borders.bottom.color) &&
+                borders.top.color.Equals(borders.left.color);
+
+            if (uniform)
+            {
+                var pen = borders.top.color.GetPen(borders.top.width);
+                if (!hasRadii)
+                {
+                    DrawingContext.DrawRectangle(null, pen, rect);
+                }
+                else
+                {
+                    ClampCornerRadii(ref br, rect.Width, rect.Height);
+                    var geometry = BuildRoundedRectGeometry(rect, br);
+                    DrawingContext.DrawGeometry(null, pen, geometry);
+                }
+
+                return;
+            }
+
+            if (!hasRadii)
+            {
+                if (borders.top.width > 0)
+                    DrawingContext.DrawLine(borders.top.color.GetPen(borders.top.width), rect.TopLeft, rect.TopRight);
+                if (borders.right.width > 0)
+                    DrawingContext.DrawLine(borders.right.color.GetPen(borders.right.width), rect.TopRight,
+                        rect.BottomRight);
+                if (borders.bottom.width > 0)
+                    DrawingContext.DrawLine(borders.bottom.color.GetPen(borders.bottom.width), rect.BottomRight,
+                        rect.BottomLeft);
+                if (borders.left.width > 0)
+                    DrawingContext.DrawLine(borders.left.color.GetPen(borders.left.width), rect.BottomLeft,
+                        rect.TopLeft);
+                return;
+            }
+
+            // Per-side with trimmed ends to respect radii
+            ClampCornerRadii(ref br, rect.Width, rect.Height);
+
+            double tlx = br.top_left_x;
+            double tly = br.top_left_y;
+            double trx = br.top_right_x;
+            double try_ = br.top_right_y;
+            double brx = br.bottom_right_x;
+            double bry = br.bottom_right_y;
+            double blx = br.bottom_left_x;
+            double bly = br.bottom_left_y;
+
+            // Top
             if (borders.top.width > 0)
             {
-                Point p1 = new Point(rect.Left + br.top_left_x, rect.Top);
-                Point p2 = new Point(rect.Right - br.top_right_x, rect.Top);
-                Point p3 = new Point(rect.Right, rect.Top);
-                Point p4 = new Point(rect.Right, rect.Top + br.top_right_y);
-                DrawCurvedPath(p1, p2, p3, p4, ref borders.top.color, borders.top.width);
+                var pen = borders.top.color.GetPen(borders.top.width);
+                var y = rect.Top;
+                DrawingContext.DrawLine(pen,
+                    new Point(rect.Left + tlx, y),
+                    new Point(rect.Right - trx, y));
             }
 
+            // Right
             if (borders.right.width > 0)
             {
-                Point p1 = new Point(rect.Right, rect.Top + br.top_right_y);
-                Point p2 = new Point(rect.Right, rect.Bottom - br.bottom_right_y);
-                Point p3 = new Point(rect.Right, rect.Bottom);
-                Point p4 = new Point(rect.Right - br.bottom_right_x, rect.Bottom);
-                DrawCurvedPath(p1, p2, p3, p4, ref borders.right.color, borders.right.width);
+                var pen = borders.right.color.GetPen(borders.right.width);
+                var x = rect.Right;
+                DrawingContext.DrawLine(pen,
+                    new Point(x, rect.Top + try_),
+                    new Point(x, rect.Bottom - bry));
             }
 
+            // Bottom
             if (borders.bottom.width > 0)
             {
-                Point p1 = new Point(rect.Right - br.bottom_right_x, rect.Bottom);
-                Point p2 = new Point(rect.Left + br.bottom_left_x, rect.Bottom);
-                Point p3 = new Point(rect.Left, rect.Bottom);
-                Point p4 = new Point(rect.Left, rect.Bottom - br.bottom_left_y);
-                DrawCurvedPath(p1, p2, p3, p4, ref borders.bottom.color, borders.bottom.width);
+                var pen = borders.bottom.color.GetPen(borders.bottom.width);
+                var y = rect.Bottom;
+                DrawingContext.DrawLine(pen,
+                    new Point(rect.Right - brx, y),
+                    new Point(rect.Left + blx, y));
             }
 
+            // Left
             if (borders.left.width > 0)
             {
-                Point p1 = new Point(rect.Left, rect.Bottom - br.bottom_left_y);
-                Point p2 = new Point(rect.Left, rect.Top + br.top_left_y);
-                Point p3 = new Point(rect.Left, rect.Top);
-                Point p4 = new Point(rect.Left + br.top_left_x, rect.Top);
-                DrawCurvedPath(p1, p2, p3, p4, ref borders.left.color, borders.left.width);
+                var pen = borders.left.color.GetPen(borders.left.width);
+                var x = rect.Left;
+                DrawingContext.DrawLine(pen,
+                    new Point(x, rect.Bottom - bly),
+                    new Point(x, rect.Top + tly));
             }
         }
 
         private void DrawRect(double x, double y, double width, double height, IBrush brush)
         {
-            Rect rect = new Rect(x, y, width, height);
+            var rect = new Rect(x, y, width, height);
             DrawingContext.DrawRectangle(brush, null, rect);
         }
 
         protected override void GetImageSize(string image, ref size size)
         {
             var bmp = LoadImage(image);
-            if (bmp != null)
-            {
-                size.width = bmp.PixelSize.Width;
-                size.height = bmp.PixelSize.Height;
-            }
+            if (bmp == null) return;
+            size.width = bmp.PixelSize.Width;
+            size.height = bmp.PixelSize.Height;
         }
 
-        private FontInfo GetFont(UIntPtr fontID)
+        private static FontInfo GetFont(UIntPtr fontID)
         {
-            return _fonts[fontID];
+            return Fonts[fontID];
         }
 
         private void DrawImage(Bitmap image, Rect rect)
@@ -266,22 +335,16 @@ namespace LiteHtmlSharp.Avalonia
         {
             try
             {
-                Bitmap result;
-
-                if (_images.TryGetValue(image, out result))
+                if (Images.TryGetValue(image, out var result))
                 {
                     return result;
                 }
 
                 var bytes = _loader.GetResourceBytes(image);
-                if (bytes != null && bytes.Length > 0)
-                {
-                    using (var stream = new MemoryStream(bytes))
-                    {
-                        result = new Bitmap(stream);
-                        _images.Add(image, result);
-                    }
-                }
+                if (bytes == null || bytes.Length <= 0) return result;
+                using var stream = new MemoryStream(bytes);
+                result = new Bitmap(stream);
+                Images.Add(image, result);
 
                 return result;
             }
@@ -307,18 +370,21 @@ namespace LiteHtmlSharp.Avalonia
             DrawingContext.DrawText(formattedText, new Point(pos.x, pos.y));
         }
 
-        protected override UIntPtr CreateFont(string faceName, int size, int weight, font_style italic, font_decoration decoration, ref font_metrics fm)
+        protected override UIntPtr CreateFont(string faceName, int size, int weight, font_style italic,
+            font_decoration decoration, ref font_metrics fm)
         {
             var fontweight = weight >= 700 ? FontWeight.Bold : FontWeight.Normal;
-            FontInfo font = new FontInfo(faceName, italic == font_style.fontStyleItalic ? FontStyle.Italic : FontStyle.Normal, fontweight, size, FontAbsolutePathDelegate?.Invoke(faceName));
+            var font = new FontInfo(faceName,
+                italic == font_style.fontStyleItalic ? FontStyle.Italic : FontStyle.Normal, fontweight, size,
+                FontAbsolutePathDelegate?.Invoke(faceName));
 
             if ((decoration & font_decoration.font_decoration_underline) != 0)
             {
                 font.Decorations = TextDecorations.Underline;
             }
 
-            UIntPtr fontID = new UIntPtr(_nextFontID++);
-            _fonts.Add(fontID, font);
+            var fontID = new UIntPtr(nextFontId++);
+            Fonts.Add(fontID, font);
 
             fm.x_height = font.xHeight;
             fm.ascent = font.Ascent;
@@ -346,7 +412,7 @@ namespace LiteHtmlSharp.Avalonia
 
         protected override void SetBaseURL(string base_url)
         {
-            base_url = BaseURL;
+            base_url = BaseUrl;
         }
 
         protected override int PTtoPX(int pt)
@@ -359,7 +425,8 @@ namespace LiteHtmlSharp.Avalonia
             SetCursorCallback?.Invoke(cursor);
         }
 
-        protected override void DrawListMarker(string image, string baseURL, list_style_type marker_type, ref web_color color, ref position pos)
+        protected override void DrawListMarker(string image, string baseURL, list_style_type marker_type,
+            ref web_color color, ref position pos)
         {
             DrawRect(pos.x, pos.y, pos.width, pos.height, color.GetBrush());
         }
@@ -402,21 +469,9 @@ namespace LiteHtmlSharp.Avalonia
             Type = type;
         }
 
-        public TextBox TextBox
-        {
-            get
-            {
-                return Element as TextBox;
-            }
-        }
+        public TextBox TextBox => Element as TextBox;
 
-        public Button Button
-        {
-            get
-            {
-                return Element as Button;
-            }
-        }
+        public Button Button => Element as Button;
 
         public void SetupAttributes(string attrString)
         {
@@ -424,26 +479,29 @@ namespace LiteHtmlSharp.Avalonia
             {
                 return;
             }
+
             var lines = attrString.Split('\n');
             foreach (var line in lines)
             {
                 var keyVal = line.Split('=');
                 if (keyVal.Length > 1)
                 {
-                    string key = keyVal[0].ToLower();
-                    string value = keyVal[1];
+                    var key = keyVal[0].ToLower();
+                    var value = keyVal[1];
 
                     switch (key)
                     {
                         case "value":
-                            if (Element is Button button)
+                            switch (Element)
                             {
-                                button.Content = value;
+                                case Button button:
+                                    button.Content = value;
+                                    break;
+                                case TextBox textBox:
+                                    textBox.Text = value;
+                                    break;
                             }
-                            else if (Element is TextBox textBox)
-                            {
-                                textBox.Text = value;
-                            }
+
                             break;
                         case "href":
                             Href = value;

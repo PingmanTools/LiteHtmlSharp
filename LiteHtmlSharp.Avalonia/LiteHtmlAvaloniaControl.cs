@@ -161,7 +161,7 @@ namespace LiteHtmlSharp.Avalonia
 
             // Let it size naturally - no artificial minimums
 
-            System.Diagnostics.Debug.WriteLine($"LiteHtmlAvaloniaControl initialized");
+            Console.WriteLine($"LiteHtmlAvaloniaControl initialized");
         }
 
         void SetupScrollView()
@@ -235,7 +235,7 @@ namespace LiteHtmlSharp.Avalonia
             // Update viewport to match what we're actually rendering
             Container.SetViewport(new LiteHtmlPoint(0, 0), new LiteHtmlSize(this.Width, this.Height));
 
-            System.Diagnostics.Debug.WriteLine($"Document size known: {size.Width}x{size.Height}, control size set to: {this.Width}x{this.Height}");
+            Console.WriteLine($"Document size known: {size.Width}x{size.Height}, control size set to: {this.Width}x{this.Height}");
         }
 
         private void Container_RenderHtmlRequested(string html)
@@ -323,7 +323,7 @@ namespace LiteHtmlSharp.Avalonia
 
         public void LoadHtml(string html)
         {
-            System.Diagnostics.Debug.WriteLine("LoadHtml called");
+            Console.WriteLine("LoadHtml called");
             ClearInputs();
             Container.Document.CreateFromString(html);
 
@@ -342,7 +342,7 @@ namespace LiteHtmlSharp.Avalonia
             Container.SetViewport(new LiteHtmlPoint(0, 0), size);
             Container.CheckViewportChange(forceRender: true);
 
-            System.Diagnostics.Debug.WriteLine($"HTML loaded, document has rendered: {Container.Document.HasRendered}");
+            Console.WriteLine($"HTML loaded, document has rendered: {Container.Document.HasRendered}");
 
             // Process inputs immediately after HTML is loaded and rendered
             Dispatcher.UIThread.Post(() => ProcessInputs(), DispatcherPriority.Background);
@@ -416,13 +416,13 @@ namespace LiteHtmlSharp.Avalonia
 
         bool ShouldCreateElement(string tag)
         {
-            System.Diagnostics.Debug.WriteLine($"ShouldCreateElement called for tag: {tag}");
+            Console.WriteLine($"ShouldCreateElement called for tag: {tag}");
             switch (tag.ToLowerInvariant())
             {
                 case "a":
                 case "input":
                 case "button":
-                    System.Diagnostics.Debug.WriteLine($"Creating element for tag: {tag}");
+                    Console.WriteLine($"Creating element for tag: {tag}");
                     return true;
                 default:
                     return false;
@@ -431,7 +431,7 @@ namespace LiteHtmlSharp.Avalonia
 
         int CreateElement(string tag, string attributes, ElementInfo elementInfo)
         {
-            System.Diagnostics.Debug.WriteLine($"CreateElement called for tag: {tag}, attributes: {attributes}");
+            Console.WriteLine($"CreateElement called for tag: {tag}, attributes: {attributes}");
             AvaloniaInput input = null;
 
             switch (tag.ToLowerInvariant())
@@ -491,13 +491,13 @@ namespace LiteHtmlSharp.Avalonia
 
         private void ProcessInputs()
         {
-            System.Diagnostics.Debug.WriteLine($"ProcessInputs called, {Inputs.Count} inputs to process");
+            Console.WriteLine($"ProcessInputs called, {Inputs.Count} inputs to process");
 
             foreach (var input in Inputs)
             {
                 ElementInfo info = Container.Document.GetElementInfo(input.ID);
 
-                System.Diagnostics.Debug.WriteLine($"ElementInfo for {input.ID}: PosX={info.PosX}, PosY={info.PosY}, Width={info.Width}, Height={info.Height}");
+                Console.WriteLine($"ElementInfo for {input.ID}: PosX={info.PosX}, PosY={info.PosY}, Width={info.Width}, Height={info.Height}");
 
                 // Use exact HTML dimensions - they should now include our measured sizes
                 input.Element.Width = info.Width;
@@ -516,13 +516,13 @@ namespace LiteHtmlSharp.Avalonia
                 Canvas.SetLeft(input.Element, info.PosX);
                 Canvas.SetTop(input.Element, info.PosY);
 
-                System.Diagnostics.Debug.WriteLine($"Set Canvas position for {input.Element.GetType().Name}: Left={Canvas.GetLeft(input.Element)}, Top={Canvas.GetTop(input.Element)}");
+                Console.WriteLine($"Set Canvas position for {input.Element.GetType().Name}: Left={Canvas.GetLeft(input.Element)}, Top={Canvas.GetTop(input.Element)}");
             }
         }
 
         private void AddChildControl(Control control)
         {
-            System.Diagnostics.Debug.WriteLine($"AddChildControl called for {control.GetType().Name}");
+            Console.WriteLine($"AddChildControl called for {control.GetType().Name}");
 
             // Add control to the HtmlRenderPanel
             if (_controlPanel is HtmlRenderPanel htmlRenderPanel)
@@ -553,8 +553,8 @@ namespace LiteHtmlSharp.Avalonia
                     button.BorderThickness = new Thickness(1);
                 }
 
-                System.Diagnostics.Debug.WriteLine($"Added control to panel, total children: {htmlRenderPanel.ChildCount}");
-                System.Diagnostics.Debug.WriteLine($"Control bounds: {control.Bounds}, IsVisible: {control.IsVisible}");
+                Console.WriteLine($"Added control to panel, total children: {htmlRenderPanel.ChildCount}");
+                Console.WriteLine($"Control bounds: {control.Bounds}, IsVisible: {control.IsVisible}");
             }
         }
 
