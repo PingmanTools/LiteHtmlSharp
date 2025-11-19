@@ -7,8 +7,6 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
-using Avalonia.Platform;
-using Avalonia.Rendering.SceneGraph;
 using Avalonia.Threading;
 
 namespace LiteHtmlSharp.Avalonia
@@ -214,8 +212,6 @@ namespace LiteHtmlSharp.Avalonia
         {
             Dispatcher.UIThread.Post(InvalidateVisual, DispatcherPriority.Render);
         }
-
-        // Remove custom MeasureOverride - let UserControl handle layout naturally
 
         protected override void OnPointerMoved(PointerEventArgs e)
         {
@@ -477,7 +473,7 @@ namespace LiteHtmlSharp.Avalonia
             }
         }
 
-        private void AddChildControl(Control control)
+        public void AddChildControl(Control control)
         {
             Console.WriteLine($"AddChildControl called for {control.GetType().Name}");
 
@@ -519,6 +515,14 @@ namespace LiteHtmlSharp.Avalonia
                 }
             }
             Inputs.Clear();
+        }
+
+        public void RemoveChildControl(Control control)
+        {
+            if(_controlPanel is HtmlRenderPanel htmlRenderPanel)
+            {
+                htmlRenderPanel.RemoveChild(control);
+            }
         }
 
         public void Dispose()
