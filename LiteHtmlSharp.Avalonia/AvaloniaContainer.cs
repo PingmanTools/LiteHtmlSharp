@@ -410,9 +410,10 @@ namespace LiteHtmlSharp.Avalonia
             media.type = media_type.media_type_all;
         }
 
-        protected override void SetBaseURL(string base_url)
+        protected override void SetBaseURL(string baseUrl)
         {
-            base_url = BaseUrl;
+            // Base URL stored for relative href resolution.
+            BaseUrl = baseUrl;
         }
 
         protected override int PTtoPX(int pt)
@@ -518,3 +519,4 @@ namespace LiteHtmlSharp.Avalonia
         }
     }
 }
+

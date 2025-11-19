@@ -1,11 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel;
-using System.Globalization;
 
 #if AUTO_UTF8
 using Utf8Str = System.String;
@@ -216,9 +210,14 @@ namespace LiteHtmlSharp
 
         protected void OnAnchorClickHandler(Utf8Str url)
         {
+            // NOTE: This only fires when litehtml successfully hit-tests an <a>:
+            // requires OnLeftButtonDown and OnLeftButtonUp inside same anchor rect.
+            // If coordinates are offset incorrectly the engine never reaches here.
             if (AnchorClicked != null)
             {
-                AnchorClicked(Utf8Util.Utf8PtrToString(url));
+                var s = Utf8Util.Utf8PtrToString(url);
+                Console.WriteLine($"[litehtml] AnchorClicked callback: {s}");
+                AnchorClicked(s);
             }
         }
 
@@ -245,13 +244,13 @@ namespace LiteHtmlSharp
             {
                 var elementInfoWrapper = new ElementInfo(elementInfo);
                 var result = CreateElementCallback(Utf8Util.Utf8PtrToString(tag), Utf8Util.Utf8PtrToString(attributes), elementInfoWrapper);
-                
+
                 // Copy modified values back to the original struct so HTML engine sees our changes
                 elementInfo.PosX = elementInfoWrapper.PosX;
                 elementInfo.PosY = elementInfoWrapper.PosY;
                 elementInfo.Width = elementInfoWrapper.Width;
                 elementInfo.Height = elementInfoWrapper.Height;
-                
+
                 return result;
             }
             else

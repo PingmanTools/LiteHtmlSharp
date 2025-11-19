@@ -18,7 +18,7 @@ namespace LiteHtmlSharp.Avalonia
     {
         public AvaloniaContainer Container { get; set; }
         public LiteHtmlAvaloniaControl HtmlControl { get; set; }
-        private Canvas _childCanvas;
+        private readonly Canvas _childCanvas;
 
         public HtmlRenderPanel()
         {
@@ -35,11 +35,6 @@ namespace LiteHtmlSharp.Avalonia
         public void RemoveChild(Control control)
         {
             _childCanvas.Children.Remove(control);
-        }
-
-        public void ClearChildren()
-        {
-            _childCanvas.Children.Clear();
         }
 
         public int ChildCount => _childCanvas.Children.Count;
@@ -67,19 +62,11 @@ namespace LiteHtmlSharp.Avalonia
         {
             base.Render(context);
             // First render HTML background if available
-            if (Container != null && Container.Document.HasRendered && HtmlControl != null)
+            if (Container == null || !Container.Document.HasRendered || HtmlControl == null) return;
+            using (context.PushTransform(Matrix.Identity))
             {
-                using (context.PushTransform(Matrix.Identity))
-                {
-                    HtmlControl.RenderHtmlBackground(context);
-                }
+                HtmlControl.RenderHtmlBackground(context);
             }
-        }
-
-        public void NotifyContentSizeChanged()
-        {
-            // Trigger re-measurement when content size changes
-            InvalidateMeasure();
         }
     }
 
@@ -87,59 +74,27 @@ namespace LiteHtmlSharp.Avalonia
 
     public class LiteHtmlAvaloniaControl : UserControl, IDisposable
     {
-        ScrollViewer _scrollParent;
-        Control _controlPanel;
+        private Control _controlPanel;
 
-        public ScrollViewer ScrollViewerParent => _scrollParent;
+        private ScrollViewer ScrollViewerParent { get; }
 
-        public AvaloniaInputs Inputs { get; private set; } = new AvaloniaInputs();
+        public AvaloniaInputs Inputs { get; private set; } = [];
 
         public AvaloniaContainer Container { get; private set; }
 
         public event LinkClickedHandler LinkClicked;
 
-        public bool HTMLLoaded
-        {
-            get { return Container.Loaded; }
-        }
+        private bool _isCursorOverLink; // updated via SetCursor
+        public bool IsCursorOverLink => _isCursorOverLink;
+        public bool LastPointerDownHandledByHtml { get; private set; }
 
-        public LiteHtmlAvaloniaControl()
+        public LiteHtmlAvaloniaControl(ScrollViewer parent, string masterCss, IResourceLoader loader, bool createInteractiveElements = true)
         {
-            InitializeCanvas();
-            Container = new AvaloniaContainer(IncludedMasterCss.CSS, (url) => null, (url) => null);
-            SetupContainerCallbacks();
-        }
-
-        public LiteHtmlAvaloniaControl(string masterCSS, IResourceLoader loader)
-        {
-            InitializeCanvas();
-            Container = new AvaloniaContainer(masterCSS, loader);
-            SetupContainerCallbacks();
-        }
-
-        public LiteHtmlAvaloniaControl(ScrollViewer parent, string masterCSS, IResourceLoader loader, bool createInteractiveElements = true)
-        {
-            _scrollParent = parent;
+            ScrollViewerParent = parent;
             SetupScrollView();
             InitializeCanvas();
-            Container = new AvaloniaContainer(masterCSS, loader);
+            Container = new AvaloniaContainer(masterCss, loader);
             SetupContainerCallbacks(createInteractiveElements);
-        }
-
-        public LiteHtmlAvaloniaControl(ScrollViewer parent, AvaloniaContainer container, bool createInteractiveElements = true)
-        {
-            _scrollParent = parent;
-            SetupScrollView();
-            InitializeCanvas();
-            Container = container;
-            SetupContainerCallbacks(createInteractiveElements);
-        }
-
-        public LiteHtmlAvaloniaControl(AvaloniaContainer container)
-        {
-            InitializeCanvas();
-            Container = container;
-            SetupContainerCallbacks();
         }
 
         private void InitializeCanvas()
@@ -152,43 +107,39 @@ namespace LiteHtmlSharp.Avalonia
             };
 
             _controlPanel = htmlRenderPanel;
-            this.Content = _controlPanel;
+            Content = _controlPanel;
 
             // Make sure this control is visible and fills available space
-            this.Background = Brushes.Transparent; // Let HTML background show through
-            this.HorizontalAlignment = HorizontalAlignment.Stretch;
-            this.VerticalAlignment = VerticalAlignment.Stretch;
+            Background = Brushes.Transparent; // Let HTML background show through
+            HorizontalAlignment = HorizontalAlignment.Stretch;
+            VerticalAlignment = VerticalAlignment.Stretch;
 
             // Let it size naturally - no artificial minimums
 
-            Console.WriteLine($"LiteHtmlAvaloniaControl initialized");
+            Console.WriteLine("LiteHtmlAvaloniaControl initialized");
         }
 
-        void SetupScrollView()
+        private void SetupScrollView()
         {
-            if (_scrollParent != null)
-            {
-                _scrollParent.HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
-                _scrollParent.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
-                _scrollParent.Content = this;
-                _scrollParent.ScrollChanged += ScrollParent_ScrollChanged;
-                _scrollParent.SizeChanged += ScrollParent_SizeChanged;
-            }
+            if (ScrollViewerParent == null) return;
+            ScrollViewerParent.HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
+            ScrollViewerParent.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            ScrollViewerParent.Content = this;
+            ScrollViewerParent.ScrollChanged += ScrollParent_ScrollChanged;
+            ScrollViewerParent.SizeChanged += ScrollParent_SizeChanged;
         }
 
-        void SetupContainerCallbacks(bool createInteractiveElements = true)
+        private void SetupContainerCallbacks(bool createInteractiveElements = true)
         {
             Container.RenderHtmlRequested += Container_RenderHtmlRequested;
             Container.AnchorClicked += Container_AnchorClicked;
             Container.DocumentSizeKnown += Container_DocumentSizeKnown;
             Container.Document.ViewElementsNeedLayout += Document_ViewElementsNeedLayout;
-            Container.SetCursorCallback = cursor => SetCursor(cursor);
+            Container.SetCursorCallback = SetCursor;
 
-            if (createInteractiveElements)
-            {
-                Container.ShouldCreateElementCallback = ShouldCreateElement;
-                Container.CreateElementCallback = CreateElement;
-            }
+            if (!createInteractiveElements) return;
+            Container.ShouldCreateElementCallback = ShouldCreateElement;
+            Container.CreateElementCallback = CreateElement;
         }
 
         private void Container_AnchorClicked(string link)
@@ -206,36 +157,34 @@ namespace LiteHtmlSharp.Avalonia
         private void ScrollParent_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             // Re-layout HTML when ScrollViewer size changes
-            if (Container.Document.HasLoadedHtml)
-            {
-                var viewportWidth = e.NewSize.Width;
-                // Re-layout HTML with new width, use minimal height for natural layout
-                Container.SetViewport(new LiteHtmlPoint(0, 0), new LiteHtmlSize(viewportWidth, 1));
-                Container.CheckViewportChange(forceRender: true);
-                // Don't override the control size here - let DocumentSizeKnown handle it
-            }
+            if (!Container.Document.HasLoadedHtml) return;
+            var viewportWidth = e.NewSize.Width;
+            // Re-layout HTML with new width, use minimal height for natural layout
+            Container.SetViewport(new LiteHtmlPoint(0, 0), new LiteHtmlSize(viewportWidth, 1));
+            Container.CheckViewportChange(forceRender: true);
+            // Don't override the control size here - let DocumentSizeKnown handle it
         }
 
         private void Document_ViewElementsNeedLayout()
         {
             // Don't process inputs during render - defer to next UI thread cycle
-            Dispatcher.UIThread.Post(() => ProcessInputs(), DispatcherPriority.Background);
+            Dispatcher.UIThread.Post(ProcessInputs, DispatcherPriority.Background);
         }
 
         private void Container_DocumentSizeKnown(LiteHtmlSize size)
         {
             // Use the document's natural size, but ensure we have reasonable viewport width
-            var viewportWidth = _scrollParent?.Viewport.Width ?? size.Width;
+            var viewportWidth = ScrollViewerParent?.Viewport.Width ?? size.Width;
             if (viewportWidth <= 0) viewportWidth = size.Width; // Use document width as fallback
 
             // Set the control size to the actual content dimensions
-            this.Width = Math.Max(viewportWidth, size.Width);
-            this.Height = size.Height;
+            Width = Math.Max(viewportWidth, size.Width);
+            Height = size.Height;
 
             // Update viewport to match what we're actually rendering
-            Container.SetViewport(new LiteHtmlPoint(0, 0), new LiteHtmlSize(this.Width, this.Height));
+            Container.SetViewport(new LiteHtmlPoint(0, 0), new LiteHtmlSize(Width, Height));
 
-            Console.WriteLine($"Document size known: {size.Width}x{size.Height}, control size set to: {this.Width}x{this.Height}");
+            Console.WriteLine($"Document size known: {size.Width}x{size.Height}, control size set to: {Width}x{Height}");
         }
 
         private void Container_RenderHtmlRequested(string html)
@@ -243,7 +192,7 @@ namespace LiteHtmlSharp.Avalonia
             LoadHtml(html);
         }
 
-        public void FireLink(string url)
+        private void FireLink(string url)
         {
             LinkClicked?.Invoke(url);
         }
@@ -261,7 +210,7 @@ namespace LiteHtmlSharp.Avalonia
             base.OnPointerExited(e);
         }
 
-        void TriggerRedraw()
+        private void TriggerRedraw()
         {
             Dispatcher.UIThread.Post(InvalidateVisual, DispatcherPriority.Render);
         }
@@ -282,12 +231,36 @@ namespace LiteHtmlSharp.Avalonia
             base.OnPointerMoved(e);
         }
 
+        public void SetCursor(string cursor)
+        {
+            if (string.Equals(cursor, "pointer", StringComparison.CurrentCultureIgnoreCase))
+            {
+                Cursor = new Cursor(StandardCursorType.Hand);
+                _isCursorOverLink = true;
+            }
+            else
+            {
+                Cursor = new Cursor(StandardCursorType.Arrow);
+                _isCursorOverLink = false;
+            }
+        }
+
         protected override void OnPointerPressed(PointerPressedEventArgs e)
         {
+            LastPointerDownHandledByHtml = false;
             if (Container.Document.HasRendered && e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
             {
                 var pos = e.GetPosition(this);
-                if (Container.Document.OnLeftButtonDown((int)pos.X, (int)pos.Y))
+                var (x, y) = ToDocumentCoords(pos);
+                // Determine if this press should be consumed by HTML (link or interactive element)
+                var interactive = _isCursorOverLink || HitInteractiveElement(pos);
+                if (interactive)
+                {
+                    LastPointerDownHandledByHtml = true; // so parent window knows not to start drag
+                    e.Handled = true; // stop bubbling to window for drag
+                }
+
+                if (Container.Document.OnLeftButtonDown(x, y))
                 {
                     TriggerRedraw();
                 }
@@ -301,27 +274,22 @@ namespace LiteHtmlSharp.Avalonia
             if (Container.Document.HasRendered && e.InitialPressMouseButton == MouseButton.Left)
             {
                 var pos = e.GetPosition(this);
-                if (Container.Document.OnLeftButtonUp((int)pos.X, (int)pos.Y))
+                var (x, y) = ToDocumentCoords(pos);
+                if (Container.Document.OnLeftButtonUp(x, y))
                 {
                     TriggerRedraw();
                 }
             }
+            // Reset flag after a full click sequence (release) unless still over link (allow drag next time if moved off)
+            if (!IsCursorOverLink)
+            {
+                LastPointerDownHandledByHtml = false;
+            }
             base.OnPointerReleased(e);
         }
 
-        public void SetCursor(string cursor)
-        {
-            if (string.Equals(cursor, "pointer", StringComparison.CurrentCultureIgnoreCase))
-            {
-                Cursor = new Cursor(StandardCursorType.Hand);
-            }
-            else
-            {
-                Cursor = new Cursor(StandardCursorType.Arrow);
-            }
-        }
 
-        public void LoadHtml(string html)
+        private void LoadHtml(string html)
         {
             Console.WriteLine("LoadHtml called");
             ClearInputs();
@@ -335,7 +303,7 @@ namespace LiteHtmlSharp.Avalonia
             }
 
             // Set viewport size to match ScrollViewer dimensions for proper layout
-            var viewportWidth = _scrollParent?.Viewport.Width ?? 0;
+            var viewportWidth = ScrollViewerParent?.Viewport.Width ?? 0;
             if (viewportWidth <= 0) viewportWidth = 1024; // Reasonable default for initial layout
             var size = new LiteHtmlSize(viewportWidth, 1); // Use minimal height, let HTML calculate natural size
 
@@ -345,12 +313,12 @@ namespace LiteHtmlSharp.Avalonia
             Console.WriteLine($"HTML loaded, document has rendered: {Container.Document.HasRendered}");
 
             // Process inputs immediately after HTML is loaded and rendered
-            Dispatcher.UIThread.Post(() => ProcessInputs(), DispatcherPriority.Background);
+            Dispatcher.UIThread.Post(ProcessInputs, DispatcherPriority.Background);
 
             TriggerRedraw();
         }
 
-        public void SetViewport(bool forceRedraw = false)
+        private void SetViewport(bool forceRedraw = false)
         {
             // Don't override viewport size here - it should be managed by load/resize events
             // This method is mainly for triggering redraws on scroll
@@ -359,8 +327,6 @@ namespace LiteHtmlSharp.Avalonia
                 TriggerRedraw();
             }
         }
-
-        bool ScrollParentIsLayedOut => _scrollParent?.Viewport.Width > 0 && _scrollParent?.Viewport.Height > 0;
 
         // UserControl doesn't use Render override - need different approach for HTML rendering
 
@@ -390,36 +356,35 @@ namespace LiteHtmlSharp.Avalonia
             Container.DrawingContext = null;
         }
 
-        public Point GetCurrentScrollOffset()
-        {
-            if (_scrollParent != null && ScrollParentIsLayedOut)
-            {
-                return new Point(_scrollParent.Offset.X, _scrollParent.Offset.Y);
-            }
-            return new Point(0, 0);
-        }
+        // public Point GetCurrentScrollOffset()
+        // {
+        //     if (ScrollViewerParent != null && ScrollParentIsLayedOut)
+        //     {
+        //         return new Point(ScrollViewerParent.Offset.X, ScrollViewerParent.Offset.Y);
+        //     }
+        //     return new Point(0, 0);
+        // }
+        //
+        // Point ViewportPoint
+        // {
+        //     get
+        //     {
+        //         if (Container.HasCustomViewport)
+        //         {
+        //             return new Point(Container.ScrollOffset.X, Container.ScrollOffset.Y);
+        //         }
+        //         else
+        //         {
+        //             return new Point(0, 0);
+        //         }
+        //     }
+        // }
 
-        Point ViewportPoint
-        {
-            get
-            {
-                if (Container.HasCustomViewport)
-                {
-                    return new Point(Container.ScrollOffset.X, Container.ScrollOffset.Y);
-                }
-                else
-                {
-                    return new Point(0, 0);
-                }
-            }
-        }
-
-        bool ShouldCreateElement(string tag)
+        private static bool ShouldCreateElement(string tag)
         {
             Console.WriteLine($"ShouldCreateElement called for tag: {tag}");
             switch (tag.ToLowerInvariant())
             {
-                case "a":
                 case "input":
                 case "button":
                     Console.WriteLine($"Creating element for tag: {tag}");
@@ -429,25 +394,19 @@ namespace LiteHtmlSharp.Avalonia
             }
         }
 
-        int CreateElement(string tag, string attributes, ElementInfo elementInfo)
+        private int CreateElement(string tag, string attributes, ElementInfo elementInfo)
         {
             Console.WriteLine($"CreateElement called for tag: {tag}, attributes: {attributes}");
-            AvaloniaInput input = null;
+            AvaloniaInput input;
 
             switch (tag.ToLowerInvariant())
             {
-                case "a":
-                {
-                    input = new AvaloniaInput(InputType.Button);
-                    var button = new HyperlinkButton();
-                    button.Click += Button_Click;
-                    input.Element = button;
-                    break;
-                }
                 case "input":
                     {
-                        input = new AvaloniaInput(InputType.Textbox);
-                        input.Element = new TextBox();
+                        input = new AvaloniaInput(InputType.Textbox)
+                        {
+                            Element = new TextBox()
+                        };
                         break;
                     }
                 case "button":
@@ -480,12 +439,10 @@ namespace LiteHtmlSharp.Avalonia
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is Button button && button.Tag is AvaloniaInput input)
+            if (sender is not Button { Tag: AvaloniaInput input }) return;
+            if (!string.IsNullOrEmpty(input.Href))
             {
-                if (!string.IsNullOrEmpty(input.Href))
-                {
-                    FireLink(input.Href);
-                }
+                FireLink(input.Href);
             }
         }
 
@@ -495,7 +452,7 @@ namespace LiteHtmlSharp.Avalonia
 
             foreach (var input in Inputs)
             {
-                ElementInfo info = Container.Document.GetElementInfo(input.ID);
+                var info = Container.Document.GetElementInfo(input.ID);
 
                 Console.WriteLine($"ElementInfo for {input.ID}: PosX={info.PosX}, PosY={info.PosY}, Width={info.Width}, Height={info.Height}");
 
@@ -525,37 +482,31 @@ namespace LiteHtmlSharp.Avalonia
             Console.WriteLine($"AddChildControl called for {control.GetType().Name}");
 
             // Add control to the HtmlRenderPanel
-            if (_controlPanel is HtmlRenderPanel htmlRenderPanel)
+            if (_controlPanel is not HtmlRenderPanel htmlRenderPanel) return;
+            htmlRenderPanel.AddChild(control);
+            control.ZIndex = 1000; // Ensure controls appear on top
+
+            // Make sure control is visible and has proper styling
+            control.IsVisible = true;
+            control.Opacity = 1.0;
+
+            switch (control)
             {
-                htmlRenderPanel.AddChild(control);
-                control.ZIndex = 1000; // Ensure controls appear on top
-
-                // Make sure control is visible and has proper styling
-                control.IsVisible = true;
-                control.Opacity = 1.0;
-
                 // Add some basic styling to make controls more visible
-                if (control is TextBox textBox)
-                {
+                case TextBox textBox:
                     textBox.Background = Brushes.White;
                     textBox.BorderBrush = Brushes.Black;
                     textBox.BorderThickness = new Thickness(1);
-                }
-                else if (control is HyperlinkButton hyperlinkButton)
-                {
-                    hyperlinkButton.Background = Brushes.Transparent;
-                    hyperlinkButton.BorderBrush = Brushes.Transparent;
-                }
-                else if (control is Button button)
-                {
+                    break;
+                case Button button:
                     button.Background = Brushes.LightGray;
                     button.BorderBrush = Brushes.Black;
                     button.BorderThickness = new Thickness(1);
-                }
-
-                Console.WriteLine($"Added control to panel, total children: {htmlRenderPanel.ChildCount}");
-                Console.WriteLine($"Control bounds: {control.Bounds}, IsVisible: {control.IsVisible}");
+                    break;
             }
+
+            Console.WriteLine($"Added control to panel, total children: {htmlRenderPanel.ChildCount}");
+            Console.WriteLine($"Control bounds: {control.Bounds}, IsVisible: {control.IsVisible}");
         }
 
         private void ClearInputs()
@@ -577,13 +528,41 @@ namespace LiteHtmlSharp.Avalonia
             Container.DocumentSizeKnown -= Container_DocumentSizeKnown;
             Container.Document.ViewElementsNeedLayout -= Document_ViewElementsNeedLayout;
 
-            if (_scrollParent != null)
+            if (ScrollViewerParent != null)
             {
-                _scrollParent.ScrollChanged -= ScrollParent_ScrollChanged;
-                _scrollParent.SizeChanged -= ScrollParent_SizeChanged;
+                ScrollViewerParent.ScrollChanged -= ScrollParent_ScrollChanged;
+                ScrollViewerParent.SizeChanged -= ScrollParent_SizeChanged;
             }
 
             ClearInputs();
         }
+
+        private (int X, int Y) ToDocumentCoords(Point p)
+        {
+            if (ScrollViewerParent != null && !Container.HasCustomViewport)
+            {
+                return ((int)(p.X + ScrollViewerParent.Offset.X), (int)(p.Y + ScrollViewerParent.Offset.Y));
+            }
+            return ((int)p.X, (int)p.Y);
+        }
+
+        private bool HitInteractiveElement(Point pos)
+        {
+            var (docX, docY) = ToDocumentCoords(pos);
+            foreach (var input in Inputs)
+            {
+                var left = Canvas.GetLeft(input.Element);
+                var top = Canvas.GetTop(input.Element);
+                var width = input.Element.Bounds.Width > 0 ? input.Element.Bounds.Width : input.Element.Width;
+                var height = input.Element.Bounds.Height > 0 ? input.Element.Bounds.Height : input.Element.Height;
+                if (width <= 0 || height <= 0) continue;
+                if (docX >= left && docX <= left + width && docY >= top && docY <= top + height)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }
+
