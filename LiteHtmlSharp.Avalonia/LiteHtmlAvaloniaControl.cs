@@ -185,7 +185,7 @@ namespace LiteHtmlSharp.Avalonia
             Console.WriteLine($"Document size known: {size.Width}x{size.Height}, control size set to: {Width}x{Height}");
         }
 
-        private void Container_RenderHtmlRequested(string html)
+        public void Container_RenderHtmlRequested(string html)
         {
             LoadHtml(html);
         }
