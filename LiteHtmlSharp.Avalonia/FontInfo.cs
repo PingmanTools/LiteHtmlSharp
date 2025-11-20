@@ -20,11 +20,11 @@ namespace LiteHtmlSharp.Avalonia
 
         public FontInfo(string faceName, FontStyle style, FontWeight weight, int size, FontFamily fontFamily = null)
         {
-            Family = fontFamily ?? new FontFamily(faceName);
+            Family = fontFamily ?? SafeCreateFontFamily(faceName);
             TypeFace = new Typeface(Family, style, weight);
             Size = size;
 
-            FormattedText format = GetFormattedText("x");
+            var format = GetFormattedText("x");
             xHeight = (int)Math.Round(format.Height);
             LineHeight = (int)Math.Ceiling(size * 1.2); // Default line spacing factor
 
@@ -35,21 +35,56 @@ namespace LiteHtmlSharp.Avalonia
             Descent = (int)Math.Round(format.Height) - xHeight;
         }
 
+        private static FontFamily SafeCreateFontFamily(string faceName)
+        {
+            // Normalize and guard against relative placeholders like "." or "./"
+            if (string.IsNullOrWhiteSpace(faceName) ||
+                faceName == "." ||
+                faceName == "./")
+            {
+                return FontFamily.Default;
+            }
+
+            // If it starts with "./" strip that so at least a plain family name remains
+            if (faceName.StartsWith("./"))
+            {
+                faceName = faceName.Substring(2);
+                if (string.IsNullOrWhiteSpace(faceName))
+                    return FontFamily.Default;
+            }
+
+            // Avoid accidentally passing a pure relative path
+            if (Uri.TryCreate(faceName, UriKind.Relative, out var rel) &&
+                !Uri.TryCreate(faceName, UriKind.Absolute, out _))
+            {
+                return FontFamily.Default;
+            }
+
+            try
+            {
+                return new FontFamily(faceName);
+            }
+            catch (ArgumentException)
+            {
+                return FontFamily.Default;
+            }
+        }
+
         public FormattedText GetFormattedText(string text)
         {
             var formattedText = new FormattedText(
-                text, 
-                CultureInfo.InvariantCulture, 
-                FlowDirection.LeftToRight, 
-                TypeFace, 
-                Size, 
+                text,
+                CultureInfo.InvariantCulture,
+                FlowDirection.LeftToRight,
+                TypeFace,
+                Size,
                 null); // Use null brush, will be set later
 
             if (Decorations != null)
             {
                 formattedText.SetTextDecorations(Decorations);
             }
-            
+
             return formattedText;
         }
     }

@@ -82,8 +82,8 @@ namespace LiteHtmlSharp.Avalonia
 
         public event LinkClickedHandler LinkClicked;
 
-        private bool _isCursorOverLink; // updated via SetCursor
-        public bool IsCursorOverLink => _isCursorOverLink;
+        private bool IsCursorOverLink { get; set; }
+
         public bool LastPointerDownHandledByHtml { get; private set; }
 
         public LiteHtmlAvaloniaControl(ScrollViewer parent, string masterCss, IResourceLoader loader, bool createInteractiveElements = true)
@@ -232,12 +232,12 @@ namespace LiteHtmlSharp.Avalonia
             if (string.Equals(cursor, "pointer", StringComparison.CurrentCultureIgnoreCase))
             {
                 Cursor = new Cursor(StandardCursorType.Hand);
-                _isCursorOverLink = true;
+                IsCursorOverLink = true;
             }
             else
             {
                 Cursor = new Cursor(StandardCursorType.Arrow);
-                _isCursorOverLink = false;
+                IsCursorOverLink = false;
             }
         }
 
@@ -249,7 +249,7 @@ namespace LiteHtmlSharp.Avalonia
                 var pos = e.GetPosition(this);
                 var (x, y) = ToDocumentCoords(pos);
                 // Determine if this press should be consumed by HTML (link or interactive element)
-                var interactive = _isCursorOverLink || HitInteractiveElement(pos);
+                var interactive = IsCursorOverLink || HitInteractiveElement(pos);
                 if (interactive)
                 {
                     LastPointerDownHandledByHtml = true; // so parent window knows not to start drag
