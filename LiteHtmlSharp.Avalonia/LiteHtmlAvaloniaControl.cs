@@ -352,30 +352,6 @@ namespace LiteHtmlSharp.Avalonia
             Container.DrawingContext = null;
         }
 
-        // public Point GetCurrentScrollOffset()
-        // {
-        //     if (ScrollViewerParent != null && ScrollParentIsLayedOut)
-        //     {
-        //         return new Point(ScrollViewerParent.Offset.X, ScrollViewerParent.Offset.Y);
-        //     }
-        //     return new Point(0, 0);
-        // }
-        //
-        // Point ViewportPoint
-        // {
-        //     get
-        //     {
-        //         if (Container.HasCustomViewport)
-        //         {
-        //             return new Point(Container.ScrollOffset.X, Container.ScrollOffset.Y);
-        //         }
-        //         else
-        //         {
-        //             return new Point(0, 0);
-        //         }
-        //     }
-        // }
-
         private static bool ShouldCreateElement(string tag)
         {
             Console.WriteLine($"ShouldCreateElement called for tag: {tag}");
@@ -490,13 +466,9 @@ namespace LiteHtmlSharp.Avalonia
             {
                 // Add some basic styling to make controls more visible
                 case TextBox textBox:
-                    textBox.Background = Brushes.White;
-                    textBox.BorderBrush = Brushes.Black;
                     textBox.BorderThickness = new Thickness(1);
                     break;
                 case Button button:
-                    button.Background = Brushes.LightGray;
-                    button.BorderBrush = Brushes.Black;
                     button.BorderThickness = new Thickness(1);
                     break;
             }
