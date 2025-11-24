@@ -12,11 +12,11 @@
     <PackageTags>litehtml litehtmlsharp html render avalonia crossplatform</PackageTags>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <TargetFramework>net9.0-windows</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.3.3" />
+    <PackageReference Include="Avalonia" Version="11.3.9" />
   </ItemGroup>
 
   <ItemGroup>
