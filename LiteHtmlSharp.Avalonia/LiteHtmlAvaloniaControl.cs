@@ -330,7 +330,9 @@ namespace LiteHtmlSharp.Avalonia
         {
             // Fill the entire control area with white background
             var renderBounds = new Rect(0, 0, Bounds.Width, Bounds.Height);
-            context.FillRectangle(Brushes.White, renderBounds);
+
+            //let the rectangle be transparent, so the control / window backgrounds can be controlled elsewhere by theme.
+            context.FillRectangle(Brushes.Transparent, renderBounds);
 
             if (!Container.Document.HasRendered)
             {
