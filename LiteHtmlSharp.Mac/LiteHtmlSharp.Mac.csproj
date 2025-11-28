@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0-macos</TargetFramework>
+    <TargetFramework>net10.0-macos</TargetFramework>
     <RuntimeIdentifiers>osx-x64;osx-arm64</RuntimeIdentifiers>
     <DefineConstants>$(DefineConstants);MAC</DefineConstants>
     <Authors>Matthew Little</Authors>
