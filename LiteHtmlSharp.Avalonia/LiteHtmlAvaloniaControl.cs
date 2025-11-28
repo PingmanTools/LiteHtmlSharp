@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -86,12 +88,13 @@ namespace LiteHtmlSharp.Avalonia
 
         public bool LastPointerDownHandledByHtml { get; private set; }
 
-        public LiteHtmlAvaloniaControl(ScrollViewer parent, string masterCss, IResourceLoader loader, bool createInteractiveElements = true)
+        public LiteHtmlAvaloniaControl(ScrollViewer parent, AvaloniaContainer container, string masterCss, IResourceLoader loader,
+            bool createInteractiveElements = true)
         {
             ScrollViewerParent = parent;
             SetupScrollView();
             InitializeCanvas();
-            Container = new AvaloniaContainer(masterCss, loader);
+            Container = container ?? new AvaloniaContainer(masterCss, loader);
             SetupContainerCallbacks(createInteractiveElements);
         }
 
@@ -182,7 +185,8 @@ namespace LiteHtmlSharp.Avalonia
             // Update viewport to match what we're actually rendering
             Container.SetViewport(new LiteHtmlPoint(0, 0), new LiteHtmlSize(Width, Height));
 
-            Console.WriteLine($"Document size known: {size.Width}x{size.Height}, control size set to: {Width}x{Height}");
+            Console.WriteLine(
+                $"Document size known: {size.Width}x{size.Height}, control size set to: {Width}x{Height}");
         }
 
         public void Container_RenderHtmlRequested(string html)
@@ -204,6 +208,7 @@ namespace LiteHtmlSharp.Avalonia
                     TriggerRedraw();
                 }
             }
+
             SetCursor(null);
             base.OnPointerExited(e);
         }
@@ -276,11 +281,13 @@ namespace LiteHtmlSharp.Avalonia
                     TriggerRedraw();
                 }
             }
+
             // Reset flag after a full click sequence (release) unless still over link (allow drag next time if moved off)
             if (!IsCursorOverLink)
             {
                 LastPointerDownHandledByHtml = false;
             }
+
             base.OnPointerReleased(e);
         }
 
@@ -328,9 +335,7 @@ namespace LiteHtmlSharp.Avalonia
 
         public void RenderHtmlBackground(DrawingContext context)
         {
-            // Fill the entire control area with white background
             var renderBounds = new Rect(0, 0, Bounds.Width, Bounds.Height);
-
             //let the rectangle be transparent, so the control / window backgrounds can be controlled elsewhere by theme.
             context.FillRectangle(Brushes.Transparent, renderBounds);
 
@@ -428,7 +433,8 @@ namespace LiteHtmlSharp.Avalonia
             {
                 var info = Container.Document.GetElementInfo(input.ID);
 
-                Console.WriteLine($"ElementInfo for {input.ID}: PosX={info.PosX}, PosY={info.PosY}, Width={info.Width}, Height={info.Height}");
+                Console.WriteLine(
+                    $"ElementInfo for Type: {input.Element.GetType()} {input.ID}: PosX={info.PosX}, PosY={info.PosY}, Width={info.Width}, Height={info.Height}");
 
                 // Use exact HTML dimensions - they should now include our measured sizes
                 input.Element.Width = info.Width;
@@ -447,7 +453,11 @@ namespace LiteHtmlSharp.Avalonia
                 Canvas.SetLeft(input.Element, info.PosX);
                 Canvas.SetTop(input.Element, info.PosY);
 
-                Console.WriteLine($"Set Canvas position for {input.Element.GetType().Name}: Left={Canvas.GetLeft(input.Element)}, Top={Canvas.GetTop(input.Element)}");
+                Console.WriteLine(
+                    $"Set Canvas position for {input.Element.GetType().Name}: Left={Canvas.GetLeft(input.Element)}, Top={Canvas.GetTop(input.Element)}");
+                if (input.AttributesSetup) continue;
+                input.AttributesSetup = true;
+                input.SetupAttributes(info.Attributes);
             }
         }
 
@@ -488,12 +498,13 @@ namespace LiteHtmlSharp.Avalonia
                     htmlRenderPanel.RemoveChild(input.Element);
                 }
             }
+
             Inputs.Clear();
         }
 
         public void RemoveChildControl(Control control)
         {
-            if(_controlPanel is HtmlRenderPanel htmlRenderPanel)
+            if (_controlPanel is HtmlRenderPanel htmlRenderPanel)
             {
                 htmlRenderPanel.RemoveChild(control);
             }
@@ -521,6 +532,7 @@ namespace LiteHtmlSharp.Avalonia
             {
                 return ((int)(p.X + ScrollViewerParent.Offset.X), (int)(p.Y + ScrollViewerParent.Offset.Y));
             }
+
             return ((int)p.X, (int)p.Y);
         }
 
@@ -539,8 +551,8 @@ namespace LiteHtmlSharp.Avalonia
                     return true;
                 }
             }
+
             return false;
         }
     }
 }
-
