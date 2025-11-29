@@ -14,7 +14,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LiteHtmlSharp.Avalonia\LiteHtmlSharp.Avalonia.csproj" />
+    <PackageReference Include="LiteHtmlSharp.Avalonia" Version="2.0.0-preview2" />
+  </ItemGroup>
+
+  <!-- Add local NuGet source for development -->
+  <PropertyGroup>
+    <RestoreSources>$(RestoreSources);../LiteHtmlSharp.Avalonia/bin/Debug;https://api.nuget.org/v3/index.json</RestoreSources>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="master.css" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

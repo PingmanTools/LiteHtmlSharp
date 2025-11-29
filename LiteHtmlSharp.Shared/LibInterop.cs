@@ -33,7 +33,48 @@ namespace LiteHtmlSharp
         {
             if (libraryName == LiteHtmlLibFile)
             {
-                return NativeLibrary.Load(LiteHtmlLibFile, assembly, searchPath);
+                // On macOS/Linux, the native library is named liblitehtml.dylib/so
+                // On Windows, it's LiteHtmlLib.dll
+                string platformLibName = LiteHtmlLibFile;
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) || RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    platformLibName = "litehtml";
+                }
+
+                // Try to load with default resolution first
+                if (NativeLibrary.TryLoad(platformLibName, assembly, searchPath, out IntPtr handle))
+                {
+                    return handle;
+                }
+
+                // Fallback: Try to construct the path manually based on RID
+                string assemblyDir = System.IO.Path.GetDirectoryName(assembly.Location) ?? "";
+                string rid = RuntimeInformation.ProcessArchitecture switch
+                {
+                    Architecture.X64 => RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "win-x64" :
+                                       RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "osx-x64" : "linux-x64",
+                    Architecture.X86 => "win-x86",
+                    Architecture.Arm64 => RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "win-arm64" :
+                                         RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "osx-arm64" : "linux-arm64",
+                    _ => ""
+                };
+
+                if (!string.IsNullOrEmpty(rid))
+                {
+                    string extension = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? ".dll" :
+                                      RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? ".dylib" : ".so";
+                    string libPrefix = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "" : "lib";
+                    string fileName = $"{libPrefix}{platformLibName}{extension}";
+                    string runtimePath = System.IO.Path.Combine(assemblyDir, "runtimes", rid, "native", fileName);
+
+                    if (System.IO.File.Exists(runtimePath) && NativeLibrary.TryLoad(runtimePath, out handle))
+                    {
+                        return handle;
+                    }
+                }
+
+                // If all else fails, throw
+                throw new DllNotFoundException($"Unable to load native library '{platformLibName}' for RID '{rid}'. Searched in: {assemblyDir}");
             }
             return IntPtr.Zero;
         }

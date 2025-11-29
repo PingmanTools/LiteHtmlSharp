@@ -292,7 +292,7 @@ namespace LiteHtmlSharp.Avalonia
         }
 
 
-        private void LoadHtml(string html)
+        public void LoadHtml(string html)
         {
             Console.WriteLine("LoadHtml called");
             ClearInputs();

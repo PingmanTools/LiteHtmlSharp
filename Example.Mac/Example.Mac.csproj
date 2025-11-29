@@ -26,6 +26,10 @@
    </ItemGroup>
 
    <ItemGroup>
+      <None Include="master.css" CopyToOutputDirectory="PreserveNewest" />
+   </ItemGroup>
+
+   <ItemGroup>
       <Content Include="Resources\**\*">
          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>

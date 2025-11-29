@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFrameworks>net9.0;net10.0;net8.0</TargetFrameworks>
     <RootNamespace>LiteHtmlSharp</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>LiteHtmlSharp is a C# cross-platform library for HTML/CSS(2/3) visualization - self contained, fast and small</Description>
@@ -15,4 +15,38 @@
     <PackageId>LiteHtmlSharp</PackageId>
     <Version>2.0.0-preview2</Version>
   </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Pack native libraries for NuGet -->
+    <None Include="..\runtimes\win-x64\native\**\*"
+          Pack="true"
+          PackagePath="runtimes/win-x64/native" />
+
+    <None Include="..\runtimes\win-x86\native\**\*"
+          Pack="true"
+          PackagePath="runtimes/win-x86/native" />
+
+    <None Include="..\runtimes\osx-x64\native\**\*"
+          Pack="true"
+          PackagePath="runtimes/osx-x64/native" />
+
+    <None Include="..\runtimes\osx-arm64\native\**\*"
+          Pack="true"
+          PackagePath="runtimes/osx-arm64/native" />
+
+    <!-- Copy native libraries to output for local project references -->
+    <Content Include="..\runtimes\**\native\*"
+             CopyToOutputDirectory="PreserveNewest"
+             Link="runtimes\%(RecursiveDir)%(Filename)%(Extension)"
+             Visible="false" />
+
+    <!-- Pack MSBuild targets file for NuGet package consumers -->
+    <None Include="LiteHtmlSharp.targets"
+          Pack="true"
+          PackagePath="build\LiteHtmlSharp.targets" />
+    <None Include="LiteHtmlSharp.targets"
+          Pack="true"
+          PackagePath="buildTransitive\LiteHtmlSharp.targets" />
+  </ItemGroup>
+
 </Project>

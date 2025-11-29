@@ -18,20 +18,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- Copy native library to output directory -->
-    <Content Include="..\LiteHtmlLib\lib_dylib\build\liblitehtml.dylib">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Link>liblitehtml.dylib</Link>
-    </Content>
-
-    <!-- Pack for NuGet with architecture-specific paths -->
-    <None Include="..\LiteHtmlLib\lib_dylib\build\liblitehtml.dylib"
-          Pack="true"
-          PackagePath="runtimes/osx-x64/native/;runtimes/osx-arm64/native/"
-          Visible="false" />
-  </ItemGroup>
-
-  <ItemGroup>
     <NativeFileReference Include="..\LiteHtmlLib\lib_dylib\build\liblitehtml.dylib">
       <Kind>Dynamic</Kind>
       <ForceLoad>true</ForceLoad>
@@ -39,8 +25,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LiteHtmlSharp\LiteHtmlSharp.csproj" />
+    <PackageReference Include="LiteHtmlSharp" Version="2.0.0-preview2" />
   </ItemGroup>
+
+  <!-- Add local NuGet source for development -->
+  <PropertyGroup>
+    <RestoreSources>$(RestoreSources);../LiteHtmlSharp/bin/Debug;https://api.nuget.org/v3/index.json</RestoreSources>
+  </PropertyGroup>
 
   <Import Project="..\LiteHtmlSharp.Shared\LiteHtmlSharp.Shared.projitems" Label="Shared" />
   <Import Project="..\LiteHtmlSharp.CoreGraphics\LiteHtmlSharp.CoreGraphics.projitems" Label="Shared" />

@@ -17,16 +17,14 @@
 
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.3.9" />
+    <PackageReference Include="LiteHtmlSharp" Version="2.0.0-preview2" PrivateAssets="none" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\LiteHtmlSharp\LiteHtmlSharp.csproj" />
-  </ItemGroup>
+  <!-- Add local NuGet source for development -->
+  <PropertyGroup>
+    <RestoreSources>$(RestoreSources);../LiteHtmlSharp/bin/Debug;https://api.nuget.org/v3/index.json</RestoreSources>
+  </PropertyGroup>
 
   <Import Project="..\LiteHtmlSharp.Shared\LiteHtmlSharp.Shared.projitems" Label="Shared" />
-
-  <ItemGroup Condition="$([MSBuild]::IsOsPlatform('Windows'))">
-    <None Include="..\runtimes\win-x64\native\*" CopyToOutputDirectory="PreserveNewest" />
-  </ItemGroup>
 
 </Project>

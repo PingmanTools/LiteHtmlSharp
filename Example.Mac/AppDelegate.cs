@@ -17,7 +17,8 @@ namespace Example.Mac
          window.Center();
          window.MakeKeyAndOrderFront(this);
 
-         var liteHtmlWindow = new LiteHtmlSharp.Mac.LiteHtmlWindowHelper(window, window.Frame, LiteHtmlSharp.IncludedMasterCss.CssString);
+         var masterCss = System.IO.File.ReadAllText("master.css");
+         var liteHtmlWindow = new LiteHtmlSharp.Mac.LiteHtmlWindowHelper(window, window.Frame, masterCss);
          liteHtmlWindow.LiteHtmlView.LoadHtml(SampleHtml);
       }
 

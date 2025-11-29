@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <ItemGroup>
+    <!-- Locate native libraries in the NuGet package -->
+    <_LiteHtmlNativeLibs Include="$(MSBuildThisFileDirectory)..\runtimes\**\native\*" />
+  </ItemGroup>
+
+  <Target Name="CopyLiteHtmlNativeLibs" BeforeTargets="Build">
+    <Copy SourceFiles="@(_LiteHtmlNativeLibs)"
+          DestinationFiles="@(_LiteHtmlNativeLibs->'$(OutputPath)runtimes\%(RecursiveDir)%(Filename)%(Extension)')"
+          SkipUnchangedFiles="true" />
+  </Target>
+
+</Project>

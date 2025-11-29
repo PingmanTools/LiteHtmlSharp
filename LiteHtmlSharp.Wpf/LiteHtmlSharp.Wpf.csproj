@@ -24,11 +24,6 @@
   <Import Project="..\LiteHtmlSharp.Shared\LiteHtmlSharp.Shared.projitems" Label="Shared" />
 
   <ItemGroup>
-    <None Include="..\runtimes\win-x64\native\*" CopyToOutputDirectory="PreserveNewest" />
-    <None Include="..\runtimes\win-x86\native\*" CopyToOutputDirectory="PreserveNewest" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
 

@@ -18,16 +18,16 @@ namespace Example.Avalonia
         public MainWindow()
         {
             InitializeComponent();
-            
-            var masterCss = IncludedMasterCss.CSS;
+
+            var masterCss = System.IO.File.ReadAllText("master.css");
             _httpClient = new HttpClient();
 
             // Create the HTML control
             _litehtmlContainer = new AvaloniaContainer(masterCss, GetResourceString, GetResourceBytes);
-            _liteHtmlControl = new LiteHtmlAvaloniaControl(HtmlScrollViewer, _litehtmlContainer);
+            _liteHtmlControl = new LiteHtmlAvaloniaControl(HtmlScrollViewer, _litehtmlContainer, masterCss, null);
             _liteHtmlControl.LinkClicked += LiteHtmlControl_LinkClicked;
             
-            _liteHtmlControl.LoadHtml("<p style='line-height:30px'>Enter your name: <input type='text' id='nameInput' value='' style='width:150px; vertical-align: baseline;'></p>\n");
+            _liteHtmlControl.LoadHtml("<p style='line-height:30px;background-color:white;'>Enter your name: <input type='text' id='nameInput' value='' style='width:150px; vertical-align: baseline;'></p>\n");
 
             // Load HTML with interactive elements
             // _liteHtmlControl.LoadHtml(@"
