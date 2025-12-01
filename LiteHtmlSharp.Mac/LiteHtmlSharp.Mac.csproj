@@ -7,7 +7,7 @@
     <Authors>Matthew Little</Authors>
     <Company>Pingman Tools</Company>
     <Product>LiteHtmlSharp.Mac</Product>
-    <Version>2.0.0-preview2</Version>
+    <Version>2.0.1-preview3</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Xamarin.Mac CoreGraphics drawing backend for LiteHtmlSharp</Description>
     <PackageId>LiteHtmlSharp.Mac</PackageId>
@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="LiteHtmlSharp" Version="2.0.0-preview2" />
+    <PackageReference Include="LiteHtmlSharp" Version="2.0.1-preview3" />
   </ItemGroup>
 
   <!-- Add local NuGet source for development -->
