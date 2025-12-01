@@ -131,4 +131,12 @@ Global
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {11DDFC82-7700-4CC7-9632-B78829C52DD7}
 	EndGlobalSection
+	GlobalSection(RiderSharedRunConfigurations) = postSolution
+		File = ..\WebGUI\CerebroWebGUI\.run\CER-http dev-server.run.xml
+		File = ..\WebGUI\CerebroWebGUI\.run\Delete Webpack Cache.run.xml
+		File = ..\WebGUI\CerebroWebGUI\.run\CER-Javascript Debug.run.xml
+		File = ..\WebGUI\SelfHostedWebGUI\.run\Self-http dev server.run.xml
+		File = ..\WebGUI\SelfHostedWebGUI\.run\Self-Javascript Debug.run.xml
+		File = ..\WebGUI\SelfHostedWebGUI\.run\SELF-http dev server WIN.run.xml
+	EndGlobalSection
 EndGlobal

@@ -62,10 +62,12 @@ namespace LiteHtmlSharp
                 if (!string.IsNullOrEmpty(rid))
                 {
                     string extension = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? ".dll" :
-                                      RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? ".dylib" : ".so";
+                        RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? ".dylib" : ".so";
                     string libPrefix = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "" : "lib";
                     string fileName = $"{libPrefix}{platformLibName}{extension}";
-                    string runtimePath = System.IO.Path.Combine(assemblyDir, "runtimes", rid, "native", fileName);
+    
+                    // New flat structure: {rid}/filename
+                    string runtimePath = System.IO.Path.Combine(assemblyDir, rid, fileName);
 
                     if (System.IO.File.Exists(runtimePath) && NativeLibrary.TryLoad(runtimePath, out handle))
                     {

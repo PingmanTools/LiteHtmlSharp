@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net9.0;net10.0;net8.0</TargetFrameworks>
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
     <RootNamespace>LiteHtmlSharp</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>LiteHtmlSharp is a C# cross-platform library for HTML/CSS(2/3) visualization - self contained, fast and small</Description>
@@ -14,71 +14,26 @@
     <Product />
     <PackageId>LiteHtmlSharp</PackageId>
     <Version>2.0.1-preview3</Version>
+    <LiteHtmlSharpNativePath>$(MSBuildProjectDirectory)\..\</LiteHtmlSharpNativePath>
   </PropertyGroup>
-
+  
   <ItemGroup>
-    <!-- Pack native libraries for NuGet -->
-    <None Include="..\runtimes\win-x64\native\**\*"
-          Pack="true"
-          PackagePath="runtimes/win-x64/native" />
+    <!-- Pack native libraries for NuGet - preserve folder structure -->
+    <None Include="..\win-x64\*.*" Pack="true" PackagePath="win-x64" />
+    <None Include="..\win-x86\*.*" Pack="true" PackagePath="win-x86" />
+    <None Include="..\osx-arm64\*.*" Pack="true" PackagePath="osx-arm64" />
+    <None Include="..\osx-x64\*.*" Pack="true" PackagePath="osx-x64" />
+    <None Include="..\linux-x64\*.*" Pack="true" PackagePath="linux-x64" />
+    <None Include="..\linux-arm64\*.*" Pack="true" PackagePath="linux-arm64" />
 
-    <None Include="..\runtimes\win-x86\native\**\*"
-          Pack="true"
-          PackagePath="runtimes/win-x86/native" />
-
-    <None Include="..\runtimes\osx-x64\native\**\*"
-          Pack="true"
-          PackagePath="runtimes/osx-x64/native" />
-
-    <None Include="..\runtimes\osx-arm64\native\**\*"
-          Pack="true"
-          PackagePath="runtimes/osx-arm64/native" />
-
-    <!-- Copy native libraries to output for local project references -->
-    <!-- These will copy to immediate output and also be available for transitive copying -->
-    <None Include="..\runtimes\win-x64\native\*"
-          CopyToOutputDirectory="PreserveNewest"
-          Link="runtimes\win-x64\native\%(Filename)%(Extension)"
-          Visible="false">
-      <Pack>false</Pack>
-    </None>
-    <None Include="..\runtimes\win-x86\native\*"
-          CopyToOutputDirectory="PreserveNewest"
-          Link="runtimes\win-x86\native\%(Filename)%(Extension)"
-          Visible="false">
-      <Pack>false</Pack>
-    </None>
-    <None Include="..\runtimes\osx-x64\native\*"
-          CopyToOutputDirectory="PreserveNewest"
-          Link="runtimes\osx-x64\native\%(Filename)%(Extension)"
-          Visible="false">
-      <Pack>false</Pack>
-    </None>
-    <None Include="..\runtimes\osx-arm64\native\*"
-          CopyToOutputDirectory="PreserveNewest"
-          Link="runtimes\osx-arm64\native\%(Filename)%(Extension)"
-          Visible="false">
-      <Pack>false</Pack>
-    </None>
-
-    <!-- Pack MSBuild targets file for NuGet package consumers -->
-    <None Include="LiteHtmlSharp.targets"
-          Pack="true"
-          PackagePath="build\LiteHtmlSharp.targets" />
-    <None Include="LiteHtmlSharp.targets"
-          Pack="true"
-          PackagePath="buildTransitive\LiteHtmlSharp.targets" />
+    <!-- Pack build files -->
+    <None Include="build\LiteHtmlSharp.props" Pack="true" PackagePath="build" />
+    <None Include="build\LiteHtmlSharp.props" Pack="true" PackagePath="buildTransitive" />
+    <None Include="build\LiteHtmlSharp.targets" Pack="true" PackagePath="build" />
+    <None Include="build\LiteHtmlSharp.targets" Pack="true" PackagePath="buildTransitive" />
   </ItemGroup>
 
-  <!-- For project references: ensure native libs flow to referencing projects -->
-  <Target Name="CopyLiteHtmlNativeLibsToReferencingProjects"
-          BeforeTargets="GetCopyToOutputDirectoryItems">
-    <ItemGroup>
-      <AllItemsFullPathWithTargetPath Include="$(OutputPath)runtimes\**\*">
-        <TargetPath>runtimes\%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </AllItemsFullPathWithTargetPath>
-    </ItemGroup>
-  </Target>
+  <!-- Import our own targets for project reference scenarios -->
+  <Import Project="build\LiteHtmlSharp.targets" />
 
 </Project>

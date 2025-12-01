@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Target Name="CopyLiteHtmlNativeLibs" AfterTargets="Build" Condition="Exists('$(LiteHtmlSharpNativePath)')">
+    <ItemGroup>
+      <_LiteHtmlNativeFiles Remove="@(_LiteHtmlNativeFiles)" />
+
+      <!-- Cross-platform (net8.0, net10.0): copy all -->
+      <_LiteHtmlNativeFiles Condition="!$(TargetFramework.Contains('-'))"
+                            Include="$(LiteHtmlSharpNativePath)win-*\*.*;$(LiteHtmlSharpNativePath)osx-*\*.*;$(LiteHtmlSharpNativePath)linux-*\*.*" />
+
+      <!-- Windows -->
+      <_LiteHtmlNativeFiles Condition="$(TargetFramework.Contains('-windows'))"
+                            Include="$(LiteHtmlSharpNativePath)win-*\*.*" />
+
+      <!-- macOS -->
+      <_LiteHtmlNativeFiles Condition="$(TargetFramework.Contains('-macos')) OR $(TargetFramework.Contains('-maccatalyst'))"
+                            Include="$(LiteHtmlSharpNativePath)osx-*\*.*" />
+
+      <!-- iOS -->
+      <_LiteHtmlNativeFiles Condition="$(TargetFramework.Contains('-ios'))"
+                            Include="$(LiteHtmlSharpNativePath)ios-*\*.*" />
+    </ItemGroup>
+
+    <Copy SourceFiles="@(_LiteHtmlNativeFiles)"
+          DestinationFiles="@(_LiteHtmlNativeFiles->'$(OutputPath)%(RecursiveDir)%(Filename)%(Extension)')"
+          SkipUnchangedFiles="true"
+          Condition="'@(_LiteHtmlNativeFiles)' != ''" />
+  </Target>
+
+</Project>
