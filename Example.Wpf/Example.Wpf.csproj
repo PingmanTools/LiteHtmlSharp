@@ -7,25 +7,22 @@
     <Nullable>disable</Nullable>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <!-- Force x64 on ARM64 machines (win-arm64 native library not yet available) -->
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\LiteHtmlSharp.Wpf\LiteHtmlSharp.Wpf.csproj" />
   </ItemGroup>
 
-  <!-- For NuGet package mode, comment out the ProjectReference above and uncomment below:
+  <!-- Copy native libraries for local development with ProjectReference -->
   <ItemGroup>
-    <PackageReference Include="LiteHtmlSharp.Wpf" Version="2.0.2-preview4" />
+    <Content Include="$(MSBuildThisFileDirectory)../runtimes/**/*.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>runtimes/%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <TargetPath>runtimes/%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
+    </Content>
   </ItemGroup>
-  <PropertyGroup>
-    <RestoreSources>$(RestoreSources);../LiteHtmlSharp/bin/Debug;../LiteHtmlSharp.Wpf/bin/Debug;https://api.nuget.org/v3/index.json</RestoreSources>
-  </PropertyGroup>
-  -->
-
-  <!-- Import native library copy targets for ProjectReference scenario -->
-  <!-- For PackageReference, these are automatically included via buildTransitive -->
-  <Import Project="..\LiteHtmlSharp.Wpf\build\LiteHtmlSharp.Wpf.props" Condition="Exists('..\LiteHtmlSharp.Wpf\build\LiteHtmlSharp.Wpf.props')" />
-  <Import Project="..\LiteHtmlSharp.Wpf\build\LiteHtmlSharp.Wpf.targets" Condition="Exists('..\LiteHtmlSharp.Wpf\build\LiteHtmlSharp.Wpf.targets')" />
 
   <ItemGroup>
     <None Include="master.css" CopyToOutputDirectory="PreserveNewest" />

@@ -14,6 +14,7 @@ Add this to your application's `.csproj` file:
   <Content Include="path/to/LiteHTMLSharp/runtimes/**/*.dll;path/to/LiteHTMLSharp/runtimes/**/*.dylib">
     <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     <Link>runtimes/%(RecursiveDir)%(Filename)%(Extension)</Link>
+    <TargetPath>runtimes/%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
   </Content>
 </ItemGroup>
 ```
@@ -41,6 +42,7 @@ Then in `MyApp.csproj`:
   <Content Include="$(MSBuildThisFileDirectory)../LiteHTMLSharp/runtimes/**/*.dll;$(MSBuildThisFileDirectory)../LiteHTMLSharp/runtimes/**/*.dylib">
     <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     <Link>runtimes/%(RecursiveDir)%(Filename)%(Extension)</Link>
+    <TargetPath>runtimes/%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
   </Content>
 </ItemGroup>
 ```
