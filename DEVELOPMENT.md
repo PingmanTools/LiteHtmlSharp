@@ -70,6 +70,86 @@ This ensures native libraries are placed in the `MonoBundle/` folder where .NET 
 
 Native libraries need to be in specific locations for .NET's runtime to find them. When using published NuGet packages, this happens automatically. For local development with `ProjectReference`, you need to manually configure the copy.
 
+## Testing Local NuGet Packages
+
+If you want to test the NuGet packages locally before publishing, you can set up a local package source.
+
+### Setup Local Package Source (One-time)
+
+**Windows:**
+```bash
+mkdir %USERPROFILE%\LocalNuGet
+dotnet nuget add source %USERPROFILE%\LocalNuGet --name LocalDev
+```
+
+**Mac/Linux:**
+```bash
+mkdir -p ~/LocalNuGet
+dotnet nuget add source ~/LocalNuGet --name LocalDev
+```
+
+### Copy Built Packages to Local Source
+
+After building the solution, copy all packages to your local source:
+
+**Windows:**
+```bash
+copy /Y LiteHtmlSharp\bin\Debug\*.nupkg %USERPROFILE%\LocalNuGet\
+copy /Y LiteHtmlSharp.Avalonia\bin\Debug\*.nupkg %USERPROFILE%\LocalNuGet\
+copy /Y LiteHtmlSharp.Wpf\bin\Debug\*.nupkg %USERPROFILE%\LocalNuGet\
+copy /Y LiteHtmlSharp.Mac\bin\Debug\*.nupkg %USERPROFILE%\LocalNuGet\
+copy /Y LiteHtmlSharp.iOS\bin\Debug\*.nupkg %USERPROFILE%\LocalNuGet\
+```
+
+**Mac/Linux:**
+```bash
+cp -f LiteHtmlSharp/bin/Debug/*.nupkg ~/LocalNuGet/
+cp -f LiteHtmlSharp.Avalonia/bin/Debug/*.nupkg ~/LocalNuGet/
+cp -f LiteHtmlSharp.Wpf/bin/Debug/*.nupkg ~/LocalNuGet/
+cp -f LiteHtmlSharp.Mac/bin/Debug/*.nupkg ~/LocalNuGet/
+cp -f LiteHtmlSharp.iOS/bin/Debug/*.nupkg ~/LocalNuGet/
+```
+
+### Using Local Packages in Rider
+
+1. Open Rider Settings/Preferences: `File → Settings` (Windows) or `Rider → Preferences` (Mac)
+2. Navigate to: `Build, Execution, Deployment → NuGet → Sources`
+3. Your `LocalDev` source should appear with the path you configured
+4. Make sure it's **enabled** (checkbox checked)
+5. Open NuGet Package Manager: `Tools → NuGet → Manage NuGet Packages for Solution`
+6. Select "LocalDev" from the source dropdown
+7. Browse and install your local packages
+
+### Using Local Packages via Command Line
+
+In your consuming project's `.csproj`:
+```xml
+<ItemGroup>
+  <PackageReference Include="LiteHtmlSharp.Avalonia" Version="2.0.2-preview4" />
+</ItemGroup>
+```
+
+Then restore:
+```bash
+dotnet restore
+```
+
+The packages will be resolved from your LocalDev source.
+
+### Clearing Package Cache
+
+If you rebuild packages and want to ensure the new versions are used:
+
+**Windows:**
+```bash
+dotnet nuget locals all --clear
+```
+
+**Mac/Linux:**
+```bash
+dotnet nuget locals all --clear
+```
+
 ## Published Package Consumption
 
 If you're consuming published NuGet packages from NuGet.org, no additional setup is required - native libraries are included automatically.
