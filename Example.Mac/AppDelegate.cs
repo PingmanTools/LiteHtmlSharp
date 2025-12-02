@@ -1,6 +1,7 @@
 ﻿using AppKit;
 using CoreGraphics;
 using Foundation;
+using System;
 
 namespace Example.Mac
 {
@@ -10,31 +11,65 @@ namespace Example.Mac
 
       public override void DidFinishLaunching(NSNotification notification)
       {
-         var window = new NSWindow(new CGRect(0, 0, 500, 500), NSWindowStyle.Titled | NSWindowStyle.Resizable | NSWindowStyle.Closable, NSBackingStore.Buffered, false);
+         // Set up the menu bar with CMD-Q
+         SetupMenu();
+
+         var window = new NSWindow(new CGRect(0, 0, 500, 500), NSWindowStyle.Titled | NSWindowStyle.Resizable | NSWindowStyle.Closable | NSWindowStyle.Miniaturizable, NSBackingStore.Buffered, false);
+         window.Title = "LiteHTML Mac Example";
          var scrollView = new NSScrollView();
          scrollView.BackgroundColor = NSColor.Blue;
          window.ContentView = scrollView;
          window.Center();
          window.MakeKeyAndOrderFront(this);
 
-         // Try to find master.css in multiple locations
-         string masterCss = null;
-         var resourcePath = NSBundle.MainBundle.PathForResource("master", "css");
-         if (resourcePath != null && System.IO.File.Exists(resourcePath))
+         try
          {
-            masterCss = System.IO.File.ReadAllText(resourcePath);
-         }
-         else if (System.IO.File.Exists("master.css"))
-         {
-            masterCss = System.IO.File.ReadAllText("master.css");
-         }
-         else
-         {
-            masterCss = "body { font-family: Arial, sans-serif; }"; // Fallback CSS
-         }
+            // Try to find master.css in multiple locations
+            string masterCss = null;
+            var resourcePath = NSBundle.MainBundle.PathForResource("master", "css");
+            if (resourcePath != null && System.IO.File.Exists(resourcePath))
+            {
+               masterCss = System.IO.File.ReadAllText(resourcePath);
+            }
+            else if (System.IO.File.Exists("master.css"))
+            {
+               masterCss = System.IO.File.ReadAllText("master.css");
+            }
+            else
+            {
+               masterCss = "body { font-family: Arial, sans-serif; }"; // Fallback CSS
+            }
 
-         var liteHtmlWindow = new LiteHtmlSharp.Mac.LiteHtmlWindowHelper(window, window.Frame, masterCss);
-         liteHtmlWindow.LiteHtmlView.LoadHtml(SampleHtml);
+            var liteHtmlWindow = new LiteHtmlSharp.Mac.LiteHtmlWindowHelper(window, window.Frame, masterCss);
+            liteHtmlWindow.LiteHtmlView.LoadHtml(SampleHtml);
+         }
+         catch (Exception ex)
+         {
+            var alert = new NSAlert
+            {
+               MessageText = "Error initializing LiteHTML",
+               InformativeText = $"{ex.GetType().Name}: {ex.Message}\n\nStack Trace:\n{ex.StackTrace}",
+               AlertStyle = NSAlertStyle.Critical
+            };
+            alert.RunModal();
+            NSApplication.SharedApplication.Terminate(this);
+         }
+      }
+
+      private void SetupMenu()
+      {
+         var menuBar = new NSMenu();
+         var appMenuItem = new NSMenuItem();
+         menuBar.AddItem(appMenuItem);
+
+         var appMenu = new NSMenu();
+         var appName = NSProcessInfo.ProcessInfo.ProcessName;
+
+         var quitMenuItem = new NSMenuItem($"Quit {appName}", "q", (sender, e) => NSApplication.SharedApplication.Terminate(this));
+         appMenu.AddItem(quitMenuItem);
+
+         appMenuItem.Submenu = appMenu;
+         NSApplication.SharedApplication.MainMenu = menuBar;
       }
 
       const string SampleHtml = @"

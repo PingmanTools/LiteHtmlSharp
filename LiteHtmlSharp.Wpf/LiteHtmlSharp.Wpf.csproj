@@ -21,34 +21,12 @@
     <ProjectReference Include="..\LiteHtmlSharp\LiteHtmlSharp.csproj" />
   </ItemGroup>
 
-  <!-- Include Windows native libraries for project reference scenario -->
+  <!-- Include native libraries in NuGet package for Windows only -->
   <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)../native/*-win-*.dll">
-      <Link>%(Filename)%(Extension)</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Visible>false</Visible>
-    </None>
+    <None Include="../runtimes/win-x64/native/*.dll" Pack="true" PackagePath="runtimes/win-x64/native" />
+    <None Include="../runtimes/win-x86/native/*.dll" Pack="true" PackagePath="runtimes/win-x86/native" />
   </ItemGroup>
-
-  <!-- Pack ONLY Windows native libraries -->
-  <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)../native/*-win-*.dll" Pack="true" PackagePath="native" />
-  </ItemGroup>
-
-  <!-- Pack build files for NuGet consumption (no transitive) -->
-  <ItemGroup>
-    <None Include="build/LiteHtmlSharp.Wpf.props" Pack="true" PackagePath="build" />
-    <None Include="build/LiteHtmlSharp.Wpf.targets" Pack="true" PackagePath="build" />
-  </ItemGroup>
-
-  <!-- Import props and targets for project reference scenario -->
-  <Import Project="build/LiteHtmlSharp.Wpf.props" Condition="Exists('build/LiteHtmlSharp.Wpf.props')" />
-  <Import Project="build/LiteHtmlSharp.Wpf.targets" Condition="Exists('build/LiteHtmlSharp.Wpf.targets')" />
 
   <Import Project="..\LiteHtmlSharp.Shared\LiteHtmlSharp.Shared.projitems" Label="Shared" />
-
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
 
 </Project>

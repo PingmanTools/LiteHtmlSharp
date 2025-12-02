@@ -18,32 +18,13 @@
     <ProjectReference Include="..\LiteHtmlSharp\LiteHtmlSharp.csproj" />
   </ItemGroup>
 
-  <!-- Include iOS native libraries for project reference scenario -->
+  <!-- Include native libraries in NuGet package for iOS only (when they exist) -->
+  <!-- Note: iOS native libraries are not currently available in the runtimes/ folder -->
   <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)../native/*-ios-*.*">
-      <Link>%(Filename)%(Extension)</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Visible>false</Visible>
-    </None>
+    <None Include="../runtimes/ios-arm64/native/*.dylib" Pack="true" PackagePath="runtimes/ios-arm64/native" Condition="Exists('../runtimes/ios-arm64/native')" />
   </ItemGroup>
-
-  <!-- Pack ONLY iOS native libraries (if any exist) -->
-  <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)../native/*-ios-*.*" Pack="true" PackagePath="native" />
-  </ItemGroup>
-
-  <!-- Pack build files for NuGet consumption (no transitive) -->
-  <ItemGroup>
-    <None Include="build/LiteHtmlSharp.iOS.props" Pack="true" PackagePath="build" />
-    <None Include="build/LiteHtmlSharp.iOS.targets" Pack="true" PackagePath="build" />
-  </ItemGroup>
-
-  <!-- Import props and targets for project reference scenario -->
-  <Import Project="build/LiteHtmlSharp.iOS.props" Condition="Exists('build/LiteHtmlSharp.iOS.props')" />
-  <Import Project="build/LiteHtmlSharp.iOS.targets" Condition="Exists('build/LiteHtmlSharp.iOS.targets')" />
 
   <Import Project="..\LiteHtmlSharp.CoreGraphics\LiteHtmlSharp.CoreGraphics.projitems" Label="Shared" />
-
   <Import Project="..\LiteHtmlSharp.Shared\LiteHtmlSharp.Shared.projitems" Label="Shared" />
 
 </Project>

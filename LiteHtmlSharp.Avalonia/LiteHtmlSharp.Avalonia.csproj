@@ -17,37 +17,16 @@
 
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.3.9" />
-    <ProjectReference Include="..\LiteHtmlSharp\LiteHtmlSharp.csproj" PrivateAssets="none" />
+    <ProjectReference Include="..\LiteHtmlSharp\LiteHtmlSharp.csproj" />
   </ItemGroup>
 
-  <!-- Include ALL platform native libraries for project reference scenario -->
+  <!-- Include native libraries in NuGet package for all platforms Avalonia supports -->
   <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)../native/*.*">
-      <Link>%(Filename)%(Extension)</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Visible>false</Visible>
-    </None>
+    <None Include="../runtimes/win-x64/native/*.dll" Pack="true" PackagePath="runtimes/win-x64/native" />
+    <None Include="../runtimes/win-x86/native/*.dll" Pack="true" PackagePath="runtimes/win-x86/native" />
+    <None Include="../runtimes/osx-x64/native/*.dylib" Pack="true" PackagePath="runtimes/osx-x64/native" />
+    <None Include="../runtimes/osx-arm64/native/*.dylib" Pack="true" PackagePath="runtimes/osx-arm64/native" />
   </ItemGroup>
-
-  <!-- Pack ALL platform native libraries (Avalonia is cross-platform) -->
-  <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)../native/*.*" Pack="true" PackagePath="native" />
-  </ItemGroup>
-
-  <!-- Pack build files for NuGet consumption (no transitive) -->
-  <ItemGroup>
-    <None Include="build/LiteHtmlSharp.Avalonia.props" Pack="true" PackagePath="build" />
-    <None Include="build/LiteHtmlSharp.Avalonia.targets" Pack="true" PackagePath="build" />
-  </ItemGroup>
-
-  <!-- Import props and targets for project reference scenario -->
-  <Import Project="build/LiteHtmlSharp.Avalonia.props" Condition="Exists('build/LiteHtmlSharp.Avalonia.props')" />
-  <Import Project="build/LiteHtmlSharp.Avalonia.targets" Condition="Exists('build/LiteHtmlSharp.Avalonia.targets')" />
-
-  <!-- Add local NuGet source for development -->
-  <PropertyGroup>
-    <RestoreSources>$(RestoreSources);../LiteHtmlSharp/bin/Debug;https://api.nuget.org/v3/index.json</RestoreSources>
-  </PropertyGroup>
 
   <Import Project="..\LiteHtmlSharp.Shared\LiteHtmlSharp.Shared.projitems" Label="Shared" />
 

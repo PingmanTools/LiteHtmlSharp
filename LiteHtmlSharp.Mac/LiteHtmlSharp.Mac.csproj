@@ -15,42 +15,17 @@
     <PackageProjectUrl>https://github.com/PingmanTools/LiteHtmlSharp/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/PingmanTools/LiteHtmlSharp/</RepositoryUrl>
     <PackageTags>litehtml litehtmlsharp html render coregraphics xamarin mac</PackageTags>
-    <!-- Enable copying content to consuming projects -->
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\LiteHtmlSharp\LiteHtmlSharp.csproj" />
   </ItemGroup>
 
-  <!-- Include macOS native libraries for project reference scenario -->
+  <!-- Include native libraries in NuGet package for macOS only -->
   <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)../native/*-osx-*.dylib">
-      <Link>%(Filename)%(Extension)</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Visible>false</Visible>
-    </None>
+    <None Include="../runtimes/osx-x64/native/*.dylib" Pack="true" PackagePath="runtimes/osx-x64/native" />
+    <None Include="../runtimes/osx-arm64/native/*.dylib" Pack="true" PackagePath="runtimes/osx-arm64/native" />
   </ItemGroup>
-
-  <!-- Pack ONLY macOS native libraries -->
-  <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)../native/*-osx-*.dylib" Pack="true" PackagePath="native" />
-  </ItemGroup>
-
-  <!-- Pack build files for NuGet consumption (no transitive) -->
-  <ItemGroup>
-    <None Include="build/LiteHtmlSharp.Mac.props" Pack="true" PackagePath="build" />
-    <None Include="build/LiteHtmlSharp.Mac.targets" Pack="true" PackagePath="build" />
-  </ItemGroup>
-
-  <!-- Import props and targets for project reference scenario -->
-  <Import Project="build/LiteHtmlSharp.Mac.props" Condition="Exists('build/LiteHtmlSharp.Mac.props')" />
-  <Import Project="build/LiteHtmlSharp.Mac.targets" Condition="Exists('build/LiteHtmlSharp.Mac.targets')" />
-
-  <!-- Add local NuGet source for development -->
-  <PropertyGroup>
-    <RestoreSources>$(RestoreSources);../LiteHtmlSharp/bin/Debug;https://api.nuget.org/v3/index.json</RestoreSources>
-  </PropertyGroup>
 
   <Import Project="..\LiteHtmlSharp.Shared\LiteHtmlSharp.Shared.projitems" Label="Shared" />
   <Import Project="..\LiteHtmlSharp.CoreGraphics\LiteHtmlSharp.CoreGraphics.projitems" Label="Shared" />

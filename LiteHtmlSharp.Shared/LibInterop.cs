@@ -65,28 +65,44 @@ namespace LiteHtmlSharp
                         RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? ".dylib" : ".so";
                     string libPrefix = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "" : "lib";
 
-                    // RID-specific filename: liblitehtml-osx-arm64.dylib or LiteHtmlLib-win-x64.dll
+                    // Simple filename without RID: liblitehtml.dylib or LiteHtmlLib.dll
                     string fileName = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
-                        ? $"LiteHtmlLib-{rid}{extension}"
-                        : $"{libPrefix}{platformLibName}-{rid}{extension}";
+                        ? $"{platformLibName}{extension}"
+                        : $"{libPrefix}{platformLibName}{extension}";
 
-                    // Try in assembly directory first (for project reference scenario)
-                    string runtimePath = System.IO.Path.Combine(assemblyDir, fileName);
+                    // Try in standard NuGet runtimes folder structure first
+                    string runtimePath = System.IO.Path.Combine(assemblyDir, "runtimes", rid, "native", fileName);
                     if (System.IO.File.Exists(runtimePath) && NativeLibrary.TryLoad(runtimePath, out handle))
                     {
                         return handle;
                     }
 
-                    // Try in RID subdirectory (for package reference scenario with targets)
+                    // Try in RID subdirectory (simplified structure)
                     runtimePath = System.IO.Path.Combine(assemblyDir, rid, fileName);
+                    if (System.IO.File.Exists(runtimePath) && NativeLibrary.TryLoad(runtimePath, out handle))
+                    {
+                        return handle;
+                    }
+
+                    // Fallback: Try in assembly directory root (for direct file placement)
+                    runtimePath = System.IO.Path.Combine(assemblyDir, fileName);
                     if (System.IO.File.Exists(runtimePath) && NativeLibrary.TryLoad(runtimePath, out handle))
                     {
                         return handle;
                     }
                 }
 
-                // If all else fails, throw
-                throw new DllNotFoundException($"Unable to load native library '{platformLibName}' for RID '{rid}'. Searched in: {assemblyDir}");
+                // If all else fails, throw with helpful error message
+#if DEBUG
+                throw new DllNotFoundException(
+                    $"Unable to load native library '{platformLibName}' for RID '{rid}'.\n" +
+                    $"Searched in: {assemblyDir}\n\n" +
+                    $"For local development setup instructions, see:\n" +
+                    $"https://github.com/PingmanTools/LiteHtmlSharp/blob/master/DEVELOPMENT.md");
+#else
+                throw new DllNotFoundException(
+                    $"Unable to load native library '{platformLibName}' for RID '{rid}'.");
+#endif
             }
             return IntPtr.Zero;
         }

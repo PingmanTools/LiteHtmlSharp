@@ -14,13 +14,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="LiteHtmlSharp.Avalonia" Version="2.0.2-preview4" />
+    <ProjectReference Include="..\LiteHtmlSharp.Avalonia\LiteHtmlSharp.Avalonia.csproj" />
   </ItemGroup>
 
-  <!-- Add local NuGet source for development -->
-  <PropertyGroup>
-    <RestoreSources>$(RestoreSources);../LiteHtmlSharp.Avalonia/bin/Debug;https://api.nuget.org/v3/index.json</RestoreSources>
-  </PropertyGroup>
+  <!-- Copy native libraries for local development with ProjectReference -->
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)../runtimes/**/*.dll;$(MSBuildThisFileDirectory)../runtimes/**/*.dylib">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>runtimes/%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Content>
+  </ItemGroup>
 
   <ItemGroup>
     <None Include="master.css" CopyToOutputDirectory="PreserveNewest" />
