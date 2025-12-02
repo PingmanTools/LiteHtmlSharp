@@ -31,7 +31,7 @@ namespace Example.Wpf
       public MainWindow()
       {
          InitializeComponent();
-         var masterCss = IncludedMasterCss.CssString;
+         var masterCss = System.IO.File.ReadAllText("master.css");
 
          _httpClient = new HttpClient();
 

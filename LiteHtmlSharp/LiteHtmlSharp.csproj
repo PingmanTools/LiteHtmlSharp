@@ -13,27 +13,7 @@
     <Company>Pingman Tools</Company>
     <Product />
     <PackageId>LiteHtmlSharp</PackageId>
-    <Version>2.0.1-preview3</Version>
-    <LiteHtmlSharpNativePath>$(MSBuildProjectDirectory)\..\</LiteHtmlSharpNativePath>
+    <Version>2.0.2-preview4</Version>
   </PropertyGroup>
-  
-  <ItemGroup>
-    <!-- Pack native libraries for NuGet - preserve folder structure -->
-    <None Include="..\win-x64\*.*" Pack="true" PackagePath="win-x64" />
-    <None Include="..\win-x86\*.*" Pack="true" PackagePath="win-x86" />
-    <None Include="..\osx-arm64\*.*" Pack="true" PackagePath="osx-arm64" />
-    <None Include="..\osx-x64\*.*" Pack="true" PackagePath="osx-x64" />
-    <None Include="..\linux-x64\*.*" Pack="true" PackagePath="linux-x64" />
-    <None Include="..\linux-arm64\*.*" Pack="true" PackagePath="linux-arm64" />
-
-    <!-- Pack build files -->
-    <None Include="build\LiteHtmlSharp.props" Pack="true" PackagePath="build" />
-    <None Include="build\LiteHtmlSharp.props" Pack="true" PackagePath="buildTransitive" />
-    <None Include="build\LiteHtmlSharp.targets" Pack="true" PackagePath="build" />
-    <None Include="build\LiteHtmlSharp.targets" Pack="true" PackagePath="buildTransitive" />
-  </ItemGroup>
-
-  <!-- Import our own targets for project reference scenarios -->
-  <Import Project="build\LiteHtmlSharp.targets" />
 
 </Project>

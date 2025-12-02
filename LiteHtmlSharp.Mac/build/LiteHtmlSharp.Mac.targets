@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <ItemGroup>
+    <!-- macOS only - match osx-x64, osx-arm64. KEEP PATHS SHORT for install_name_tool -->
+    <_LiteHtmlSharpNativeLibrary Include="$(_LiteHtmlSharpNativePath)*-$(RuntimeIdentifier).dylib" Condition="'$(RuntimeIdentifier)' != '' AND $(RuntimeIdentifier.StartsWith('osx'))" />
+
+    <!-- Fallback for non-RID specific builds -->
+    <_LiteHtmlSharpNativeLibrary Include="$(_LiteHtmlSharpNativePath)*-osx-*.dylib" Condition="'$(RuntimeIdentifier)' == ''" />
+  </ItemGroup>
+
+  <Target Name="CopyLiteHtmlSharpNativeLibraries"
+          AfterTargets="Build"
+          Condition="'@(_LiteHtmlSharpNativeLibrary)' != ''">
+    <Message Importance="High" Text="Copying LiteHtmlSharp native libraries for macOS from $(_LiteHtmlSharpNativePath)" />
+
+    <!-- Copy to output directory (macOS builds already include RID in OutputPath) -->
+    <Copy SourceFiles="@(_LiteHtmlSharpNativeLibrary)"
+          DestinationFolder="$(OutputPath)"
+          SkipUnchangedFiles="true" />
+
+    <Message Importance="High" Text="Copied @(_LiteHtmlSharpNativeLibrary->Count()) native library file(s)" />
+  </Target>
+
+</Project>

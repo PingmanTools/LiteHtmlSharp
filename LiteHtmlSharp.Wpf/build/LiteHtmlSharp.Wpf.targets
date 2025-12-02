@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <ItemGroup>
+    <!-- Windows only - match win-x64, win-x86, win-arm64 -->
+    <_LiteHtmlSharpNativeLibrary Include="$(_LiteHtmlSharpNativePath)*-win-*.dll" Condition="'$(RuntimeIdentifier)' != '' AND $(RuntimeIdentifier.StartsWith('win'))" />
+    <_LiteHtmlSharpNativeLibrary Include="$(_LiteHtmlSharpNativePath)*-$(RuntimeIdentifier).dll" Condition="'$(RuntimeIdentifier)' != '' AND $(RuntimeIdentifier.StartsWith('win'))" />
+
+    <!-- Fallback for non-RID specific builds -->
+    <_LiteHtmlSharpNativeLibrary Include="$(_LiteHtmlSharpNativePath)*-win-*.dll" Condition="'$(RuntimeIdentifier)' == ''" />
+  </ItemGroup>
+
+  <Target Name="CopyLiteHtmlSharpNativeLibraries"
+          AfterTargets="Build"
+          Condition="'@(_LiteHtmlSharpNativeLibrary)' != ''">
+    <Message Importance="High" Text="Copying LiteHtmlSharp native libraries for Windows from $(_LiteHtmlSharpNativePath)" />
+
+    <!-- Copy to platform-specific output subdirectory if RID is set -->
+    <Copy SourceFiles="@(_LiteHtmlSharpNativeLibrary)"
+          DestinationFolder="$(OutputPath)$(RuntimeIdentifier)"
+          SkipUnchangedFiles="true"
+          Condition="'$(RuntimeIdentifier)' != ''" />
+
+    <!-- Copy to output root for non-RID builds -->
+    <Copy SourceFiles="@(_LiteHtmlSharpNativeLibrary)"
+          DestinationFolder="$(OutputPath)"
+          SkipUnchangedFiles="true"
+          Condition="'$(RuntimeIdentifier)' == ''" />
+
+    <Message Importance="High" Text="Copied @(_LiteHtmlSharpNativeLibrary->Count()) native library file(s)" />
+  </Target>
+
+</Project>

@@ -7,7 +7,7 @@
     <Authors>Matthew Little</Authors>
     <Company>Pingman Tools</Company>
     <Product>LiteHtmlSharp.Mac</Product>
-    <Version>2.0.1-preview3</Version>
+    <Version>2.0.2-preview4</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Xamarin.Mac CoreGraphics drawing backend for LiteHtmlSharp</Description>
     <PackageId>LiteHtmlSharp.Mac</PackageId>
@@ -15,18 +15,37 @@
     <PackageProjectUrl>https://github.com/PingmanTools/LiteHtmlSharp/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/PingmanTools/LiteHtmlSharp/</RepositoryUrl>
     <PackageTags>litehtml litehtmlsharp html render coregraphics xamarin mac</PackageTags>
+    <!-- Enable copying content to consuming projects -->
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <ItemGroup>
-    <NativeFileReference Include="..\LiteHtmlLib\lib_dylib\build\liblitehtml.dylib">
-      <Kind>Dynamic</Kind>
-      <ForceLoad>true</ForceLoad>
-    </NativeFileReference>
+    <ProjectReference Include="..\LiteHtmlSharp\LiteHtmlSharp.csproj" />
   </ItemGroup>
 
+  <!-- Include macOS native libraries for project reference scenario -->
   <ItemGroup>
-    <PackageReference Include="LiteHtmlSharp" Version="2.0.1-preview3" />
+    <None Include="$(MSBuildThisFileDirectory)../native/*-osx-*.dylib">
+      <Link>%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>false</Visible>
+    </None>
   </ItemGroup>
+
+  <!-- Pack ONLY macOS native libraries -->
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)../native/*-osx-*.dylib" Pack="true" PackagePath="native" />
+  </ItemGroup>
+
+  <!-- Pack build files for NuGet consumption (no transitive) -->
+  <ItemGroup>
+    <None Include="build/LiteHtmlSharp.Mac.props" Pack="true" PackagePath="build" />
+    <None Include="build/LiteHtmlSharp.Mac.targets" Pack="true" PackagePath="build" />
+  </ItemGroup>
+
+  <!-- Import props and targets for project reference scenario -->
+  <Import Project="build/LiteHtmlSharp.Mac.props" Condition="Exists('build/LiteHtmlSharp.Mac.props')" />
+  <Import Project="build/LiteHtmlSharp.Mac.targets" Condition="Exists('build/LiteHtmlSharp.Mac.targets')" />
 
   <!-- Add local NuGet source for development -->
   <PropertyGroup>

@@ -10,6 +10,12 @@
       <UseMacOSAppBundle>true</UseMacOSAppBundle>
       <SupportedOSPlatformVersion>15.5</SupportedOSPlatformVersion>
       <OutputPath>bin\$(Configuration)\</OutputPath>
+
+      <!-- Use ad-hoc code signing for local development (required on modern macOS) -->
+      <CodesignKey Condition="'$(Configuration)' == 'Debug'">-</CodesignKey>
+      <CodesignEntitlements></CodesignEntitlements>
+      <EnableCodeSigning>true</EnableCodeSigning>
+      <UseHardenedRuntime>false</UseHardenedRuntime>
    </PropertyGroup>
 
    <ItemGroup>
@@ -26,7 +32,7 @@
    </ItemGroup>
 
    <ItemGroup>
-      <None Include="master.css" CopyToOutputDirectory="PreserveNewest" />
+      <Resource Include="master.css" CopyToOutputDirectory="PreserveNewest" />
    </ItemGroup>
 
    <ItemGroup>
@@ -34,5 +40,12 @@
          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
    </ItemGroup>
+
+   <!-- Remove quarantine attributes and re-sign after build to avoid Gatekeeper warnings -->
+   <Target Name="RemoveQuarantineAndResign" AfterTargets="Build">
+      <Exec Command="xattr -cr &quot;$(AppBundlePath)&quot;" IgnoreExitCode="true" Condition="Exists('$(AppBundlePath)')" />
+      <Exec Command="codesign --force --deep --sign - &quot;$(AppBundlePath)&quot;" IgnoreExitCode="true" Condition="Exists('$(AppBundlePath)')" />
+      <Message Importance="High" Text="Removed quarantine and re-signed $(AssemblyName).app" />
+   </Target>
 
 </Project>

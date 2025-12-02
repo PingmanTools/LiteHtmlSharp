@@ -5,7 +5,7 @@
     <UseWPF>true</UseWPF>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <DefineConstants>$(DefineConstants);WINDOWS</DefineConstants>
-    <Version>2.0.1-preview3</Version>
+    <Version>2.0.2-preview4</Version>
     <Authors>Matthew Little</Authors>
     <Company>Pingman Tools</Company>
     <Description>WPF drawing backend for LiteHtmlSharp</Description>
@@ -20,6 +20,30 @@
   <ItemGroup>
     <ProjectReference Include="..\LiteHtmlSharp\LiteHtmlSharp.csproj" />
   </ItemGroup>
+
+  <!-- Include Windows native libraries for project reference scenario -->
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)../native/*-win-*.dll">
+      <Link>%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>false</Visible>
+    </None>
+  </ItemGroup>
+
+  <!-- Pack ONLY Windows native libraries -->
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)../native/*-win-*.dll" Pack="true" PackagePath="native" />
+  </ItemGroup>
+
+  <!-- Pack build files for NuGet consumption (no transitive) -->
+  <ItemGroup>
+    <None Include="build/LiteHtmlSharp.Wpf.props" Pack="true" PackagePath="build" />
+    <None Include="build/LiteHtmlSharp.Wpf.targets" Pack="true" PackagePath="build" />
+  </ItemGroup>
+
+  <!-- Import props and targets for project reference scenario -->
+  <Import Project="build/LiteHtmlSharp.Wpf.props" Condition="Exists('build/LiteHtmlSharp.Wpf.props')" />
+  <Import Project="build/LiteHtmlSharp.Wpf.targets" Condition="Exists('build/LiteHtmlSharp.Wpf.targets')" />
 
   <Import Project="..\LiteHtmlSharp.Shared\LiteHtmlSharp.Shared.projitems" Label="Shared" />
 

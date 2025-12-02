@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <!-- Define path to native libraries - KEEP SHORT for install_name_tool -->
+    <!-- For NuGet package: build files are in {package}/build/, native files in {package}/native/ -->
+    <!-- For project reference: build files are in {project}/build/, native files in {root}/native/ -->
+    <_LiteHtmlSharpNativePath Condition="'$(_LiteHtmlSharpNativePath)' == '' AND Exists('$(MSBuildThisFileDirectory)../native/')">$(MSBuildThisFileDirectory)../native/</_LiteHtmlSharpNativePath>
+    <_LiteHtmlSharpNativePath Condition="'$(_LiteHtmlSharpNativePath)' == ''">$(MSBuildThisFileDirectory)../../native/</_LiteHtmlSharpNativePath>
+  </PropertyGroup>
+</Project>

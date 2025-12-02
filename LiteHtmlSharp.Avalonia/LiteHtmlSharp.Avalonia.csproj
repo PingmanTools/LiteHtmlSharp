@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Nullable>disable</Nullable>
-    <Version>2.0.1-preview3</Version>
+    <Version>2.0.2-preview4</Version>
     <Authors>Matthew Little</Authors>
     <Company>Pingman Tools</Company>
     <Description>Avalonia UI drawing backend for LiteHtmlSharp</Description>
@@ -17,8 +17,32 @@
 
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.3.9" />
-    <PackageReference Include="LiteHtmlSharp" Version="2.0.1-preview3" PrivateAssets="none" />
+    <ProjectReference Include="..\LiteHtmlSharp\LiteHtmlSharp.csproj" PrivateAssets="none" />
   </ItemGroup>
+
+  <!-- Include ALL platform native libraries for project reference scenario -->
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)../native/*.*">
+      <Link>%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>false</Visible>
+    </None>
+  </ItemGroup>
+
+  <!-- Pack ALL platform native libraries (Avalonia is cross-platform) -->
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)../native/*.*" Pack="true" PackagePath="native" />
+  </ItemGroup>
+
+  <!-- Pack build files for NuGet consumption (no transitive) -->
+  <ItemGroup>
+    <None Include="build/LiteHtmlSharp.Avalonia.props" Pack="true" PackagePath="build" />
+    <None Include="build/LiteHtmlSharp.Avalonia.targets" Pack="true" PackagePath="build" />
+  </ItemGroup>
+
+  <!-- Import props and targets for project reference scenario -->
+  <Import Project="build/LiteHtmlSharp.Avalonia.props" Condition="Exists('build/LiteHtmlSharp.Avalonia.props')" />
+  <Import Project="build/LiteHtmlSharp.Avalonia.targets" Condition="Exists('build/LiteHtmlSharp.Avalonia.targets')" />
 
   <!-- Add local NuGet source for development -->
   <PropertyGroup>

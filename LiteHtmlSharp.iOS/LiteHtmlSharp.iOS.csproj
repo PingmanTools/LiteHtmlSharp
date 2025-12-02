@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net9.0-ios</TargetFramework>
     <DefineConstants>$(DefineConstants);IOS;__MOBILE__</DefineConstants>
-    <Version>2.0.1-preview3</Version>
+    <Version>2.0.2-preview4</Version>
     <Authors>Matthew Little</Authors>
     <Company>Pingman Tools</Company>
     <Description>Xamarin.iOS CoreGraphics drawing backend for LiteHtmlSharp</Description>
@@ -18,6 +18,29 @@
     <ProjectReference Include="..\LiteHtmlSharp\LiteHtmlSharp.csproj" />
   </ItemGroup>
 
+  <!-- Include iOS native libraries for project reference scenario -->
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)../native/*-ios-*.*">
+      <Link>%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>false</Visible>
+    </None>
+  </ItemGroup>
+
+  <!-- Pack ONLY iOS native libraries (if any exist) -->
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)../native/*-ios-*.*" Pack="true" PackagePath="native" />
+  </ItemGroup>
+
+  <!-- Pack build files for NuGet consumption (no transitive) -->
+  <ItemGroup>
+    <None Include="build/LiteHtmlSharp.iOS.props" Pack="true" PackagePath="build" />
+    <None Include="build/LiteHtmlSharp.iOS.targets" Pack="true" PackagePath="build" />
+  </ItemGroup>
+
+  <!-- Import props and targets for project reference scenario -->
+  <Import Project="build/LiteHtmlSharp.iOS.props" Condition="Exists('build/LiteHtmlSharp.iOS.props')" />
+  <Import Project="build/LiteHtmlSharp.iOS.targets" Condition="Exists('build/LiteHtmlSharp.iOS.targets')" />
 
   <Import Project="..\LiteHtmlSharp.CoreGraphics\LiteHtmlSharp.CoreGraphics.projitems" Label="Shared" />
 

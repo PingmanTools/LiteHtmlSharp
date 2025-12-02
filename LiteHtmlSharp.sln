@@ -26,6 +26,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Mac", "Example.Mac\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiteHtmlSharp.iOS", "LiteHtmlSharp.iOS\LiteHtmlSharp.iOS.csproj", "{3F7B6E55-D190-4026-AC6A-B49ED9F37027}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Wpf", "Example.Wpf\Example.Wpf.csproj", "{33B4D9F4-0DFE-4A85-9289-227BFC64ACBF}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		LiteHtmlSharp.Shared\LiteHtmlSharp.Shared.projitems*{46fd2d0e-a935-4e1c-bfc8-9b213b6c4ebf}*SharedItemsImports = 13
@@ -124,6 +126,18 @@ Global
 		{3F7B6E55-D190-4026-AC6A-B49ED9F37027}.Release|x64.Build.0 = Release|Any CPU
 		{3F7B6E55-D190-4026-AC6A-B49ED9F37027}.Release|x86.ActiveCfg = Release|Any CPU
 		{3F7B6E55-D190-4026-AC6A-B49ED9F37027}.Release|x86.Build.0 = Release|Any CPU
+		{33B4D9F4-0DFE-4A85-9289-227BFC64ACBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33B4D9F4-0DFE-4A85-9289-227BFC64ACBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33B4D9F4-0DFE-4A85-9289-227BFC64ACBF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{33B4D9F4-0DFE-4A85-9289-227BFC64ACBF}.Debug|x64.Build.0 = Debug|Any CPU
+		{33B4D9F4-0DFE-4A85-9289-227BFC64ACBF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{33B4D9F4-0DFE-4A85-9289-227BFC64ACBF}.Debug|x86.Build.0 = Debug|Any CPU
+		{33B4D9F4-0DFE-4A85-9289-227BFC64ACBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33B4D9F4-0DFE-4A85-9289-227BFC64ACBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33B4D9F4-0DFE-4A85-9289-227BFC64ACBF}.Release|x64.ActiveCfg = Release|Any CPU
+		{33B4D9F4-0DFE-4A85-9289-227BFC64ACBF}.Release|x64.Build.0 = Release|Any CPU
+		{33B4D9F4-0DFE-4A85-9289-227BFC64ACBF}.Release|x86.ActiveCfg = Release|Any CPU
+		{33B4D9F4-0DFE-4A85-9289-227BFC64ACBF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

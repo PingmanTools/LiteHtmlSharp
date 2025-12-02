@@ -17,7 +17,22 @@ namespace Example.Mac
          window.Center();
          window.MakeKeyAndOrderFront(this);
 
-         var masterCss = System.IO.File.ReadAllText("master.css");
+         // Try to find master.css in multiple locations
+         string masterCss = null;
+         var resourcePath = NSBundle.MainBundle.PathForResource("master", "css");
+         if (resourcePath != null && System.IO.File.Exists(resourcePath))
+         {
+            masterCss = System.IO.File.ReadAllText(resourcePath);
+         }
+         else if (System.IO.File.Exists("master.css"))
+         {
+            masterCss = System.IO.File.ReadAllText("master.css");
+         }
+         else
+         {
+            masterCss = "body { font-family: Arial, sans-serif; }"; // Fallback CSS
+         }
+
          var liteHtmlWindow = new LiteHtmlSharp.Mac.LiteHtmlWindowHelper(window, window.Frame, masterCss);
          liteHtmlWindow.LiteHtmlView.LoadHtml(SampleHtml);
       }

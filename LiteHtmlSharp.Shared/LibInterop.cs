@@ -64,11 +64,21 @@ namespace LiteHtmlSharp
                     string extension = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? ".dll" :
                         RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? ".dylib" : ".so";
                     string libPrefix = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "" : "lib";
-                    string fileName = $"{libPrefix}{platformLibName}{extension}";
-    
-                    // New flat structure: {rid}/filename
-                    string runtimePath = System.IO.Path.Combine(assemblyDir, rid, fileName);
 
+                    // RID-specific filename: liblitehtml-osx-arm64.dylib or LiteHtmlLib-win-x64.dll
+                    string fileName = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+                        ? $"LiteHtmlLib-{rid}{extension}"
+                        : $"{libPrefix}{platformLibName}-{rid}{extension}";
+
+                    // Try in assembly directory first (for project reference scenario)
+                    string runtimePath = System.IO.Path.Combine(assemblyDir, fileName);
+                    if (System.IO.File.Exists(runtimePath) && NativeLibrary.TryLoad(runtimePath, out handle))
+                    {
+                        return handle;
+                    }
+
+                    // Try in RID subdirectory (for package reference scenario with targets)
+                    runtimePath = System.IO.Path.Combine(assemblyDir, rid, fileName);
                     if (System.IO.File.Exists(runtimePath) && NativeLibrary.TryLoad(runtimePath, out handle))
                     {
                         return handle;

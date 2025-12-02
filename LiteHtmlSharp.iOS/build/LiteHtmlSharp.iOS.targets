@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <ItemGroup>
+    <!-- iOS only - match ios-arm64, ios-x64 (simulator), etc. -->
+    <_LiteHtmlSharpNativeLibrary Include="$(_LiteHtmlSharpNativePath)*-$(RuntimeIdentifier).*" Condition="'$(RuntimeIdentifier)' != '' AND $(RuntimeIdentifier.StartsWith('ios'))" />
+
+    <!-- Fallback for non-RID specific builds -->
+    <_LiteHtmlSharpNativeLibrary Include="$(_LiteHtmlSharpNativePath)*-ios-*.*" Condition="'$(RuntimeIdentifier)' == ''" />
+  </ItemGroup>
+
+  <Target Name="CopyLiteHtmlSharpNativeLibraries"
+          AfterTargets="Build"
+          Condition="'@(_LiteHtmlSharpNativeLibrary)' != ''">
+    <Message Importance="High" Text="Copying LiteHtmlSharp native libraries for iOS from $(_LiteHtmlSharpNativePath)" />
+
+    <!-- Copy to output directory (iOS builds already include RID in OutputPath) -->
+    <Copy SourceFiles="@(_LiteHtmlSharpNativeLibrary)"
+          DestinationFolder="$(OutputPath)"
+          SkipUnchangedFiles="true" />
+
+    <Message Importance="High" Text="Copied @(_LiteHtmlSharpNativeLibrary->Count()) native library file(s)" />
+  </Target>
+
+</Project>
