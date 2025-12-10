@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
@@ -89,43 +88,6 @@ namespace LiteHtmlSharp.Avalonia
 
         public bool LastPointerDownHandledByHtml { get; private set; }
 
-        // Reentrancy guard and last-known sizes to prevent recursive viewport updates
-        private bool _viewportUpdateInProgress;
-        private double _lastContentWidth;
-        private double _lastContentHeight;
-        private bool _pendingViewportCheck;
-
-        // Diagnostics counters
-        private int _loadHtmlCount;
-        private int _documentSizeKnownCount;
-        private int _setViewportCallsFromControl;
-        private int _checkViewportChangeCalls;
-
-        // Diagnostic file logger
-        private static readonly object _diagLogLock = new object();
-        private static string _diagLogPath;
-        private static void LogDiag(string message)
-        {
-            try
-            {
-                if (_diagLogPath == null)
-                {
-                    var baseDir = Path.Combine("C:\\temp", "PingPlotter");
-                    Directory.CreateDirectory(baseDir);
-                    _diagLogPath = Path.Combine(baseDir, "LiteHtmlDiag.log");
-                }
-                var line = $"[{DateTime.Now:O}] {message}";
-                lock (_diagLogLock)
-                {
-                    File.AppendAllText(_diagLogPath, line + Environment.NewLine);
-                }
-            }
-            catch
-            {
-                // Swallow logging errors to avoid impacting runtime
-            }
-        }
-
         public LiteHtmlAvaloniaControl(ScrollViewer parent, AvaloniaContainer container, string masterCss, IResourceLoader loader,
             bool createInteractiveElements = true)
         {
@@ -212,51 +174,23 @@ namespace LiteHtmlSharp.Avalonia
 
         private void Container_DocumentSizeKnown(LiteHtmlSize size)
         {
-            _documentSizeKnownCount++;
-            LogDiag($"DocumentSizeKnown #{_documentSizeKnownCount}: reported size={size.Width}x{size.Height}");
-
-            // Avoid recursive updates: if we're already updating viewport due to size change, skip
-            if (_viewportUpdateInProgress)
-            {
-                LogDiag("DocumentSizeKnown skipped due to viewport update in progress");
-                return;
-            }
-
-            // Compute desired control size
+            // Use the document's natural size, but ensure we have reasonable viewport width
             var viewportWidth = ScrollViewerParent?.Viewport.Width ?? size.Width;
-            if (viewportWidth <= 0) viewportWidth = size.Width;
+            if (viewportWidth <= 0) viewportWidth = size.Width; // Use document width as fallback
 
-            var desiredWidth = Math.Max(viewportWidth, size.Width);
-            var desiredHeight = size.Height;
+            // Set the control size to the actual content dimensions
+            Width = Math.Max(viewportWidth, size.Width);
+            Height = size.Height;
 
-            // If nothing changed, don't adjust again
-            if (Math.Abs(desiredWidth - _lastContentWidth) < 0.5 && Math.Abs(desiredHeight - _lastContentHeight) < 0.5)
-            {
-                LogDiag("DocumentSizeKnown no change in desired size; skipping");
-                return;
-            }
+            // Update viewport to match what we're actually rendering
+            Container.SetViewport(new LiteHtmlPoint(0, 0), new LiteHtmlSize(Width, Height));
 
-            _viewportUpdateInProgress = true;
-            try
-            {
-                // Update control size to match content; do NOT call SetViewport here to avoid recursion
-                Width = desiredWidth;
-                Height = desiredHeight;
-                _lastContentWidth = desiredWidth;
-                _lastContentHeight = desiredHeight;
-
-                LogDiag($"Control size updated to: {Width}x{Height}");
-                LogDiag($"Totals: LoadHtml={_loadHtmlCount}, DocSizeKnown={_documentSizeKnownCount}, SetViewport(from control)={_setViewportCallsFromControl}, CheckViewportChange={_checkViewportChangeCalls}");
-            }
-            finally
-            {
-                _viewportUpdateInProgress = false;
-            }
+            Console.WriteLine(
+                $"Document size known: {size.Width}x{size.Height}, control size set to: {Width}x{Height}");
         }
 
         public void Container_RenderHtmlRequested(string html)
         {
-            LogDiag("Container_RenderHtmlRequested");
             LoadHtml(html);
         }
 
@@ -360,8 +294,6 @@ namespace LiteHtmlSharp.Avalonia
 
         public void LoadHtml(string html)
         {
-            _loadHtmlCount++;
-            LogDiag($"LoadHtml #{_loadHtmlCount} called");
             Console.WriteLine("LoadHtml called");
             ClearInputs();
             Container.Document.CreateFromString(html);
@@ -373,38 +305,17 @@ namespace LiteHtmlSharp.Avalonia
                 htmlRenderPanel.HtmlControl = this;
             }
 
-            // Set viewport width to match ScrollViewer dimensions for proper layout; keep height minimal for natural layout
+            // Set viewport size to match ScrollViewer dimensions for proper layout
             var viewportWidth = ScrollViewerParent?.Viewport.Width ?? 0;
             if (viewportWidth <= 0) viewportWidth = 1024; // Reasonable default for initial layout
-            var size = new LiteHtmlSize(viewportWidth, 1);
+            var size = new LiteHtmlSize(viewportWidth, 1); // Use minimal height, let HTML calculate natural size
 
             Container.SetViewport(new LiteHtmlPoint(0, 0), size);
-            _setViewportCallsFromControl++;
-            LogDiag($"SetViewport(from control) #{_setViewportCallsFromControl} -> {size.Width}x{size.Height}");
-
-            // Coalesce forced render/layout check to a single UI-thread pass to avoid re-entrancy
-            if (!_pendingViewportCheck)
-            {
-                _pendingViewportCheck = true;
-                Dispatcher.UIThread.Post(() =>
-                {
-                    try
-                    {
-                        Container.CheckViewportChange(forceRender: true);
-                        _checkViewportChangeCalls++;
-                        LogDiag($"CheckViewportChange #{_checkViewportChangeCalls} (forceRender=true)");
-                    }
-                    finally
-                    {
-                        _pendingViewportCheck = false;
-                        LogDiag($"Totals: LoadHtml={_loadHtmlCount}, DocSizeKnown={_documentSizeKnownCount}, SetViewport(from control)={_setViewportCallsFromControl}, CheckViewportChange={_checkViewportChangeCalls}");
-                    }
-                }, DispatcherPriority.Background);
-            }
+            Container.CheckViewportChange(forceRender: true);
 
             Console.WriteLine($"HTML loaded, document has rendered: {Container.Document.HasRendered}");
 
-            // Process inputs shortly after HTML is rendered
+            // Process inputs immediately after HTML is loaded and rendered
             Dispatcher.UIThread.Post(ProcessInputs, DispatcherPriority.Background);
 
             TriggerRedraw();
@@ -645,4 +556,3 @@ namespace LiteHtmlSharp.Avalonia
         }
     }
 }
-
