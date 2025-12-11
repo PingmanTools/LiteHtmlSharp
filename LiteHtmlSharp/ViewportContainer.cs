@@ -44,6 +44,8 @@ namespace LiteHtmlSharp
         bool _hasCustomViewport;
         public bool HasCustomViewport => _hasCustomViewport;
 
+        bool _isRendering;
+
 
         public ViewportContainer(string masterCssData, ILibInterop libInterop) : base(masterCssData, libInterop)
         {
@@ -73,8 +75,22 @@ namespace LiteHtmlSharp
 
         public void Render()
         {
-            Document.Render((int)Size.Width);
-            DocumentSizeKnown?.Invoke(new LiteHtmlSize(Document.Width(), Document.Height()));
+            // Prevent re-entrant calls to avoid infinite recursion
+            if (_isRendering)
+            {
+                return;
+            }
+
+            try
+            {
+                _isRendering = true;
+                Document.Render((int)Size.Width);
+                DocumentSizeKnown?.Invoke(new LiteHtmlSize(Document.Width(), Document.Height()));
+            }
+            finally
+            {
+                _isRendering = false;
+            }
         }
 
         protected override void GetClientRect(ref position client)

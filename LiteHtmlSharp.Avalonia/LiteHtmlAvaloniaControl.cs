@@ -88,6 +88,8 @@ namespace LiteHtmlSharp.Avalonia
 
         public bool LastPointerDownHandledByHtml { get; private set; }
 
+        private bool _isUpdatingDocumentSize;
+
         public LiteHtmlAvaloniaControl(ScrollViewer parent, AvaloniaContainer container, string masterCss, IResourceLoader loader,
             bool createInteractiveElements = true)
         {
@@ -174,19 +176,34 @@ namespace LiteHtmlSharp.Avalonia
 
         private void Container_DocumentSizeKnown(LiteHtmlSize size)
         {
-            // Use the document's natural size, but ensure we have reasonable viewport width
-            var viewportWidth = ScrollViewerParent?.Viewport.Width ?? size.Width;
-            if (viewportWidth <= 0) viewportWidth = size.Width; // Use document width as fallback
+            // Prevent re-entrancy to avoid infinite recursion
+            if (_isUpdatingDocumentSize)
+            {
+                return;
+            }
 
-            // Set the control size to the actual content dimensions
-            Width = Math.Max(viewportWidth, size.Width);
-            Height = size.Height;
+            try
+            {
+                _isUpdatingDocumentSize = true;
 
-            // Update viewport to match what we're actually rendering
-            Container.SetViewport(new LiteHtmlPoint(0, 0), new LiteHtmlSize(Width, Height));
+                // Use the document's natural size, but ensure we have reasonable viewport width
+                var viewportWidth = ScrollViewerParent?.Viewport.Width ?? size.Width;
+                if (viewportWidth <= 0) viewportWidth = size.Width; // Use document width as fallback
 
-            Console.WriteLine(
-                $"Document size known: {size.Width}x{size.Height}, control size set to: {Width}x{Height}");
+                // Set the control size to the actual content dimensions
+                Width = Math.Max(viewportWidth, size.Width);
+                Height = size.Height;
+
+                // Update viewport to match what we're actually rendering
+                Container.SetViewport(new LiteHtmlPoint(0, 0), new LiteHtmlSize(Width, Height));
+
+                Console.WriteLine(
+                    $"Document size known: {size.Width}x{size.Height}, control size set to: {Width}x{Height}");
+            }
+            finally
+            {
+                _isUpdatingDocumentSize = false;
+            }
         }
 
         public void Container_RenderHtmlRequested(string html)
