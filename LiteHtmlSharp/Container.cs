@@ -215,9 +215,17 @@ namespace LiteHtmlSharp
             // If coordinates are offset incorrectly the engine never reaches here.
             if (AnchorClicked != null)
             {
-                var s = Utf8Util.Utf8PtrToString(url);
-                Console.WriteLine($"[litehtml] AnchorClicked callback: {s}");
-                AnchorClicked(s);
+                try
+                {
+                    var s = Utf8Util.Utf8PtrToString(url);
+                    Console.WriteLine($"[litehtml] AnchorClicked callback: {s}");
+                    AnchorClicked(s);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[litehtml] Error in AnchorClicked handler: {ex.Message}");
+                    Console.WriteLine($"[litehtml] Stack trace: {ex.StackTrace}");
+                }
             }
         }
 

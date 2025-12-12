@@ -147,7 +147,15 @@ namespace LiteHtmlSharp.Avalonia
 
         private void Container_AnchorClicked(string link)
         {
-            FireLink(link);
+            try
+            {
+                FireLink(link);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error handling anchor click for '{link}': {ex.Message}");
+                Console.WriteLine(ex.StackTrace);
+            }
         }
 
         private void ScrollParent_ScrollChanged(object sender, ScrollChangedEventArgs e)
@@ -213,20 +221,38 @@ namespace LiteHtmlSharp.Avalonia
 
         private void FireLink(string url)
         {
-            LinkClicked?.Invoke(url);
+            try
+            {
+                LinkClicked?.Invoke(url);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in LinkClicked event handler for '{url}': {ex.Message}");
+                Console.WriteLine(ex.StackTrace);
+                // Re-throw to let the caller know an error occurred, but after logging
+                throw;
+            }
         }
 
         protected override void OnPointerExited(PointerEventArgs e)
         {
-            if (Container.Document.HasRendered)
+            try
             {
-                if (Container.Document.OnMouseLeave())
+                if (Container?.Document?.HasRendered == true)
                 {
-                    TriggerRedraw();
+                    if (Container.Document.OnMouseLeave())
+                    {
+                        TriggerRedraw();
+                    }
                 }
+
+                SetCursor(null);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in OnPointerExited: {ex.Message}");
             }
 
-            SetCursor(null);
             base.OnPointerExited(e);
         }
 
@@ -237,13 +263,24 @@ namespace LiteHtmlSharp.Avalonia
 
         protected override void OnPointerMoved(PointerEventArgs e)
         {
-            if (Container.Document.HasRendered)
+            try
             {
-                var pos = e.GetPosition(this);
-                if (Container.Document.OnMouseMove((int)pos.X, (int)pos.Y))
+                if (Container?.Document?.HasRendered == true)
                 {
-                    TriggerRedraw();
+                    var pos = e.GetPosition(this);
+                    // Validate coordinates
+                    if (pos.X >= 0 && pos.Y >= 0)
+                    {
+                        if (Container.Document.OnMouseMove((int)pos.X, (int)pos.Y))
+                        {
+                            TriggerRedraw();
+                        }
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in OnPointerMoved: {ex.Message}");
             }
 
             base.OnPointerMoved(e);
@@ -266,21 +303,38 @@ namespace LiteHtmlSharp.Avalonia
         protected override void OnPointerPressed(PointerPressedEventArgs e)
         {
             LastPointerDownHandledByHtml = false;
-            if (Container.Document.HasRendered && e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
+            if (Container?.Document?.HasRendered == true && e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
             {
-                var pos = e.GetPosition(this);
-                var (x, y) = ToDocumentCoords(pos);
-                // Determine if this press should be consumed by HTML (link or interactive element)
-                var interactive = IsCursorOverLink || HitInteractiveElement(pos);
-                if (interactive)
+                try
                 {
-                    LastPointerDownHandledByHtml = true; // so parent window knows not to start drag
-                    e.Handled = true; // stop bubbling to window for drag
-                }
+                    var pos = e.GetPosition(this);
+                    var (x, y) = ToDocumentCoords(pos);
 
-                if (Container.Document.OnLeftButtonDown(x, y))
+                    // Validate coordinates are within reasonable bounds
+                    if (x < 0 || y < 0)
+                    {
+                        Console.WriteLine($"Warning: Invalid pointer press coordinates: ({x}, {y})");
+                        base.OnPointerPressed(e);
+                        return;
+                    }
+
+                    // Determine if this press should be consumed by HTML (link or interactive element)
+                    var interactive = IsCursorOverLink || HitInteractiveElement(pos);
+                    if (interactive)
+                    {
+                        LastPointerDownHandledByHtml = true; // so parent window knows not to start drag
+                        e.Handled = true; // stop bubbling to window for drag
+                    }
+
+                    if (Container.Document.OnLeftButtonDown(x, y))
+                    {
+                        TriggerRedraw();
+                    }
+                }
+                catch (Exception ex)
                 {
-                    TriggerRedraw();
+                    Console.WriteLine($"Error in OnPointerPressed: {ex.Message}");
+                    Console.WriteLine(ex.StackTrace);
                 }
             }
 
@@ -289,13 +343,30 @@ namespace LiteHtmlSharp.Avalonia
 
         protected override void OnPointerReleased(PointerReleasedEventArgs e)
         {
-            if (Container.Document.HasRendered && e.InitialPressMouseButton == MouseButton.Left)
+            if (Container?.Document?.HasRendered == true && e.InitialPressMouseButton == MouseButton.Left)
             {
-                var pos = e.GetPosition(this);
-                var (x, y) = ToDocumentCoords(pos);
-                if (Container.Document.OnLeftButtonUp(x, y))
+                try
                 {
-                    TriggerRedraw();
+                    var pos = e.GetPosition(this);
+                    var (x, y) = ToDocumentCoords(pos);
+
+                    // Validate coordinates are within reasonable bounds
+                    if (x < 0 || y < 0)
+                    {
+                        Console.WriteLine($"Warning: Invalid pointer release coordinates: ({x}, {y})");
+                        base.OnPointerReleased(e);
+                        return;
+                    }
+
+                    if (Container.Document.OnLeftButtonUp(x, y))
+                    {
+                        TriggerRedraw();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error in OnPointerReleased: {ex.Message}");
+                    Console.WriteLine(ex.StackTrace);
                 }
             }
 
