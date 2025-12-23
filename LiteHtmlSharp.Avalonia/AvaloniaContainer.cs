@@ -358,16 +358,24 @@ namespace LiteHtmlSharp.Avalonia
         {
             var fontInfo = GetFont(font);
             var formattedText = fontInfo.GetFormattedText(text);
-            return (int)Math.Round(formattedText.WidthIncludingTrailingWhitespace + 0.25f);
+            return (int)Math.Round(formattedText.WidthIncludingTrailingWhitespace);
         }
 
         protected override void DrawText(string text, UIntPtr font, ref web_color color, ref position pos)
         {
-            text = text.Replace(' ', (char)160);
             var fontInfo = GetFont(font);
-            var formattedText = fontInfo.GetFormattedText(text);
-            formattedText.SetForegroundBrush(color.GetBrush());
-            DrawingContext.DrawText(formattedText, new Point(pos.x, pos.y));
+            text = text.Replace(' ', (char)160);
+            var brush = color.GetBrush();
+            var textLayout = fontInfo.CreateTextLayout(text, brush);
+            textLayout.Draw(DrawingContext, new Point(pos.x, pos.y));
+
+            if (fontInfo.HasUnderline)
+            {
+                // Use pos.width from litehtml, and font's baseline + underline offset for vertical position
+                var y = pos.y + fontInfo.UnderlineOffset;
+                var pen = new Pen(brush, fontInfo.UnderlineThickness);
+                DrawingContext.DrawLine(pen, new Point(pos.x, y), new Point(pos.x + pos.width, y));
+            }
         }
 
         protected override UIntPtr CreateFont(string faceName, int size, int weight, font_style italic,
@@ -378,10 +386,7 @@ namespace LiteHtmlSharp.Avalonia
                 italic == font_style.fontStyleItalic ? FontStyle.Italic : FontStyle.Normal, fontweight, size,
                 FontAbsolutePathDelegate?.Invoke(faceName));
 
-            if ((decoration & font_decoration.font_decoration_underline) != 0)
-            {
-                font.Decorations = TextDecorations.Underline;
-            }
+            font.HasUnderline = (decoration & font_decoration.font_decoration_underline) != 0;
 
             var fontID = new UIntPtr(nextFontId++);
             Fonts.Add(fontID, font);

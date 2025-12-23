@@ -1,8 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using Avalonia;
 using Avalonia.Media;
+using Avalonia.Media.TextFormatting;
 
 namespace LiteHtmlSharp.Avalonia
 {
@@ -16,7 +16,9 @@ namespace LiteHtmlSharp.Avalonia
         public int xHeight;
         public int LineHeight;
 
-        public TextDecorationCollection Decorations;
+        public bool HasUnderline;
+        public double UnderlineOffset;
+        public double UnderlineThickness;
 
         public FontInfo(string faceName, FontStyle style, FontWeight weight, int size, FontFamily fontFamily = null)
         {
@@ -24,15 +26,34 @@ namespace LiteHtmlSharp.Avalonia
             TypeFace = new Typeface(Family, style, weight);
             Size = size;
 
-            var format = GetFormattedText("x");
-            xHeight = (int)Math.Round(format.Height);
+            var layout = CreateTextLayout("x", null);
+            xHeight = (int)Math.Round(layout.Height);
             LineHeight = (int)Math.Ceiling(size * 1.2); // Default line spacing factor
 
-            format = GetFormattedText("X");
-            Ascent = (int)Math.Round(format.Height);
+            layout = CreateTextLayout("X", null);
+            Ascent = (int)Math.Round(layout.Height);
 
-            format = GetFormattedText("p");
-            Descent = (int)Math.Round(format.Height) - xHeight;
+            layout = CreateTextLayout("p", null);
+            Descent = (int)Math.Round(layout.Height) - xHeight;
+
+            // Calculate underline position using font metrics
+            var baselineLayout = CreateTextLayout("X", null);
+            var baseline = baselineLayout.Baseline;
+
+            if (FontManager.Current.TryGetGlyphTypeface(TypeFace, out var glyphTypeface))
+            {
+                var metrics = glyphTypeface.Metrics;
+                var scale = (double)size / metrics.DesignEmHeight;
+                // UnderlinePosition is positive in Avalonia (distance below baseline)
+                UnderlineOffset = baseline + metrics.UnderlinePosition * scale;
+                UnderlineThickness = metrics.UnderlineThickness * scale;
+            }
+            else
+            {
+                // Fallback using typical font proportions
+                UnderlineOffset = baseline + size * 0.1;
+                UnderlineThickness = size * 0.05;
+            }
         }
 
         private static FontFamily SafeCreateFontFamily(string faceName)
@@ -70,22 +91,20 @@ namespace LiteHtmlSharp.Avalonia
             }
         }
 
+        public TextLayout CreateTextLayout(string text, IBrush brush)
+        {
+            return new TextLayout(text, TypeFace, Size, brush);
+        }
+
         public FormattedText GetFormattedText(string text)
         {
-            var formattedText = new FormattedText(
+            return new FormattedText(
                 text,
                 CultureInfo.InvariantCulture,
                 FlowDirection.LeftToRight,
                 TypeFace,
                 Size,
-                null); // Use null brush, will be set later
-
-            if (Decorations != null)
-            {
-                formattedText.SetTextDecorations(Decorations);
-            }
-
-            return formattedText;
+                null);
         }
     }
 }
