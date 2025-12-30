@@ -88,8 +88,6 @@ namespace LiteHtmlSharp.Avalonia
 
         public bool LastPointerDownHandledByHtml { get; private set; }
 
-        private bool _isUpdatingDocumentSize;
-
         public LiteHtmlAvaloniaControl(ScrollViewer parent, AvaloniaContainer container, string masterCss, IResourceLoader loader,
             bool createInteractiveElements = true)
         {
@@ -106,7 +104,9 @@ namespace LiteHtmlSharp.Avalonia
             var htmlRenderPanel = new HtmlRenderPanel
             {
                 IsVisible = true,
-                ClipToBounds = false
+                ClipToBounds = false,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                VerticalAlignment = VerticalAlignment.Top
             };
 
             _controlPanel = htmlRenderPanel;
@@ -127,6 +127,9 @@ namespace LiteHtmlSharp.Avalonia
             if (ScrollViewerParent == null) return;
             ScrollViewerParent.HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
             ScrollViewerParent.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            ScrollViewerParent.VerticalAlignment = VerticalAlignment.Stretch;
+            ScrollViewerParent.HorizontalContentAlignment = HorizontalAlignment.Left;
+            ScrollViewerParent.VerticalContentAlignment = VerticalAlignment.Top;
             ScrollViewerParent.Content = this;
             ScrollViewerParent.ScrollChanged += ScrollParent_ScrollChanged;
             ScrollViewerParent.SizeChanged += ScrollParent_SizeChanged;
@@ -170,8 +173,11 @@ namespace LiteHtmlSharp.Avalonia
             // Re-layout HTML when ScrollViewer size changes
             if (!Container.Document.HasLoadedHtml) return;
             var viewportWidth = e.NewSize.Width;
-            // Re-layout HTML with new width, use minimal height for natural layout
-            Container.SetViewport(new LiteHtmlPoint(0, 0), new LiteHtmlSize(viewportWidth, 1));
+            var viewportHeight = e.NewSize.Height;
+            // Re-layout HTML with new viewport size
+            Container.SetViewport(
+                new LiteHtmlPoint(ScrollViewerParent?.Offset.X ?? 0, ScrollViewerParent?.Offset.Y ?? 0),
+                new LiteHtmlSize(viewportWidth, viewportHeight));
             Container.CheckViewportChange(forceRender: true);
             // Don't override the control size here - let DocumentSizeKnown handle it
         }
@@ -184,34 +190,10 @@ namespace LiteHtmlSharp.Avalonia
 
         private void Container_DocumentSizeKnown(LiteHtmlSize size)
         {
-            // Prevent re-entrancy to avoid infinite recursion
-            if (_isUpdatingDocumentSize)
-            {
-                return;
-            }
-
-            try
-            {
-                _isUpdatingDocumentSize = true;
-
-                // Use the document's natural size, but ensure we have reasonable viewport width
-                var viewportWidth = ScrollViewerParent?.Viewport.Width ?? size.Width;
-                if (viewportWidth <= 0) viewportWidth = size.Width; // Use document width as fallback
-
-                // Set the control size to the actual content dimensions
-                Width = Math.Max(viewportWidth, size.Width);
-                Height = size.Height;
-
-                // Update viewport to match what we're actually rendering
-                Container.SetViewport(new LiteHtmlPoint(0, 0), new LiteHtmlSize(Width, Height));
-
-                Console.WriteLine(
-                    $"Document size known: {size.Width}x{size.Height}, control size set to: {Width}x{Height}");
-            }
-            finally
-            {
-                _isUpdatingDocumentSize = false;
-            }
+            // Match WPF pattern: control size = document size
+            Width = size.Width;
+            Height = size.Height;
+            SetViewport();
         }
 
         public void Container_RenderHtmlRequested(string html)
@@ -258,7 +240,7 @@ namespace LiteHtmlSharp.Avalonia
 
         private void TriggerRedraw()
         {
-            Dispatcher.UIThread.Post(InvalidateVisual, DispatcherPriority.Render);
+            Dispatcher.UIThread.Post(() => _controlPanel?.InvalidateVisual(), DispatcherPriority.Render);
         }
 
         protected override void OnPointerMoved(PointerEventArgs e)
@@ -394,14 +376,17 @@ namespace LiteHtmlSharp.Avalonia
             }
 
             // Set viewport size to match ScrollViewer dimensions for proper layout
+            // Like Mac, use the actual viewport dimensions (set by parent before LoadHtml)
             var viewportWidth = ScrollViewerParent?.Viewport.Width ?? 0;
-            if (viewportWidth <= 0) viewportWidth = 1024; // Reasonable default for initial layout
-            var size = new LiteHtmlSize(viewportWidth, 1); // Use minimal height, let HTML calculate natural size
+            var viewportHeight = ScrollViewerParent?.Viewport.Height ?? 0;
+            if (viewportWidth <= 0) viewportWidth = 1024; // Reasonable default
+            if (viewportHeight <= 0) viewportHeight = 1; // Minimal height if not set
 
+            var size = new LiteHtmlSize(viewportWidth, viewportHeight);
             Container.SetViewport(new LiteHtmlPoint(0, 0), size);
             Container.CheckViewportChange(forceRender: true);
 
-            Console.WriteLine($"HTML loaded, document has rendered: {Container.Document.HasRendered}");
+            Console.WriteLine($"HTML loaded, viewport: {viewportWidth}x{viewportHeight}, rendered: {Container.Document.HasRendered}");
 
             // Process inputs immediately after HTML is loaded and rendered
             Dispatcher.UIThread.Post(ProcessInputs, DispatcherPriority.Background);
@@ -411,9 +396,23 @@ namespace LiteHtmlSharp.Avalonia
 
         private void SetViewport(bool forceRedraw = false)
         {
-            // Don't override viewport size here - it should be managed by load/resize events
-            // This method is mainly for triggering redraws on scroll
-            if (forceRedraw)
+            // Match WPF pattern: viewport = ScrollViewer's visible area
+            if (ScrollViewerParent == null) return;
+
+            var viewportWidth = ScrollViewerParent.Viewport.Width;
+            var viewportHeight = ScrollViewerParent.Viewport.Height;
+
+            // Only set viewport if we have valid dimensions
+            if (viewportWidth > 0 && viewportHeight > 0)
+            {
+                if (Container.SetViewport(
+                    new LiteHtmlPoint(ScrollViewerParent.Offset.X, ScrollViewerParent.Offset.Y),
+                    new LiteHtmlSize(viewportWidth, viewportHeight)) || forceRedraw)
+                {
+                    TriggerRedraw();
+                }
+            }
+            else if (forceRedraw)
             {
                 TriggerRedraw();
             }

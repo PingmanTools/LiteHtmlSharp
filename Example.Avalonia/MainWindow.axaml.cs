@@ -1,9 +1,9 @@
 using Avalonia.Controls;
-using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
-using Avalonia.Media;
 using LiteHtmlSharp.Avalonia;
+using MsBox.Avalonia;
+using MsBox.Avalonia.Enums;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 
 namespace Example.Avalonia
@@ -14,6 +14,8 @@ namespace Example.Avalonia
         LiteHtmlAvaloniaControl _liteHtmlControl;
         HttpClient _httpClient;
         string _lastUrl;
+        readonly Dictionary<string, byte[]> _bytesCache = new();
+        readonly Dictionary<string, string> _stringCache = new();
 
         public MainWindow()
         {
@@ -26,64 +28,39 @@ namespace Example.Avalonia
             _litehtmlContainer = new AvaloniaContainer(masterCss, GetResourceString, GetResourceBytes);
             _liteHtmlControl = new LiteHtmlAvaloniaControl(HtmlScrollViewer, _litehtmlContainer, masterCss, null);
             _liteHtmlControl.LinkClicked += LiteHtmlControl_LinkClicked;
-            
-            _liteHtmlControl.LoadHtml("<p style='line-height:30px;background-color:white;'>Enter your name: <input type='text' id='nameInput' value='' style='width:150px; vertical-align: baseline;'></p>\n");
 
-            // Load HTML with interactive elements
-            // _liteHtmlControl.LoadHtml(@"
-            //     <html>
-            //         <head></head>
-            //         <body>
-            //             <div><a href='http://www.google.com'>google.com</a></div>
-            //             <div><a href='http://www.github.com'>github.com</a></div>
-            //             <br />
-            //             
-            //             <h2>Interactive Elements Test</h2>
-            //             <p>Enter your name: <input type='text' id='nameInput' value='Type here...' style='width:150px;'></p>
-            //             <p><button id='submitButton' value='Click Me!' style='width:80px;height:30px;'>Click Me!</button> <button id='clearButton' value='Clear'>Clear</button></p>
-            //             <br />
-            //             <div style='width:200px; height:100px; background-color:red; margin:10px;'></div>
-            //             <div style='width:200px; height:100px; background-color:blue; margin:10px;'></div>
-            //             <div style='width:200px; height:100px; background-color:green; margin:10px;'></div>
-            //             
-            //             <h2>Lorem Ipsum Text - Section 1</h2>
-            //             <p>
-            //                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor nisi quis ultrices scelerisque. 
-            //                 Mauris imperdiet vehicula metus quis bibendum. Maecenas non erat quis est imperdiet vehicula. Proin 
-            //                 scelerisque mauris purus, elementum sodales tellus imperdiet id. Vivamus luctus lorem nec augue 
-            //                 porttitor, eu mattis nisl laoreet. Cras fringilla vel purus ut imperdiet. Donec luctus finibus elit, 
-            //                 eu elementum purus cursus a. Suspendisse mollis tristique leo a auctor. Vivamus pulvinar pretium 
-            //                 elementum. Donec purus sapien, consequat laoreet eros viverra, laoreet pulvinar ligula. Sed faucibus 
-            //                 nisl odio, sed facilisis odio scelerisque ut.
-            //             </p>
-            //             
-            //             <h2>Lorem Ipsum Text - Section 2</h2>
-            //             <p>
-            //                 Nullam dapibus enim vel tortor luctus molestie. Vestibulum non sagittis leo, non vulputate magna. 
-            //                 Aliquam erat volutpat. Nulla hendrerit vel metus nec condimentum. Sed aliquet purus id ipsum interdum 
-            //                 ullamcorper. Nullam congue luctus urna eu bibendum. Morbi non tellus turpis. Mauris nec dui in massa 
-            //                 facililis imperdiet. Proin metus purus, imperdiet ac laoreet vel, elementum ac nulla. Vivamus dolor 
-            //                 tellus, blandit auctor elementum id, mattis consequat tellus. Vivamus id maximus felis. Praesent 
-            //                 aliquet augue id metus rutrum maximus. Etiam et nulla eu lectus efficitur elementum. Integer porttitor 
-            //                 quis erat sit amet feugiat. In id magna mollis, viverra nibh at, sollicitudin leo.
-            //             </p>
-            //             
-            //             <h2>Lorem Ipsum Text - Section 3</h2>
-            //             <p>
-            //                 Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, 
-            //                 totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. 
-            //                 Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos 
-            //                 qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, 
-            //                 adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.
-            //             </p>
-            //             
-            //             <h2>The End</h2>
-            //             <p>This should be enough content to test scrolling!</p>
-            //         </body>
-            //     </html>");
+            _liteHtmlControl.LoadHtml(@"
+                <html>
+                    <head></head>
+                    <body>
+                        <div><a href='http://www.google.com'>Load google.com</a></div>
+                        <div><a href='http://www.pingplotter.com'>Load pingplotter.com</a></div>
+                        <br />
+                        <div style='width:100px; height:100px; background-color:red'></div>
+                        <div>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor nisi quis ultrices scelerisque.
+                            Mauris imperdiet vehicula metus quis bibendum. Maecenas non erat quis est imperdiet vehicula. Proin
+                            scelerisque mauris purus, elementum sodales tellus imperdiet id. Vivamus luctus lorem nec augue
+                            porttitor, eu mattis nisl laoreet. Cras fringilla vel purus ut imperdiet. Donec luctus finibus elit,
+                            eu elementum purus cursus a. Suspendisse mollis tristique leo a auctor. Vivamus pulvinar pretium
+                            elementum. Donec purus sapien, consequat laoreet eros viverra, laoreet pulvinar ligula. Sed faucibus
+                            nisl odio, sed facilisis odio scelerisque ut.
+                        </div>
+                        <p>
+                            Nullam dapibus enim vel tortor luctus molestie. Vestibulum non sagittis leo, non vulputate magna.
+                            Aliquam erat volutpat. Nulla hendrerit vel metus nec condimentum. Sed aliquet purus id ipsum interdum
+                            ullamcorper. Nullam congue luctus urna eu bibendum. Morbi non tellus turpis. Mauris nec dui in massa
+                            facilisis imperdiet. Proin metus purus, imperdiet ac laoreet vel, elementum ac nulla. Vivamus dolor
+                            tellus, blandit auctor elementum id, mattis consequat tellus. Vivamus id maximus felis. Praesent
+                            aliquet augue id metus rutrum maximus. Etiam et nulla eu lectus efficitur elementum. Integer porttitor
+                            quis erat sit amet feugiat. In id magna mollis, viverra nibh at, sollicitudin leo.
+                        </p>
+                    </body>
+                </html>
+            ");
         }
 
-        private void LiteHtmlControl_LinkClicked(string url)
+        private async void LiteHtmlControl_LinkClicked(string url)
         {
             if (url.StartsWith("http:") || url.StartsWith("https:"))
             {
@@ -95,33 +72,43 @@ namespace Example.Avalonia
                 builder.Path = url;
                 _lastUrl = builder.ToString();
             }
-            
+
             try
             {
-                var pageContent = _httpClient.GetStringAsync(_lastUrl).Result;
+                var pageContent = await _httpClient.GetStringAsync(_lastUrl);
                 _liteHtmlControl.LoadHtml(pageContent);
             }
             catch (Exception ex)
             {
-                // In a real app, you'd want better error handling
-                System.Diagnostics.Debug.WriteLine("Error loading page: " + (ex.InnerException ?? ex).Message);
+                var messageBox = MessageBoxManager.GetMessageBoxStandard(
+                    "Error",
+                    "Error loading page. " + (ex.InnerException ?? ex).Message,
+                    ButtonEnum.Ok);
+                await messageBox.ShowWindowDialogAsync(this);
             }
         }
 
         public byte[] GetResourceBytes(string resource)
         {
             if (string.IsNullOrWhiteSpace(resource))
-            {
-                return new byte[0];
-            }
+                return Array.Empty<byte>();
+
+            var url = GetUrlForRequest(resource);
+            if (url == null)
+                return null;
+
+            if (_bytesCache.TryGetValue(url, out var cached))
+                return cached;
 
             try
             {
-                var url = GetUrlForRequest(resource);
-                return _httpClient.GetByteArrayAsync(url).Result;
+                var bytes = _httpClient.GetByteArrayAsync(url).Result;
+                _bytesCache[url] = bytes;
+                return bytes;
             }
             catch
             {
+                _bytesCache[url] = null; // Cache failures too
                 return null;
             }
         }
@@ -129,16 +116,24 @@ namespace Example.Avalonia
         public string GetResourceString(string resource)
         {
             if (string.IsNullOrWhiteSpace(resource))
-            {
                 return string.Empty;
-            }
+
+            var url = GetUrlForRequest(resource);
+            if (url == null)
+                return null;
+
+            if (_stringCache.TryGetValue(url, out var cached))
+                return cached;
+
             try
             {
-                var url = GetUrlForRequest(resource);
-                return _httpClient.GetStringAsync(url).Result;
+                var str = _httpClient.GetStringAsync(url).Result;
+                _stringCache[url] = str;
+                return str;
             }
             catch
             {
+                _stringCache[url] = null; // Cache failures too
                 return null;
             }
         }
