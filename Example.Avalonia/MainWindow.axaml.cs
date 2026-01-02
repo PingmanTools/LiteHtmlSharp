@@ -33,6 +33,8 @@ namespace Example.Avalonia
                 <html>
                     <head></head>
                     <body>
+                        <div><a href='command://sizetocontent'>Open SizeToContent Test Window</a></div>
+                        <hr />
                         <div><a href='http://www.google.com'>Load google.com</a></div>
                         <div><a href='http://www.pingplotter.com'>Load pingplotter.com</a></div>
                         <br />
@@ -62,6 +64,18 @@ namespace Example.Avalonia
 
         private async void LiteHtmlControl_LinkClicked(string url)
         {
+            // Handle command:// URLs
+            if (url.StartsWith("command://"))
+            {
+                var command = url.Substring("command://".Length);
+                if (command == "sizetocontent")
+                {
+                    var testWindow = new SizeToContentTestWindow();
+                    testWindow.Show();
+                }
+                return;
+            }
+
             if (url.StartsWith("http:") || url.StartsWith("https:"))
             {
                 _lastUrl = url;

@@ -3,6 +3,9 @@ html {
     height:100%;
     width:100%;
 	position: relative;
+    font-size: 125%;
+    color: black;
+    background-color: lightgrey;
 }
 
 head {

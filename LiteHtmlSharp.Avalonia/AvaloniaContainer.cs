@@ -45,8 +45,38 @@ namespace LiteHtmlSharp.Avalonia
         public static string BaseUrl;
         private static uint nextFontId;
 
-        public string DefaultFontName { get; set; } = "Arial";
-        public int DefaultFontSize { get; set; } = 12;
+        private string _defaultFontName;
+        private int _defaultFontSize;
+
+        /// <summary>
+        /// Default font name. If not set, uses system default from FontManager.
+        /// </summary>
+        public string DefaultFontName
+        {
+            get => _defaultFontName ?? GetSystemDefaultFontName();
+            set => _defaultFontName = value;
+        }
+
+        /// <summary>
+        /// Default font size. If not set, uses 12 (common default).
+        /// </summary>
+        public int DefaultFontSize
+        {
+            get => _defaultFontSize > 0 ? _defaultFontSize : 12;
+            set => _defaultFontSize = value;
+        }
+
+        private static string GetSystemDefaultFontName()
+        {
+            try
+            {
+                return FontManager.Current.DefaultFontFamily.Name;
+            }
+            catch
+            {
+                return "Arial"; // Fallback if FontManager not available
+            }
+        }
 
         public event Action<string> RenderHtmlRequested;
         public Action<string> SetCursorCallback;
