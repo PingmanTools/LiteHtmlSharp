@@ -2,8 +2,11 @@ cmake_minimum_required(VERSION 3.5)
 
 project(litehtml)
 
-set(CMAKE_CXX_FLAGS "-arch x86_64 -arch arm64 -std=c++11 -stdlib=libc++ -O3 -fms-extensions")
-set(CMAKE_C_FLAGS "-arch x86_64 -arch arm64 -std=c99 -O3 -fms-extensions")
+# Set minimum macOS deployment target to ensure compatibility
+set(CMAKE_OSX_DEPLOYMENT_TARGET "10.13" CACHE STRING "Minimum macOS deployment version")
+
+set(CMAKE_CXX_FLAGS "-arch x86_64 -arch arm64 -mmacosx-version-min=10.13 -std=c++11 -stdlib=libc++ -O3 -fms-extensions")
+set(CMAKE_C_FLAGS "-arch x86_64 -arch arm64 -mmacosx-version-min=10.13 -std=c99 -O3 -fms-extensions")
 
 set(SOURCE_LITEHTMLLIB 
                     ../../src/dllmain.cpp
