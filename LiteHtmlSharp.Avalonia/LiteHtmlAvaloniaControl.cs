@@ -170,7 +170,7 @@ namespace LiteHtmlSharp.Avalonia
 
         private void Document_ViewElementsNeedLayout()
         {
-            Dispatcher.UIThread.Post(ProcessInputs, DispatcherPriority.Background);
+            ProcessInputs();
         }
 
         private void Container_DocumentSizeKnown(LiteHtmlSize size)
@@ -210,7 +210,7 @@ namespace LiteHtmlSharp.Avalonia
 
         private void TriggerRedraw()
         {
-            Dispatcher.UIThread.Post(() => _controlPanel?.InvalidateVisual(), DispatcherPriority.Render);
+            _controlPanel?.InvalidateVisual();
         }
 
         protected override void OnPointerMoved(PointerEventArgs e)
@@ -315,7 +315,7 @@ namespace LiteHtmlSharp.Avalonia
             // Match WPF: just call CheckViewportChange, let it handle viewport
             Container.CheckViewportChange(forceRender: true);
 
-            Dispatcher.UIThread.Post(ProcessInputs, DispatcherPriority.Background);
+            ProcessInputs();
             TriggerRedraw();
         }
 
@@ -455,10 +455,10 @@ namespace LiteHtmlSharp.Avalonia
             if (_controlPanel is not HtmlRenderPanel htmlRenderPanel) return;
             htmlRenderPanel.AddChild(control);
             control.ZIndex = 1000;
+            //Canvas.SetLeft(control, -1000);
 
             control.IsVisible = true;
             control.Opacity = 1.0;
-
             switch (control)
             {
                 case TextBox textBox:

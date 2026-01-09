@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Nullable>disable</Nullable>
-    <Version>2.0.2-preview8</Version>
+    <Version>2.0.3-preview14</Version>
     <Authors>Matthew Little</Authors>
     <Company>Pingman Tools</Company>
     <Description>Avalonia UI drawing backend for LiteHtmlSharp</Description>
