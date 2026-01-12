@@ -253,6 +253,8 @@ paket-files/
 
 
 LiteHtmlLib/build/CMakeFiles
+LiteHtmlLib/lib_so/build*/
+LiteHtmlLib/lib_dll/build*/
 bin
 obj
 Win32

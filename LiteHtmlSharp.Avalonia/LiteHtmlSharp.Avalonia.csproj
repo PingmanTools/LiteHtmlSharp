@@ -24,8 +24,11 @@
   <ItemGroup>
     <None Include="../runtimes/win-x64/native/*.dll" Pack="true" PackagePath="runtimes/win-x64/native" />
     <None Include="../runtimes/win-x86/native/*.dll" Pack="true" PackagePath="runtimes/win-x86/native" />
+    <None Include="../runtimes/win-arm64/native/*.dll" Pack="true" PackagePath="runtimes/win-arm64/native" />
     <None Include="../runtimes/osx-x64/native/*.dylib" Pack="true" PackagePath="runtimes/osx-x64/native" />
     <None Include="../runtimes/osx-arm64/native/*.dylib" Pack="true" PackagePath="runtimes/osx-arm64/native" />
+    <None Include="../runtimes/linux-x64/native/*.so" Pack="true" PackagePath="runtimes/linux-x64/native" />
+    <None Include="../runtimes/linux-arm64/native/*.so" Pack="true" PackagePath="runtimes/linux-arm64/native" />
   </ItemGroup>
 
   <Import Project="..\LiteHtmlSharp.Shared\LiteHtmlSharp.Shared.projitems" Label="Shared" />
