@@ -63,6 +63,8 @@ typedef bool(*OnMediaChangedFunc)(DocContainer* container);
 typedef int(*GetWidthFunc)(DocContainer* container);
 typedef int(*GetHeightFunc)(DocContainer* container);
 
+typedef const litehtml::tchar_t*(*GetTooltipTextFunc)(DocContainer* container);
+
 struct DocumentCalls
 {
 public:
@@ -88,6 +90,8 @@ public:
 
    GetWidthFunc GetWidth = 0;
    GetHeightFunc GetHeight = 0;
+
+   GetTooltipTextFunc GetTooltipText = 0;
 };
 
 struct Callbacks

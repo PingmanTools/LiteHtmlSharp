@@ -6,7 +6,8 @@
 #
 # Usage:
 #   ./build-cross.sh arm64    # Build for Windows ARM64
-#   ./build-cross.sh x64      # Build for Windows x64 (optional, normally done on Windows)
+#   ./build-cross.sh x64      # Build for Windows x64
+#   ./build-cross.sh x86      # Build for Windows x86
 #
 set -e
 
@@ -23,9 +24,13 @@ case $ARCH in
         ARCH_NAME="x64"
         MINGW_PREFIX="x86_64-w64-mingw32"
         ;;
+    x86|i686)
+        ARCH_NAME="x86"
+        MINGW_PREFIX="i686-w64-mingw32"
+        ;;
     *)
         echo "Unsupported architecture: $ARCH"
-        echo "Usage: $0 [arm64|x64]"
+        echo "Usage: $0 [arm64|x64|x86]"
         exit 1
         ;;
 esac

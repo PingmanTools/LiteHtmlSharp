@@ -85,6 +85,8 @@ namespace LiteHtmlSharp.Avalonia
 
         private bool IsCursorOverLink { get; set; }
 
+        private string _currentTooltipText;
+
         public bool LastPointerDownHandledByHtml { get; private set; }
 
         /// <summary>
@@ -204,6 +206,7 @@ namespace LiteHtmlSharp.Avalonia
                 }
             }
 
+            UpdateTooltip(null);
             SetCursor(null);
             base.OnPointerExited(e);
         }
@@ -224,6 +227,8 @@ namespace LiteHtmlSharp.Avalonia
                     {
                         TriggerRedraw();
                     }
+
+                    UpdateTooltip(Container.Document.GetTooltipText());
                 }
             }
 
@@ -242,6 +247,13 @@ namespace LiteHtmlSharp.Avalonia
                 Cursor = new Cursor(StandardCursorType.Arrow);
                 IsCursorOverLink = false;
             }
+        }
+
+        private void UpdateTooltip(string tooltipText)
+        {
+            if (tooltipText == _currentTooltipText) return;
+            _currentTooltipText = tooltipText;
+            ToolTip.SetTip(this, string.IsNullOrWhiteSpace(tooltipText) ? null : tooltipText);
         }
 
         protected override void OnPointerPressed(PointerPressedEventArgs e)

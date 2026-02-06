@@ -123,5 +123,13 @@ namespace LiteHtmlSharp
             return Calls.GetWidth(Calls.ID);
         }
 
+        public string GetTooltipText()
+        {
+            if (Calls.GetTooltipText == null) return null;
+            var ptr = Calls.GetTooltipText(Calls.ID);
+            if (ptr == IntPtr.Zero) return null;
+            return Utf8Util.Utf8PtrToString(ptr);
+        }
+
     }
 }

@@ -338,5 +338,7 @@ namespace LiteHtmlSharp
 
       public GetWidthFunc GetWidth;
       public GetHeightFunc GetHeight;
+
+      public GetTooltipTextFunc GetTooltipText;
    }
 }
