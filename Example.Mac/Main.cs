@@ -6,8 +6,6 @@ namespace Example.Mac
    {
       static void Main(string[] args)
       {
-         //NSApplication.Init();
-         //NSApplication.Main(args);
          NSApplication.Init();
          var app = NSApplication.SharedApplication;
          app.Delegate = new AppDelegate();
