@@ -1,0 +1,12 @@
+<Window
+    x:Class="Example.Avalonia.SizeToContentTestWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Size To Content Test"
+    WindowStartupLocation="CenterScreen"
+    CanResize="False"
+    Background="LightGray">
+   <Border Name="border">
+        <ScrollViewer Name="canvas" />
+   </Border>
+</Window>

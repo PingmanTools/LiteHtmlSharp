@@ -202,6 +202,8 @@ void DocContainer::Draw(int x, int y, litehtml::position clip)
 
 bool DocContainer::OnMouseMove(int x, int y)
 {
+	_mouseX = x;
+	_mouseY = y;
 	std::vector<litehtml::position> redraw_boxes;
 	return _document->on_mouse_over(x, y, x, y, redraw_boxes);
 }
@@ -237,6 +239,20 @@ int DocContainer::GetWidth()
 int DocContainer::GetHeight()
 {
 	return _document->height();
+}
+
+const litehtml::tchar_t* DocContainer::GetTooltipText()
+{
+	if (!_document || !_document->root()) return nullptr;
+	auto el = _document->root()->get_element_by_point(_mouseX, _mouseY, _mouseX, _mouseY);
+	while (el) {
+		auto title = el->get_attr(_T("title"));
+		if (title && title[0] != '\0') {
+			return title;
+		}
+		el = el->parent();
+	}
+	return nullptr;
 }
 
 // -------------static wrapper functions ----------
@@ -300,6 +316,11 @@ ElementInfo* GetElementInfo(DocContainer* container, int ID)
 	return container->GetElementInfo(ID);
 }
 
+const litehtml::tchar_t* GetTooltipText(DocContainer* container)
+{
+	return container->GetTooltipText();
+}
+
 void DocContainer::SetDocumentCalls(DocumentCalls& docCalls)
 {
 	docCalls.OnMouseMove = ::OnMouseMove;
@@ -316,6 +337,8 @@ void DocContainer::SetDocumentCalls(DocumentCalls& docCalls)
 
 	docCalls.GetWidth = ::GetWidth;
 	docCalls.GetHeight = ::GetHeight;
+
+	docCalls.GetTooltipText = ::GetTooltipText;
 
 	docCalls.Container = this;
 }

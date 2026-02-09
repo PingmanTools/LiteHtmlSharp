@@ -1,127 +1,135 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
 
 namespace LiteHtmlSharp
 {
-   public class Document
-   {
-      public DocumentCalls Calls = new DocumentCalls();
-      public IntPtr Container;
+    public class Document
+    {
+        public DocumentCalls Calls = new DocumentCalls();
+        public IntPtr Container;
 
-      public event Action ViewElementsNeedLayout;
+        public event Action ViewElementsNeedLayout;
 
 
-      public bool HasLoadedHtml { get; set; }
+        public bool HasLoadedHtml { get; set; }
 
-      public bool HasRendered { get; set; }
+        public bool HasRendered { get; set; }
 
-      public void SetMasterCSS(string css)
-      {
-         var cssStr = Utf8Util.StringToHGlobalUTF8(css);
-         try
-         {
-            Calls.SetMasterCSS(Calls.ID, cssStr);
-         }
-         finally
-         {
-#if !__MonoCS__
-            Marshal.FreeHGlobal(cssStr);
-#endif
-         }
-      }
-
-      public void CreateFromString(string html)
-      {
-         if (html == null)
-         {
-            throw new Exception("Cannot render a null string.");
-         }
-         else
-         {
-            var htmlStr = Utf8Util.StringToHGlobalUTF8(html);
+        public void SetMasterCSS(string css)
+        {
+            var cssStr = Utf8Util.StringToHGlobalUTF8(css);
             try
             {
-               Calls.CreateFromString(Calls.ID, htmlStr);
+                Calls.SetMasterCSS(Calls.ID, cssStr);
             }
             finally
             {
-#if !__MonoCS__
-               Marshal.FreeHGlobal(htmlStr);
+#if !AUTO_UTF8
+                Marshal.FreeHGlobal(cssStr);
 #endif
             }
-            HasLoadedHtml = true;
-         }
-      }
+        }
 
-      public virtual void Draw(int x, int y, position clip)
-      {
-         Calls.Draw(Calls.ID, x, y, clip);
+        public void CreateFromString(string html)
+        {
+            if (html == null)
+            {
+                throw new Exception("Cannot render a null string.");
+            }
+            else
+            {
+                var htmlStr = Utf8Util.StringToHGlobalUTF8(html);
+                try
+                {
+                    Calls.CreateFromString(Calls.ID, htmlStr);
+                }
+                finally
+                {
+#if !AUTO_UTF8
+                    Marshal.FreeHGlobal(htmlStr);
+#endif
+                }
+                HasLoadedHtml = true;
+            }
+        }
 
-         if (ViewElementsNeedLayout != null)
-         {
-            ViewElementsNeedLayout();
-         }
-      }
+        public virtual void Draw(int x, int y, position clip)
+        {
+            Calls.Draw(Calls.ID, x, y, clip);
 
-      public bool OnMouseMove(int x, int y)
-      {
-         return Calls.OnMouseMove(Calls.ID, x, y);
-      }
+            if (ViewElementsNeedLayout != null)
+            {
+                ViewElementsNeedLayout();
+            }
+        }
 
-      public bool OnMouseLeave()
-      {
-         return Calls.OnMouseLeave(Calls.ID);
-      }
+        public bool OnMouseMove(int x, int y)
+        {
+            return Calls.OnMouseMove(Calls.ID, x, y);
+        }
 
-      public int Render(int maxWidth)
-      {
-         HasRendered = true;
-         return Calls.Render(Calls.ID, maxWidth);
-      }
+        public bool OnMouseLeave()
+        {
+            return Calls.OnMouseLeave(Calls.ID);
+        }
 
-      public void OnMediaChanged()
-      {
-         Calls.OnMediaChanged(Calls.ID);
-      }
+        public int Render(int maxWidth)
+        {
+            HasRendered = true;
+            return Calls.Render(Calls.ID, maxWidth);
+        }
 
-      public bool OnLeftButtonDown(int x, int y)
-      {
-         return Calls.OnLeftButtonDown(Calls.ID, x, y);
-      }
+        public void OnMediaChanged()
+        {
+            Calls.OnMediaChanged(Calls.ID);
+        }
 
-      public bool OnLeftButtonUp(int x, int y)
-      {
-         return Calls.OnLeftButtonUp(Calls.ID, x, y);
-      }
+        public bool OnLeftButtonDown(int x, int y)
+        {
+            return Calls.OnLeftButtonDown(Calls.ID, x, y);
+        }
 
-      public ElementInfo GetElementInfo(int ID)
-      {
-         IntPtr ptr = Calls.GetElementInfo(Calls.ID, ID);
-         if (ptr == IntPtr.Zero)
-         {
-            return null;
-         }
-         ElementInfoStruct info = Marshal.PtrToStructure<ElementInfoStruct>(ptr);
-         var el = new ElementInfo(info);
-         return el;
-      }
+        public bool OnLeftButtonUp(int x, int y)
+        {
+            return Calls.OnLeftButtonUp(Calls.ID, x, y);
+        }
 
-      public void TriggerTestCallback(int number, string text)
-      {
-         Calls.TriggerTestCallback(Calls.ID, number, Utf8Util.StringToHGlobalUTF8(text));
-      }
+        public ElementInfo GetElementInfo(int ID)
+        {
+            IntPtr ptr = Calls.GetElementInfo(Calls.ID, ID);
+            if (ptr == IntPtr.Zero)
+            {
+                return null;
+            }
+            ElementInfoStruct info = (ElementInfoStruct)Marshal.PtrToStructure(ptr, typeof(ElementInfoStruct));
+            var el = new ElementInfo(info);
+            return el;
+        }
 
-      public int Height()
-      {
-         return Calls.GetHeight(Calls.ID);
-      }
+        public void TriggerTestCallback(int number, string text)
+        {
+            Calls.TriggerTestCallback(Calls.ID, number, Utf8Util.StringToHGlobalUTF8(text));
+        }
 
-      public int Width()
-      {
-         return Calls.GetWidth(Calls.ID);
-      }
+        public int Height()
+        {
+            return Calls.GetHeight(Calls.ID);
+        }
 
-   }
+        public int Width()
+        {
+            return Calls.GetWidth(Calls.ID);
+        }
+
+        public string GetTooltipText()
+        {
+            if (Calls.GetTooltipText == null) return null;
+            var ptr = Calls.GetTooltipText(Calls.ID);
+            if (ptr == IntPtr.Zero) return null;
+            return Utf8Util.Utf8PtrToString(ptr);
+        }
+
+    }
 }

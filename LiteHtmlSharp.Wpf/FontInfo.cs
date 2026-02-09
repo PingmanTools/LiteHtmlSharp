@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Media;
@@ -20,11 +20,13 @@ namespace LiteHtmlSharp.Wpf
 
       public TextDecorationCollection Decorations = new TextDecorationCollection();
 
-      public FontInfo(string faceName, FontStyle style, FontWeight weight, int size)
+      public FontInfo(string faceName, FontStyle style, FontWeight weight, int size, FontFamily fontFamily = null)
       {
-         // Using the pack URI means we can look inside resources in addition to system fonts.
+         // Using the pack URI means we can look inside resources in addition to system fonts - this is only supported for backwards compatibility, as it causes memory leaks.
+         // https://stackoverflow.com/questions/31452443/wpf-textblock-memory-leak-when-using-font
          // FontFamily will allow comma separated font names, but does not support quotes of any kind (so don't quote it in your HTML/CSS!).
-         Family = new FontFamily(new Uri("pack://application:,,,/Fonts/"), faceName);
+
+         Family = fontFamily ?? new FontFamily(new Uri("pack://application:,,,/Fonts/"), faceName);
 
          TypeFace = new Typeface(Family, style, weight, new FontStretch());
          Size = size;
@@ -43,7 +45,7 @@ namespace LiteHtmlSharp.Wpf
 
       public FormattedText GetFormattedText(string text, TextAlignment alignment = TextAlignment.Left)
       {
-         var formattedText = new FormattedText(text, CultureInfo.InvariantCulture, System.Windows.FlowDirection.LeftToRight, TypeFace, Size, null);
+         var formattedText = new FormattedText(text, CultureInfo.InvariantCulture, System.Windows.FlowDirection.LeftToRight, TypeFace, Size, null, 1.0);
          formattedText.SetTextDecorations(Decorations);
          return formattedText;
       }

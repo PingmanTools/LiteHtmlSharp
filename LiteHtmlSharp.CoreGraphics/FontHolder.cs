@@ -3,6 +3,11 @@ using Foundation;
 using CoreText;
 using CoreGraphics;
 using System.Linq;
+#if MAC
+using AppKit;
+#elif IOS
+using UIKit;
+#endif
 
 namespace LiteHtmlSharp.CoreGraphics
 {
@@ -39,7 +44,7 @@ namespace LiteHtmlSharp.CoreGraphics
             }
             font = font.WithSymbolicTraits (font.Size, traits, traits);
             if (font != null) {
-               break; 
+               break;
             }
          }
 
@@ -54,7 +59,7 @@ namespace LiteHtmlSharp.CoreGraphics
          fm.draw_spaces = decoration.HasFlag(font_decoration.font_decoration_underline) || decoration.HasFlag(font_decoration.font_decoration_linethrough);
 
          var fontHolder = new FontHolder
-         { 
+         {
             FaceName = faceName,
             Size = size,
             Attributes = strAttrs,
@@ -90,7 +95,11 @@ namespace LiteHtmlSharp.CoreGraphics
          if (Decoration.HasFlag(font_decoration.font_decoration_underline))
          {
             attrString.AddAttribute((NSString)"NSUnderline", new NSNumber(1), range);
-            attrString.AddAttribute((NSString)"NSUnderlineColor", new NSObject(color.ToCGColor().Handle), range);
+            #if MAC
+            attrString.AddAttribute((NSString)"NSUnderlineColor", NSColor.FromCGColor(color.ToCGColor()), range);
+            #elif IOS
+            attrString.AddAttribute((NSString)"NSUnderlineColor", UIColor.FromCGColor(color.ToCGColor()), range);
+            #endif
          }
 
          if (Decoration.HasFlag(font_decoration.font_decoration_overline))

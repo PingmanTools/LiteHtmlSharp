@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 
-#if __MonoCS__
+#if AUTO_UTF8
 using Utf8Str = System.String;
 #else
 using Utf8Str = System.IntPtr;
@@ -338,5 +338,7 @@ namespace LiteHtmlSharp
 
       public GetWidthFunc GetWidth;
       public GetHeightFunc GetHeight;
+
+      public GetTooltipTextFunc GetTooltipText;
    }
 }

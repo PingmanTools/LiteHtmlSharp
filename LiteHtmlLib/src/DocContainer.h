@@ -60,10 +60,13 @@ public:
 	bool OnMediaChanged();
 	int GetWidth();
 	int GetHeight();
+	const litehtml::tchar_t* GetTooltipText();
 
 private:
 	litehtml::context _context;
 	litehtml::position _drawPos;
+	int _mouseX = 0;
+	int _mouseY = 0;
 
 	Callbacks _callbacks;
 	std::map<int, std::shared_ptr<TagElement>> _elements;

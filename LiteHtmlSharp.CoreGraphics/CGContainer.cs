@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Globalization;
@@ -34,7 +34,7 @@ namespace LiteHtmlSharp.CoreGraphics
       uint lastFontId = 0;
 
       public CGContainer(string masterCssData)
-         : base(masterCssData)
+         : base(masterCssData, LibInterop.Instance)
       {
          fontCache = new Dictionary<UIntPtr, FontHolder>();
          imageCache = new Dictionary<string, ImageHolder>();

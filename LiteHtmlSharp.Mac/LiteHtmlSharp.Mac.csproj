@@ -1,69 +1,33 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectTypeGuids>{A3F8F2AB-B479-4A4A-A458-A89E7DC349F1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <ProjectGuid>{81EC8297-3616-428D-89D1-06B7AC68574B}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>LiteHtmlSharp.Mac</RootNamespace>
-    <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
-    <AssemblyName>LiteHtmlSharp.Mac</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
-    <TargetFrameworkIdentifier>Xamarin.Mac</TargetFrameworkIdentifier>
+    <TargetFramework>net10.0-macos</TargetFramework>
+    <RuntimeIdentifiers>osx-x64;osx-arm64</RuntimeIdentifiers>
+    <DefineConstants>$(DefineConstants);MAC</DefineConstants>
+    <Authors>Matthew Little</Authors>
+    <Company>Pingman Tools</Company>
+    <Product>LiteHtmlSharp.Mac</Product>
+    <Version>2.0.2-preview8</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>Xamarin.Mac CoreGraphics drawing backend for LiteHtmlSharp</Description>
+    <PackageId>LiteHtmlSharp.Mac</PackageId>
+    <PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/PingmanTools/LiteHtmlSharp/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/PingmanTools/LiteHtmlSharp/</RepositoryUrl>
+    <PackageTags>litehtml litehtmlsharp html render coregraphics xamarin mac</PackageTags>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>__UNIFIED__;DEBUG;__MonoCS__</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
-    <UseRefCounting>false</UseRefCounting>
-    <UseSGen>false</UseSGen>
-    <IncludeMonoRuntime>false</IncludeMonoRuntime>
-    <CreatePackage>false</CreatePackage>
-    <EnableCodeSigning>false</EnableCodeSigning>
-    <EnablePackageSigning>false</EnablePackageSigning>
-    <Profiling>false</Profiling>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType></DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release</OutputPath>
-    <DefineConstants>__UNIFIED__;__MonoCS__</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
-    <UseRefCounting>false</UseRefCounting>
-    <UseSGen>false</UseSGen>
-    <IncludeMonoRuntime>false</IncludeMonoRuntime>
-    <CreatePackage>false</CreatePackage>
-    <EnableCodeSigning>false</EnableCodeSigning>
-    <EnablePackageSigning>false</EnablePackageSigning>
-    <Profiling>false</Profiling>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="Xamarin.Mac" />
+    <ProjectReference Include="..\LiteHtmlSharp\LiteHtmlSharp.csproj" />
   </ItemGroup>
+
+  <!-- Include native libraries in NuGet package for macOS only -->
   <ItemGroup>
-    <Folder Include="Resources\" />
+    <None Include="../runtimes/osx-x64/native/*.dylib" Pack="true" PackagePath="runtimes/osx-x64/native" />
+    <None Include="../runtimes/osx-arm64/native/*.dylib" Pack="true" PackagePath="runtimes/osx-arm64/native" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="LiteHtmlNSView.cs" />
-    <Compile Include="LiteHtmlNSWindow.cs" />
-    <Compile Include="LiteHtmlNSInput.cs" />
-    <Compile Include="LiteHtmlNSPanel.cs" />
-    <Compile Include="LiteHtmlWindowHelper.cs" />
-    <Compile Include="LiteHtmlNSButton.cs" />
-    <Compile Include="ICustomTagView.cs" />
-  </ItemGroup>
-  <Import Project="..\LiteHtmlSharp.CoreGraphics\LiteHtmlSharp.CoreGraphics.projitems" Label="Shared" Condition="Exists('..\LiteHtmlSharp.CoreGraphics\LiteHtmlSharp.CoreGraphics.projitems')" />
-  <Import Project="..\LiteHtmlSharp\LiteHtmlSharp.projitems" Label="Shared" Condition="Exists('..\LiteHtmlSharp\LiteHtmlSharp.projitems')" />
-  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
+
+  <Import Project="..\LiteHtmlSharp.Shared\LiteHtmlSharp.Shared.projitems" Label="Shared" />
+  <Import Project="..\LiteHtmlSharp.CoreGraphics\LiteHtmlSharp.CoreGraphics.projitems" Label="Shared" />
+
 </Project>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -39,9 +39,28 @@ namespace LiteHtmlSharp.Wpf
       }
    }
 
+   public delegate FontFamily FontAbsolutePathDelegate(string fontName);
+    
    public class WpfContainer : ViewportContainer
    {
       IResourceLoader _loader;
+
+      public FontAbsolutePathDelegate FontAbsolutePathDelegate;
+
+      class ResourceLoader : IResourceLoader
+      {
+         Func<string, string> _getStringResource;
+         Func<string, byte[]> _getBytesResource;
+
+         public ResourceLoader(Func<string, string> getStringResource, Func<string, byte[]> getBytesResource)
+         {
+            _getStringResource = getStringResource;
+            _getBytesResource = getBytesResource;
+         }
+
+         public byte[] GetResourceBytes(string resource) => _getBytesResource(resource);
+         public string GetResourceString(string resource) => _getStringResource(resource);
+      }
 
       static Dictionary<string, BitmapImage> _images = new Dictionary<string, BitmapImage>();
       static Dictionary<UIntPtr, FontInfo> _fonts = new Dictionary<UIntPtr, FontInfo>();
@@ -58,9 +77,13 @@ namespace LiteHtmlSharp.Wpf
 
       public DrawingContext DrawingContext;
 
-      public WpfContainer(string css, IResourceLoader loader) : base(css)
+      public WpfContainer(string css, IResourceLoader loader) : base(css, LibInterop.Instance)
       {
          _loader = loader;
+      }
+
+      public WpfContainer(string css, Func<string, string> getStringResource, Func<string, byte[]> getBytesResource) : this(css, new ResourceLoader(getStringResource, getBytesResource))
+      {
       }
 
       protected override void SetCaption(string caption)
@@ -90,7 +113,11 @@ namespace LiteHtmlSharp.Wpf
          {
             if (!String.IsNullOrEmpty(image))
             {
-               DrawImage(LoadImage(image), new Rect(pos.x, pos.y, pos.width, pos.height));
+               var bitmap = LoadImage(image);
+               if (bitmap != null)
+               {
+                  DrawImage(bitmap, new Rect(pos.x, pos.y, pos.width, pos.height));
+               }
             }
             else
             {
@@ -207,30 +234,37 @@ namespace LiteHtmlSharp.Wpf
 
       private BitmapImage LoadImage(string image)
       {
-         BitmapImage result;
-
-         if (_images.TryGetValue(image, out result))
+         try
          {
+            BitmapImage result;
+
+            if (_images.TryGetValue(image, out result))
+            {
+               return result;
+            }
+
+            var bytes = _loader.GetResourceBytes(image);
+            if (bytes != null && bytes.Length > 0)
+            {
+               result = new BitmapImage();
+
+               using (var stream = new MemoryStream(bytes))
+               {
+                  result.BeginInit();
+                  result.CacheOption = BitmapCacheOption.OnLoad;
+                  result.StreamSource = stream;
+                  result.EndInit();
+
+                  _images.Add(image, result);
+               }
+            }
+
             return result;
          }
-
-         var bytes = _loader.GetResourceBytes(image);
-         if (bytes != null && bytes.Length > 0)
+         catch
          {
-            result = new BitmapImage();
-
-            using (var stream = new MemoryStream(bytes))
-            {
-               result.BeginInit();
-               result.CacheOption = BitmapCacheOption.OnLoad;
-               result.StreamSource = stream;
-               result.EndInit();
-
-               _images.Add(image, result);
-            }
+            return null;
          }
-
-         return result;
       }
 
       protected override int GetTextWidth(string text, UIntPtr font)
@@ -252,8 +286,9 @@ namespace LiteHtmlSharp.Wpf
 
       protected override UIntPtr CreateFont(string faceName, int size, int weight, font_style italic, font_decoration decoration, ref font_metrics fm)
       {
-         var fontweight = FontWeight.FromOpenTypeWeight(weight);
-         FontInfo font = new FontInfo(faceName, italic == font_style.fontStyleItalic ? FontStyles.Italic : FontStyles.Normal, fontweight, size);
+         var fontweight = FontWeight.FromOpenTypeWeight(weight);    
+         FontInfo font = new FontInfo(faceName, italic == font_style.fontStyleItalic ? FontStyles.Italic : FontStyles.Normal, fontweight, size, FontAbsolutePathDelegate?.Invoke(faceName));
+
          if ((decoration & font_decoration.font_decoration_underline) != 0)
          {
             font.Decorations.Add(TextDecorations.Underline);

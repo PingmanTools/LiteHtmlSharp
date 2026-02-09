@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>disable</Nullable>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <!-- Force x64 on ARM64 machines (win-arm64 native library not yet available) -->
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LiteHtmlSharp.Wpf\LiteHtmlSharp.Wpf.csproj" />
+  </ItemGroup>
+
+  <!-- Copy native libraries for local development with ProjectReference -->
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)../runtimes/**/*.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>runtimes/%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <TargetPath>runtimes/%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="master.css" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>
