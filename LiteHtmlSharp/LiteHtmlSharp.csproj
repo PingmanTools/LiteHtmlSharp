@@ -13,7 +13,7 @@
     <Company>Pingman Tools</Company>
     <Product />
     <PackageId>LiteHtmlSharp</PackageId>
-    <Version>2.0.2-preview8</Version>
+    <Version>2.0.4</Version>
   </PropertyGroup>
 
 </Project>
