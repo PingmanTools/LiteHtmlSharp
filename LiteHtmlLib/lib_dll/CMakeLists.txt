@@ -9,9 +9,18 @@ endif()
 
 message(STATUS "Building for Windows ${TARGET_ARCH}")
 
-# Compiler flags for Windows (MinGW)
-set(CMAKE_CXX_FLAGS "-std=c++11 -O3 -DLITEHTML_UTF8")
-set(CMAKE_C_FLAGS "-std=c99 -O3")
+# Compiler-specific flags
+if(MSVC)
+    # MSVC: static CRT (/MT), UTF-8 source, optimize
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /utf-8 /O2 /DLITEHTML_UTF8")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /utf-8 /O2")
+    # Use static CRT (/MT) so no runtime dependencies
+    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded")
+else()
+    # MinGW/Clang: static link everything
+    set(CMAKE_CXX_FLAGS "-std=c++11 -O3 -DLITEHTML_UTF8")
+    set(CMAKE_C_FLAGS "-std=c99 -O3")
+endif()
 
 # For MinGW, we need to export symbols properly
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
@@ -96,7 +105,13 @@ set_target_properties(LiteHtmlLib PROPERTIES
     SUFFIX ".dll"
 )
 
-# Link against standard libraries
-target_link_libraries(LiteHtmlLib
-    stdc++
-)
+# Link libraries
+if(MSVC)
+    # MSVC with static CRT needs no extra link flags
+else()
+    # MinGW/Clang: link statically so no libc++/libunwind dependencies
+    target_link_libraries(LiteHtmlLib
+        -static
+        stdc++
+    )
+endif()
