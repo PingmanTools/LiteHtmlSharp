@@ -182,6 +182,8 @@ void DocContainer::SetMasterCSS(const tchar_t* css)
 
 void DocContainer::CreateFromString(const tchar_t* html)
 {
+	_elements.clear();
+
 	if (_document != nullptr)
 	{
 		_document.reset();
