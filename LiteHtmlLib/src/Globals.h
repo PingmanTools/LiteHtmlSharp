@@ -10,3 +10,4 @@ extern "C" { __declspec(dllexport) void Init(DocumentCalls& docCalls, SetCallbac
 extern "C" { __declspec(dllexport) const char* EchoTest(const char* testStr); }
 extern "C" { __declspec(dllexport) DocContainer* CreateDocContainer(); }
 extern "C" { __declspec(dllexport) int GetWidthTest(DocContainer* container); }
+extern "C" { __declspec(dllexport) LiteHtmlDiagnostics GetGlobalDiagnostics(); }

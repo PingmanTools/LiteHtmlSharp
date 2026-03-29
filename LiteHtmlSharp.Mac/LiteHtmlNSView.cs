@@ -315,6 +315,25 @@ namespace LiteHtmlSharp.Mac
             base.MouseUp(theEvent);
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                LiteHtmlContainer.Document.ViewElementsNeedLayout -= LiteHtmlContainer_ViewElementsNeedLayout;
+                RemoveAllViewElements();
+            }
+
+            // Free the native DocContainer (C++ allocated via Init in Globals.cpp)
+            var doc = LiteHtmlContainer.Document;
+            if (doc.Calls.Delete != null && doc.Calls.ID != IntPtr.Zero)
+            {
+                doc.Calls.Delete(doc.Calls.ID);
+                doc.Calls.ID = IntPtr.Zero;
+            }
+
+            base.Dispose(disposing);
+        }
+
     }
 }
 

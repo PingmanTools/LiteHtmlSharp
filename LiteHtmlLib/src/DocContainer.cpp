@@ -148,7 +148,7 @@ std::shared_ptr<litehtml::element> DocContainer::create_element(const litehtml::
 		std::shared_ptr<TagElement> result(new TagElement(doc));
 		result->SetManagedInfo(elementInfo);
 		_elements[elementID] = result;
-		return std::shared_ptr<litehtml::element>(result.get());
+		return result;
 	}
 	else
 	{
@@ -190,6 +190,21 @@ void DocContainer::CreateFromString(const tchar_t* html)
 	}
 
 	_document = document::createFromString(html, this, &_context);
+	_parseCount++;
+}
+
+LiteHtmlDiagnostics DocContainer::GetDiagnostics()
+{
+	extern std::vector<DocContainer*> _containers;
+
+	LiteHtmlDiagnostics diag = {};
+	diag.totalContainerCount = (int)_containers.size();
+	diag.hasDocument = (_document != nullptr) ? 1 : 0;
+	diag.documentRefCount = _document ? (int)_document.use_count() : 0;
+	diag.customElementCount = (int)_elements.size();
+	diag.parseCount = _parseCount;
+
+	return diag;
 }
 
 int DocContainer::Render(int maxWidth)
@@ -323,6 +338,11 @@ const litehtml::tchar_t* GetTooltipText(DocContainer* container)
 	return container->GetTooltipText();
 }
 
+LiteHtmlDiagnostics GetDiagnostics(DocContainer* container)
+{
+	return container->GetDiagnostics();
+}
+
 void DocContainer::SetDocumentCalls(DocumentCalls& docCalls)
 {
 	docCalls.OnMouseMove = ::OnMouseMove;
@@ -341,6 +361,7 @@ void DocContainer::SetDocumentCalls(DocumentCalls& docCalls)
 	docCalls.GetHeight = ::GetHeight;
 
 	docCalls.GetTooltipText = ::GetTooltipText;
+	docCalls.GetDiagnostics = ::GetDiagnostics;
 
 	docCalls.Container = this;
 }

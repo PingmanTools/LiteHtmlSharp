@@ -132,4 +132,7 @@ namespace LiteHtmlSharp
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = PInvoke.cs)]
     public delegate Utf8Str GetTooltipTextFunc(IntPtr container);
+
+    [UnmanagedFunctionPointer(PInvoke.cc, CharSet = PInvoke.cs)]
+    public delegate LiteHtmlDiagnostics GetDiagnosticsFunc(IntPtr container);
 }

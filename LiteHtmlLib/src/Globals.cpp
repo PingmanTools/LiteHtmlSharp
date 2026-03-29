@@ -48,6 +48,26 @@ int GetWidthTest(DocContainer* container)
    return container->GetWidth();
 }
 
+__declspec(dllexport)
+LiteHtmlDiagnostics GetGlobalDiagnostics()
+{
+   LiteHtmlDiagnostics diag = {};
+   diag.totalContainerCount = (int)_containers.size();
+
+   for (auto* container : _containers)
+   {
+      auto d = container->GetDiagnostics();
+      diag.parseCount += d.parseCount;
+      diag.customElementCount += d.customElementCount;
+
+      if (d.hasDocument) diag.hasDocument++;
+      if (d.documentRefCount > diag.documentRefCount)
+         diag.documentRefCount = d.documentRefCount;
+   }
+
+   return diag;
+}
+
 DocContainer* CreateDocContainer()
 {
    DocContainer* container = new DocContainer();

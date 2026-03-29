@@ -123,6 +123,17 @@ namespace LiteHtmlSharp
         [DllImport(LiteHtmlLibFile, CallingConvention = cc, SetLastError = true)]
         static extern Utf8Str EchoTest(Utf8Str testStr);
 
+        [DllImport(LiteHtmlLibFile, CallingConvention = cc)]
+        static extern LiteHtmlDiagnostics GetGlobalDiagnostics();
+
+        /// <summary>
+        /// Returns aggregate diagnostics across all LiteHTML containers.
+        /// TotalContainerCount: number of active containers (detects container leaks).
+        /// DocumentRefCount: highest refcount across all containers (>1 indicates a leak).
+        /// HasDocument: number of containers with a loaded document.
+        /// ParseCount, FontCount, SelectorCount, etc.: totals across all containers.
+        /// </summary>
+        public static LiteHtmlDiagnostics GetDiagnostics() => GetGlobalDiagnostics();
 
     }
 }

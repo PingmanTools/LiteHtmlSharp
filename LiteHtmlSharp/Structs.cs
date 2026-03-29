@@ -10,6 +10,16 @@ using Utf8Str = System.IntPtr;
 namespace LiteHtmlSharp
 {
    [StructLayout(LayoutKind.Sequential)]
+   public struct LiteHtmlDiagnostics
+   {
+      public int TotalContainerCount;
+      public int DocumentRefCount;
+      public int CustomElementCount;
+      public int ParseCount;
+      public int HasDocument;
+   }
+
+   [StructLayout(LayoutKind.Sequential)]
    public struct position
    {
       public int x;
@@ -340,5 +350,7 @@ namespace LiteHtmlSharp
       public GetHeightFunc GetHeight;
 
       public GetTooltipTextFunc GetTooltipText;
+
+      public GetDiagnosticsFunc GetDiagnostics;
    }
 }

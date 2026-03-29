@@ -338,6 +338,14 @@ namespace LiteHtmlSharp.Wpf
          Container.AnchorClicked -= Container_AnchorClicked;
          Container.DocumentSizeKnown -= Container_DocumentSizeKnown;
          Container.Document.ViewElementsNeedLayout -= Document_ViewElementsNeedLayout;
+
+         // Free the native DocContainer (C++ allocated via Init in Globals.cpp)
+         var doc = Container.Document;
+         if (doc.Calls.Delete != null && doc.Calls.ID != IntPtr.Zero)
+         {
+            doc.Calls.Delete(doc.Calls.ID);
+            doc.Calls.ID = IntPtr.Zero;
+         }
       }
 
    }

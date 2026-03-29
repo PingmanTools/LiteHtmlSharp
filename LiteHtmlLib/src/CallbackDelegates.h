@@ -65,6 +65,20 @@ typedef int(*GetHeightFunc)(DocContainer* container);
 
 typedef const litehtml::tchar_t*(*GetTooltipTextFunc)(DocContainer* container);
 
+struct LiteHtmlDiagnostics
+{
+   // Global state
+   int totalContainerCount;    // total DocContainers alive (detects container leaks)
+
+   // Container state
+   int documentRefCount;       // shared_ptr use_count; >1 indicates a reference leak
+   int customElementCount;     // custom elements tracked in _elements map
+   int parseCount;             // lifetime count of CreateFromString calls
+   int hasDocument;            // 1 if a document is currently loaded, 0 otherwise
+};
+
+typedef LiteHtmlDiagnostics(*GetDiagnosticsFunc)(DocContainer* container);
+
 struct DocumentCalls
 {
 public:
@@ -92,6 +106,8 @@ public:
    GetHeightFunc GetHeight = 0;
 
    GetTooltipTextFunc GetTooltipText = 0;
+
+   GetDiagnosticsFunc GetDiagnostics = 0;
 };
 
 struct Callbacks

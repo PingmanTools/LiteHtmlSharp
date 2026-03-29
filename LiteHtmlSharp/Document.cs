@@ -131,5 +131,11 @@ namespace LiteHtmlSharp
             return Utf8Util.Utf8PtrToString(ptr);
         }
 
+        public LiteHtmlDiagnostics GetDiagnostics()
+        {
+            if (Calls.GetDiagnostics == null) return default;
+            return Calls.GetDiagnostics(Calls.ID);
+        }
+
     }
 }

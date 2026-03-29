@@ -61,6 +61,7 @@ public:
 	int GetWidth();
 	int GetHeight();
 	const litehtml::tchar_t* GetTooltipText();
+	LiteHtmlDiagnostics GetDiagnostics();
 
 private:
 	litehtml::context _context;
@@ -71,4 +72,5 @@ private:
 	Callbacks _callbacks;
 	std::map<int, std::shared_ptr<TagElement>> _elements;
 	std::shared_ptr<litehtml::document> _document;
+	int _parseCount = 0;
 };
