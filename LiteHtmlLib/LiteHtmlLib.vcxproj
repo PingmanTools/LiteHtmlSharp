@@ -127,7 +127,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_UNICODE;UNICODE;LITEHTML_UTF8;WIN32;_DEBUG;_WINDOWS;_USRDLL;LITEHTMLLIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\litehtml\src;..\litehtml\src\gumbo;..\LiteHtmlLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\litehtml\src;..\litehtml\src\gumbo;..\litehtml\src\gumbo\visualc\include;..\LiteHtmlLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -143,7 +143,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_UNICODE;UNICODE;LITEHTML_UTF8;_DEBUG;WIN32;_WINDOWS;_USRDLL;LITEHTMLLIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\litehtml\src;..\litehtml\src\gumbo;..\LiteHtmlLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\litehtml\src;..\litehtml\src\gumbo;..\litehtml\src\gumbo\visualc\include;..\LiteHtmlLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -160,7 +160,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>_UNICODE;UNICODE;LITEHTML_UTF8;WIN32;NDEBUG;_WINDOWS;_USRDLL;LITEHTMLLIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\litehtml\src;..\litehtml\src\gumbo;..\LiteHtmlLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\litehtml\src;..\litehtml\src\gumbo;..\litehtml\src\gumbo\visualc\include;..\LiteHtmlLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -181,7 +181,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>_UNICODE;UNICODE;LITEHTML_UTF8;WIN32;NDEBUG;_WINDOWS;_USRDLL;LITEHTMLLIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\litehtml\src;..\litehtml\src\gumbo;..\LiteHtmlLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\litehtml\src;..\litehtml\src\gumbo;..\litehtml\src\gumbo\visualc\include;..\LiteHtmlLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <OmitFramePointers>false</OmitFramePointers>
@@ -200,7 +200,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_UNICODE;UNICODE;LITEHTML_UTF8;_DEBUG;WIN32;_WINDOWS;_USRDLL;LITEHTMLLIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\litehtml\src;..\litehtml\src\gumbo;..\LiteHtmlLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\litehtml\src;..\litehtml\src\gumbo;..\litehtml\src\gumbo\visualc\include;..\LiteHtmlLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -217,7 +217,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>_UNICODE;UNICODE;LITEHTML_UTF8;WIN32;NDEBUG;_WINDOWS;_USRDLL;LITEHTMLLIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\litehtml\src;..\litehtml\src\gumbo;..\LiteHtmlLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\litehtml\src;..\litehtml\src\gumbo;..\litehtml\src\gumbo\visualc\include;..\LiteHtmlLib\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <OmitFramePointers>false</OmitFramePointers>
