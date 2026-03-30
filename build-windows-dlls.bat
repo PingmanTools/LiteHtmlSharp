@@ -11,7 +11,6 @@ set RUNTIMES=%SCRIPT_DIR%runtimes
 set BUILT=0
 set FAILED=0
 set "VCVARSALL="
-set "TOOLSET_ARG="
 
 :: If msbuild isn't on PATH, try to find VS and set up environment
 where msbuild >nul 2>&1
@@ -46,27 +45,8 @@ if errorlevel 1 (
     )
     if defined VS_PATH (
         set "VCVARSALL=!VS_PATH!\VC\Auxiliary\Build\vcvarsall.bat"
-        echo Found VS: !VS_PATH!
     )
 )
-
-:: Detect PlatformToolset from installed MSVC tools version
-if defined VS_PATH (
-    set "MSVC_TOOLS_DIR=!VS_PATH!\VC\Tools\MSVC"
-    if exist "!MSVC_TOOLS_DIR!" (
-        for /f "tokens=*" %%d in ('dir /b /ad /o-n "!MSVC_TOOLS_DIR!" 2^>nul') do (
-            if "!TOOLSET_ARG!"=="" (
-                for /f "tokens=1,2 delims=." %%a in ("%%d") do (
-                    set "MINOR=%%b"
-                    set "TOOLSET=v%%a!MINOR:~0,1!"
-                    set "TOOLSET_ARG=/p:PlatformToolset=!TOOLSET!"
-                    echo Detected PlatformToolset: !TOOLSET!
-                )
-            )
-        )
-    )
-)
-echo.
 
 :: Initialize submodule if needed
 if not exist "%SCRIPT_DIR%litehtml\src\html.h" (
@@ -120,7 +100,7 @@ setlocal
 if defined VCVARSALL (
     call "!VCVARSALL!" %1 >nul 2>&1
 )
-msbuild "%VCXPROJ%" /p:Configuration=Release /p:Platform=%2 !TOOLSET_ARG! /p:WindowsTargetPlatformVersion=10.0 /v:minimal
+msbuild "%VCXPROJ%" /p:Configuration=Release /p:Platform=%2 /v:minimal
 if errorlevel 1 (
     echo ERROR: Build failed for %3
     exit /b 1
