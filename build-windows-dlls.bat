@@ -48,6 +48,24 @@ if errorlevel 1 (
     )
 )
 
+:: Detect explicit overrides for environments like EWDK where MSBuild
+:: auto-resolution doesn't work.
+set "EXTRA_PROPS="
+set "SDK_VER="
+if defined WindowsSDKVersion (
+    set "SDK_VER=!WindowsSDKVersion:\=!"
+) else if defined WindowsSdkDir (
+    for /f "delims=" %%v in ('dir /b /ad "!WindowsSdkDir!\Include\" 2^>nul ^| findstr "^10\."') do set "SDK_VER=%%v"
+)
+if defined SDK_VER (
+    set "EXTRA_PROPS=!EXTRA_PROPS! /p:WindowsTargetPlatformVersion=!SDK_VER!"
+)
+if defined VisualStudioVersion (
+    set "VS_MAJOR=!VisualStudioVersion:~0,2!"
+    if "!VS_MAJOR!"=="17" set "EXTRA_PROPS=!EXTRA_PROPS! /p:PlatformToolset=v143"
+    if "!VS_MAJOR!"=="16" set "EXTRA_PROPS=!EXTRA_PROPS! /p:PlatformToolset=v142"
+)
+
 :: Initialize submodule if needed
 if not exist "%SCRIPT_DIR%litehtml\src\html.h" (
     echo Initializing litehtml submodule...
@@ -100,7 +118,7 @@ setlocal
 if defined VCVARSALL (
     call "!VCVARSALL!" %1 >nul 2>&1
 )
-msbuild "%VCXPROJ%" /p:Configuration=Release /p:Platform=%2 /v:minimal
+msbuild "%VCXPROJ%" /p:Configuration=Release /p:Platform=%2 /v:minimal !EXTRA_PROPS!
 if errorlevel 1 (
     echo ERROR: Build failed for %3
     exit /b 1
