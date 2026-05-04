@@ -38,12 +38,12 @@ namespace LiteHtmlSharp.Avalonia
             public string GetResourceString(string resource) => _getStringResource(resource);
         }
 
-        private static readonly Dictionary<string, Bitmap> Images = new();
-        private static readonly Dictionary<UIntPtr, FontInfo> Fonts = new();
+        private readonly Dictionary<string, Bitmap> _images = new();
+        private readonly Dictionary<UIntPtr, FontInfo> _fonts = new();
 
         public bool Loaded = false;
         public static string BaseUrl;
-        private static uint nextFontId;
+        private uint _nextFontId;
 
         private string _defaultFontName;
         private int _defaultFontSize;
@@ -351,9 +351,9 @@ namespace LiteHtmlSharp.Avalonia
             size.height = bmp.PixelSize.Height;
         }
 
-        private static FontInfo GetFont(UIntPtr fontID)
+        private FontInfo GetFont(UIntPtr fontID)
         {
-            return Fonts[fontID];
+            return _fonts[fontID];
         }
 
         private void DrawImage(Bitmap image, Rect rect)
@@ -365,7 +365,7 @@ namespace LiteHtmlSharp.Avalonia
         {
             try
             {
-                if (Images.TryGetValue(image, out var result))
+                if (_images.TryGetValue(image, out var result))
                 {
                     return result;
                 }
@@ -374,7 +374,7 @@ namespace LiteHtmlSharp.Avalonia
                 if (bytes == null || bytes.Length <= 0) return result;
                 using var stream = new MemoryStream(bytes);
                 result = new Bitmap(stream);
-                Images.Add(image, result);
+                _images.Add(image, result);
 
                 return result;
             }
@@ -418,8 +418,8 @@ namespace LiteHtmlSharp.Avalonia
 
             font.HasUnderline = (decoration & font_decoration.font_decoration_underline) != 0;
 
-            var fontID = new UIntPtr(nextFontId++);
-            Fonts.Add(fontID, font);
+            var fontID = new UIntPtr(_nextFontId++);
+            _fonts.Add(fontID, font);
 
             fm.x_height = font.xHeight;
             fm.ascent = font.Ascent;
