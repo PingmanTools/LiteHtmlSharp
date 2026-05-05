@@ -40,10 +40,13 @@ namespace LiteHtmlSharp.Avalonia
 
         private readonly Dictionary<string, Bitmap> _images = new();
         private readonly Dictionary<UIntPtr, FontInfo> _fonts = new();
+        private readonly Dictionary<FontKey, UIntPtr> _fontIDsByKey = new();
 
         public bool Loaded = false;
         public static string BaseUrl;
         private uint _nextFontId;
+
+        private readonly record struct FontKey(string FaceName, int Size, FontWeight Weight, FontStyle Style, bool HasUnderline);
 
         private string _defaultFontName;
         private int _defaultFontSize;
@@ -412,19 +415,25 @@ namespace LiteHtmlSharp.Avalonia
             font_decoration decoration, ref font_metrics fm)
         {
             var fontweight = weight >= 700 ? FontWeight.Bold : FontWeight.Normal;
-            var font = new FontInfo(faceName,
-                italic == font_style.fontStyleItalic ? FontStyle.Italic : FontStyle.Normal, fontweight, size,
-                FontAbsolutePathDelegate?.Invoke(faceName));
+            var style = italic == font_style.fontStyleItalic ? FontStyle.Italic : FontStyle.Normal;
+            var hasUnderline = (decoration & font_decoration.font_decoration_underline) != 0;
 
-            font.HasUnderline = (decoration & font_decoration.font_decoration_underline) != 0;
+            var key = new FontKey(faceName, size, fontweight, style, hasUnderline);
+            if (!_fontIDsByKey.TryGetValue(key, out var fontID))
+            {
+                var font = new FontInfo(faceName, style, fontweight, size, FontAbsolutePathDelegate?.Invoke(faceName));
+                font.HasUnderline = hasUnderline;
 
-            var fontID = new UIntPtr(_nextFontId++);
-            _fonts.Add(fontID, font);
+                fontID = new UIntPtr(_nextFontId++);
+                _fonts.Add(fontID, font);
+                _fontIDsByKey.Add(key, fontID);
+            }
 
-            fm.x_height = font.xHeight;
-            fm.ascent = font.Ascent;
-            fm.descent = font.Descent;
-            fm.height = font.LineHeight;
+            var fi = _fonts[fontID];
+            fm.x_height = fi.xHeight;
+            fm.ascent = fi.Ascent;
+            fm.descent = fi.Descent;
+            fm.height = fi.LineHeight;
             fm.draw_spaces = decoration > 0;
 
             return fontID;

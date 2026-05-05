@@ -31,6 +31,20 @@ namespace LiteHtmlSharp
 
         public event Action<string> AnchorClicked;
 
+#if !AUTO_UTF8
+        // Native buffers returned to the C++ side from string-returning callbacks.
+        // Without these the C++ side leaks the marshaled return values, since
+        // litehtml's caller convention assumes the C++ wrapper owns them.
+        // - Free-on-next-call works for callbacks where the C++ side copies the
+        //   string into a std::string immediately (ImportCss, TransformText).
+        // - Cache-by-source works where the C++ side passes the pointer up the
+        //   stack and may hold it indefinitely (GetDefaultFontName).
+        IntPtr _lastImportCssPtr = IntPtr.Zero;
+        IntPtr _lastTransformTextPtr = IntPtr.Zero;
+        IntPtr _defaultFontNamePtr = IntPtr.Zero;
+        string _defaultFontNameCached = null;
+#endif
+
         ILibInterop _libInterop;
 
         public Container(string masterCssData, ILibInterop libInterop)
@@ -173,7 +187,21 @@ namespace LiteHtmlSharp
 
         private Utf8Str GetDefaultFontNameWrapper()
         {
+#if !AUTO_UTF8
+            var name = GetDefaultFontName();
+            if (!string.Equals(name, _defaultFontNameCached, StringComparison.Ordinal))
+            {
+                if (_defaultFontNamePtr != IntPtr.Zero)
+                {
+                    Marshal.FreeHGlobal(_defaultFontNamePtr);
+                }
+                _defaultFontNamePtr = Utf8Util.StringToHGlobalUTF8(name);
+                _defaultFontNameCached = name;
+            }
+            return _defaultFontNamePtr;
+#else
             return Utf8Util.StringToHGlobalUTF8(GetDefaultFontName());
+#endif
         }
 
         protected abstract string GetDefaultFontName();
@@ -187,7 +215,18 @@ namespace LiteHtmlSharp
 
         private Utf8Str ImportCssCallback(Utf8Str url, Utf8Str baseurl)
         {
+#if !AUTO_UTF8
+            if (_lastImportCssPtr != IntPtr.Zero)
+            {
+                Marshal.FreeHGlobal(_lastImportCssPtr);
+                _lastImportCssPtr = IntPtr.Zero;
+            }
+            _lastImportCssPtr = Utf8Util.StringToHGlobalUTF8(
+                ImportCss(Utf8Util.Utf8PtrToString(url), Utf8Util.Utf8PtrToString(baseurl)));
+            return _lastImportCssPtr;
+#else
             return Utf8Util.StringToHGlobalUTF8(ImportCss(Utf8Util.Utf8PtrToString(url), Utf8Util.Utf8PtrToString(baseurl)));
+#endif
         }
 
         protected virtual string ImportCss(string url, string baseurl)
@@ -274,7 +313,18 @@ namespace LiteHtmlSharp
 
         private Utf8Str TransformTextCallback(Utf8Str text, text_transform t)
         {
+#if !AUTO_UTF8
+            if (_lastTransformTextPtr != IntPtr.Zero)
+            {
+                Marshal.FreeHGlobal(_lastTransformTextPtr);
+                _lastTransformTextPtr = IntPtr.Zero;
+            }
+            _lastTransformTextPtr = Utf8Util.StringToHGlobalUTF8(
+                TransformText(Utf8Util.Utf8PtrToString(text), t));
+            return _lastTransformTextPtr;
+#else
             return Utf8Util.StringToHGlobalUTF8(TransformText(Utf8Util.Utf8PtrToString(text), t));
+#endif
         }
 
         protected virtual string TransformText(string text, text_transform t)
