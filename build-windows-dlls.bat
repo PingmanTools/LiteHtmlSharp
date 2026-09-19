@@ -67,7 +67,7 @@ if defined VisualStudioVersion (
 )
 
 :: Initialize submodule if needed
-if not exist "%SCRIPT_DIR%litehtml\src\html.h" (
+if not exist "%SCRIPT_DIR%litehtml\include\litehtml\html.h" (
     echo Initializing litehtml submodule...
     git -C "%SCRIPT_DIR%" submodule update --init
     if errorlevel 1 (
@@ -118,7 +118,11 @@ setlocal
 if defined VCVARSALL (
     call "!VCVARSALL!" %1 >nul 2>&1
 )
-msbuild "%VCXPROJ%" /p:Configuration=Release /p:Platform=%2 /v:minimal !EXTRA_PROPS!
+:: Pool identical string literals, including header-defined CSS and identifier lists.
+:: CL is scoped to this platform build by setlocal above.
+set "CL=!CL! /GF"
+:: Rebuild ensures existing object files are regenerated with string pooling.
+msbuild "%VCXPROJ%" /t:Rebuild /p:Configuration=Release /p:Platform=%2 /v:minimal !EXTRA_PROPS!
 if errorlevel 1 (
     echo ERROR: Build failed for %3
     exit /b 1

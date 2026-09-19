@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <ApplicationId>com.litehtmlsharp.decoder-tests</ApplicationId>
+    <TargetFramework>net10.0-macos</TargetFramework>
+    <SupportedOSPlatformVersion>15.5</SupportedOSPlatformVersion>
+    <UseMacOSAppBundle>true</UseMacOSAppBundle>
+    <CodesignKey>-</CodesignKey>
+    <EnableCodeSigning>true</EnableCodeSigning>
+    <UseHardenedRuntime>false</UseHardenedRuntime>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <IsPackable>false</IsPackable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../LiteHtmlSharp.Mac/LiteHtmlSharp.Mac.csproj" />
+    <EmbeddedResource Include="../LiteHtmlSharp.Avalonia.Tests/Fixtures/disposal-previous.gif" LogicalName="disposal.gif" />
+  </ItemGroup>
+</Project>

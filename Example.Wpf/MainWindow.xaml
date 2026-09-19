@@ -1,12 +1,12 @@
-﻿<Window x:Class="Example.Wpf.MainWindow"
+<Window x:Class="Example.Wpf.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Example.Wpf"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="LiteHtmlSharp — WPF rendering demo" Height="760" Width="840">
     <Grid>
-      <ScrollViewer x:Name="ScrollViewer"/>
-   </Grid>
+        <Grid.RowDefinitions><RowDefinition/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+        <ScrollViewer x:Name="ScrollViewer"/>
+        <Border Grid.Row="1" Background="#E8EDF3" Padding="16,10">
+            <TextBlock x:Name="Status" Foreground="#24334B" Text="Ready. Try the link, text field, and button."/>
+        </Border>
+    </Grid>
 </Window>

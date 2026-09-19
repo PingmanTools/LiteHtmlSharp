@@ -1,0 +1,2 @@
+# Public C ABI only. Mach-O adds an underscore to C symbol names.
+_lh_*

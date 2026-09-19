@@ -1,53 +1,15 @@
-﻿using System;
-using LiteHtmlSharp;
+using System;
 using CoreGraphics;
 
-namespace LiteHtmlSharp.CoreGraphics
+namespace LiteHtmlSharp.CoreGraphics;
+
+public static class CGExtensions
 {
-   public static class CGExtensions
-   {
-      public static CGRect ToRect(this position pos)
-      {
-         return new CGRect(pos.x, pos.y, pos.width, pos.height);
-      }
-
-      public static position ToPosition(this CGRect rect)
-      {
-         return new position
-         { 
-            width = (int)Math.Round(rect.Width), 
-            height = (int)Math.Round(rect.Height), 
-            x = (int)Math.Round(rect.X), 
-            y = (int)Math.Round(rect.Y) 
-         };
-      }
-
-      const float MaxByteAsFloat = (float)byte.MaxValue;
-
-      public static CGColor ToCGColor(this web_color wc)
-      {
-         return new CGColor(wc.red / MaxByteAsFloat, wc.green / MaxByteAsFloat, wc.blue / MaxByteAsFloat, wc.alpha / MaxByteAsFloat);
-      }
-
-      public static CGSize ToCGSize(this LiteHtmlSize viewportSize)
-      {
-         return new CGSize(viewportSize.Width, viewportSize.Height);
-      }
-
-      public static CGPoint ToCGPoint(this LiteHtmlPoint viewportPoint)
-      {
-         return new CGPoint(viewportPoint.X, viewportPoint.Y);
-      }
-
-      public static LiteHtmlSize ToLiteHtmlSize(this CGSize size)
-      {
-         return new LiteHtmlSize(size.Width, size.Height);
-      }
-
-      public static LiteHtmlPoint ToLiteHtmlPoint(this CGPoint point)
-      {
-         return new LiteHtmlPoint(point.X, point.Y);
-      }
-   }
+    public static CGRect ToRect(this RectF r) => new(r.X, r.Y, Math.Max(0, r.Width), Math.Max(0, r.Height));
+    public static RectF ToRectF(this CGRect r) => new((float)r.X, (float)r.Y, (float)r.Width, (float)r.Height);
+    public static CGColor ToCGColor(this ColorRgba c) => new(c.R / 255f, c.G / 255f, c.B / 255f, c.A / 255f);
+    public static CGSize ToCGSize(this LiteHtmlSize s) => new(s.Width, s.Height);
+    public static CGPoint ToCGPoint(this LiteHtmlPoint p) => new(p.X, p.Y);
+    public static LiteHtmlSize ToLiteHtmlSize(this CGSize s) => new((float)s.Width, (float)s.Height);
+    public static LiteHtmlPoint ToLiteHtmlPoint(this CGPoint p) => new((float)p.X, (float)p.Y);
 }
-

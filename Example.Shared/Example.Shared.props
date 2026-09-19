@@ -1,0 +1,8 @@
+<Project>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)DemoPage.cs" Link="Shared/DemoPage.cs" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)page.html" LogicalName="LiteHtmlSharp.Examples.page.html" Link="Shared/page.html" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)master.css" LogicalName="LiteHtmlSharp.Examples.master.css" Link="Shared/master.css" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)motion.gif" LogicalName="LiteHtmlSharp.Examples.motion.gif" Link="Shared/motion.gif" />
+  </ItemGroup>
+</Project>

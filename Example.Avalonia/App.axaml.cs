@@ -15,7 +15,8 @@ namespace Example.Avalonia
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                desktop.MainWindow = new MainWindow();
+                desktop.MainWindow = System.Array.IndexOf(desktop.Args ?? System.Array.Empty<string>(), "--small-animation") >= 0
+                    ? new SmallAnimationWindow() : new MainWindow();
             }
 
             base.OnFrameworkInitializationCompleted();

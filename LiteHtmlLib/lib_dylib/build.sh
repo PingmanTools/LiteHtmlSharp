@@ -1,15 +1,4 @@
 #!/bin/bash
-cd "$(dirname "$0")"
-
-if ! which "/usr/local/bin/cmake" >/dev/null ;  then
-    echo "CMake must be installed to build LiteHtml.dylib"
-    exit 2
-fi
-
-cd lib_dylib
-rm -rf build
-mkdir build
-cd build
-/usr/local/bin/cmake ..
-make -j8
-
+set -euo pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+exec "$SCRIPT_DIR/../build.sh" "$@"

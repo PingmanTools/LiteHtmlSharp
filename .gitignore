@@ -274,3 +274,7 @@ LiteHtmlLib.vcxproj.user
 # Claude documentation (local only)
 CLAUDE.md
 
+
+!docs/
+docs/*
+!docs/managed-api.md

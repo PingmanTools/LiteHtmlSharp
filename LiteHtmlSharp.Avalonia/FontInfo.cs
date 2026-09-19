@@ -1,110 +1,118 @@
 using System;
-using System.Globalization;
+using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
 
-namespace LiteHtmlSharp.Avalonia
+namespace LiteHtmlSharp.Avalonia;
+
+internal sealed class FontInfo : IDisposable
 {
-    public class FontInfo
+    private readonly FontDescription description;
+    private readonly Typeface typeface;
+    private readonly Dictionary<(string, ColorRgba), TextLayout> layouts = new();
+    private readonly Dictionary<string, float> widths = new(StringComparer.Ordinal);
+    public FontMetrics Metrics
     {
-        public FontFamily Family;
-        public Typeface TypeFace;
-        public int Size;
-        public int Ascent;
-        public int Descent;
-        public int xHeight;
-        public int LineHeight;
-
-        public bool HasUnderline;
-        public double UnderlineOffset;
-        public double UnderlineThickness;
-
-        public FontInfo(string faceName, FontStyle style, FontWeight weight, int size, FontFamily fontFamily = null)
+        get;
+    }
+    private readonly float thickness;
+    private readonly double underlineOffset;
+    private readonly Pen decorationPen;
+    public FontInfo(FontDescription description, FontFamily family, float defaultSize, RectF viewport)
+    {
+        this.description = description;
+        typeface = new Typeface(family, description.Style == 1 ? FontStyle.Italic : FontStyle.Normal, (FontWeight)Math.Clamp(description.Weight, 1, 1000));
+        using var sample = new TextLayout("x", typeface, description.Size, Brushes.Black);
+        var ascent = (float)sample.Baseline;
+        var height = (float)sample.Height;
+        var xHeight = description.Size * .5f;
+        var recommendedThickness = Math.Max(.5f, description.Size / 16);
+        underlineOffset = sample.Baseline + description.Size * .1;
+        if (FontManager.Current.TryGetGlyphTypeface(typeface, out var glyph))
         {
-            Family = fontFamily ?? SafeCreateFontFamily(faceName);
-            TypeFace = new Typeface(Family, style, weight);
-            Size = size;
-
-            var layout = CreateTextLayout("x", null);
-            xHeight = (int)Math.Round(layout.Height);
-            LineHeight = (int)Math.Ceiling(size * 1.2); // Default line spacing factor
-
-            layout = CreateTextLayout("X", null);
-            Ascent = (int)Math.Round(layout.Height);
-
-            layout = CreateTextLayout("p", null);
-            Descent = (int)Math.Round(layout.Height) - xHeight;
-
-            // Calculate underline position using font metrics
-            var baselineLayout = CreateTextLayout("X", null);
-            var baseline = baselineLayout.Baseline;
-
-            if (FontManager.Current.TryGetGlyphTypeface(TypeFace, out var glyphTypeface))
-            {
-                var metrics = glyphTypeface.Metrics;
-                var scale = (double)size / metrics.DesignEmHeight;
-                // UnderlinePosition is positive in Avalonia (distance below baseline)
-                UnderlineOffset = baseline + metrics.UnderlinePosition * scale;
-                UnderlineThickness = metrics.UnderlineThickness * scale;
-            }
-            else
-            {
-                // Fallback using typical font proportions
-                UnderlineOffset = baseline + size * 0.1;
-                UnderlineThickness = size * 0.05;
-            }
+            var scale = description.Size / glyph.Metrics.DesignEmHeight;
+            ascent = Math.Abs(glyph.Metrics.Ascent * scale);
+            height = (Math.Abs(glyph.Metrics.Ascent) + Math.Abs(glyph.Metrics.Descent) + glyph.Metrics.LineGap) * scale;
+            recommendedThickness = Math.Max(.5f, glyph.Metrics.UnderlineThickness * scale);
+            underlineOffset = sample.Baseline + glyph.Metrics.UnderlinePosition * scale;
+            if (glyph.TryGetGlyph('x', out var x) && glyph.TryGetGlyphMetrics(x, out var gm))
+                // Glyph bounds can have a negative height; CSS needs a positive distance.
+                xHeight = Math.Abs(gm.Height * scale);
         }
-
-        private static FontFamily SafeCreateFontFamily(string faceName)
+        using var ch = new TextLayout("0", typeface, description.Size, Brushes.Black);
+        Metrics = new(description.Size, height, ascent, Math.Max(0, height - ascent), xHeight, (float)ch.WidthIncludingTrailingWhitespace, DrawSpaces: description.DecorationLine != 0);
+        thickness = description.DecorationThicknessPredefined >= 0 ? recommendedThickness : ConvertLength(description.DecorationThickness, description.DecorationThicknessUnits, description.Size, xHeight, Metrics.ChWidth, defaultSize, viewport);
+        decorationPen = new Pen(description.DecorationColor.GetBrush(), Math.Max(0, thickness),
+            description.DecorationStyle == 2 ? DashStyle.Dot : description.DecorationStyle == 3 ? DashStyle.Dash : null);
+    }
+    private static float ConvertLength(float value, int unit, float em, float ex, float ch, float root, RectF viewport) => unit switch
+    {
+        1 => value * em / 100,
+        2 => value * 96,
+        3 => value * 96 / 2.54f,
+        4 => value * 96 / 25.4f,
+        5 => value * em,
+        6 => value * ex,
+        7 => value * 96 / 72,
+        8 => value * 16,
+        10 => value * viewport.Width / 100,
+        11 => value * viewport.Height / 100,
+        12 => value * Math.Min(viewport.Width, viewport.Height) / 100,
+        13 => value * Math.Max(viewport.Width, viewport.Height) / 100,
+        14 => value * root,
+        15 => value * ch,
+        _ => value
+    };
+    public float Width(string text)
+    {
+        if (!widths.TryGetValue(text, out var width))
         {
-            // Normalize and guard against relative placeholders like "." or "./"
-            if (string.IsNullOrWhiteSpace(faceName) ||
-                faceName == "." ||
-                faceName == "./")
-            {
-                return FontFamily.Default;
-            }
-
-            // If it starts with "./" strip that so at least a plain family name remains
-            if (faceName.StartsWith("./"))
-            {
-                faceName = faceName.Substring(2);
-                if (string.IsNullOrWhiteSpace(faceName))
-                    return FontFamily.Default;
-            }
-
-            // Avoid accidentally passing a pure relative path
-            if (Uri.TryCreate(faceName, UriKind.Relative, out var rel) &&
-                !Uri.TryCreate(faceName, UriKind.Absolute, out _))
-            {
-                return FontFamily.Default;
-            }
-
-            try
-            {
-                return new FontFamily(faceName);
-            }
-            catch (ArgumentException)
-            {
-                return FontFamily.Default;
-            }
+            using var measured = new TextLayout(text, typeface, description.Size, Brushes.Black);
+            width = (float)measured.WidthIncludingTrailingWhitespace;
+            if (widths.Count >= 2048) widths.Clear();
+            widths[text] = width;
         }
-
-        public TextLayout CreateTextLayout(string text, IBrush brush)
+        return width;
+    }
+    public TextLayout Layout(string text, ColorRgba color, IBrush foreground)
+    {
+        var key = (text, color);
+        if (!layouts.TryGetValue(key, out var layout))
         {
-            return new TextLayout(text, TypeFace, Size, brush);
+            if (layouts.Count >= 512)
+            {
+                foreach (var old in layouts.Values) old.Dispose();
+                layouts.Clear();
+            }
+            layout = new TextLayout(text, typeface, description.Size, foreground);
+            layouts[key] = layout;
         }
-
-        public FormattedText GetFormattedText(string text)
-        {
-            return new FormattedText(
-                text,
-                CultureInfo.InvariantCulture,
-                FlowDirection.LeftToRight,
-                TypeFace,
-                Size,
-                null);
-        }
+        return layout;
+    }
+    public void Draw(DrawingContext context, RectF position, string text, ColorRgba color, IBrush foreground, float decorationOpacity = 1)
+    {
+        var layout = Layout(text, color, foreground);
+        layout.Draw(context, new Point(position.X, position.Y));
+        using var opacity = decorationOpacity == 1 ? default : context.PushOpacity(decorationOpacity);
+        // litehtml emits spaces separately; its full run width keeps decorations continuous.
+        if ((description.DecorationLine & 1) != 0)
+            DrawDecoration(context, position, underlineOffset);
+        if ((description.DecorationLine & 2) != 0)
+            DrawDecoration(context, position, layout.Baseline - Metrics.Ascent);
+        if ((description.DecorationLine & 4) != 0)
+            DrawDecoration(context, position, layout.Baseline - Metrics.XHeight / 2);
+    }
+    private void DrawDecoration(DrawingContext context, RectF position, double offset)
+    {
+        var y = position.Y + offset;
+        context.DrawLine(decorationPen, new Point(position.X, y), new Point(position.X + position.Width, y));
+    }
+    public void Dispose()
+    {
+        foreach (var layout in layouts.Values)
+            layout.Dispose();
+        layouts.Clear();
+        widths.Clear();
     }
 }

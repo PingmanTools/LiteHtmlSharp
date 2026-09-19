@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <Nullable>disable</Nullable>
-    <Version>2.0.7</Version>
     <Authors>Matthew Little</Authors>
     <Company>Pingman Tools</Company>
     <Description>Avalonia UI drawing backend for LiteHtmlSharp</Description>
@@ -17,6 +16,7 @@
 
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.3.9" />
+    <PackageReference Include="SkiaSharp" Version="2.88.9" />
     <ProjectReference Include="..\LiteHtmlSharp\LiteHtmlSharp.csproj" />
   </ItemGroup>
 
@@ -31,6 +31,6 @@
     <None Include="../runtimes/linux-arm64/native/*.so" Pack="true" PackagePath="runtimes/linux-arm64/native" />
   </ItemGroup>
 
-  <Import Project="..\LiteHtmlSharp.Shared\LiteHtmlSharp.Shared.projitems" Label="Shared" />
+
 
 </Project>

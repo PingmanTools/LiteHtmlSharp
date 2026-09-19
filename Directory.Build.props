@@ -1,0 +1,9 @@
+<Project>
+  <PropertyGroup>
+    <Version>3.0.0-preview1</Version>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
+</Project>

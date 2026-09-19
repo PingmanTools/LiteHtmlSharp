@@ -5,14 +5,13 @@
     <UseWPF>true</UseWPF>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <DefineConstants>$(DefineConstants);WINDOWS</DefineConstants>
-    <Version>2.0.2-preview8</Version>
     <Authors>Matthew Little</Authors>
     <Company>Pingman Tools</Company>
     <Description>WPF drawing backend for LiteHtmlSharp</Description>
     <PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/PingmanTools/LiteHtmlSharp/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/PingmanTools/LiteHtmlSharp/</RepositoryUrl>
-    <PackageTags>litehtml litehtmlsharp html render coregraphics windows wpf</PackageTags>
+    <PackageTags>litehtml litehtmlsharp html render windows wpf</PackageTags>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
@@ -25,8 +24,9 @@
   <ItemGroup>
     <None Include="../runtimes/win-x64/native/*.dll" Pack="true" PackagePath="runtimes/win-x64/native" />
     <None Include="../runtimes/win-x86/native/*.dll" Pack="true" PackagePath="runtimes/win-x86/native" />
+    <None Include="../runtimes/win-arm64/native/*.dll" Pack="true" PackagePath="runtimes/win-arm64/native" />
   </ItemGroup>
 
-  <Import Project="..\LiteHtmlSharp.Shared\LiteHtmlSharp.Shared.projitems" Label="Shared" />
+
 
 </Project>

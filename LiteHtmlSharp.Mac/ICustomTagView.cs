@@ -1,14 +1,9 @@
-﻿using System;
+using System.Collections.Generic;
 using AppKit;
-
-namespace LiteHtmlSharp.Mac
+namespace LiteHtmlSharp.Mac;
+public interface ICustomTagView
 {
-   public interface ICustomTagView
-   {
-      bool HasSetup { get; }
-      void Setup(ElementInfo elementInfo);
-
-      NSView View { get; }
-   }
+    bool HasSetup { get; }
+    void Setup(IReadOnlyDictionary<string, string> attributes);
+    NSView View { get; }
 }
-

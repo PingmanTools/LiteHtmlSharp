@@ -7,8 +7,6 @@
     <Nullable>disable</Nullable>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <!-- Force x64 on ARM64 machines (win-arm64 native library not yet available) -->
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="master.css" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
+  <Import Project="../Example.Shared/Example.Shared.props" />
 </Project>

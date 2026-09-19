@@ -1,7 +1,7 @@
 using System;
-using System.IO;
 using Avalonia.Controls;
 using LiteHtmlSharp;
+using Example.Shared;
 using LiteHtmlSharp.Avalonia;
 
 namespace Example.Avalonia;
@@ -17,7 +17,7 @@ namespace Example.Avalonia;
 public partial class SizeToContentTestWindow : Window
 {
     private LiteHtmlAvaloniaControl _visual;
-    private static readonly string MasterCss = File.Exists("master.css") ? File.ReadAllText("master.css") : "";
+    private static readonly string MasterCss = DemoPage.MasterCss;
 
     // Initial size (in real usage, this comes from config/bundle metadata)
     private const int InitialWidth = 400;
@@ -85,6 +85,6 @@ public partial class SizeToContentTestWindow : Window
             </html>
         ";
 
-        _visual.LoadHtml(html);
+        _visual.Container.Render(html);
     }
 }

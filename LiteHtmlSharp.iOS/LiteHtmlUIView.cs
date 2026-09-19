@@ -90,7 +90,7 @@ namespace LiteHtmlSharp.iOS
 
         public void LoadHtml(string html)
         {
-            LiteHtmlContainer.Document.CreateFromString(html);
+            LiteHtmlContainer.Document.Load(html);
             CheckViewportChange(forceRender: true);
             SetNeedsDisplayInRect(Viewport);
         }

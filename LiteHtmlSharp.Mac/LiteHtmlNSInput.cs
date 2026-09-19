@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using AppKit;
 using ObjCRuntime;
 
@@ -6,9 +7,10 @@ namespace LiteHtmlSharp.Mac
 {
    public class LiteHtmlNSInput : NSTextField, ICustomTagView
    {
-      public void Setup(ElementInfo elementInfo)
+      public void Setup(IReadOnlyDictionary<string,string> attributes)
       {
          HasSetup = true;
+         if(attributes.TryGetValue("value",out var value))StringValue=value;
          Cell.UsesSingleLineMode = true;
          Cell.Wraps = false;
       }
@@ -27,7 +29,7 @@ namespace LiteHtmlSharp.Mac
       {
       }
 
-      // this view can be shown without the MainMenu Edit Menu being initialized which is what normally handles these..
+      // Embedded windows may not provide an Edit menu to route standard shortcuts.
       public override bool PerformKeyEquivalent(NSEvent e)
       {
          if (e.Type == NSEventType.KeyDown)

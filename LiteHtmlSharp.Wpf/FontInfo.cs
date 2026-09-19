@@ -1,54 +1,104 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Windows.Media;
-using System.Linq;
-using System.Windows;
 using System.Globalization;
+using System.Windows;
+using System.Windows.Media;
 
-namespace LiteHtmlSharp.Wpf
+namespace LiteHtmlSharp.Wpf;
+
+internal sealed class FontInfo
 {
-   public class FontInfo
-   {
-      public FontFamily Family;
-      public Typeface TypeFace;
-      public int Size;
-      public int Ascent;
-      public int Descent;
-      public int xHeight;
-      public int LineHeight;
-
-      public TextDecorationCollection Decorations = new TextDecorationCollection();
-
-      public FontInfo(string faceName, FontStyle style, FontWeight weight, int size, FontFamily fontFamily = null)
-      {
-         // Using the pack URI means we can look inside resources in addition to system fonts - this is only supported for backwards compatibility, as it causes memory leaks.
-         // https://stackoverflow.com/questions/31452443/wpf-textblock-memory-leak-when-using-font
-         // FontFamily will allow comma separated font names, but does not support quotes of any kind (so don't quote it in your HTML/CSS!).
-
-         Family = fontFamily ?? new FontFamily(new Uri("pack://application:,,,/Fonts/"), faceName);
-
-         TypeFace = new Typeface(Family, style, weight, new FontStretch());
-         Size = size;
-
-         FormattedText format = GetFormattedText("x");
-         xHeight = (int)Math.Round(format.Extent);
-         LineHeight = (int)Math.Ceiling(size * Family.LineSpacing);
-
-         format = GetFormattedText("X");
-
-         Ascent = (int)Math.Round(format.Extent);
-
-         format = GetFormattedText("p");
-         Descent = (int)Math.Round(format.Extent) - xHeight;
-      }
-
-      public FormattedText GetFormattedText(string text, TextAlignment alignment = TextAlignment.Left)
-      {
-         var formattedText = new FormattedText(text, CultureInfo.InvariantCulture, System.Windows.FlowDirection.LeftToRight, TypeFace, Size, null, 1.0);
-         formattedText.SetTextDecorations(Decorations);
-         return formattedText;
-      }
-
-   }
+    private readonly FontDescription description;
+    private readonly Typeface typeface;
+    private readonly Dictionary<(string, ColorRgba), FormattedText> texts = new();
+    private readonly Dictionary<string, float> widths = new(StringComparer.Ordinal);
+    private readonly Pen decorationPen;
+    private readonly double underlineOffset;
+    public FontMetrics Metrics { get; }
+    public FontInfo(FontDescription description, FontFamily family, float rootSize, RectF viewport)
+    {
+        this.description = description;
+        typeface = new Typeface(family, description.Style == 1 ? FontStyles.Italic : FontStyles.Normal,
+            FontWeight.FromOpenTypeWeight(Math.Clamp(description.Weight, 1, 999)), FontStretches.Normal);
+        var sample = Format("x", Brushes.Black);
+        var ascent = sample.Baseline;
+        var height = sample.Height;
+        var xHeight = description.Size * .5;
+        var thickness = description.Size / 16d;
+        underlineOffset = ascent + description.Size * .1;
+        if (typeface.TryGetGlyphTypeface(out var glyph))
+        {
+            ascent = glyph.Baseline * description.Size;
+            height = glyph.Height * description.Size;
+            xHeight = glyph.XHeight * description.Size;
+            thickness = glyph.UnderlineThickness * description.Size;
+            underlineOffset = sample.Baseline - glyph.UnderlinePosition * description.Size;
+        }
+        var ch = Format("0", Brushes.Black).WidthIncludingTrailingWhitespace;
+        Metrics = new(description.Size, (float)height, (float)ascent, (float)Math.Max(0, height - ascent),
+            (float)xHeight, (float)ch, DrawSpaces: description.DecorationLine != 0);
+        thickness = Math.Max(.5, thickness);
+        if (description.DecorationThicknessPredefined < 0)
+            thickness = Length(description.DecorationThickness, description.DecorationThicknessUnits, description.Size, xHeight, ch, rootSize, viewport);
+        decorationPen = new Pen(description.DecorationColor.GetBrush(), Math.Max(0, thickness));
+        if (description.DecorationStyle == 2) decorationPen.DashStyle = DashStyles.Dot;
+        if (description.DecorationStyle == 3) decorationPen.DashStyle = DashStyles.Dash;
+        decorationPen.Freeze();
+    }
+    private static double Length(float v, int unit, double em, double ex, double ch, double root, RectF viewport) => unit switch
+    {
+        1 => v * em / 100,
+        2 => v * 96,
+        3 => v * 96 / 2.54,
+        4 => v * 96 / 25.4,
+        5 => v * em,
+        6 => v * ex,
+        7 => v * 96 / 72,
+        8 => v * 16,
+        10 => v * viewport.Width / 100,
+        11 => v * viewport.Height / 100,
+        12 => v * Math.Min(viewport.Width, viewport.Height) / 100,
+        13 => v * Math.Max(viewport.Width, viewport.Height) / 100,
+        14 => v * root,
+        15 => v * ch,
+        _ => v
+    };
+    private FormattedText Format(string text, Brush brush) => new(text, CultureInfo.InvariantCulture,
+        FlowDirection.LeftToRight, typeface, description.Size, brush, 1);
+    private FormattedText Text(string text, ColorRgba color)
+    {
+        var key = (text, color);
+        if (!texts.TryGetValue(key, out var result))
+        {
+            if (texts.Count >= 512) texts.Clear();
+            texts[key] = result = Format(text, color.GetBrush());
+        }
+        return result;
+    }
+    public float Width(string text)
+    {
+        if (!widths.TryGetValue(text, out var width))
+        {
+            width = (float)Format(text, Brushes.Black).WidthIncludingTrailingWhitespace;
+            if (widths.Count >= 2048) widths.Clear();
+            widths[text] = width;
+        }
+        return width;
+    }
+    public void Draw(DrawingContext context, RectF box, string text, ColorRgba color, float decorationOpacity = 1)
+    {
+        var formatted = Text(text, color);
+        context.DrawText(formatted, new Point(box.X, box.Y));
+        if (decorationPen.Thickness <= 0) return;
+        context.PushOpacity(Math.Clamp(decorationOpacity, 0, 1));
+        try
+        {
+            void Line(double offset) => context.DrawLine(decorationPen, new Point(box.X, box.Y + offset), new Point(box.X + box.Width, box.Y + offset));
+            // Whitespace arrives as separate runs; use the layout width for continuous decoration.
+            if ((description.DecorationLine & 1) != 0) Line(underlineOffset);
+            if ((description.DecorationLine & 2) != 0) Line(formatted.Baseline - Metrics.Ascent);
+            if ((description.DecorationLine & 4) != 0) Line(formatted.Baseline - Metrics.XHeight / 2);
+        }
+        finally { context.Pop(); }
+    }
 }

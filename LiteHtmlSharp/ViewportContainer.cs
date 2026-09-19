@@ -1,149 +1,100 @@
-using System;
+namespace LiteHtmlSharp;
 
-namespace LiteHtmlSharp
+public struct LiteHtmlSize
 {
-    public struct LiteHtmlSize
+    public float Width, Height;
+    public LiteHtmlSize(float width, float height)
     {
-        public double Width;
-        public double Height;
-        public LiteHtmlSize(double width, double height)
-        {
-            Width = width;
-            Height = height;
-        }
+        Width = width;
+        Height = height;
     }
-
-    public struct LiteHtmlPoint
+}
+public struct LiteHtmlPoint
+{
+    public float X, Y;
+    public LiteHtmlPoint(float x, float y)
     {
-        public double X;
-        public double Y;
-        public LiteHtmlPoint(double x, double y)
-        {
-            X = x;
-            Y = y;
-        }
+        X = x;
+        Y = y;
     }
-
-    public struct LiteHtmlRect
+}
+public struct LiteHtmlRect
+{
+    public LiteHtmlPoint Point; public LiteHtmlSize Size;
+}
+public class ViewportContainer : Container
+{
+    public LiteHtmlSize Size;
+    public LiteHtmlPoint ScrollOffset;
+    private LiteHtmlSize desiredSize;
+    private LiteHtmlPoint desiredScrollOffset;
+    private bool rendering;
+    public bool HasCustomViewport
     {
-        public LiteHtmlPoint Point;
-        public LiteHtmlSize Size;
+        get; private set;
     }
-
-
-    public abstract class ViewportContainer : Container
+    public event Action<LiteHtmlSize>? DocumentSizeKnown;
+    public ViewportContainer(string? masterCss = null) : base(masterCss) { }
+    public override RectF Viewport => new(0, 0, Size.Width, Size.Height);
+    public override MediaFeatures MediaFeatures => new(3, Size.Width, Size.Height, Size.Width, Size.Height);
+    public void ResetViewport()
     {
-        public LiteHtmlSize Size;
-
-        public LiteHtmlPoint ScrollOffset;
-
-        public event Action<LiteHtmlSize> DocumentSizeKnown;
-
-        LiteHtmlSize _desiredSize;
-        LiteHtmlPoint _desiredScrollOffset;
-        bool _hasCustomViewport;
-        public bool HasCustomViewport => _hasCustomViewport;
-
-        bool _isRendering;
-
-
-        public ViewportContainer(string masterCssData, ILibInterop libInterop) : base(masterCssData, libInterop)
+        Document.HasLoadedHtml = false;
+        Document.HasRendered = false;
+        Size = default;
+        ScrollOffset = default;
+        desiredSize = default;
+        desiredScrollOffset = default;
+        HasCustomViewport = false;
+    }
+    public DisplayList Draw()
+    {
+        var list = Document.Draw(-ScrollOffset.X, -ScrollOffset.Y, Viewport);
+        DisplayListReplayer.Replay(list, this);
+        return list;
+    }
+    public void Render() => Render(Document.Render);
+    public void Render(Func<float, float> renderFrame)
+    {
+        if (rendering)
+            return;
+        rendering = true;
+        try
         {
+            renderFrame(Size.Width);
+            DocumentSizeKnown?.Invoke(new(Document.Width(), Document.Height()));
         }
-
-        public void ResetViewport()
+        finally { rendering = false; }
+    }
+    public bool CheckViewportChange(bool forceRender = false)
+    {
+        if (forceRender || Size.Width != desiredSize.Width || Size.Height != desiredSize.Height)
         {
-            Document.HasLoadedHtml = false;
-            Document.HasRendered = false;
-            Size = default(LiteHtmlSize);
-            ScrollOffset = default(LiteHtmlPoint);
-            _desiredSize = default(LiteHtmlSize);
-            _desiredScrollOffset = default(LiteHtmlPoint);
-            _hasCustomViewport = false;
+            Size = desiredSize;
+            ScrollOffset = desiredScrollOffset;
+            Document.OnMediaChanged();
+            Render();
+            return true;
         }
-
-        public void Draw()
+        if (ScrollOffset.X != desiredScrollOffset.X || ScrollOffset.Y != desiredScrollOffset.Y)
         {
-            Document.Draw((int)-ScrollOffset.X, (int)-ScrollOffset.Y, new position
-            {
-                x = 0,
-                y = 0,
-                width = (int)Size.Width,
-                height = (int)Size.Height
-            });
+            ScrollOffset = desiredScrollOffset;
+            return true;
         }
-
-        public void Render()
+        return false;
+    }
+    public bool SetViewport(LiteHtmlPoint scrollOffset, LiteHtmlSize size)
+    {
+        HasCustomViewport = true;
+        desiredScrollOffset = scrollOffset;
+        desiredSize = size;
+        if (!Document.HasLoadedHtml)
         {
-            // Prevent re-entrant calls to avoid infinite recursion
-            if (_isRendering)
-            {
-                return;
-            }
-
-            try
-            {
-                _isRendering = true;
-                Document.Render((int)Size.Width);
-                DocumentSizeKnown?.Invoke(new LiteHtmlSize(Document.Width(), Document.Height()));
-            }
-            finally
-            {
-                _isRendering = false;
-            }
-        }
-
-        protected override void GetClientRect(ref position client)
-        {
-            client.width = (int)Size.Width;
-            client.height = (int)Size.Height;
-        }
-
-        protected override void GetMediaFeatures(ref media_features media)
-        {
-            media.width = media.device_width = (int)Size.Width;
-            media.height = media.device_height = (int)Size.Height;
-        }
-
-
-        // If true then a redraw is needed
-        public bool CheckViewportChange(bool forceRender = false)
-        {
-            if (forceRender
-                || (int)Size.Width != (int)_desiredSize.Width
-                || (int)Size.Height != (int)_desiredSize.Height)
-            {
-                Size = _desiredSize;
-                ScrollOffset = _desiredScrollOffset;
-                Document.OnMediaChanged();
-                Render();
-                return true;
-            }
-
-            if ((int)ScrollOffset.Y != (int)_desiredScrollOffset.Y || (int)ScrollOffset.X != (int)_desiredScrollOffset.X)
-            {
-                ScrollOffset = _desiredScrollOffset;
-                return true;
-            }
-
+            // The first layout needs the viewport before HTML is loaded.
+            Size = desiredSize;
+            ScrollOffset = desiredScrollOffset;
             return false;
         }
-
-
-        // custom viewport is used for offsetting/scrolling the canvas on this view
-        public bool SetViewport(LiteHtmlPoint scrollOffset, LiteHtmlSize size)
-        {
-            _hasCustomViewport = true;
-            _desiredScrollOffset = scrollOffset;
-            _desiredSize = size;
-
-            if (!Document.HasLoadedHtml)
-            {
-                return false;
-            }
-
-            return CheckViewportChange();
-        }
-
+        return CheckViewportChange();
     }
 }

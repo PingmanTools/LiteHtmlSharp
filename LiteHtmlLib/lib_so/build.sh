@@ -58,14 +58,15 @@ mkdir -p "$BUILD_DIR"
 cd "$BUILD_DIR"
 
 # Configure
-cmake ..
+cmake -S "$SCRIPT_DIR/.." -B . -DCMAKE_BUILD_TYPE=Release
 
 # Build
 make -j$(nproc)
 
 # Install if requested
 if [ -n "$INSTALL_FLAG" ]; then
-    make install
+    mkdir -p "$SCRIPT_DIR/../../runtimes/linux-$ARCH_NAME/native"
+    bash "$SCRIPT_DIR/../package-native.sh" "$BUILD_DIR/liblitehtml.so" "linux-$ARCH_NAME"
     echo ""
     echo "Installed to: $SCRIPT_DIR/../../runtimes/linux-$ARCH_NAME/native/"
 fi

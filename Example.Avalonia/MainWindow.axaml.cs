@@ -1,178 +1,125 @@
+using System;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Controls;
 using LiteHtmlSharp.Avalonia;
-using MsBox.Avalonia;
-using MsBox.Avalonia.Enums;
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
+using Example.Shared;
 
-namespace Example.Avalonia
+namespace Example.Avalonia;
+
+public partial class MainWindow : Window
 {
-    public partial class MainWindow : Window
+    private readonly LiteHtmlAvaloniaControl visual;
+    private readonly HttpClient http = new() { Timeout = TimeSpan.FromSeconds(20) };
+    private CancellationTokenSource navigation;
+    private Uri pageUrl;
+    private bool closed;
+
+    public MainWindow()
     {
-        AvaloniaContainer _litehtmlContainer;
-        LiteHtmlAvaloniaControl _liteHtmlControl;
-        HttpClient _httpClient;
-        string _lastUrl;
-        readonly Dictionary<string, byte[]> _bytesCache = new();
-        readonly Dictionary<string, string> _stringCache = new();
-
-        public MainWindow()
+        InitializeComponent();
+        http.DefaultRequestHeaders.UserAgent.ParseAdd("LiteHtmlSharp-Demo/3.0");
+        var masterCss = DemoPage.MasterCss;
+        var container = new AvaloniaContainer(masterCss, LoadCss, LoadBytes);
+        visual = new LiteHtmlAvaloniaControl(HtmlScrollViewer, container, masterCss, null);
+        visual.LinkClicked += async url =>
         {
-            InitializeComponent();
+            if (url.StartsWith("demo://", StringComparison.Ordinal))
+                Status.Text = url == "demo://button" ? "Button activated." : "Link activated.";
+            else await Navigate(url);
+        };
+        Closed += (_, _) =>
+        {
+            closed = true;
+            navigation?.Cancel();
+            visual.Dispose();
+            http.Dispose();
+        };
+        ShowHome();
+    }
 
-            var masterCss = System.IO.File.ReadAllText("master.css");
-            _httpClient = new HttpClient();
+    private void ShowHome()
+    {
+        navigation?.Cancel();
+        pageUrl = null;
+        Address.Text = "";
+        visual.Container.SetBaseUrl("");
+        HtmlScrollViewer.Offset = default;
+        visual.Container.Render(DemoPage.Html);
+        Status.Text = "Test page. HTML and CSS only; JavaScript does not run.";
+    }
 
-            // Create the HTML control
-            _litehtmlContainer = new AvaloniaContainer(masterCss, GetResourceString, GetResourceBytes);
-            _liteHtmlControl = new LiteHtmlAvaloniaControl(HtmlScrollViewer, _litehtmlContainer, masterCss, null);
-            _liteHtmlControl.LinkClicked += LiteHtmlControl_LinkClicked;
+    private void HomeClicked(object sender, RoutedEventArgs e) => ShowHome();
+    private async void GoClicked(object sender, RoutedEventArgs e) => await Navigate(Address.Text, true);
+    private async void AddressKeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.Key != Key.Enter) return;
+        e.Handled = true;
+        await Navigate(Address.Text, true);
+    }
 
-            _liteHtmlControl.LoadHtml(@"
-                <html>
-                    <head></head>
-                    <body>
-                        <div><a href='command://sizetocontent'>Open SizeToContent Test Window</a></div>
-                        <hr />
-                        <div><a href='http://www.google.com'>Load google.com</a></div>
-                        <div><a href='http://www.pingplotter.com'>Load pingplotter.com</a></div>
-                        <br />
-                        <div style='width:100px; height:100px; background-color:red'></div>
-                        <div>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor nisi quis ultrices scelerisque.
-                            Mauris imperdiet vehicula metus quis bibendum. Maecenas non erat quis est imperdiet vehicula. Proin
-                            scelerisque mauris purus, elementum sodales tellus imperdiet id. Vivamus luctus lorem nec augue
-                            porttitor, eu mattis nisl laoreet. Cras fringilla vel purus ut imperdiet. Donec luctus finibus elit,
-                            eu elementum purus cursus a. Suspendisse mollis tristique leo a auctor. Vivamus pulvinar pretium
-                            elementum. Donec purus sapien, consequat laoreet eros viverra, laoreet pulvinar ligula. Sed faucibus
-                            nisl odio, sed facilisis odio scelerisque ut.
-                        </div>
-                        <p>
-                            Nullam dapibus enim vel tortor luctus molestie. Vestibulum non sagittis leo, non vulputate magna.
-                            Aliquam erat volutpat. Nulla hendrerit vel metus nec condimentum. Sed aliquet purus id ipsum interdum
-                            ullamcorper. Nullam congue luctus urna eu bibendum. Morbi non tellus turpis. Mauris nec dui in massa
-                            facilisis imperdiet. Proin metus purus, imperdiet ac laoreet vel, elementum ac nulla. Vivamus dolor
-                            tellus, blandit auctor elementum id, mattis consequat tellus. Vivamus id maximus felis. Praesent
-                            aliquet augue id metus rutrum maximus. Etiam et nulla eu lectus efficitur elementum. Integer porttitor
-                            quis erat sit amet feugiat. In id magna mollis, viverra nibh at, sollicitudin leo.
-                        </p>
-                    </body>
-                </html>
-            ");
+    private async Task Navigate(string address, bool fromAddress = false)
+    {
+        address = address?.Trim();
+        if (string.IsNullOrEmpty(address)) return;
+        Uri target;
+        if (!Uri.TryCreate(address, UriKind.Absolute, out target))
+        {
+            if (fromAddress || pageUrl == null || !Uri.TryCreate(pageUrl, address, out target))
+                Uri.TryCreate("https://" + address, UriKind.Absolute, out target);
         }
-
-        private async void LiteHtmlControl_LinkClicked(string url)
+        if (target == null || target.Scheme is not ("http" or "https"))
         {
-            // Handle command:// URLs
-            if (url.StartsWith("command://"))
-            {
-                var command = url.Substring("command://".Length);
-                if (command == "sizetocontent")
-                {
-                    var testWindow = new SizeToContentTestWindow();
-                    testWindow.Show();
-                }
-                return;
-            }
-
-            if (url.StartsWith("http:") || url.StartsWith("https:"))
-            {
-                _lastUrl = url;
-            }
-            else
-            {
-                var builder = new UriBuilder(_lastUrl);
-                builder.Path = url;
-                _lastUrl = builder.ToString();
-            }
-
-            try
-            {
-                var pageContent = await _httpClient.GetStringAsync(_lastUrl);
-                _liteHtmlControl.LoadHtml(pageContent);
-            }
-            catch (Exception ex)
-            {
-                var messageBox = MessageBoxManager.GetMessageBoxStandard(
-                    "Error",
-                    "Error loading page. " + (ex.InnerException ?? ex).Message,
-                    ButtonEnum.Ok);
-                await messageBox.ShowWindowDialogAsync(this);
-            }
+            Status.Text = "Enter an http:// or https:// address.";
+            return;
         }
-
-        public byte[] GetResourceBytes(string resource)
+        navigation?.Cancel();
+        var request = new CancellationTokenSource();
+        navigation = request;
+        Status.Text = "Loading " + target.Host + "…";
+        try
         {
-            if (string.IsNullOrWhiteSpace(resource))
-                return Array.Empty<byte>();
-
-            var url = GetUrlForRequest(resource);
-            if (url == null)
-                return null;
-
-            if (_bytesCache.TryGetValue(url, out var cached))
-                return cached;
-
-            try
-            {
-                var bytes = _httpClient.GetByteArrayAsync(url).Result;
-                _bytesCache[url] = bytes;
-                return bytes;
-            }
-            catch
-            {
-                _bytesCache[url] = null; // Cache failures too
-                return null;
-            }
+            using var response = await http.GetAsync(target, request.Token);
+            response.EnsureSuccessStatusCode();
+            var html = await response.Content.ReadAsStringAsync(request.Token);
+            if (closed || request.IsCancellationRequested) return;
+            pageUrl = response.RequestMessage?.RequestUri ?? target;
+            Address.Text = pageUrl.AbsoluteUri;
+            visual.Container.SetBaseUrl(pageUrl.AbsoluteUri);
+            HtmlScrollViewer.Offset = default;
+            visual.Container.Render(html);
+            Status.Text = "Loaded " + pageUrl.Host + ". HTML and CSS only.";
         }
-
-        public string GetResourceString(string resource)
+        catch (OperationCanceledException) when (request.IsCancellationRequested) { }
+        catch (Exception error)
         {
-            if (string.IsNullOrWhiteSpace(resource))
-                return string.Empty;
-
-            var url = GetUrlForRequest(resource);
-            if (url == null)
-                return null;
-
-            if (_stringCache.TryGetValue(url, out var cached))
-                return cached;
-
-            try
-            {
-                var str = _httpClient.GetStringAsync(url).Result;
-                _stringCache[url] = str;
-                return str;
-            }
-            catch
-            {
-                _stringCache[url] = null; // Cache failures too
-                return null;
-            }
+            if (!closed && !request.IsCancellationRequested) Status.Text = "Could not load page: " + error.Message;
         }
-
-        string GetUrlForRequest(string resource)
+        finally
         {
-            try
-            {
-                UriBuilder urlBuilder;
-                if (resource.StartsWith("//") || resource.StartsWith("http:") || resource.StartsWith("https:"))
-                {
-                    urlBuilder = new UriBuilder(resource.TrimStart(new char[] { '/' }));
-                }
-                else
-                {
-                    urlBuilder = new UriBuilder(_lastUrl);
-                    urlBuilder.Path = resource;
-                }
-                var requestUrl = urlBuilder.ToString();
-                return requestUrl;
-            }
-            catch
-            {
-                return null;
-            }
+            if (ReferenceEquals(navigation, request)) navigation = null;
+            request.Dispose();
         }
     }
+
+    private string LoadCss(string url)
+    {
+        try { return IsWebUrl(url) ? http.GetStringAsync(url).GetAwaiter().GetResult() : ""; }
+        catch (HttpRequestException) { return ""; }
+        catch (OperationCanceledException) { return ""; }
+    }
+
+    private byte[] LoadBytes(string url)
+    {
+        if (url == "demo://motion.gif") return DemoPage.LoadImage(url);
+        try { return IsWebUrl(url) ? http.GetByteArrayAsync(url).GetAwaiter().GetResult() : Array.Empty<byte>(); }
+        catch (HttpRequestException) { return Array.Empty<byte>(); }
+        catch (OperationCanceledException) { return Array.Empty<byte>(); }
+    }
+
+    private static bool IsWebUrl(string url) => Uri.TryCreate(url, UriKind.Absolute, out var uri) && uri.Scheme is "http" or "https";
+
 }

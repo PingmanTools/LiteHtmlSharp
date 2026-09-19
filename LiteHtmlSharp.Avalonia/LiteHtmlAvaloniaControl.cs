@@ -1,5 +1,5 @@
 using System;
-using System.Globalization;
+using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -8,558 +8,413 @@ using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Threading;
+using Avalonia.VisualTree;
 
-namespace LiteHtmlSharp.Avalonia
+namespace LiteHtmlSharp.Avalonia;
+
+public delegate void LinkClickedHandler(string url);
+
+public sealed class HtmlRenderPanel : Control
 {
-    // Custom control that renders HTML background and positions children
-    public class HtmlRenderPanel : Control
+    private readonly Canvas canvas = new();
+    internal LiteHtmlAvaloniaControl HtmlControl { get; set; }
+    public Controls Children => canvas.Children;
+
+    public HtmlRenderPanel()
     {
-        public AvaloniaContainer Container { get; set; }
-        public LiteHtmlAvaloniaControl HtmlControl { get; set; }
-        private readonly Canvas _childCanvas;
+        LogicalChildren.Add(canvas);
+        VisualChildren.Add(canvas);
+    }
 
-        public HtmlRenderPanel()
+    protected override Size MeasureOverride(Size availableSize)
+    {
+        canvas.Measure(availableSize);
+        return canvas.DesiredSize;
+    }
+
+    protected override Size ArrangeOverride(Size finalSize)
+    {
+        canvas.Arrange(new Rect(finalSize));
+        return finalSize;
+    }
+
+    public override void Render(DrawingContext context)
+    {
+        base.Render(context);
+        HtmlControl?.RenderHtmlBackground(context);
+    }
+}
+
+public class LiteHtmlAvaloniaControl : UserControl, IDisposable
+{
+    private readonly Cursor arrowCursor = new(StandardCursorType.Arrow);
+    private readonly Cursor handCursor = new(StandardCursorType.Hand);
+    private readonly ScrollViewer scrollParent;
+    private readonly HtmlRenderPanel panel;
+    private readonly AnimationDriver animationDriver;
+    private readonly DispatcherTimer animationTimer = new() { Interval = TimeSpan.FromMilliseconds(16) };
+    private bool refreshQueued;
+    private bool layoutPending;
+    private bool refreshing;
+    private bool disposed;
+    private bool cursorOverLink;
+    private bool cursorUpdateQueued;
+    private Cursor pendingCursor;
+    private string tooltip;
+    private int nextInput;
+    private LiteHtmlPoint recordedOffset;
+
+    public AvaloniaContainer Container { get; }
+    public AvaloniaInputs Inputs { get; } = new();
+    public event LinkClickedHandler LinkClicked;
+    public bool LastPointerDownHandledByHtml { get; private set; }
+    private bool ExternalViewport => scrollParent == null && Container.HasCustomViewport;
+
+    public LiteHtmlAvaloniaControl(ScrollViewer parent, AvaloniaContainer container, string masterCss,
+        IResourceLoader loader, bool createInteractiveElements = true, bool ownsContainer = true)
+    {
+        this.ownsContainer = container == null || ownsContainer;
+        installsElementCallbacks = createInteractiveElements;
+        scrollParent = parent;
+        Container = container ?? new AvaloniaContainer(masterCss, loader);
+        panel = new HtmlRenderPanel { HtmlControl = this };
+        Background = Brushes.Transparent;
+        Content = panel;
+        HorizontalAlignment = HorizontalAlignment.Left;
+        VerticalAlignment = VerticalAlignment.Top;
+        Container.HtmlRenderHandler = LoadHtml;
+        Container.AnchorClicked += OnAnchorClicked;
+        Container.DocumentSizeKnown += OnDocumentSizeKnown;
+        Container.RedrawRequested += OnRedrawRequested;
+        Container.ImageReady += OnImageReady;
+        animationDriver = new AnimationDriver(Container.Document, ScheduleAnimation, () => QueueRefresh(true),
+            () => new RectF(Container.ScrollOffset.X, Container.ScrollOffset.Y, Container.Size.Width, Container.Size.Height));
+        animationTimer.Tick += OnAnimationTick;
+        Container.SetCursorCallback = SetCursor;
+        if (createInteractiveElements)
         {
-            _childCanvas = new Canvas();
-            LogicalChildren.Add(_childCanvas);
-            VisualChildren.Add(_childCanvas);
+            Container.ShouldCreateElementCallback = tag => tag is "input" or "button";
+            Container.CreateElementCallback = CreateElement;
         }
-
-        public void AddChild(Control control)
+        if (scrollParent != null)
         {
-            _childCanvas.Children.Add(control);
+            scrollParent.HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
+            scrollParent.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            scrollParent.HorizontalContentAlignment = HorizontalAlignment.Left;
+            scrollParent.VerticalContentAlignment = VerticalAlignment.Top;
+            scrollParent.Content = this;
+            scrollParent.ScrollChanged += OnScrollChanged;
+            scrollParent.SizeChanged += OnViewportSizeChanged;
         }
-
-        public void RemoveChild(Control control)
+        else
         {
-            _childCanvas.Children.Remove(control);
-        }
-
-        public int ChildCount => _childCanvas.Children.Count;
-
-        protected override Size MeasureOverride(Size availableSize)
-        {
-            // Just measure the child canvas and return what it needs
-            var safeSize = new Size(
-                double.IsFinite(availableSize.Width) && availableSize.Width > 0 ? availableSize.Width : 1024,
-                double.IsFinite(availableSize.Height) && availableSize.Height > 0 ? availableSize.Height : 768
-            );
-
-            _childCanvas.Measure(safeSize);
-            return _childCanvas.DesiredSize;
-        }
-
-        protected override Size ArrangeOverride(Size finalSize)
-        {
-            _childCanvas.Arrange(new Rect(finalSize));
-            return finalSize;
-        }
-
-        public override void Render(DrawingContext context)
-        {
-            base.Render(context);
-            if (Container == null || !Container.Document.HasRendered || HtmlControl == null) return;
-
-            // Apply viewport transform when HasCustomViewport (like WPF)
-            var viewportPoint = HtmlControl.ViewportPoint;
-            using (context.PushTransform(Matrix.CreateTranslation(viewportPoint.X, viewportPoint.Y)))
-            {
-                HtmlControl.RenderHtmlBackground(context);
-            }
+            SizeChanged += OnViewportSizeChanged;
         }
     }
 
-    public delegate void LinkClickedHandler(string url);
-
-    public class LiteHtmlAvaloniaControl : UserControl, IDisposable
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
-        private Control _controlPanel;
+        base.OnAttachedToVisualTree(e);
+        animationDriver.Resume();
+        QueueRefresh(true);
+    }
 
-        private ScrollViewer ScrollViewerParent { get; }
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        animationDriver.Suspend();
+        base.OnDetachedFromVisualTree(e);
+    }
 
-        public AvaloniaInputs Inputs { get; private set; } = [];
-
-        public AvaloniaContainer Container { get; private set; }
-
-        public event LinkClickedHandler LinkClicked;
-
-        private bool IsCursorOverLink { get; set; }
-
-        private string _currentTooltipText;
-
-        public bool LastPointerDownHandledByHtml { get; private set; }
-
-        /// <summary>
-        /// Returns the viewport offset point for rendering transform.
-        /// When HasCustomViewport is true, returns the scroll offset; otherwise returns (0,0).
-        /// </summary>
-        internal Point ViewportPoint
+    private void ScheduleAnimation(TimeSpan? delay)
+    {
+        animationTimer.Stop();
+        if (delay is { } interval)
         {
-            get
+            animationTimer.Interval = interval <= TimeSpan.Zero ? TimeSpan.FromMilliseconds(1) : interval;
+            animationTimer.Start();
+        }
+    }
+    private void OnAnimationTick(object sender, EventArgs e) => animationDriver.Pulse(Refresh);
+    private void OnImageReady(string source, string baseUrl) => Dispatcher.UIThread.Post(() => QueueRefresh(true));
+    private void SyncAnimationTime() => animationDriver.Synchronize();
+
+
+    private void LoadHtml(string html)
+    {
+        ObjectDisposedException.ThrowIf(disposed, this);
+        ClearInputs();
+        nextInput = 0;
+        Container.Document.Load(html);
+        QueueRefresh(true);
+    }
+
+    private void OnScrollChanged(object sender, ScrollChangedEventArgs e) => QueueRefresh(false);
+    private void OnViewportSizeChanged(object sender, SizeChangedEventArgs e) => QueueRefresh(true);
+
+    private void QueueRefresh(bool layout)
+    {
+        if (disposed || !Container.Document.HasLoadedHtml) return;
+        layoutPending |= layout;
+        if (refreshQueued) return;
+        refreshQueued = true;
+        // Native callbacks must finish before layout can enter the document again.
+        Dispatcher.UIThread.Post(Refresh, DispatcherPriority.Loaded);
+    }
+
+    private static double Positive(double value, double fallback) => double.IsFinite(value) && value > 0 ? value : fallback;
+
+    private void Refresh()
+    {
+        refreshQueued = false;
+        if (disposed || !Container.Document.HasLoadedHtml) return;
+        refreshing = true;
+        try
+        {
+            var scale = Container.ScaleFactor;
+            var width = ExternalViewport ? Container.Size.Width :
+                Positive(scrollParent?.Viewport.Width ?? 0, Positive(scrollParent?.Bounds.Width ?? Bounds.Width, 800)) / scale;
+            var height = ExternalViewport ? Container.Size.Height :
+                Positive(scrollParent?.Viewport.Height ?? 0, Positive(scrollParent?.Bounds.Height ?? Bounds.Height, 600)) / scale;
+            var changed = Container.Size.Width != (float)width || Container.Size.Height != (float)height;
+            if (!ExternalViewport)
             {
-                if (Container.HasCustomViewport)
-                {
-                    return new Point(Container.ScrollOffset.X, Container.ScrollOffset.Y);
-                }
-                return new Point(0, 0);
+                Container.Size = new LiteHtmlSize((float)width, (float)height);
+                Container.ScrollOffset = new LiteHtmlPoint((float)(scrollParent?.Offset.X ?? 0) / scale,
+                    (float)(scrollParent?.Offset.Y ?? 0) / scale);
             }
-        }
-
-        public LiteHtmlAvaloniaControl(ScrollViewer parent, AvaloniaContainer container, string masterCss, IResourceLoader loader,
-            bool createInteractiveElements = true)
-        {
-            ScrollViewerParent = parent;
-            SetupScrollView();
-            InitializeCanvas();
-            Container = container ?? new AvaloniaContainer(masterCss, loader);
-            SetupContainerCallbacks(createInteractiveElements);
-        }
-
-        private void InitializeCanvas()
-        {
-            var htmlRenderPanel = new HtmlRenderPanel
+            var render = layoutPending || changed || animationDriver.NeedsAnimationSample || !Container.Document.HasRendered;
+            layoutPending = false;
+            if (render)
             {
-                IsVisible = true,
-                ClipToBounds = false,
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-                VerticalAlignment = VerticalAlignment.Top
-            };
-
-            _controlPanel = htmlRenderPanel;
-            Content = _controlPanel;
-
-            Background = Brushes.Transparent;
-            HorizontalAlignment = HorizontalAlignment.Stretch;
-            VerticalAlignment = VerticalAlignment.Stretch;
-        }
-
-        private void SetupScrollView()
-        {
-            if (ScrollViewerParent == null) return;
-            ScrollViewerParent.HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
-            ScrollViewerParent.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
-            ScrollViewerParent.VerticalAlignment = VerticalAlignment.Stretch;
-            ScrollViewerParent.HorizontalContentAlignment = HorizontalAlignment.Left;
-            ScrollViewerParent.VerticalContentAlignment = VerticalAlignment.Top;
-            ScrollViewerParent.Content = this;
-            ScrollViewerParent.ScrollChanged += ScrollParent_ScrollChanged;
-            // Note: WPF doesn't subscribe to SizeChanged - only ScrollChanged
-        }
-
-        private void SetupContainerCallbacks(bool createInteractiveElements = true)
-        {
-            Container.RenderHtmlRequested += Container_RenderHtmlRequested;
-            Container.AnchorClicked += Container_AnchorClicked;
-            Container.DocumentSizeKnown += Container_DocumentSizeKnown;
-            Container.Document.ViewElementsNeedLayout += Document_ViewElementsNeedLayout;
-            Container.SetCursorCallback = SetCursor;
-
-            if (!createInteractiveElements) return;
-            Container.ShouldCreateElementCallback = ShouldCreateElement;
-            Container.CreateElementCallback = CreateElement;
-        }
-
-        private void Container_AnchorClicked(string link)
-        {
-            FireLink(link);
-        }
-
-        private void ScrollParent_ScrollChanged(object sender, ScrollChangedEventArgs e)
-        {
-            // Match WPF: only call SetViewport, which triggers redraw if viewport changed
-            SetViewport();
-        }
-
-        private void Document_ViewElementsNeedLayout()
-        {
+                if (changed || !Container.Document.HasRendered) Container.Document.OnMediaChanged();
+                Container.Render(animationDriver.Render);
+            }
+            var offset = Container.ScrollOffset;
+            Container.Document.Draw(-offset.X, -offset.Y, Container.Viewport);
+            recordedOffset = offset;
             ProcessInputs();
+            panel.InvalidateVisual();
+            animationDriver.FrameCompleted();
         }
-
-        private void Container_DocumentSizeKnown(LiteHtmlSize size)
+        finally
         {
-            // Match WPF: control size = document size
-            // Consumers (BundleWindow, etc.) can add their own handlers for window resizing
-            Width = size.Width;
-            Height = size.Height;
-            // Match WPF: call SetViewport() which uses ScrollViewer.Viewport
-            // If viewport is still 0x0 (async layout not complete), this safely skips
-            SetViewport();
+            refreshing = false;
         }
+    }
 
-        public void Container_RenderHtmlRequested(string html)
+    private void OnDocumentSizeKnown(LiteHtmlSize size)
+    {
+        Width = Math.Max(ExternalViewport ? Container.Size.Width : size.Width, Container.Size.Width) * Container.ScaleFactor;
+        Height = (ExternalViewport ? Container.Size.Height : size.Height) * Container.ScaleFactor;
+        panel.Width = Width;
+        panel.Height = Height;
+        if (!refreshing) QueueRefresh(false);
+    }
+
+    private void OnRedrawRequested(RectF box)
+    {
+        if (disposed) return;
+        if (Dispatcher.UIThread.CheckAccess()) panel.InvalidateVisual();
+        else Dispatcher.UIThread.Post(() => { if (!disposed) panel.InvalidateVisual(); });
+    }
+
+    public void RenderHtmlBackground(DrawingContext context)
+    {
+        if (disposed || Container.Document.LastDisplayList is not { } snapshot) return;
+        Container.DrawingContext = context;
+        try
         {
-            LoadHtml(html);
+            // ScrollViewer translates the full page; native fixed elements use viewport coordinates.
+            var translation = scrollParent == null ? Matrix.Identity :
+                Matrix.CreateTranslation(recordedOffset.X * Container.ScaleFactor, recordedOffset.Y * Container.ScaleFactor);
+            using (context.PushTransform(translation)) DisplayListReplayer.Replay(snapshot, Container);
         }
+        finally { Container.DrawingContext = null; }
+    }
 
-        private void FireLink(string url)
-        {
-            LinkClicked?.Invoke(url);
-        }
+    private Point DocumentPoint(PointerEventArgs e)
+    {
+        var point = e.GetPosition(panel);
+        var offset = ExternalViewport ? Container.ScrollOffset : default;
+        return new Point(point.X / Container.ScaleFactor + offset.X, point.Y / Container.ScaleFactor + offset.Y);
+    }
 
-        protected override void OnPointerExited(PointerEventArgs e)
+    protected override void OnPointerMoved(PointerEventArgs e)
+    {
+        if (!disposed && Container.Document.HasRendered)
         {
-            if (Container?.Document?.HasRendered == true)
+            SyncAnimationTime();
+            var p = DocumentPoint(e);
+            if (Container.Document.OnMouseOver((float)p.X, (float)p.Y, (float)p.X - Container.ScrollOffset.X, (float)p.Y - Container.ScrollOffset.Y)) QueueRefresh(true);
+            var title = Container.Document.GetTooltipText((float)p.X, (float)p.Y, (float)p.X - Container.ScrollOffset.X, (float)p.Y - Container.ScrollOffset.Y);
+            if (title != tooltip)
             {
-                if (Container.Document.OnMouseLeave())
-                {
-                    TriggerRedraw();
-                }
-            }
-
-            UpdateTooltip(null);
-            SetCursor(null);
-            base.OnPointerExited(e);
-        }
-
-        private void TriggerRedraw()
-        {
-            _controlPanel?.InvalidateVisual();
-        }
-
-        protected override void OnPointerMoved(PointerEventArgs e)
-        {
-            if (Container?.Document?.HasRendered == true)
-            {
-                var pos = e.GetPosition(this);
-                if (pos.X >= 0 && pos.Y >= 0)
-                {
-                    if (Container.Document.OnMouseMove((int)pos.X, (int)pos.Y))
-                    {
-                        TriggerRedraw();
-                    }
-
-                    UpdateTooltip(Container.Document.GetTooltipText());
-                }
-            }
-
-            base.OnPointerMoved(e);
-        }
-
-        public void SetCursor(string cursor)
-        {
-            if (string.Equals(cursor, "pointer", StringComparison.CurrentCultureIgnoreCase))
-            {
-                Cursor = new Cursor(StandardCursorType.Hand);
-                IsCursorOverLink = true;
-            }
-            else
-            {
-                Cursor = new Cursor(StandardCursorType.Arrow);
-                IsCursorOverLink = false;
+                tooltip = title;
+                ToolTip.SetTip(this, string.IsNullOrWhiteSpace(title) ? null : title);
             }
         }
+        base.OnPointerMoved(e);
+    }
 
-        private void UpdateTooltip(string tooltipText)
+    protected override void OnPointerExited(PointerEventArgs e)
+    {
+        if (!disposed && Container.Document.HasRendered)
         {
-            if (tooltipText == _currentTooltipText) return;
-            _currentTooltipText = tooltipText;
-            ToolTip.SetTip(this, string.IsNullOrWhiteSpace(tooltipText) ? null : tooltipText);
+            SyncAnimationTime();
+            if (Container.Document.OnMouseLeave()) QueueRefresh(true);
         }
+        tooltip = null;
+        ToolTip.SetTip(this, null);
+        SetCursor(null);
+        base.OnPointerExited(e);
+    }
 
-        protected override void OnPointerPressed(PointerPressedEventArgs e)
+    protected override void OnPointerPressed(PointerPressedEventArgs e)
+    {
+        LastPointerDownHandledByHtml = false;
+        if (!disposed && Container.Document.HasRendered && e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
         {
-            LastPointerDownHandledByHtml = false;
-            if (Container?.Document?.HasRendered == true && e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
-            {
-                var pos = e.GetPosition(this);
-                var (x, y) = ToDocumentCoords(pos);
-
-                if (x < 0 || y < 0)
-                {
-                    base.OnPointerPressed(e);
-                    return;
-                }
-
-                var interactive = IsCursorOverLink || HitInteractiveElement(pos);
-                if (interactive)
-                {
-                    LastPointerDownHandledByHtml = true;
-                    e.Handled = true;
-                }
-
-                if (Container.Document.OnLeftButtonDown(x, y))
-                {
-                    TriggerRedraw();
-                }
-            }
-
-            base.OnPointerPressed(e);
+            SyncAnimationTime();
+            var p = DocumentPoint(e);
+            LastPointerDownHandledByHtml = cursorOverLink;
+            if (cursorOverLink) e.Handled = true;
+            if (Container.Document.OnLeftButtonDown((float)p.X, (float)p.Y, (float)p.X - Container.ScrollOffset.X, (float)p.Y - Container.ScrollOffset.Y)) QueueRefresh(true);
         }
+        base.OnPointerPressed(e);
+    }
 
-        protected override void OnPointerReleased(PointerReleasedEventArgs e)
+    protected override void OnPointerReleased(PointerReleasedEventArgs e)
+    {
+        if (!disposed && Container.Document.HasRendered && e.InitialPressMouseButton == MouseButton.Left)
         {
-            if (Container?.Document?.HasRendered == true && e.InitialPressMouseButton == MouseButton.Left)
-            {
-                var pos = e.GetPosition(this);
-                var (x, y) = ToDocumentCoords(pos);
-
-                if (x < 0 || y < 0)
-                {
-                    base.OnPointerReleased(e);
-                    return;
-                }
-
-                if (Container.Document.OnLeftButtonUp(x, y))
-                {
-                    TriggerRedraw();
-                }
-            }
-
-            if (!IsCursorOverLink)
-            {
-                LastPointerDownHandledByHtml = false;
-            }
-
-            base.OnPointerReleased(e);
+            SyncAnimationTime();
+            var p = DocumentPoint(e);
+            if (Container.Document.OnLeftButtonUp((float)p.X, (float)p.Y, (float)p.X - Container.ScrollOffset.X, (float)p.Y - Container.ScrollOffset.Y)) QueueRefresh(true);
         }
+        base.OnPointerReleased(e);
+    }
 
-        public void LoadHtml(string html)
+    public void SetCursor(string cursor)
+    {
+        cursorOverLink = string.Equals(cursor, "pointer", StringComparison.OrdinalIgnoreCase);
+        pendingCursor = cursorOverLink ? handCursor : arrowCursor;
+        if (!OperatingSystem.IsMacOS())
         {
-            ClearInputs();
-            Container.Document.CreateFromString(html);
-
-            if (_controlPanel is HtmlRenderPanel htmlRenderPanel)
-            {
-                htmlRenderPanel.Container = Container;
-                htmlRenderPanel.HtmlControl = this;
-            }
-
-            // Match WPF: just call CheckViewportChange, let it handle viewport
-            Container.CheckViewportChange(forceRender: true);
-
-            ProcessInputs();
-            TriggerRedraw();
+            Cursor = pendingCursor;
+            return;
         }
-
-        private void SetViewport(bool forceRedraw = false)
+        if (cursorUpdateQueued) return;
+        cursorUpdateQueued = true;
+        // Cocoa handles the mouse event after Avalonia and can replace its cursor.
+        Dispatcher.UIThread.Post(() =>
         {
-            if (ScrollViewerParent == null) return;
+            cursorUpdateQueued = false;
+            if (disposed) return;
+            Cursor = null;
+            Cursor = pendingCursor;
+        }, DispatcherPriority.Input);
+    }
 
-            var viewportWidth = ScrollViewerParent.Viewport.Width;
-            var viewportHeight = ScrollViewerParent.Viewport.Height;
+    private void OnAnchorClicked(string url)
+    {
+        // Consumers may load another page from a link handler after the native call returns.
+        Dispatcher.UIThread.Post(() => { if (!disposed) LinkClicked?.Invoke(url); });
+    }
 
-            if (viewportWidth > 0 && viewportHeight > 0)
-            {
-                if (Container.SetViewport(
-                    new LiteHtmlPoint(ScrollViewerParent.Offset.X, ScrollViewerParent.Offset.Y),
-                    new LiteHtmlSize(viewportWidth, viewportHeight)) || forceRedraw)
-                {
-                    TriggerRedraw();
-                }
-            }
-            else if (forceRedraw)
-            {
-                TriggerRedraw();
-            }
-        }
-
-        public void RenderHtmlBackground(DrawingContext context)
+    private int CreateElement(string tag, IReadOnlyDictionary<string, string> attributes, out SizeF size)
+    {
+        var input = new AvaloniaInput(tag == "button" ? InputType.Button : InputType.Textbox)
         {
-            var renderBounds = new Rect(0, 0, Bounds.Width, Bounds.Height);
-            context.FillRectangle(Brushes.Transparent, renderBounds);
+            ID = ++nextInput,
+            Element = tag == "button" ? new Button { Content = "Button" } : new TextBox(),
+            IsPlaced = true,
+            AttributesSetup = true
+        };
+        input.Element.Tag = input;
+        input.Element.VerticalAlignment = VerticalAlignment.Top;
+        input.Element.HorizontalAlignment = HorizontalAlignment.Left;
+        input.SetupAttributes(attributes);
+        if (input.Element is Button button) button.Click += OnButtonClick;
+        input.Element.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+        size = new SizeF((float)Math.Max(input.Element.DesiredSize.Width, 80) / Container.ScaleFactor,
+            (float)Math.Max(input.Element.DesiredSize.Height, 28) / Container.ScaleFactor);
+        Inputs.Add(input);
+        AddChildControl(input.Element);
+        return input.ID;
+    }
 
-            if (!Container.Document.HasRendered)
-            {
-                var notRenderedText = new FormattedText(
-                    "Loading HTML...",
-                    CultureInfo.InvariantCulture,
-                    FlowDirection.LeftToRight,
-                    new Typeface(FontFamily.Default),
-                    14,
-                    Brushes.Gray);
-                context.DrawText(notRenderedText, new Point(10, 10));
-                return;
-            }
+    private void OnButtonClick(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button { Tag: AvaloniaInput input } && !string.IsNullOrEmpty(input.Href))
+            LinkClicked?.Invoke(input.Href);
+    }
 
-            Container.DrawingContext = context;
-            Container.Draw();
-            Container.DrawingContext = null;
-        }
-
-        private static bool ShouldCreateElement(string tag)
+    private void ProcessInputs()
+    {
+        if (disposed || !Container.Document.HasRendered) return;
+        var offset = ExternalViewport ? Container.ScrollOffset : default;
+        foreach (var input in Inputs)
         {
-            switch (tag.ToLowerInvariant())
-            {
-                case "input":
-                case "button":
-                    return true;
-                default:
-                    return false;
-            }
+            var box = Container.Document.GetElementInfo(input.ID)?.Bounds;
+            input.Element.IsVisible = box.HasValue;
+            if (box is not { } r) continue;
+            input.Element.Width = Math.Max(0, r.Width * Container.ScaleFactor);
+            input.Element.Height = Math.Max(0, r.Height * Container.ScaleFactor);
+            Canvas.SetLeft(input.Element, (r.X - offset.X) * Container.ScaleFactor);
+            Canvas.SetTop(input.Element, (r.Y - offset.Y) * Container.ScaleFactor);
         }
+    }
 
-        private int CreateElement(string tag, string attributes, ElementInfo elementInfo)
+    public void AddChildControl(Control control) => panel.Children.Add(control);
+    public void RemoveChildControl(Control control) => panel.Children.Remove(control);
+
+    private void ClearInputs()
+    {
+        foreach (var input in Inputs)
         {
-            AvaloniaInput input;
-
-            switch (tag.ToLowerInvariant())
-            {
-                case "input":
-                    {
-                        input = new AvaloniaInput(InputType.Textbox)
-                        {
-                            Element = new TextBox()
-                        };
-                        break;
-                    }
-                case "button":
-                    {
-                        input = new AvaloniaInput(InputType.Button);
-                        var button = new Button();
-                        button.Click += Button_Click;
-                        input.Element = button;
-                        break;
-                    }
-                default:
-                    return 0;
-            }
-
-            input.ID = Inputs.Count + 1;
-            input.Element.Tag = input;
-            input.Element.VerticalAlignment = VerticalAlignment.Top;
-            input.Element.HorizontalAlignment = HorizontalAlignment.Left;
-            input.SetupAttributes(attributes);
-            input.AttributesSetup = true;
-            input.IsPlaced = true;
-
-            AddChildControl(input.Element);
-
-            Inputs.Add(input);
-            return input.ID;
+            if (input.Element is Button button) button.Click -= OnButtonClick;
+            panel.Children.Remove(input.Element);
         }
+        Inputs.Clear();
+    }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+    private readonly bool ownsContainer;
+    private readonly bool installsElementCallbacks;
+
+    public void Dispose()
+    {
+        if (disposed) return;
+        try { if (ownsContainer) Container.Dispose(); }
+        finally { if (!ownsContainer || Container.Document.IsDisposed) Detach(); }
+    }
+
+    private void Detach()
+    {
+        disposed = true;
+        animationTimer.Stop();
+        animationTimer.Tick -= OnAnimationTick;
+        animationDriver.Dispose();
+        Container.ImageReady -= OnImageReady;
+        if (scrollParent != null)
         {
-            if (sender is not Button { Tag: AvaloniaInput input }) return;
-            if (!string.IsNullOrEmpty(input.Href))
-            {
-                FireLink(input.Href);
-            }
+            scrollParent.ScrollChanged -= OnScrollChanged;
+            scrollParent.SizeChanged -= OnViewportSizeChanged;
         }
-
-        private void ProcessInputs()
+        SizeChanged -= OnViewportSizeChanged;
+        Container.HtmlRenderHandler = null;
+        Container.AnchorClicked -= OnAnchorClicked;
+        Container.DocumentSizeKnown -= OnDocumentSizeKnown;
+        Container.RedrawRequested -= OnRedrawRequested;
+        Container.SetCursorCallback = null;
+        Cursor = null;
+        arrowCursor.Dispose();
+        handCursor.Dispose();
+        if (installsElementCallbacks)
         {
-            foreach (var input in Inputs)
-            {
-                var info = Container.Document.GetElementInfo(input.ID);
-
-                input.Element.Width = info.Width;
-                input.Element.Height = info.Height > 0 ? info.Height : (input.Type == InputType.Button ? 25.0 : 22.0);
-
-                input.Element.Margin = new Thickness(0);
-
-                if (info.PosX > 999999)
-                {
-                    info.PosX = 0;
-                }
-
-                Canvas.SetLeft(input.Element, info.PosX);
-                Canvas.SetTop(input.Element, info.PosY);
-
-                if (input.AttributesSetup) continue;
-                input.AttributesSetup = true;
-                input.SetupAttributes(info.Attributes);
-            }
+            Container.ShouldCreateElementCallback = null;
+            Container.CreateElementCallback = null;
         }
-
-        public void AddChildControl(Control control)
-        {
-            if (_controlPanel is not HtmlRenderPanel htmlRenderPanel) return;
-            htmlRenderPanel.AddChild(control);
-            control.ZIndex = 1000;
-            //Canvas.SetLeft(control, -1000);
-
-            control.IsVisible = true;
-            control.Opacity = 1.0;
-            switch (control)
-            {
-                case TextBox textBox:
-                    textBox.BorderThickness = new Thickness(1);
-                    break;
-                case Button button:
-                    button.BorderThickness = new Thickness(1);
-                    break;
-            }
-
-            // Force immediate layout like WPF's UpdateLayout()
-            InvalidateMeasure();
-        }
-
-        private void ClearInputs()
-        {
-            if (_controlPanel is HtmlRenderPanel htmlRenderPanel)
-            {
-                foreach (var input in Inputs)
-                {
-                    if (input.IsPlaced)
-                    {
-                        htmlRenderPanel.RemoveChild(input.Element);
-                        input.IsPlaced = false;
-                    }
-                }
-            }
-
-            Inputs.Clear();
-        }
-
-        public void RemoveChildControl(Control control)
-        {
-            if (_controlPanel is HtmlRenderPanel htmlRenderPanel)
-            {
-                htmlRenderPanel.RemoveChild(control);
-            }
-        }
-
-        public void Dispose()
-        {
-            Container.RenderHtmlRequested -= Container_RenderHtmlRequested;
-            Container.AnchorClicked -= Container_AnchorClicked;
-            Container.DocumentSizeKnown -= Container_DocumentSizeKnown;
-            Container.Document.ViewElementsNeedLayout -= Document_ViewElementsNeedLayout;
-
-            if (ScrollViewerParent != null)
-            {
-                ScrollViewerParent.ScrollChanged -= ScrollParent_ScrollChanged;
-            }
-
-            ClearInputs();
-
-            // Free the native DocContainer (C++ allocated via Init in Globals.cpp)
-            var doc = Container.Document;
-            if (doc.Calls.Delete != null && doc.Calls.ID != IntPtr.Zero)
-            {
-                doc.Calls.Delete(doc.Calls.ID);
-                doc.Calls.ID = IntPtr.Zero;
-            }
-        }
-
-        private (int X, int Y) ToDocumentCoords(Point p)
-        {
-            if (ScrollViewerParent != null && !Container.HasCustomViewport)
-            {
-                return ((int)(p.X + ScrollViewerParent.Offset.X), (int)(p.Y + ScrollViewerParent.Offset.Y));
-            }
-
-            return ((int)p.X, (int)p.Y);
-        }
-
-        private bool HitInteractiveElement(Point pos)
-        {
-            var (docX, docY) = ToDocumentCoords(pos);
-            foreach (var input in Inputs)
-            {
-                var left = Canvas.GetLeft(input.Element);
-                var top = Canvas.GetTop(input.Element);
-                var width = input.Element.Bounds.Width > 0 ? input.Element.Bounds.Width : input.Element.Width;
-                var height = input.Element.Bounds.Height > 0 ? input.Element.Bounds.Height : input.Element.Height;
-                if (width <= 0 || height <= 0) continue;
-                if (docX >= left && docX <= left + width && docY >= top && docY <= top + height)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
+        ClearInputs();
+        panel.HtmlControl = null;
     }
 }

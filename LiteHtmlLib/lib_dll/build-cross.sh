@@ -54,9 +54,10 @@ docker run --rm \
     -v "$SCRIPT_DIR/../..:/src" \
     -w /src/LiteHtmlLib/lib_dll \
     mstorsjo/llvm-mingw:latest \
-    bash -c "
+    bash -euo pipefail -c "
         rm -rf build-$ARCH_NAME && mkdir build-$ARCH_NAME && cd build-$ARCH_NAME
-        cmake .. \
+        cmake -S /src/LiteHtmlLib -B . \
+            -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_SYSTEM_NAME=Windows \
             -DCMAKE_C_COMPILER=$MINGW_PREFIX-clang \
             -DCMAKE_CXX_COMPILER=$MINGW_PREFIX-clang++ \

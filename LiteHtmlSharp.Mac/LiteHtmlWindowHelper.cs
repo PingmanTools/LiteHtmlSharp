@@ -1,62 +1,61 @@
-﻿using System;
+using System;
+using AppKit;
 using CoreGraphics;
 using Foundation;
-using AppKit;
+namespace LiteHtmlSharp.Mac;
 
-namespace LiteHtmlSharp.Mac
+public sealed class LiteHtmlWindowHelper : IDisposable
 {
-   public class LiteHtmlWindowHelper
-   {
-      public LiteHtmlNSView LiteHtmlView { get; private set; }
-
-      NSWindow window;
-      NSScrollView scrollView;
-
-      public LiteHtmlWindowHelper(NSWindow window, CGRect rect, string masterCssData)
-      {
-         this.window = window;
-         this.LiteHtmlView = LiteHtmlView;
-
-         LiteHtmlView = new LiteHtmlNSView(new CGRect(0, 0, rect.Width, rect.Height), masterCssData);
-         LiteHtmlView.LiteHtmlContainer.CaptionDefined += LiteHtmlView_LiteHtmlContainer_CaptionDefined;
-         LiteHtmlView.LiteHtmlContainer.DocumentSizeKnown += LiteHtmlView_DocumentSizeKnown;
-
-         scrollView = new NSScrollView();
-         scrollView.VerticalScrollElasticity = NSScrollElasticity.None;
-
-         scrollView.AutohidesScrollers = true;
-         scrollView.HasHorizontalScroller = true;
-         scrollView.HasVerticalScroller = true;
-         scrollView.DocumentView = LiteHtmlView;
-         scrollView.ContentView.PostsBoundsChangedNotifications = true;
-
-         window.ContentView = scrollView;
-         NSNotificationCenter.DefaultCenter.AddObserver(NSView.BoundsChangedNotification, scrollViewScrolled, scrollView.ContentView);
-
-         window.DidResize += LiteHtmlNSWindow_DidResize;
-      }
-
-      void scrollViewScrolled(NSNotification ns)
-      {
-         LiteHtmlView.SetViewport(new CGRect(scrollView.ContentView.Bounds.Location, scrollView.ContentView.Frame.Size));
-      }
-
-      void LiteHtmlView_DocumentSizeKnown(LiteHtmlSize size)
-      {
-         LiteHtmlView.SetFrameSize(new CGSize(scrollView.ContentView.Bounds.Width, size.Height));
-         LiteHtmlView.SetViewport(new CGRect(scrollView.ContentView.Bounds.Location, scrollView.ContentView.Frame.Size));
-      }
-
-      void LiteHtmlNSWindow_DidResize(object sender, EventArgs e)
-      {
-         LiteHtmlView.SetViewport(new CGRect(scrollView.ContentView.Bounds.Location, scrollView.ContentView.Frame.Size));
-      }
-
-      void LiteHtmlView_LiteHtmlContainer_CaptionDefined(string caption)
-      {
-         window.Title = caption;
-      }
-
-   }
+    public LiteHtmlNSView LiteHtmlView { get; }
+    private readonly NSWindow window;
+    private readonly NSScrollView scrollView;
+    private readonly NSObject observer;
+    private bool disposed;
+    public LiteHtmlWindowHelper(NSWindow window, CGRect rect, string masterCssData)
+    {
+        this.window = window;
+        LiteHtmlView = new LiteHtmlNSView(new CGRect(0, 0, rect.Width, rect.Height), masterCssData);
+        LiteHtmlView.LiteHtmlContainer.CaptionDefined += Caption;
+        LiteHtmlView.LiteHtmlContainer.DocumentSizeKnown += SizeKnown;
+        scrollView =
+            new NSScrollView { VerticalScrollElasticity = NSScrollElasticity.None, AutohidesScrollers = true,
+                               HasHorizontalScroller = false, HasVerticalScroller = true, DocumentView = LiteHtmlView };
+        scrollView.ContentView.PostsBoundsChangedNotifications = true;
+        window.ContentView = scrollView;
+        window.AcceptsMouseMovedEvents = true;
+        observer = NSNotificationCenter.DefaultCenter.AddObserver(NSView.BoundsChangedNotification,
+                                                                  _ => UpdateViewport(), scrollView.ContentView);
+        window.DidResize += Resized;
+        window.WillClose += Closed;
+        UpdateViewport();
+    }
+    private void Caption(string caption) => window.Title = caption;
+    private void SizeKnown(LiteHtmlSize size)
+    {
+        var frameSize = new CGSize(scrollView.ContentView.Bounds.Width,
+            Math.Max(scrollView.ContentView.Bounds.Height, size.Height * LiteHtmlView.LiteHtmlContainer.ScaleFactor));
+        if (LiteHtmlView.Frame.Size != frameSize) LiteHtmlView.SetFrameSize(frameSize);
+        UpdateViewport();
+    }
+    private void UpdateViewport()
+    {
+        if (!disposed)
+            LiteHtmlView.SetViewport(
+                new CGRect(scrollView.ContentView.Bounds.Location, scrollView.ContentView.Bounds.Size));
+    }
+    private void Resized(object sender, EventArgs e) => UpdateViewport();
+    private void Closed(object sender, EventArgs e) => Dispose();
+    public void Dispose()
+    {
+        if (disposed)
+            return;
+        LiteHtmlView.Dispose();
+        disposed = true;
+        NSNotificationCenter.DefaultCenter.RemoveObserver(observer);
+        observer.Dispose();
+        window.DidResize -= Resized;
+        window.WillClose -= Closed;
+        LiteHtmlView.LiteHtmlContainer.CaptionDefined -= Caption;
+        LiteHtmlView.LiteHtmlContainer.DocumentSizeKnown -= SizeKnown;
+    }
 }
-

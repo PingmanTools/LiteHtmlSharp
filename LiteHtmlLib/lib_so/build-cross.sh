@@ -96,12 +96,12 @@ build_docker() {
         -v "$SCRIPT_DIR/../..:/src" \
         -w /src/LiteHtmlLib/lib_so \
         gcc:13 \
-        bash -c "
+        bash -euo pipefail -c "
             apt-get update && apt-get install -y cmake
             rm -rf build-$arch && mkdir build-$arch && cd build-$arch
-            cmake ..
+            cmake -S /src/LiteHtmlLib -B . -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=Release
             make -j\$(nproc)
-            cp liblitehtml.so /src/runtimes/linux-$arch/native/
+            bash /src/LiteHtmlLib/package-native.sh /src/LiteHtmlLib/lib_so/build-$arch/liblitehtml.so linux-$arch
         "
 
     echo "Built: $RUNTIMES_DIR/linux-$arch/native/liblitehtml.so"
@@ -113,14 +113,16 @@ build_docker() {
 #
 build_zig() {
     local arch=$1
-    local zig_target
+    local zig_target zig_processor
 
     case $arch in
         x64)
             zig_target="x86_64-linux-gnu"
+            zig_processor="x86_64"
             ;;
         arm64)
             zig_target="aarch64-linux-gnu"
+            zig_processor="aarch64"
             ;;
     esac
 
@@ -141,19 +143,35 @@ build_zig() {
     mkdir -p "$BUILD_DIR"
     cd "$BUILD_DIR"
 
-    # Configure CMake with Zig as the compiler
+    for tool in ar ranlib; do
+        printf '#!/bin/sh\nexec zig %s "$@"\n' "$tool" > "$BUILD_DIR/zig-$tool"
+        chmod +x "$BUILD_DIR/zig-$tool"
+    done
+
+    # Zig rejects push/pop linker state; CMake must not probe the host linker.
     CC="zig cc -target $zig_target" \
     CXX="zig c++ -target $zig_target" \
-    cmake .. \
+    cmake -S "$SCRIPT_DIR/.." -B . \
+        -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_SYSTEM_PROCESSOR="$zig_processor" \
         -DCMAKE_SYSTEM_NAME=Linux \
-        -DCMAKE_C_COMPILER_WORKS=1 \
-        -DCMAKE_CXX_COMPILER_WORKS=1
+        -DCMAKE_LINKER_PUSHPOP_STATE_SUPPORTED=FALSE \
+        -DCMAKE_C_LINKER_PUSHPOP_STATE_SUPPORTED=FALSE \
+        -DCMAKE_CXX_LINKER_PUSHPOP_STATE_SUPPORTED=FALSE \
+        -DCMAKE_AR="$BUILD_DIR/zig-ar" \
+        -DCMAKE_RANLIB="$BUILD_DIR/zig-ranlib"
 
     # Build
     make -j$(sysctl -n hw.ncpu)
 
     # Copy to runtimes
-    cp liblitehtml.so "$RUNTIMES_DIR/linux-$arch/native/"
+    # llvm-strip handles both ELF architectures when the host is macOS.
+    local strip_tool="${STRIP:-llvm-strip}"
+    if ! command -v "$strip_tool" >/dev/null; then
+        echo "Set STRIP to an ELF-capable llvm-strip executable." >&2
+        exit 1
+    fi
+    STRIP="$strip_tool" bash "$SCRIPT_DIR/../package-native.sh" "$BUILD_DIR/liblitehtml.so" "linux-$arch"
 
     echo "Built: $RUNTIMES_DIR/linux-$arch/native/liblitehtml.so"
     ls -la "$RUNTIMES_DIR/linux-$arch/native/liblitehtml.so"

@@ -1,13 +1,17 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Example.Avalonia.MainWindow"
-        Title="LiteHtmlSharp Avalonia Example"
-        Width="800" Height="600">
-    
-    <ScrollViewer x:Name="HtmlScrollViewer">
-    </ScrollViewer>
-    
+        Title="LiteHtmlSharp — rendering demo"
+        Width="820" Height="720" RequestedThemeVariant="Light">
+  <Grid RowDefinitions="Auto,*,Auto">
+    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Margin="10" ColumnSpacing="8">
+      <Button Content="Home" Click="HomeClicked" />
+      <TextBox x:Name="Address" Grid.Column="1" Watermark="Enter a URL" KeyDown="AddressKeyDown" />
+      <Button Grid.Column="2" Content="Go" Click="GoClicked" />
+    </Grid>
+    <ScrollViewer x:Name="HtmlScrollViewer" Grid.Row="1" />
+    <Border Grid.Row="2" Background="#E8EDF3" Padding="16,10">
+      <TextBlock x:Name="Status" Text="Ready. Try the link, text field, and button." />
+    </Border>
+  </Grid>
 </Window>

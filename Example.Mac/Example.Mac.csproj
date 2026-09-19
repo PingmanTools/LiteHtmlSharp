@@ -18,14 +18,7 @@
       <UseHardenedRuntime>false</UseHardenedRuntime>
    </PropertyGroup>
 
-   <ItemGroup>
-      <None Include="Info.plist">
-         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Include="Entitlements.plist">
-         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-   </ItemGroup>
+
 
    <ItemGroup>
       <ProjectReference Include="..\LiteHtmlSharp.Mac\LiteHtmlSharp.Mac.csproj" />
@@ -44,7 +37,6 @@
    </ItemGroup>
 
    <ItemGroup>
-      <Resource Include="master.css" CopyToOutputDirectory="PreserveNewest" />
    </ItemGroup>
 
    <ItemGroup>
@@ -53,4 +45,5 @@
       </Content>
    </ItemGroup>
 
+  <Import Project="../Example.Shared/Example.Shared.props" />
 </Project>

@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.8.1" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.5">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Avalonia.Headless" Version="11.3.9" />
+    <PackageReference Include="Avalonia.Skia" Version="11.3.9" />
+    <ProjectReference Include="../LiteHtmlSharp.Avalonia/LiteHtmlSharp.Avalonia.csproj" />
+    <Compile Include="../LiteHtmlSharp.Tests/TestEnvironment.cs" Link="TestEnvironment.cs" />
+    <None Update="Fixtures/*.gif" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

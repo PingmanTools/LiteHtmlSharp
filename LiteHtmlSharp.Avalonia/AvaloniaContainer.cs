@@ -1,566 +1,499 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Collections.Concurrent;
 using System.IO;
+using System.Linq;
+using System.Numerics;
+using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
+using LiteHtmlSharp.Interop;
+using Border = LiteHtmlSharp.Border;
 
-namespace LiteHtmlSharp.Avalonia
+namespace LiteHtmlSharp.Avalonia;
+
+public interface IResourceLoader
 {
-    public interface IResourceLoader
+    byte[] GetResourceBytes(string resource);
+    string GetResourceString(string resource);
+}
+public delegate FontFamily FontAbsolutePathDelegate(string fontName);
+
+public class AvaloniaContainer : ViewportContainer
+{
+    private sealed class ResourceLoader(Func<string, string> text, Func<string, byte[]> bytes) : IResourceLoader
     {
-        byte[] GetResourceBytes(string resource);
-        string GetResourceString(string resource);
+        public byte[] GetResourceBytes(string resource) => bytes?.Invoke(resource);
+        public string GetResourceString(string resource) => text?.Invoke(resource);
     }
-
-    public delegate FontFamily FontAbsolutePathDelegate(string fontName);
-
-    public class AvaloniaContainer : ViewportContainer
+    private readonly IResourceLoader loader;
+    private readonly Dictionary<nuint, FontInfo> fonts = new();
+    private readonly Dictionary<ColorRgba, IBrush> brushes = new();
+    private readonly Dictionary<ColorRgba, IPen> markerPens = new();
+    private readonly ConcurrentDictionary<(string, string), string> resolvedUrls = new();
+    private readonly Dictionary<(RectF, BorderRadii), Geometry> rounded = new();
+    private sealed record GradientEntry(lh_color_stop[] Stops, IBrush Brush);
+    private readonly Dictionary<(int, Layer, float, float, float, float, int), List<GradientEntry>> gradients = new();
+    private readonly Dictionary<(Borders, RectF), (Geometry Geometry, IBrush Brush, IPen Pen)[]> borderPaints = new();
+    private readonly Dictionary<int, string> markerText = new();
+    private readonly Stack<DrawingContext.PushedState> scopes = new();
+    private nuint nextFont = 1;
+    private string baseUrl = "";
+    private bool disposed;
+    public DrawingContext DrawingContext
     {
-        IResourceLoader _loader;
-
-        public FontAbsolutePathDelegate FontAbsolutePathDelegate;
-
-        private class ResourceLoader : IResourceLoader
+        get; set;
+    }
+    public FontAbsolutePathDelegate FontAbsolutePathDelegate
+    {
+        get; set;
+    }
+    public override float DefaultFontSize { get; set; } = 12;
+    private string defaultFontName;
+    public override string DefaultFontName { get => defaultFontName ?? FontManager.Current.DefaultFontFamily.Name; set => defaultFontName = value; }
+    public Action<string> SetCursorCallback
+    {
+        get; set;
+    }
+    public AvaloniaContainer(string css, IResourceLoader loader) : base(css) { this.loader = loader; }
+    public AvaloniaContainer(string css, Func<string, string> text, Func<string, byte[]> bytes) : this(css, new ResourceLoader(text, bytes)) { }
+    public override void SetCursor(string cursor) => SetCursorCallback?.Invoke(cursor);
+    public override void SetBaseUrl(string url) => baseUrl = url;
+    internal Action<string> HtmlRenderHandler { get; set; }
+    protected override void OnRenderHtml(string html)
+    {
+        if (HtmlRenderHandler is { } render) render(html);
+        else base.OnRenderHtml(html);
+    }
+    public override nuint CreateFont(FontDescription description, out FontMetrics metrics)
+    {
+        FontFamily family;
+        try
         {
-            private readonly Func<string, string> _getStringResource;
-            private readonly Func<string, byte[]> _getBytesResource;
-
-            public ResourceLoader(Func<string, string> getStringResource, Func<string, byte[]> getBytesResource)
-            {
-                _getStringResource = getStringResource;
-                _getBytesResource = getBytesResource;
-            }
-
-            public byte[] GetResourceBytes(string resource) => _getBytesResource(resource);
-            public string GetResourceString(string resource) => _getStringResource(resource);
+            family = FontAbsolutePathDelegate?.Invoke(description.Family) ?? new FontFamily(description.Family);
         }
-
-        private readonly Dictionary<string, Bitmap> _images = new();
-        private readonly Dictionary<UIntPtr, FontInfo> _fonts = new();
-        private readonly Dictionary<FontKey, UIntPtr> _fontIDsByKey = new();
-
-        public bool Loaded = false;
-        public static string BaseUrl;
-        private uint _nextFontId;
-
-        private readonly record struct FontKey(string FaceName, int Size, FontWeight Weight, FontStyle Style, bool HasUnderline);
-
-        private string _defaultFontName;
-        private int _defaultFontSize;
-
-        /// <summary>
-        /// Default font name. If not set, uses system default from FontManager.
-        /// </summary>
-        public string DefaultFontName
+        catch (ArgumentException) { family = FontFamily.Default; }
+        var font = new FontInfo(description, family, DefaultFontSize, Viewport);
+        var id = nextFont++;
+        fonts.Add(id, font);
+        metrics = font.Metrics;
+        return id;
+    }
+    public override void DeleteFont(nuint font)
+    {
+        if (fonts.Remove(font, out var value))
+            value.Dispose();
+    }
+    public override float TextWidth(string text, nuint font) => fonts[font].Width(text);
+    public override void DrawText(RectF position, ColorRgba color, nuint font, string text, float decorationOpacity = 1)
+        => fonts[font].Draw(DrawingContext, position, text, color, Brush(color), decorationOpacity);
+    private IBrush Brush(ColorRgba color)
+    {
+        if (!brushes.TryGetValue(color, out var brush))
         {
-            get => _defaultFontName ?? GetSystemDefaultFontName();
-            set => _defaultFontName = value;
+            brush = color.GetBrush();
+            brushes[color] = brush;
         }
-
-        /// <summary>
-        /// Default font size. If not set, uses 12 (common default).
-        /// </summary>
-        public int DefaultFontSize
+        return brush;
+    }
+    private static Rect Rect(RectF r) => new(r.X, r.Y, Math.Max(0, r.Width), Math.Max(0, r.Height));
+    private Geometry Rounded(RectF rect, BorderRadii radius)
+    {
+        var key = (rect, radius);
+        if (rounded.TryGetValue(key, out var geometry))
+            return geometry;
+        if (rounded.Count > 2048)
+            rounded.Clear();
+        var r = Rect(rect);
+        var scale = 1d;
+        void Fit(double sum, double side)
         {
-            get => _defaultFontSize > 0 ? _defaultFontSize : 12;
-            set => _defaultFontSize = value;
+            if (sum > 0)
+                scale = Math.Min(scale, side / sum);
         }
-
-        private static string GetSystemDefaultFontName()
+        Fit(radius.TopLeftX + radius.TopRightX, r.Width);
+        Fit(radius.BottomLeftX + radius.BottomRightX, r.Width);
+        Fit(radius.TopLeftY + radius.BottomLeftY, r.Height);
+        Fit(radius.TopRightY + radius.BottomRightY, r.Height);
+        var tl = new Size(radius.TopLeftX * scale, radius.TopLeftY * scale);
+        var tr = new Size(radius.TopRightX * scale, radius.TopRightY * scale);
+        var br = new Size(radius.BottomRightX * scale, radius.BottomRightY * scale);
+        var bl = new Size(radius.BottomLeftX * scale, radius.BottomLeftY * scale);
+        var path = new StreamGeometry();
+        using (var c = path.Open())
         {
-            try
-            {
-                return FontManager.Current.DefaultFontFamily.Name;
-            }
-            catch
-            {
-                return "Arial"; // Fallback if FontManager not available
-            }
+            c.BeginFigure(new Point(r.Left + tl.Width, r.Top), true);
+            c.LineTo(new Point(r.Right - tr.Width, r.Top));
+            if (tr.Width > 0 && tr.Height > 0)
+                c.ArcTo(new Point(r.Right, r.Top + tr.Height), tr, 0, false, SweepDirection.Clockwise);
+            else
+                c.LineTo(r.TopRight);
+            c.LineTo(new Point(r.Right, r.Bottom - br.Height));
+            if (br.Width > 0 && br.Height > 0)
+                c.ArcTo(new Point(r.Right - br.Width, r.Bottom), br, 0, false, SweepDirection.Clockwise);
+            else
+                c.LineTo(r.BottomRight);
+            c.LineTo(new Point(r.Left + bl.Width, r.Bottom));
+            if (bl.Width > 0 && bl.Height > 0)
+                c.ArcTo(new Point(r.Left, r.Bottom - bl.Height), bl, 0, false, SweepDirection.Clockwise);
+            else
+                c.LineTo(r.BottomLeft);
+            c.LineTo(new Point(r.Left, r.Top + tl.Height));
+            if (tl.Width > 0 && tl.Height > 0)
+                c.ArcTo(new Point(r.Left + tl.Width, r.Top), tl, 0, false, SweepDirection.Clockwise);
+            else
+                c.LineTo(r.TopLeft);
+            c.EndFigure(true);
         }
-
-        public event Action<string> RenderHtmlRequested;
-        public Action<string> SetCursorCallback;
-
-        public DrawingContext DrawingContext;
-
-        public AvaloniaContainer(string css, IResourceLoader loader) : base(css, LibInterop.Instance)
+        rounded[key] = path;
+        return path;
+    }
+    public override void PushClip(RectF position, BorderRadii radii) => scopes.Push(DrawingContext.PushGeometryClip(Rounded(position, radii)));
+    public override void PopClip() => scopes.Pop().Dispose();
+    public override void PushTransform(Matrix4x4 m) => scopes.Push(DrawingContext.PushTransform(new Matrix(m.M11, m.M12, m.M21, m.M22, m.M41, m.M42)));
+    public override void PushOpacity(float opacity)
+    {
+        // Request a real compositing layer locally; ordinary PushOpacity can
+        // otherwise multiply each primitive's alpha in Avalonia's Skia backend.
+        scopes.Push(DrawingContext.PushRenderOptions(new RenderOptions { RequiresFullOpacityHandling = true }));
+        try { scopes.Push(DrawingContext.PushOpacity(opacity)); }
+        catch { scopes.Pop().Dispose(); throw; }
+    }
+    public override void PopOpacity()
+    {
+        scopes.Pop().Dispose();
+        scopes.Pop().Dispose();
+    }
+    public override void PopTransform() => scopes.Pop().Dispose();
+    public override void FillRect(Layer layer, ColorRgba color)
+    {
+        using var clip = DrawingContext.PushClip(Rect(layer.ClipBox));
+        using var opacity = layer.Opacity == 1 ? default : DrawingContext.PushOpacity(layer.Opacity);
+        DrawingContext.DrawGeometry(Brush(color), null, Rounded(layer.BorderBox, layer.Radius));
+    }
+    private static int StopsHash(ReadOnlySpan<lh_color_stop> stops, int space, int hue)
+    {
+        var hash = new HashCode();
+        hash.Add(space);
+        hash.Add(hue);
+        foreach (var s in stops)
         {
-            _loader = loader;
+            hash.Add(s.offset);
+            hash.Add(s.color.r);
+            hash.Add(s.color.g);
+            hash.Add(s.color.b);
+            hash.Add(s.color.a);
+            hash.Add(s.hint);
+            hash.Add(s.has_hint);
         }
-
-        public AvaloniaContainer(string css, Func<string, string> getStringResource,
-            Func<string, byte[]> getBytesResource) : this(css, new ResourceLoader(getStringResource, getBytesResource))
-        {
-        }
-
-        protected override void SetCaption(string caption)
-        {
-        }
-
-        protected override string GetDefaultFontName()
-        {
-            return DefaultFontName;
-        }
-
-        protected override int GetDefaultFontSize()
-        {
-            return DefaultFontSize;
-        }
-
-        public override void Render(string html)
-        {
-            RenderHtmlRequested?.Invoke(html);
-        }
-
-        private static void ClampCornerRadii(ref border_radiuses br, double width, double height)
-        {
-            // Sum pairs; if they exceed side length scale them down proportionally (CSS spec)
-            double topSum = br.top_left_x + br.top_right_x;
-            if (topSum > width && topSum > 0)
-            {
-                var scale = width / topSum;
-                br.top_left_x = (int)(br.top_left_x * scale);
-                br.top_right_x = (int)(br.top_right_x * scale);
-            }
-
-            double bottomSum = br.bottom_left_x + br.bottom_right_x;
-            if (bottomSum > width && bottomSum > 0)
-            {
-                var scale = width / bottomSum;
-                br.bottom_left_x = (int)(br.bottom_left_x * scale);
-                br.bottom_right_x = (int)(br.bottom_right_x * scale);
-            }
-
-            double leftSum = br.top_left_y + br.bottom_left_y;
-            if (leftSum > height && leftSum > 0)
-            {
-                var scale = height / leftSum;
-                br.top_left_y = (int)(br.top_left_y * scale);
-                br.bottom_left_y = (int)(br.bottom_left_y * scale);
-            }
-
-            double rightSum = br.top_right_y + br.bottom_right_y;
-            if (rightSum > height && rightSum > 0)
-            {
-                var scale = height / rightSum;
-                br.top_right_y = (int)(br.top_right_y * scale);
-                br.bottom_right_y = (int)(br.bottom_right_y * scale);
-            }
-        }
-
-        private static Geometry BuildRoundedRectGeometry(Rect rect, border_radiuses br)
-        {
-            var geo = new StreamGeometry();
-            using var ctx = geo.Open();
-            var tlr = br is { top_left_x: > 0, top_left_y: > 0 };
-            var trr = br is { top_right_x: > 0, top_right_y: > 0 };
-            var brr = br is { bottom_right_x: > 0, bottom_right_y: > 0 };
-            var blr = br is { bottom_left_x: > 0, bottom_left_y: > 0 };
-
-            // Start after top-left corner (or at raw corner if no radius)
-            ctx.BeginFigure(new Point(rect.Left + (tlr ? br.top_left_x : 0), rect.Top), true);
-
-            // Top edge + top-right corner
-            ctx.LineTo(new Point(rect.Right - (trr ? br.top_right_x : 0), rect.Top));
-            if (trr)
-            {
-                ctx.ArcTo(new Point(rect.Right, rect.Top + br.top_right_y),
-                    new Size(br.top_right_x, br.top_right_y),
-                    0, false, SweepDirection.Clockwise);
-            }
-
-            // Right edge + bottom-right corner
-            ctx.LineTo(new Point(rect.Right, rect.Bottom - (brr ? br.bottom_right_y : 0)));
-            if (brr)
-            {
-                ctx.ArcTo(new Point(rect.Right - br.bottom_right_x, rect.Bottom),
-                    new Size(br.bottom_right_x, br.bottom_right_y),
-                    0, false, SweepDirection.Clockwise);
-            }
-
-            // Bottom edge + bottom-left corner
-            ctx.LineTo(new Point(rect.Left + (blr ? br.bottom_left_x : 0), rect.Bottom));
-            if (blr)
-            {
-                ctx.ArcTo(new Point(rect.Left, rect.Bottom - br.bottom_left_y),
-                    new Size(br.bottom_left_x, br.bottom_left_y),
-                    0, false, SweepDirection.Clockwise);
-            }
-
-            // Left edge + top-left corner
-            ctx.LineTo(new Point(rect.Left, rect.Top + (tlr ? br.top_left_y : 0)));
-            if (tlr)
-            {
-                ctx.ArcTo(new Point(rect.Left + br.top_left_x, rect.Top),
-                    new Size(br.top_left_x, br.top_left_y),
-                    0, false, SweepDirection.Clockwise);
-            }
-
-            ctx.EndFigure(true);
-
-            return geo;
-        }
-
-        protected override void DrawBackground(UIntPtr hdc, string image, background_repeat repeat,
-            ref web_color color, ref position pos, ref border_radiuses br, ref position borderBox, bool isRoot)
-        {
-            if (pos.width <= 0 || pos.height <= 0) return;
-
-            if (!string.IsNullOrEmpty(image))
-            {
-                var bitmap = LoadImage(image);
-                if (bitmap != null)
-                    DrawImage(bitmap, new Rect(pos.x, pos.y, pos.width, pos.height));
-                return;
-            }
-
-            var rect = new Rect(pos.x, pos.y, pos.width, pos.height);
-            var hasRadii =
-                (br.top_left_x | br.top_left_y | br.top_right_x | br.top_right_y |
-                 br.bottom_right_x | br.bottom_right_y | br.bottom_left_x | br.bottom_left_y) != 0;
-
-            if (!hasRadii)
-            {
-                DrawingContext.DrawRectangle(color.GetBrush(), null, rect);
-                return;
-            }
-
-            ClampCornerRadii(ref br, rect.Width, rect.Height);
-            var geometry = BuildRoundedRectGeometry(rect, br);
-            DrawingContext.DrawGeometry(color.GetBrush(), null, geometry);
-        }
-
-        protected override void DrawBorders(UIntPtr hdc, ref borders borders, ref position draw_pos, bool root)
-        {
-            if (draw_pos.width < 0) draw_pos.width = 0;
-            if (draw_pos.height < 0) draw_pos.height = 0;
-
-            var rect = new Rect(draw_pos.x, draw_pos.y, draw_pos.width, draw_pos.height);
-            var br = borders.radius;
-
-            var hasRadii =
-                (br.top_left_x | br.top_left_y | br.top_right_x | br.top_right_y |
-                 br.bottom_right_x | br.bottom_right_y | br.bottom_left_x | br.bottom_left_y) != 0;
-
-            var uniform =
-                borders.top.width > 0 &&
-                borders.top.width == borders.right.width &&
-                borders.top.width == borders.bottom.width &&
-                borders.top.width == borders.left.width &&
-                borders.top.color.Equals(borders.right.color) &&
-                borders.top.color.Equals(borders.bottom.color) &&
-                borders.top.color.Equals(borders.left.color);
-
-            if (uniform)
-            {
-                var pen = borders.top.color.GetPen(borders.top.width);
-                if (!hasRadii)
+        return hash.ToHashCode();
+    }
+    private bool FindGradient((int, Layer, float, float, float, float, int) key, ReadOnlySpan<lh_color_stop> stops, out IBrush brush)
+    {
+        if (gradients.TryGetValue(key, out var candidates))
+            foreach (var entry in candidates)
+                if (MemoryMarshal.AsBytes(stops).SequenceEqual(MemoryMarshal.AsBytes(entry.Stops.AsSpan())))
                 {
-                    DrawingContext.DrawRectangle(null, pen, rect);
+                    brush = entry.Brush;
+                    return true;
                 }
+        brush = null;
+        return false;
+    }
+    private void CacheGradient((int, Layer, float, float, float, float, int) key, ReadOnlySpan<lh_color_stop> stops, IBrush brush)
+    {
+        if (gradients.Count > 512)
+            gradients.Clear();
+        if (!gradients.TryGetValue(key, out var candidates))
+            gradients[key] = candidates = new();
+        candidates.Add(new(stops.ToArray(), brush));
+    }
+    private static GradientStops Stops(ReadOnlySpan<lh_color_stop> source, int colorSpace)
+    {
+        var result = new GradientStops();
+        for (var i = 0; i < source.Length; i++)
+        {
+            var stop = source[i];
+            result.Add(new GradientStop(Color.FromArgb(stop.color.a, stop.color.r, stop.color.g, stop.color.b), stop.offset));
+            if (i + 1 == source.Length || (stop.has_hint == 0 && colorSpace != 2))
+                continue;
+            var next = source[i + 1];
+            var distance = next.offset - stop.offset;
+            if (distance <= 0)
+                continue;
+            var midpoint = (stop.hint - stop.offset) / distance;
+            for (var sample = 1; sample < 32; sample++)
+            {
+                var position = sample / 32f;
+                var blend = position;
+                if (stop.has_hint != 0)
+                    blend = midpoint <= 0 ? 1 : midpoint >= 1 ? 0 : MathF.Pow(position, MathF.Log(.5f) / MathF.Log(midpoint));
+                result.Add(new GradientStop(Interpolate(stop.color, next.color, blend, colorSpace == 2), stop.offset + position * distance));
+            }
+        }
+        return result;
+    }
+    private static Color Interpolate(lh_color a, lh_color b, float t, bool linear)
+    {
+        var alphaA = a.a / 255f;
+        var alphaB = b.a / 255f;
+        var alpha = alphaA + (alphaB - alphaA) * t;
+        float Decode(float c) => !linear ? c : c <= .04045f ? c / 12.92f : MathF.Pow((c + .055f) / 1.055f, 2.4f);
+        float Encode(float c) => !linear ? c : c <= .0031308f ? c * 12.92f : 1.055f * MathF.Pow(c, 1 / 2.4f) - .055f;
+        byte Channel(byte left, byte right)
+        {
+            if (alpha <= 0)
+                return 0;
+            var v = Decode(left / 255f) * alphaA * (1 - t) + Decode(right / 255f) * alphaB * t;
+            return (byte)Math.Clamp(MathF.Round(Encode(v / alpha) * 255), 0, 255);
+        }
+        return Color.FromArgb((byte)Math.Clamp(MathF.Round(alpha * 255), 0, 255), Channel(a.r, b.r), Channel(a.g, b.g), Channel(a.b, b.b));
+    }
+    private void PaintTiles(Layer layer, IBrush brush, Bitmap bitmap = null)
+    {
+        var tile = layer.OriginBox;
+        if (tile.Width <= 0 || tile.Height <= 0)
+            return;
+        using var outer = DrawingContext.PushGeometryClip(Rounded(layer.BorderBox, layer.Radius));
+        using var clip = DrawingContext.PushClip(Rect(layer.ClipBox));
+        using var opacity = layer.Opacity == 1 ? default : DrawingContext.PushOpacity(layer.Opacity);
+        var repeatX = layer.Repeat is 0 or 1;
+        var repeatY = layer.Repeat is 0 or 2;
+        var x0 = repeatX ? tile.X + MathF.Floor((layer.ClipBox.X - tile.X) / tile.Width) * tile.Width : tile.X;
+        var y0 = repeatY ? tile.Y + MathF.Floor((layer.ClipBox.Y - tile.Y) / tile.Height) * tile.Height : tile.Y;
+        var right = repeatX ? layer.ClipBox.X + layer.ClipBox.Width : x0 + tile.Width;
+        var bottom = repeatY ? layer.ClipBox.Y + layer.ClipBox.Height : y0 + tile.Height;
+        for (double y = y0; y < bottom; y += tile.Height)
+            for (double x = x0; x < right; x += tile.Width)
+            {
+                var rect = new Rect(x, y, tile.Width, tile.Height);
+                if (bitmap != null)
+                    DrawingContext.DrawImage(bitmap, rect);
                 else
                 {
-                    ClampCornerRadii(ref br, rect.Width, rect.Height);
-                    var geometry = BuildRoundedRectGeometry(rect, br);
-                    DrawingContext.DrawGeometry(null, pen, geometry);
+                    using var placement = DrawingContext.PushTransform(Matrix.CreateTranslation(x - tile.X, y - tile.Y));
+                    DrawingContext.DrawRectangle(brush, null, Rect(tile));
                 }
-
-                return;
             }
-
-            if (!hasRadii)
-            {
-                if (borders.top.width > 0)
-                    DrawingContext.DrawLine(borders.top.color.GetPen(borders.top.width), rect.TopLeft, rect.TopRight);
-                if (borders.right.width > 0)
-                    DrawingContext.DrawLine(borders.right.color.GetPen(borders.right.width), rect.TopRight,
-                        rect.BottomRight);
-                if (borders.bottom.width > 0)
-                    DrawingContext.DrawLine(borders.bottom.color.GetPen(borders.bottom.width), rect.BottomRight,
-                        rect.BottomLeft);
-                if (borders.left.width > 0)
-                    DrawingContext.DrawLine(borders.left.color.GetPen(borders.left.width), rect.BottomLeft,
-                        rect.TopLeft);
-                return;
-            }
-
-            // Per-side with trimmed ends to respect radii
-            ClampCornerRadii(ref br, rect.Width, rect.Height);
-
-            double tlx = br.top_left_x;
-            double tly = br.top_left_y;
-            double trx = br.top_right_x;
-            double try_ = br.top_right_y;
-            double brx = br.bottom_right_x;
-            double bry = br.bottom_right_y;
-            double blx = br.bottom_left_x;
-            double bly = br.bottom_left_y;
-
-            // Top
-            if (borders.top.width > 0)
-            {
-                var pen = borders.top.color.GetPen(borders.top.width);
-                var y = rect.Top;
-                DrawingContext.DrawLine(pen,
-                    new Point(rect.Left + tlx, y),
-                    new Point(rect.Right - trx, y));
-            }
-
-            // Right
-            if (borders.right.width > 0)
-            {
-                var pen = borders.right.color.GetPen(borders.right.width);
-                var x = rect.Right;
-                DrawingContext.DrawLine(pen,
-                    new Point(x, rect.Top + try_),
-                    new Point(x, rect.Bottom - bry));
-            }
-
-            // Bottom
-            if (borders.bottom.width > 0)
-            {
-                var pen = borders.bottom.color.GetPen(borders.bottom.width);
-                var y = rect.Bottom;
-                DrawingContext.DrawLine(pen,
-                    new Point(rect.Right - brx, y),
-                    new Point(rect.Left + blx, y));
-            }
-
-            // Left
-            if (borders.left.width > 0)
-            {
-                var pen = borders.left.color.GetPen(borders.left.width);
-                var x = rect.Left;
-                DrawingContext.DrawLine(pen,
-                    new Point(x, rect.Bottom - bly),
-                    new Point(x, rect.Top + tly));
-            }
-        }
-
-        private void DrawRect(double x, double y, double width, double height, IBrush brush)
+    }
+    public override void DrawLinearGradient(Layer layer, float x0, float y0, float x1, float y1, ReadOnlySpan<lh_color_stop> stops, int space, int hue)
+    {
+        var key = (1, layer, x0, y0, x1, y1, StopsHash(stops, space, hue));
+        if (!FindGradient(key, stops, out var brush))
         {
-            var rect = new Rect(x, y, width, height);
-            DrawingContext.DrawRectangle(brush, null, rect);
+            brush = new LinearGradientBrush { StartPoint = new RelativePoint(x0, y0, RelativeUnit.Absolute), EndPoint = new RelativePoint(x1, y1, RelativeUnit.Absolute), GradientStops = Stops(stops, space) }.ToImmutable();
+            CacheGradient(key, stops, brush);
         }
-
-        protected override void GetImageSize(string image, ref size size)
+        PaintTiles(layer, brush);
+    }
+    public override void DrawRadialGradient(Layer layer, float cx, float cy, float rx, float ry, ReadOnlySpan<lh_color_stop> stops, int space, int hue)
+    {
+        var key = (2, layer, cx, cy, rx, ry, StopsHash(stops, space, hue));
+        if (!FindGradient(key, stops, out var brush))
         {
-            var bmp = LoadImage(image);
-            if (bmp == null) return;
-            size.width = bmp.PixelSize.Width;
-            size.height = bmp.PixelSize.Height;
+            var center = new RelativePoint(cx, cy, RelativeUnit.Absolute);
+            brush = new RadialGradientBrush { Center = center, GradientOrigin = center, RadiusX = new RelativeScalar(rx, RelativeUnit.Absolute), RadiusY = new RelativeScalar(ry, RelativeUnit.Absolute), GradientStops = Stops(stops, space) }.ToImmutable();
+            CacheGradient(key, stops, brush);
         }
-
-        private FontInfo GetFont(UIntPtr fontID)
+        PaintTiles(layer, brush);
+    }
+    public override void DrawConicGradient(Layer layer, float cx, float cy, float angle, float radius, ReadOnlySpan<lh_color_stop> stops, int space, int hue)
+    {
+        var key = (3, layer, cx, cy, angle, radius, StopsHash(stops, space, hue));
+        if (!FindGradient(key, stops, out var brush))
         {
-            return _fonts[fontID];
+            brush = new ConicGradientBrush { Center = new RelativePoint(cx, cy, RelativeUnit.Absolute), Angle = angle, GradientStops = Stops(stops, space) }.ToImmutable();
+            CacheGradient(key, stops, brush);
         }
+        PaintTiles(layer, brush);
+    }
+    private string Resolve(string source, string root)
+    {
+        var basis = string.IsNullOrEmpty(root) ? baseUrl : root;
+        var key = (source, basis);
+        return resolvedUrls.GetOrAdd(key, static pair =>
+            Uri.TryCreate(pair.Item2, UriKind.Absolute, out var b) && Uri.TryCreate(b, pair.Item1, out var resolved)
+                ? resolved.ToString() : pair.Item1);
+    }
+    protected override (string Source, string BaseUrl) ResolveImageKey(string source, string root)
+        => (Resolve(source, root), "");
 
-        private void DrawImage(Bitmap image, Rect rect)
-        {
-            DrawingContext.DrawImage(image, rect);
-        }
+    private Bitmap Image(string source, string root) => GetImageFrame(source, root) as Bitmap;
 
-        private Bitmap LoadImage(string image)
+    protected override ValueTask<IImageSource> LoadImageSourceAsync(string source, string root, CancellationToken cancellationToken)
+    {
+        var resolved = Resolve(source, root);
+        // Resource callbacks run synchronously on the requesting thread.
+        cancellationToken.ThrowIfCancellationRequested();
+        var bytes = loader?.GetResourceBytes(resolved);
+        return new ValueTask<IImageSource>(Task.Run<IImageSource>(() =>
         {
-            try
+            cancellationToken.ThrowIfCancellationRequested();
+            return bytes is { Length: > 0 } ? AvaloniaImageSource.Decode(bytes, cancellationToken) : null;
+        }, cancellationToken));
+    }
+    public override void DrawImage(Layer layer, string source, string root)
+    {
+        var image = Image(source, root);
+        if (image != null)
+            PaintTiles(layer, null, image);
+    }
+    protected override (string Css, string BaseUrl) ImportCss(string url, string root)
+    {
+        if (ImportCssRequest != null) return base.ImportCss(url, root);
+        var resolved = Resolve(url, root);
+        return (loader?.GetResourceString(resolved) ?? "", resolved);
+    }
+    public override void DrawBorders(Borders borders, RectF position, bool root)
+    {
+        var key = (borders, position);
+        if (!borderPaints.TryGetValue(key, out var paints))
+        {
+            var list = new List<(Geometry, IBrush, IPen)>();
+            var r = Rect(position);
+            var uniform = borders.Top == borders.Left && borders.Top == borders.Right && borders.Top == borders.Bottom;
+            if (uniform && borders.Top.Width > 0 && borders.Top.Style >= 2)
             {
-                if (_images.TryGetValue(image, out var result))
+                var side = borders.Top;
+                void Outline(double inset, double width)
                 {
-                    return result;
+                    var rect = new RectF(position.X + (float)inset, position.Y + (float)inset, Math.Max(0, position.Width - (float)inset * 2), Math.Max(0, position.Height - (float)inset * 2));
+                    var rad = InsetRadii(borders.Radius, (float)inset, (float)inset, (float)inset, (float)inset);
+                    var dash = side.Style == 2 ? DashStyle.Dot : side.Style == 3 ? DashStyle.Dash : null;
+                    list.Add((Rounded(rect, rad), null, new Pen(Brush(side.Color), width, dash)));
                 }
-
-                var bytes = _loader.GetResourceBytes(image);
-                if (bytes == null || bytes.Length <= 0) return result;
-                using var stream = new MemoryStream(bytes);
-                result = new Bitmap(stream);
-                _images.Add(image, result);
-
-                return result;
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        protected override int GetTextWidth(string text, UIntPtr font)
-        {
-            var fontInfo = GetFont(font);
-            var formattedText = fontInfo.GetFormattedText(text);
-            return (int)Math.Round(formattedText.WidthIncludingTrailingWhitespace);
-        }
-
-        protected override void DrawText(string text, UIntPtr font, ref web_color color, ref position pos)
-        {
-            var fontInfo = GetFont(font);
-            text = text.Replace(' ', (char)160);
-            var brush = color.GetBrush();
-            var textLayout = fontInfo.CreateTextLayout(text, brush);
-            textLayout.Draw(DrawingContext, new Point(pos.x, pos.y));
-
-            if (fontInfo.HasUnderline)
-            {
-                // Use pos.width from litehtml, and font's baseline + underline offset for vertical position
-                var y = pos.y + fontInfo.UnderlineOffset;
-                var pen = new Pen(brush, fontInfo.UnderlineThickness);
-                DrawingContext.DrawLine(pen, new Point(pos.x, y), new Point(pos.x + pos.width, y));
-            }
-        }
-
-        protected override UIntPtr CreateFont(string faceName, int size, int weight, font_style italic,
-            font_decoration decoration, ref font_metrics fm)
-        {
-            var fontweight = weight >= 700 ? FontWeight.Bold : FontWeight.Normal;
-            var style = italic == font_style.fontStyleItalic ? FontStyle.Italic : FontStyle.Normal;
-            var hasUnderline = (decoration & font_decoration.font_decoration_underline) != 0;
-
-            var key = new FontKey(faceName, size, fontweight, style, hasUnderline);
-            if (!_fontIDsByKey.TryGetValue(key, out var fontID))
-            {
-                var font = new FontInfo(faceName, style, fontweight, size, FontAbsolutePathDelegate?.Invoke(faceName));
-                font.HasUnderline = hasUnderline;
-
-                fontID = new UIntPtr(_nextFontId++);
-                _fonts.Add(fontID, font);
-                _fontIDsByKey.Add(key, fontID);
-            }
-
-            var fi = _fonts[fontID];
-            fm.x_height = fi.xHeight;
-            fm.ascent = fi.Ascent;
-            fm.descent = fi.Descent;
-            fm.height = fi.LineHeight;
-            fm.draw_spaces = decoration > 0;
-
-            return fontID;
-        }
-
-        protected override string ImportCss(string url, string baseurl)
-        {
-            return _loader.GetResourceString(url);
-        }
-
-        protected override void GetMediaFeatures(ref media_features media)
-        {
-            base.GetMediaFeatures(ref media);
-            media.device_width = media.width;
-            media.device_height = media.height;
-            media.resolution = 96;
-            media.color = 24;
-            media.type = media_type.media_type_all;
-        }
-
-        protected override void SetBaseURL(string baseUrl)
-        {
-            // Base URL stored for relative href resolution.
-            BaseUrl = baseUrl;
-        }
-
-        protected override int PTtoPX(int pt)
-        {
-            return pt;
-        }
-
-        protected override void SetCursor(string cursor)
-        {
-            SetCursorCallback?.Invoke(cursor);
-        }
-
-        protected override void DrawListMarker(string image, string baseURL, list_style_type marker_type,
-            ref web_color color, ref position pos)
-        {
-            DrawRect(pos.x, pos.y, pos.width, pos.height, color.GetBrush());
-        }
-
-        protected override string TransformText(string text, text_transform tt)
-        {
-            return text;
-        }
-    }
-
-    public enum InputType
-    {
-        Unknown,
-        Button,
-        Textbox
-    }
-
-    public class AvaloniaInputs : List<AvaloniaInput>
-    {
-        public AvaloniaInput GetInputByTagID(string id)
-        {
-            return this.FirstOrDefault(i => i.TagID == id);
-        }
-    }
-
-    public class AvaloniaInput
-    {
-        public int ID;
-        public Control Element;
-        public bool IsPlaced;
-        public InputType Type;
-        public string Onclick;
-        public string Href;
-        public string TagID;
-
-        public bool AttributesSetup { get; set; }
-
-        public AvaloniaInput(InputType type)
-        {
-            Type = type;
-        }
-
-        public TextBox TextBox => Element as TextBox;
-
-        public Button Button => Element as Button;
-
-        public void SetupAttributes(string attrString)
-        {
-            if (string.IsNullOrEmpty(attrString))
-            {
-                return;
-            }
-
-            var lines = attrString.Split('\n');
-            foreach (var line in lines)
-            {
-                var keyVal = line.Split('=');
-                if (keyVal.Length > 1)
+                if (side.Style == 5)
                 {
-                    var key = keyVal[0].ToLower();
-                    var value = keyVal[1];
-
-                    switch (key)
+                    Outline(side.Width / 6, side.Width / 3);
+                    Outline(side.Width * 5 / 6, side.Width / 3);
+                }
+                else
+                    Outline(side.Width / 2, side.Width);
+            }
+            else
+            {
+                var inner = new RectF(position.X + borders.Left.Width, position.Y + borders.Top.Width, Math.Max(0, position.Width - borders.Left.Width - borders.Right.Width), Math.Max(0, position.Height - borders.Top.Width - borders.Bottom.Width));
+                var innerRadius = InsetRadii(borders.Radius, borders.Left.Width, borders.Top.Width, borders.Right.Width, borders.Bottom.Width);
+                var ring = new CombinedGeometry(GeometryCombineMode.Exclude, Rounded(position, borders.Radius), Rounded(inner, innerRadius));
+                var inside = Rect(inner);
+                void Side(Border border, Point a, Point b, Point c, Point d)
+                {
+                    if (border.Width <= 0 || border.Style < 2)
+                        return;
+                    var path = new StreamGeometry();
+                    using (var context = path.Open())
                     {
-                        case "value":
-                            switch (Element)
-                            {
-                                case Button button:
-                                    button.Content = value;
-                                    break;
-                                case TextBox textBox:
-                                    textBox.Text = value;
-                                    break;
-                            }
-
-                            break;
-                        case "href":
-                            Href = value;
-                            break;
-                        case "id":
-                            TagID = value;
-                            break;
-                        case "onclick":
-                            Onclick = value;
-                            break;
+                        context.BeginFigure(a, true);
+                        context.LineTo(b);
+                        context.LineTo(c);
+                        context.LineTo(d);
+                        context.EndFigure(true);
                     }
+                    list.Add((new CombinedGeometry(GeometryCombineMode.Intersect, ring, path), Brush(border.Color), null));
                 }
+                Side(borders.Top, r.TopLeft, r.TopRight, inside.TopRight, inside.TopLeft);
+                Side(borders.Right, r.TopRight, r.BottomRight, inside.BottomRight, inside.TopRight);
+                Side(borders.Bottom, r.BottomRight, r.BottomLeft, inside.BottomLeft, inside.BottomRight);
+                Side(borders.Left, r.BottomLeft, r.TopLeft, inside.TopLeft, inside.BottomLeft);
+            }
+            paints = list.ToArray();
+            if (borderPaints.Count > 512)
+                borderPaints.Clear();
+            borderPaints[key] = paints;
+        }
+        foreach (var paint in paints)
+            DrawingContext.DrawGeometry(paint.Brush, paint.Pen, paint.Geometry);
+    }
+    private static BorderRadii InsetRadii(BorderRadii r, float left, float top, float right, float bottom)
+        => new(Math.Max(0, r.TopLeftX - left), Math.Max(0, r.TopLeftY - top), Math.Max(0, r.TopRightX - right), Math.Max(0, r.TopRightY - top), Math.Max(0, r.BottomRightX - right), Math.Max(0, r.BottomRightY - bottom), Math.Max(0, r.BottomLeftX - left), Math.Max(0, r.BottomLeftY - bottom));
+    public override void DrawListMarker(RectF position, ColorRgba color, int type, int index, nuint font, string image, string root)
+    {
+        if (image.Length != 0)
+        {
+            var bitmap = Image(image, root);
+            if (bitmap != null)
+                DrawingContext.DrawImage(bitmap, Rect(position));
+            return;
+        }
+        if (type == 0)
+            return;
+        if (type == 1)
+        {
+            if (!markerPens.TryGetValue(color, out var pen))
+                markerPens[color] = pen = new Pen(Brush(color), 1);
+            DrawingContext.DrawEllipse(null, pen, Rect(position));
+        }
+        else if (type == 2)
+            DrawingContext.DrawEllipse(Brush(color), null, Rect(position));
+        else if (type == 3)
+            DrawingContext.DrawRectangle(Brush(color), null, Rect(position));
+        else
+        {
+            if (!markerText.TryGetValue(index, out var text))
+                markerText[index] = text = index + ".";
+            DrawText(position, color, font, text);
+        }
+    }
+    public override void Dispose()
+    {
+        if (disposed)
+            return;
+        try
+        {
+            base.Dispose();
+        }
+        finally
+        {
+            if (Document.IsDisposed)
+            {
+                disposed = true;
+                fonts.Clear();
+                brushes.Clear();
+                markerPens.Clear();
+                resolvedUrls.Clear();
+                rounded.Clear();
+                gradients.Clear();
+                borderPaints.Clear();
+                markerText.Clear();
             }
         }
+    }
+
+}
+public enum InputType
+{
+    Unknown, Button, Textbox
+}
+public class AvaloniaInputs : List<AvaloniaInput>
+{
+    public AvaloniaInput GetInputByTagID(string id) => this.FirstOrDefault(x => x.TagID == id);
+}
+public class AvaloniaInput(InputType type)
+{
+    public int ID;
+    public Control Element;
+    public InputType Type = type;
+    public string Onclick, Href, TagID;
+    public bool IsPlaced, AttributesSetup;
+    public TextBox TextBox => Element as TextBox;
+    public Button Button => Element as Button;
+    public void SetupAttributes(IReadOnlyDictionary<string, string> attributes)
+    {
+        if (attributes.TryGetValue("value", out var value))
+        {
+            if (Element is Button button)
+                button.Content = value;
+            if (Element is TextBox text)
+                text.Text = value;
+        }
+        if (Element is TextBox password && attributes.TryGetValue("type", out var type) &&
+            string.Equals(type, "password", StringComparison.OrdinalIgnoreCase)) password.PasswordChar = '●';
+        attributes.TryGetValue("href", out Href);
+        attributes.TryGetValue("id", out TagID);
+        attributes.TryGetValue("onclick", out Onclick);
     }
 }
-

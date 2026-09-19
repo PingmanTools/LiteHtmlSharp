@@ -1,0 +1,80 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 21,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "osx-universal",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/LiteHtmlLib/build/osx-universal",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "CMAKE_OSX_ARCHITECTURES": "x86_64;arm64",
+        "CMAKE_OSX_DEPLOYMENT_TARGET": "10.13"
+      }
+    },
+    {
+      "name": "linux-x64",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/LiteHtmlLib/build/linux-x64",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "CMAKE_SYSTEM_NAME": "Linux",
+        "CMAKE_SYSTEM_PROCESSOR": "x86_64"
+      }
+    },
+    {
+      "name": "linux-arm64",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/LiteHtmlLib/build/linux-arm64",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "CMAKE_SYSTEM_NAME": "Linux",
+        "CMAKE_SYSTEM_PROCESSOR": "aarch64"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "osx-universal",
+      "configurePreset": "osx-universal"
+    },
+    {
+      "name": "linux-x64",
+      "configurePreset": "linux-x64"
+    },
+    {
+      "name": "linux-arm64",
+      "configurePreset": "linux-arm64"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "osx-universal",
+      "configurePreset": "osx-universal",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "linux-x64",
+      "configurePreset": "linux-x64",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "linux-arm64",
+      "configurePreset": "linux-arm64",
+      "output": {
+        "outputOnFailure": true
+      }
+    }
+  ]
+}

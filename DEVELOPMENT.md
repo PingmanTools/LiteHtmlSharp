@@ -1,172 +1,132 @@
-# LiteHTMLSharp Development Guide
+# Development guide
 
-## Local Development Setup
+## Prerequisites
 
-When developing with LiteHTMLSharp using `ProjectReference` (rather than consuming published NuGet packages), you need to manually copy native libraries to your output directory.
+- .NET 10 SDK; the core also targets .NET 8 and 9.
+- CMake 3.21 or newer and a C++17 compiler.
+- For macOS: Apple command-line tools; the macOS workload and compatible Xcode for AppKit projects.
+- For Windows: Visual Studio or EWDK with MSBuild and x86/x64/ARM64 C++ toolchains. CMake is not required by the Windows MSBuild flow.
+- For cross-builds on macOS: Zig or Docker. Scripts use tools from PATH.
 
-### Quick Setup
+The `litehtml` submodule points to the [PingmanTools fork](https://github.com/PingmanTools/litehtml). The parent commit pins the exact native revision. Both the engine and bridge build as C++17.
 
-Add this to your application's `.csproj` file:
+## Native builds
 
-```xml
-<!-- Copy native libraries for local development -->
-<ItemGroup>
-  <Content Include="path/to/LiteHTMLSharp/runtimes/**/*.dll;path/to/LiteHTMLSharp/runtimes/**/*.dylib">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    <Link>runtimes/%(RecursiveDir)%(Filename)%(Extension)</Link>
-    <TargetPath>runtimes/%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
-  </Content>
-</ItemGroup>
+### macOS universal
+
+Run from the repository root:
+
+```sh
+cmake --preset osx-universal
+cmake --build --preset osx-universal --parallel
+ctest --preset osx-universal --output-on-failure
+/usr/bin/lipo -info LiteHtmlLib/build/osx-universal/liblitehtml.dylib
 ```
 
-Replace `path/to/LiteHTMLSharp` with the actual path to your LiteHTMLSharp clone.
+`LiteHtmlLib/build.sh` performs configuration and compilation. The output contains x86_64 and ARM64 slices. The wrapper exports only the `lh_*` C ABI and removes unused linked code. To build, run native tests, and update both packaged macOS binaries:
 
-### Example
-
-If your solution structure is:
-```
-MySolution/
-  LiteHTMLSharp/          (cloned repo)
-    runtimes/
-      osx-arm64/
-      osx-x64/
-      win-x64/
-      win-x86/
-  MyApp/
-    MyApp.csproj
+```sh
+bash LiteHtmlLib/build.sh --install
 ```
 
-Then in `MyApp.csproj`:
-```xml
-<ItemGroup>
-  <Content Include="$(MSBuildThisFileDirectory)../LiteHTMLSharp/runtimes/**/*.dll;$(MSBuildThisFileDirectory)../LiteHTMLSharp/runtimes/**/*.dylib">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    <Link>runtimes/%(RecursiveDir)%(Filename)%(Extension)</Link>
-    <TargetPath>runtimes/%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
-  </Content>
-</ItemGroup>
+Packaging extracts each architecture, strips local symbols, then ad-hoc signs the final file. The unstripped universal build output remains available for diagnostics. Release distribution signing can replace the ad-hoc signature later.
+
+### Linux
+
+On Linux, `LiteHtmlLib/lib_so/build.sh --install` builds for the current architecture and strips a copy into `runtimes/`. The `linux-x64` and `linux-arm64` CMake presets select target system/processor; supply a matching compiler for cross-compilation.
+
+From macOS:
+
+```sh
+STRIP=/opt/homebrew/opt/llvm/bin/llvm-strip LiteHtmlLib/lib_so/build-cross.sh --zig
+# Or use GCC Docker images:
+LiteHtmlLib/lib_so/build-cross.sh --docker
 ```
 
-### macOS App Bundle Exception
+Linux exports only the `lh_*` C ABI and discards unused function/data sections. Packaging uses `strip --strip-unneeded` on a copy; unstripped build outputs are retained. For Zig cross-builds, set `STRIP` to an ELF-capable `llvm-strip` executable if it is not on PATH.
 
-For macOS app bundles (projects with `<UseMacOSAppBundle>true</UseMacOSAppBundle>`), use `NativeReference` instead of `Content`:
+An optional final argument selects `x64` or `arm64`. These scripts update packaged runtimes. Zig uses its own archive tools; its unsupported linker push/pop capability is declared explicitly so CMake does not probe a host linker.
 
-```xml
-<ItemGroup>
-  <NativeReference Include="$(MSBuildThisFileDirectory)../runtimes/osx-arm64/native/liblitehtml.dylib" Condition="'$(RuntimeIdentifier)' == 'osx-arm64' OR '$(RuntimeIdentifier)' == ''">
-    <Kind>Dynamic</Kind>
-    <ForceLoad>False</ForceLoad>
-  </NativeReference>
-  <NativeReference Include="$(MSBuildThisFileDirectory)../runtimes/osx-x64/native/liblitehtml.dylib" Condition="'$(RuntimeIdentifier)' == 'osx-x64'">
-    <Kind>Dynamic</Kind>
-    <ForceLoad>False</ForceLoad>
-  </NativeReference>
-</ItemGroup>
+### Windows
+
+```bat
+build-windows-dlls.bat
 ```
 
-This ensures native libraries are placed in the `MonoBundle/` folder where .NET can find them in app bundles.
+The script preserves Visual Studio/EWDK discovery and builds all three platforms using `LiteHtmlLib/LiteHtmlLib.vcxproj`. The project uses wildcard source lists corresponding to the unified CMake build. Release builds enable string pooling (`/GF`) both from Visual Studio and the script, while retaining `/Ox`, whole-program optimization, and the static runtime. Keep PDBs separately from packaged DLLs.
 
-## Why Is This Necessary?
+For macOS cross-compilation, use the installed Docker LLVM-MinGW image:
 
-Native libraries need to be in specific locations for .NET's runtime to find them. When using published NuGet packages, this happens automatically. For local development with `ProjectReference`, you need to manually configure the copy.
-
-## Testing Local NuGet Packages
-
-If you want to test the NuGet packages locally before publishing, you can set up a local package source.
-
-### Setup Local Package Source (One-time)
-
-**Windows:**
-```bash
-mkdir %USERPROFILE%\LocalNuGet
-dotnet nuget add source %USERPROFILE%\LocalNuGet --name LocalDev
+```sh
+LiteHtmlLib/lib_dll/build-cross.sh x64
+LiteHtmlLib/lib_dll/build-cross.sh x86
+LiteHtmlLib/lib_dll/build-cross.sh arm64
 ```
 
-**Mac/Linux:**
-```bash
-mkdir -p ~/LocalNuGet
-dotnet nuget add source ~/LocalNuGet --name LocalDev
+Cross-compilation does not establish Windows runtime correctness; run the examples and tests on Windows separately.
+
+## Managed builds and tests
+
+```sh
+dotnet build LiteHtmlSharp/LiteHtmlSharp.csproj
+dotnet test LiteHtmlSharp.Tests/LiteHtmlSharp.Tests.csproj
+dotnet test LiteHtmlSharp.Avalonia.Tests/LiteHtmlSharp.Avalonia.Tests.csproj
+dotnet run --project Example.Avalonia
+dotnet run --project Example.Mac
+dotnet build LiteHtmlSharp.Wpf/LiteHtmlSharp.Wpf.csproj -p:EnableWindowsTargeting=true
 ```
 
-### Copy Built Packages to Local Source
+The test fixture selects the native build output through `LITEHTML_NATIVE_LIBRARY`. Tests cover ABI layout and display-list semantics without a GUI. CTest also runs the engine regressions directly from `litehtml/tests`; the bridge retains its own C ABI and lifecycle tests. Platform examples require their respective desktop environment. A whole-solution build requires the macOS workload and Windows targeting support; use project-specific builds on other development machines.
 
-After building the solution, copy all packages to your local source:
+## UTF-8-only native builds
 
-**Windows:**
-```bash
-copy /Y LiteHtmlSharp\bin\Debug\*.nupkg %USERPROFILE%\LocalNuGet\
-copy /Y LiteHtmlSharp.Avalonia\bin\Debug\*.nupkg %USERPROFILE%\LocalNuGet\
-copy /Y LiteHtmlSharp.Wpf\bin\Debug\*.nupkg %USERPROFILE%\LocalNuGet\
-copy /Y LiteHtmlSharp.Mac\bin\Debug\*.nupkg %USERPROFILE%\LocalNuGet\
-copy /Y LiteHtmlSharp.iOS\bin\Debug\*.nupkg %USERPROFILE%\LocalNuGet\
+LiteHtmlSharp supplies Unicode strings as UTF-8. Its native build defaults to `LITEHTML_UTF8_ONLY=ON`, omitting legacy decoder implementations and tables while retaining UTF-8 validation and HTML entities. HTML charset declarations do not reinterpret these UTF-8 bytes. Decode legacy file/network bytes in the managed loader before calling `Document.Load`. Explicit non-UTF-8 input to the UTF-8-only native parser is unsupported and rejected.
+
+Standalone litehtml keeps `LITEHTML_UTF8_ONLY=OFF` by default. To build the wrapper with all native decoders, configure CMake with `-DLITEHTML_UTF8_ONLY=OFF`. For the Windows project, use `/p:LiteHtmlUtf8Only=false`; the existing build script uses the project's UTF-8-only default. The C ABI always expects UTF-8 regardless of this build choice.
+
+The option also means UTF-16 CSS bytes must be decoded by the caller; CSS validation continues to replace malformed UTF-8 with U+FFFD. No struct layout or exported function changes are involved. Rebuild native binaries after changing the option.
+
+## Native ABI and bindings
+
+The opacity-group display commands require ABI version 2. Rebuild native libraries alongside the managed projects; older DLLs are rejected at load instead of silently rendering the wrong opacity. Custom managed renderers should override `Container.PushOpacity` / `PopOpacity` with group compositing. Standalone litehtml containers opt in via `supports_opacity_groups()` and the corresponding native methods; containers that do not opt in retain the previous per-operation alpha behavior.
+
+
+`LiteHtmlLib/include/lh_api.h` is the ABI source of truth. All coordinates are floats; booleans are bytes; strings returned by host callbacks use sinks. `lh_abi_layout` exposes structure sizes, alignment, and field offsets. Every managed load validates the ABI before creating a document.
+
+```sh
+LiteHtmlLib/generate-bindings.sh
 ```
 
-**Mac/Linux:**
-```bash
-cp -f LiteHtmlSharp/bin/Debug/*.nupkg ~/LocalNuGet/
-cp -f LiteHtmlSharp.Avalonia/bin/Debug/*.nupkg ~/LocalNuGet/
-cp -f LiteHtmlSharp.Wpf/bin/Debug/*.nupkg ~/LocalNuGet/
-cp -f LiteHtmlSharp.Mac/bin/Debug/*.nupkg ~/LocalNuGet/
-cp -f LiteHtmlSharp.iOS/bin/Debug/*.nupkg ~/LocalNuGet/
+The generation script records the supported local binding-generation path. Keep `Interop/lh_api.cs`, callback thunks, and the native layout table consistent when changing the header. Run both CTest and managed tests afterward.
+
+## Local native loading
+
+The core's resolver first checks `LITEHTML_NATIVE_LIBRARY`, then runtime-relative and adjacent library paths. For a local development command, an explicit path avoids accidentally loading an installed package's native binary:
+
+```sh
+LITEHTML_NATIVE_LIBRARY="$PWD/LiteHtmlLib/build/osx-universal/liblitehtml.dylib" dotnet test LiteHtmlSharp.Tests/LiteHtmlSharp.Tests.csproj
 ```
 
-### Using Local Packages in Rider
+NuGet platform packages carry their native assets automatically. With project references, copy the matching `runtimes/<rid>/native` files into the application's output, or set the environment variable. macOS app bundles use `NativeReference` entries for their matching dylib; see `Example.Mac/Example.Mac.csproj`.
 
-1. Open Rider Settings/Preferences: `File → Settings` (Windows) or `Rider → Preferences` (Mac)
-2. Navigate to: `Build, Execution, Deployment → NuGet → Sources`
-3. Your `LocalDev` source should appear with the path you configured
-4. Make sure it's **enabled** (checkbox checked)
-5. Open NuGet Package Manager: `Tools → NuGet → Manage NuGet Packages for Solution`
-6. Select "LocalDev" from the source dropdown
-7. Browse and install your local packages
+## Packaging
 
-### Using Local Packages via Command Line
+`Directory.Build.props` owns the package version, `3.0.0-preview1`. The core package contains managed assemblies only. Avalonia carries all seven native runtimes; WPF carries three Windows runtimes; Mac carries two macOS runtimes. iOS is not packaged in this release.
 
-In your consuming project's `.csproj`:
-```xml
-<ItemGroup>
-  <PackageReference Include="LiteHtmlSharp.Avalonia" Version="2.0.2-preview4" />
-</ItemGroup>
+After native validation:
+
+```sh
+dotnet pack LiteHtmlSharp/LiteHtmlSharp.csproj -c Release -p:GeneratePackageOnBuild=false -o artifacts/packages
+dotnet pack LiteHtmlSharp.Avalonia/LiteHtmlSharp.Avalonia.csproj -c Release -p:GeneratePackageOnBuild=false -o artifacts/packages
+dotnet pack LiteHtmlSharp.Wpf/LiteHtmlSharp.Wpf.csproj -c Release -p:GeneratePackageOnBuild=false -o artifacts/packages
+dotnet pack LiteHtmlSharp.Mac/LiteHtmlSharp.Mac.csproj -c Release -p:GeneratePackageOnBuild=false -o artifacts/packages
+unzip -l artifacts/packages/LiteHtmlSharp.Avalonia.3.0.0-preview1.nupkg
 ```
 
-Then restore:
-```bash
-dotnet restore
-```
+Inspect each archive's runtime list and verify that packaged bytes match validated `runtimes/` files. Packages are local build artifacts; packing does not publish them.
 
-The packages will be resolved from your LocalDev source.
+### Platform checks
 
-### Clearing Package Cache
+`dotnet workload install macos` installs the workload directly when solution workload discovery fails before installation. Workloads belong to the selected SDK feature band. The solution excludes the legacy CoreGraphics `.shproj`; Mac still imports its `.projitems` source list. Xcode must match the selected macOS workload for supported app builds.
 
-If you rebuild packages and want to ensure the new versions are used:
-
-**Windows:**
-```bash
-dotnet nuget locals all --clear
-```
-
-**Mac/Linux:**
-```bash
-dotnet nuget locals all --clear
-```
-
-## Published Package Consumption
-
-If you're consuming published NuGet packages from NuGet.org, no additional setup is required - native libraries are included automatically.
-
-```xml
-<PackageReference Include="LiteHtmlSharp.Avalonia" Version="2.0.x" />
-```
-
-## Native Library Locations
-
-Native libraries are stored in:
-```
-runtimes/
-  win-x64/native/LiteHtmlLib.dll
-  win-x86/native/LiteHtmlLib.dll
-  osx-x64/native/liblitehtml.dylib
-  osx-arm64/native/liblitehtml.dylib
-```
-
-.NET automatically searches these locations at runtime based on your platform's Runtime Identifier (RID).
+The Mac decoder executable tests are in `LiteHtmlSharp.Mac.Tests`; they require a macOS workload and run on macOS. WPF GIF metadata/composition tests run in the portable core test project, but Windows/WIC rendering still requires Windows verification.

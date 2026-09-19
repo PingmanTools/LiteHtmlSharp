@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<style>
+  html,body { margin:0; padding:0; }
+  body { width:auto; height:auto; font-family:Arial; font-size:16px; color:#24334b; background:#f6f8fc; padding:28px; }
+  h1 { font-size:32px; margin:0 0 10px; color:#162b46; }
+  h2 { font-size:21px; margin:28px 0 12px; }
+  p { line-height:1.6; margin:12px 0; }
+  .eyebrow { color:#607694; font-size:12px; letter-spacing:2px; margin-bottom:12px; }
+  .tile { display:inline-block; width:210px; height:112px; border-radius:18px; margin:0 12px 12px 0; }
+  .linear { background:linear-gradient(125deg,#3657ed,#89d8ff); }
+  .radial { background:radial-gradient(ellipse at 35% 35%,#fff5b4 0%,#fa9372 50%,#aa467f 100%); }
+  .conic { background:conic-gradient(from 35deg,#7c56db,#45bad2,#a1e4ac,#7c56db); }
+  .clip { width:670px; max-width:100%; height:72px; overflow:hidden; border-radius:24px; border:3px solid #c9d6e8; }
+  .clip-content { width:1000px; height:140px; background:linear-gradient(to right,#194c79,#68d4bf); color:white; padding:22px; font-size:20px; }
+  .action { color:#244ddd; text-decoration:underline; padding:4px; }
+  .action:hover { background:#dce6ff; color:#172a86; }
+  input { width:260px; height:36px; }
+  button { width:145px; height:36px; margin-left:12px; }
+  .note { background:white; border:1px solid #dce3ee; border-radius:12px; padding:16px 20px; margin:16px 0; }
+  @keyframes breathe { from { opacity:1; } to { opacity:.25; } }
+  @keyframes slide { from { transform:translateX(0); } to { transform:translateX(150px); } }
+  .pulse { display:inline-block; padding:12px 20px; background:#244ddd; color:white; border-radius:10px; animation:breathe 1.2s ease-in-out infinite alternate; }
+  .transition { display:inline-block; margin-left:14px; padding:12px 20px; background:#dce6ff; color:#172a86; border-radius:10px; transition:background-color 400ms ease-in-out, color 400ms ease-in-out; }
+  .transition:hover { background:#172a86; color:white; }
+  .track { height:42px; margin-top:18px; }
+  .minitext { font-size: 50% }
+  .moving { width:32px; height:32px; border-radius:8px; background:#45bad2; animation:slide 2s ease-in-out infinite alternate; }
+  .opacity-card { display:inline-block; vertical-align:top; width:220px; max-width:100%; margin:0 12px 12px 0; padding:14px; background:white; border:1px solid #d0d9e5; border-radius:12px; }
+  .opacity-card p { margin:0 0 10px; font-size:14px; }
+  .opacity-scene { position:relative; height:160px; background:linear-gradient(90deg,#dce6ff,#fff1dc); }
+  .opacity-group { position:relative; height:160px; }
+  .opacity-block { position:absolute; left:10px; top:12px; width:150px; height:64px; padding:10px; background:#244ddd; color:white; }
+  .opacity-overlap { left:40px; top:65px; background:#cc563b; }
+  .opacity-block a { color:white; text-decoration:underline; }
+  .half-opacity { opacity:.5; }
+  .alpha-background { background:rgba(36,77,221,.5); color:#162b46; }
+  .opacity-animated { animation:breathe 2s ease-in-out infinite alternate; }
+  .footer { margin-top:36px; border-top:1px solid #d0d9e5; padding-top:16px; color:#607694; }
+</style>
+</head>
+<body>
+  <div class="eyebrow">LITEHTMLSHARP 3</div>
+  <h1>HTML, with room to move</h1>
+  <p>Gradients, rounded edges, and native controls share the same page.</p>
+  <p>Try a real page: <a href="https://en.wikipedia.org/wiki/HTML">Wikipedia</a> · <a href="https://www.google.com/">Google</a> · <a href="https://kagi.com/">Kagi</a></p>
+  <h2>Three kinds of gradient</h2>
+  <div class="tile linear"></div><div class="tile radial"></div><div class="tile conic"></div>
+  <h2>A rounded window</h2>
+  <div class="clip"><div class="clip-content">This oversized layer stays inside its rounded window.</div></div>
+  <h2>Words from everywhere</h2>
+  <p>café · 日本語 · Ελληνικά · 𝄞 &nbsp; — &nbsp; A page can bring many writing systems together.</p>
+  <p><a class="action" href="demo://link" title="This tooltip belongs to the link's parent element"><span>Try this link and its tooltip</span></a></p>
+  <h2>Motion</h2>
+  <p><a class="pulse" href="demo://pulse">An opacity pulse</a><a class="transition" href="demo://transition">Hover for a color transition</a></p>
+  <div class="track"><div class="moving"></div></div>
+  <p>An animated GIF: <img src="demo://motion.gif" width="128" height="36" alt="A blue block moving back and forth"></p>
+  <h2>Opacity and overlapping layers</h2>
+  <p>Compare the blocks, overlap, text, and underlines. The last pair fades together.</p>
+  <div class="opacity-card">
+    <p><strong>Opaque reference</strong><br>Both blocks and their text at 100%.</p>
+    <div class="opacity-scene"><div class="opacity-group">
+      <div class="opacity-block">Blue block<br><a href="demo://opacity">An underlined link</a></div>
+      <div class="opacity-block opacity-overlap">Overlapping div<br>Text on a solid fill</div>
+    </div></div>
+  </div>
+  <div class="opacity-card">
+    <p><strong>Nested opacity</strong><br>Parent 50%; orange child also 50%.</p>
+    <div class="opacity-scene"><div class="opacity-group half-opacity">
+      <div class="opacity-block">Parent at 50%<br><a href="demo://opacity">Text and underline</a></div>
+      <div class="opacity-block opacity-overlap half-opacity">Child at 50%<br>Inside the faded parent</div>
+    </div></div>
+  </div>
+  <div class="opacity-card">
+    <p><strong>Transparent background</strong><br>50% blue fill; text stays opaque.</p>
+    <div class="opacity-scene"><div class="opacity-group">
+      <div class="opacity-block alpha-background">Full-opacity text<br>Over a translucent fill</div>
+      <div class="opacity-block opacity-overlap">Opaque orange div<br>Compare the overlap</div>
+    </div></div>
+  </div>
+  <div class="opacity-card opacity-animated">
+    <p><strong>Animated parent</strong><br>Parent fades from 100% to 25%.</p>
+    <div class="opacity-scene"><div class="opacity-group ">
+      <div class="opacity-block">Fading blue div<br><a href="demo://opacity">Fading underline</a></div>
+      <div class="opacity-block opacity-overlap">Fading orange div<br>Watch the intersection</div>
+    </div></div>
+  </div>
+  <h2>Native controls</h2>
+  <p><input id="name" value="Type something here"><button id="demo-button" value="Try button" href="demo://button"></button></p>
+  <div class="note"><strong>Scroll down.</strong> The controls and page content move together, while the status line stays in place.</div>
+  <h2>Keep exploring</h2>
+  <p>The same page brings text, colorful backgrounds, and familiar controls together. Scroll through it, follow a link, or try the text field above.</p>
+  <p class="minitext">This is super-small text to see how spacing and sizing works on <a href="mini-text">mini text</a>.</p>
+  <p>This extra paragraph gives the page enough height to test scrolling. Resize the window to see text wrap and the visible region update.</p>
+  <p class="footer">End of page. <a class="action" href="demo://link" title="This link stays interactive after scrolling">Try the link again</a>.</p>
+</body>
+</html>
