@@ -111,7 +111,7 @@ NuGet platform packages carry their native assets automatically. With project re
 
 ## Packaging
 
-`Directory.Build.props` owns the package version, `3.0.0-preview1`. The core package contains managed assemblies only. Avalonia carries all seven native runtimes; WPF carries three Windows runtimes; Mac carries two macOS runtimes. iOS is not packaged in this release.
+`Directory.Build.props` owns the package version, `3.0.0`. The core package contains managed assemblies only. Avalonia carries all seven native runtimes; WPF carries three Windows runtimes; Mac carries two macOS runtimes. iOS is not packaged in this release.
 
 After native validation:
 
@@ -120,7 +120,7 @@ dotnet pack LiteHtmlSharp/LiteHtmlSharp.csproj -c Release -p:GeneratePackageOnBu
 dotnet pack LiteHtmlSharp.Avalonia/LiteHtmlSharp.Avalonia.csproj -c Release -p:GeneratePackageOnBuild=false -o artifacts/packages
 dotnet pack LiteHtmlSharp.Wpf/LiteHtmlSharp.Wpf.csproj -c Release -p:GeneratePackageOnBuild=false -o artifacts/packages
 dotnet pack LiteHtmlSharp.Mac/LiteHtmlSharp.Mac.csproj -c Release -p:GeneratePackageOnBuild=false -o artifacts/packages
-unzip -l artifacts/packages/LiteHtmlSharp.Avalonia.3.0.0-preview1.nupkg
+unzip -l artifacts/packages/LiteHtmlSharp.Avalonia.3.0.0.nupkg
 ```
 
 Inspect each archive's runtime list and verify that packaged bytes match validated `runtimes/` files. Packages are local build artifacts; packing does not publish them.

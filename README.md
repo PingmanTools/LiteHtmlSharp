@@ -4,7 +4,7 @@ LiteHtmlSharp renders HTML and CSS in .NET applications using the [litehtml](htt
 
 ## Packages
 
-The current development version is **3.0.0-preview1**, defined in `Directory.Build.props`.
+The current development version is **3.0.0**, defined in `Directory.Build.props`.
 
 | Package | Framework | Native runtimes |
 | --- | --- | --- |
